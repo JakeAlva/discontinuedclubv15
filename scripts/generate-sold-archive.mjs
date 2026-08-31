@@ -41,11 +41,14 @@ function productPage(item) {
   const imageUrl = item.image
     ? `https://discontinuedclub.com/assets/images/sold/${item.image}`
     : 'https://discontinuedclub.com/assets/images/logo-mark-clean.png';
+  const displayImageUrl = item.image
+    ? `https://discontinuedclub.com/assets/images/sold/branded/${item.id}.webp`
+    : imageUrl;
   const description = `${item.name} was previously sold by Discontinued Club. View the archived listing and browse current ${category.copy} inventory.`;
   const availability = item.availableAgain ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
   const status = item.availableAgain ? 'Available again' : 'Previously sold';
   const media = item.image
-    ? `<img src="assets/images/sold/${item.image}" alt="${escapeHtml(item.name)} previously sold by Discontinued Club" width="900" height="900">`
+    ? `<img src="assets/images/sold/branded/${item.id}.webp" alt="${escapeHtml(item.name)} previously sold by Discontinued Club" width="1200" height="1200">`
     : '<div class="sold-placeholder"><img src="assets/images/logo-mark-clean.png" alt=""><strong>Sold archive</strong><span>Original image unavailable</span></div>';
   const primaryHref = item.availableAgain ? `https://www.ebay.com/itm/${item.id}` : category.href;
   const primaryLabel = item.availableAgain ? 'View current eBay listing' : `Browse current ${category.label.toLowerCase()}`;
@@ -83,12 +86,12 @@ function productPage(item) {
   <meta property="og:title" content="${escapeHtml(item.name)} | Sold Archive">
   <meta property="og:description" content="${escapeHtml(description)}">
   <meta property="og:url" content="${canonical}">
-  <meta property="og:image" content="${imageUrl}">
+  <meta property="og:image" content="${displayImageUrl}">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css">
+  <link rel="stylesheet" href="assets/style.css?v=23">
   <script type="application/ld+json">${JSON.stringify(schema)}</script>
 </head>
 <body data-page="archive">
@@ -116,7 +119,7 @@ function productPage(item) {
     <section class="section section-muted"><div class="container archive-note"><div><div class="section-kicker">The Discontinued Club archive</div><h2>Sold does not mean forgotten.</h2></div><p>Past listings stay searchable as a reference for collectors and anyone trying to identify something that disappeared. Availability changes, so check the current shop or contact us about a specific product.</p><a class="text-link" href="sold-archive.html">Explore all previously sold products &rarr;</a></div></section>
   </main>
   <div id="site-footer"></div>
-  <script src="assets/app.js"></script>
+  <script src="assets/app.js?v=23"></script>
 </body>
 </html>
 `;

@@ -53,7 +53,7 @@ for (const item of selected) {
     description: item.detail,
     active: true,
     shippable: true,
-    images: [`${publicSiteUrl}/assets/images/listings/${item.image}`],
+    images: [`${publicSiteUrl}/assets/images/listings/branded/${item.id}.webp`],
     url: `${publicSiteUrl}/out-now.html?item=${item.id}`,
     metadata: {
       dc_listing_id: item.id,

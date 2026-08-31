@@ -133,7 +133,7 @@
     const imageAlt = escapeHtml(item.name + ' - current Discontinued Club inventory');
     return [
       '<article class="product-card" data-category="' + item.category + '" data-search="' + escapeHtml((item.name + ' ' + item.detail).toLowerCase()) + '">',
-      '  <div class="product-image"><img src="assets/images/listings/' + item.image + '" alt="' + imageAlt + '" loading="lazy" width="300" height="300"><span class="condition-badge">' + stockLabel + '</span></div>',
+      '  <div class="product-image"><img src="assets/images/listings/branded/' + item.id + '.webp" alt="' + imageAlt + '" loading="lazy" width="1200" height="1200"><span class="condition-badge">' + stockLabel + '</span></div>',
       '  <div class="product-content">',
       '    <div class="product-category">' + categoryLabels[item.category] + '</div>',
       '    <div class="product-name">' + escapeHtml(item.name) + '</div>',
@@ -148,7 +148,7 @@
 
   function soldCard(item) {
     const image = item.image
-      ? '<img src="assets/images/sold/' + item.image + '" alt="' + escapeHtml(item.name + ' previously sold by Discontinued Club') + '" loading="lazy" width="300" height="300">'
+      ? '<img src="assets/images/sold/branded/' + item.id + '.webp" alt="' + escapeHtml(item.name + ' previously sold by Discontinued Club') + '" loading="lazy" width="1200" height="1200">'
       : '<div class="sold-placeholder"><img src="assets/images/logo-mark-clean.png" alt=""><strong>Sold archive</strong><span>Original image unavailable</span></div>';
     const status = item.availableAgain ? 'Available again' : 'Previously sold';
     return [
@@ -282,7 +282,7 @@
         : '<span class="cart-one-only">Quantity 1</span>';
       return [
         '<div class="cart-line">',
-        '  <img src="assets/images/listings/' + item.image + '" alt="">',
+        '  <img src="assets/images/listings/branded/' + item.id + '.webp" alt="">',
         '  <div class="cart-line-copy"><strong>' + escapeHtml(item.name) + '</strong><span>' + escapeHtml(item.detail) + '</span><div class="cart-line-controls">' + quantityControl + '<button type="button" class="cart-remove" data-cart-remove="' + item.id + '">Remove</button></div></div>',
         '  <b>' + formatMoney(getDirectPriceCents(item) * line.quantity) + '</b>',
         '</div>'
