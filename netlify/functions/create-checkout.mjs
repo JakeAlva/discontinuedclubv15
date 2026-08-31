@@ -1,5 +1,6 @@
 import Stripe from 'stripe';
 import { catalog, directPriceCents, findCatalogItem, maxQuantity, priceLookupKey, shippingQuote, storeConfig } from '../../lib/store-catalog.mjs';
+import { availableStripeQuantity } from '../../lib/stripe-inventory.mjs';
 
 export const config = {
   rateLimit: { windowSize: 60, windowLimit: 20, aggregateBy: ['ip'] }
@@ -63,8 +64,9 @@ export default async (request) => {
       if (!price || price.unit_amount !== directPriceCents(item) || price.currency !== 'usd') {
         throw new Error(`Direct checkout pricing is not ready for ${item.name}.`);
       }
-      const stripeStock = Number(typeof price.product === 'object' ? price.product.metadata?.dc_stock : 0);
-      const availableQuantity = Math.min(maxQuantity(item), Number.isInteger(stripeStock) && stripeStock > 0 ? stripeStock : maxQuantity(item));
+      const availableQuantity = availableStripeQuantity(maxQuantity(item), price.product);
+      if (availableQuantity === null) throw new Error(`Direct checkout inventory is not ready for ${item.name}.`);
+      if (availableQuantity < 1) throw new Error(`${item.name} is sold out.`);
       if (quantity > availableQuantity) throw new Error(`Only ${availableQuantity} of ${item.name} is currently available.`);
       return {
         price: price.id,
@@ -109,7 +111,7 @@ export default async (request) => {
   } catch (error) {
     console.error('Checkout error', error);
     const message = error instanceof SyntaxError ? 'Your cart could not be read.' : error.message;
-    const knownCartError = /cart|product|quantity|available|pricing/i.test(message);
+    const knownCartError = /cart|product|quantity|available|pricing|inventory|sold out/i.test(message);
     return json({ error: knownCartError ? message : 'Stripe could not open checkout. Please try again.' }, knownCartError ? 400 : 500);
   }
 };

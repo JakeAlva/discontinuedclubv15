@@ -5,6 +5,8 @@
     "build": "node scripts/build-site.mjs",
     "dev": "node scripts/dev-server.mjs",
     "images:brand": "node scripts/build-branded-images.mjs",
+    "launch:audit": "node scripts/launch-audit.mjs",
+    "launch:audit:preview": "node scripts/launch-audit.mjs --preview",
     "price:audit": "node scripts/audit-direct-prices.mjs",
     "stripe:catalog": "node scripts/sync-stripe-products.mjs",
     "test": "node --test tests/*.test.mjs"
