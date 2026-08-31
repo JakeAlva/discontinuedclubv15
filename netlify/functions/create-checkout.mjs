@@ -27,10 +27,18 @@ function validatedCart(payload) {
 }
 
 function checkoutOrigin(request) {
-  const deployPreviewUrl = process.env.CONTEXT !== "production" && process.env.DEPLOY_PRIME_URL;
-  const configured = deployPreviewUrl || process.env.PUBLIC_SITE_URL || process.env.URL;
+  const requestUrl = new URL(request.url);
+  const requestHost = requestUrl.hostname;
+  const allowedRequestHost = requestHost === 'discontinuedclub.com'
+    || requestHost === 'discontinuedclub.netlify.app'
+    || requestHost.endsWith('--discontinuedclub.netlify.app')
+    || requestHost === 'localhost'
+    || requestHost === '127.0.0.1';
+  if (allowedRequestHost) return requestUrl.origin;
+
+  const configured = process.env.PUBLIC_SITE_URL || process.env.URL;
   if (configured) return configured.replace(/\/$/, '');
-  return new URL(request.url).origin;
+  return 'https://discontinuedclub.com';
 }
 
 export default async (request) => {
