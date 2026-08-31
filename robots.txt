@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://discontinuedclub.com/sitemap.xml
+Sitemap: https://discontinuedclub.com/sitemap-sold.xml

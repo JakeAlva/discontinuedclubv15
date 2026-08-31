@@ -1,21 +1,64 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Out Now — Discontinued Club</title><meta name="description" content="Current live product."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/style.css"></head><body data-page="out"><div id="site-header"></div>
-<main><section class="page-hero compact"><div class="container"><div class="eyebrow">Out Now</div><h1>Pear Cinnamon is available now.</h1><p class="lead">Red Bull Winter Edition · 8.4oz. The only live product on the site right now.</p></div></section><section style="padding-top:24px"><div class="container"><div class="three-col"><article class="product-card"><div class="product-media"><img src="assets/images/pear-cinnamon-8-4oz.png" alt="Red Bull Winter Edition Pear Cinnamon 8.4oz"><div class="badge">Live Now</div></div><div class="product-body"><div class="product-row"><div><div class="product-name">Pear Cinnamon</div><div class="product-meta">Red Bull Winter Edition · 8.4oz</div></div><div class="price-side"><div class="label">Public Price</div><div class="value">$12</div></div></div><div class="actions"><a class="btn btn-dark btn-full" href="signup.html">Buy at Public Price</a></div></div></article></div></div></section></main><footer>
-  <div class="container">
-    <div class="footer-inner" style="flex-direction:column; align-items:flex-start; gap:14px;">
-      <div style="font-size:13px; color:rgba(17,17,17,.5);">
-        © 2026 Discontinued Club
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shop All Current Listings | Discontinued Club</title>
+  <meta name="description" content="Browse all current Discontinued Club listings, including discontinued soda, rare Mountain Dew, limited drinks, vintage NHL and NFL jerseys, Pokemon cards, collectibles, and personal care products.">
+  <link rel="canonical" href="https://discontinuedclub.com/out-now.html">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta property="og:site_name" content="Discontinued Club">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Shop All Current Listings | Discontinued Club">
+  <meta property="og:description" content="48 real, current listings with lower direct prices and secure Stripe checkout.">
+  <meta property="og:url" content="https://discontinuedclub.com/out-now.html">
+  <meta property="og:image" content="https://discontinuedclub.com/assets/images/listings/475e0f8d3f1d0a4e.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css?v=20">
+</head>
+<body data-page="shop">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero compact">
+      <div class="container">
+        <div class="eyebrow">Current inventory</div>
+        <h1>Everything that is ready to buy, in one place.</h1>
+        <p class="lead">All 48 products below are real current inventory. Direct item prices are lower with Stripe, shipping is free on $100+, and every product still links to its matching eBay listing.</p>
       </div>
-      <div style="display:flex; align-items:center; gap:10px; font-size:13px; color:rgba(17,17,17,.5); flex-wrap:wrap;">
-        <span>This site was made by:</span>
-        <img src="assets/images/fairbyte.png" alt="Fairbyte" style="height:28px; width:auto; display:block;">
-      </div>
-      <div class="footer-nav">
-        <a href="index.html">Home</a>
-        <a href="out-now.html">Out Now</a>
-        <a href="upcoming.html">Upcoming</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
+    </section>
+
+    <div class="shop-toolbar">
+      <div class="container shop-toolbar-inner">
+        <label class="catalog-search" for="catalog-search">
+          <span class="sr-only">Search the catalog</span>
+          <input id="catalog-search" type="search" placeholder="Search current inventory">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        </label>
+        <div class="category-tabs" aria-label="Filter by department">
+          <button class="category-tab active" type="button" data-filter-category="all">All</button>
+          <button class="category-tab" type="button" data-filter-category="drinks">Rare drinks</button>
+          <button class="category-tab" type="button" data-filter-category="apparel">Sports & apparel</button>
+          <button class="category-tab" type="button" data-filter-category="collectibles">Collectibles & cards</button>
+          <button class="category-tab" type="button" data-filter-category="care">Personal care</button>
+        </div>
+        <div class="catalog-count" id="catalog-count">48 items</div>
       </div>
     </div>
-  </div>
-</footer><script src="assets/app.js"></script></body></html>
+
+    <section class="catalog-section">
+      <div class="container">
+        <div class="product-grid" data-catalog data-shop-catalog></div>
+        <div class="catalog-empty" id="catalog-empty"><h2>No current listing matches that search.</h2><p>Try a brand, flavor, team, player, or product type.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/catalog.js?v=20"></script>
+  <script src="assets/app.js?v=20"></script>
+</body>
+</html>

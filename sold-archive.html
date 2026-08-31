@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Previously Sold Discontinued Products | Discontinued Club Archive</title>
+  <meta name="description" content="Browse real products previously sold by Discontinued Club, including discontinued Mountain Dew, rare soda, NHL and NFL jerseys, Funko Pop figures, Pokemon cards, shoes, and hard-to-find goods.">
+  <link rel="canonical" href="https://discontinuedclub.com/sold-archive.html">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta property="og:site_name" content="Discontinued Club">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Previously Sold Products | Discontinued Club Archive">
+  <meta property="og:description" content="A real archive of 46 distinct discontinued and hard-to-find products previously sold by Discontinued Club.">
+  <meta property="og:url" content="https://discontinuedclub.com/sold-archive.html">
+  <meta property="og:image" content="https://discontinuedclub.com/assets/images/sold/406711357702.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css?v=20">
+</head>
+<body data-page="archive">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero compact archive-hero">
+      <div class="container archive-hero-grid">
+        <div>
+          <div class="eyebrow">Previously sold</div>
+          <h1>Real finds from the Discontinued Club archive.</h1>
+          <p class="lead">A searchable record of discontinued drinks, sports gear, collectibles, and hard-to-find goods we have actually handled and sold.</p>
+        </div>
+        <div class="archive-summary" aria-label="Sold archive summary">
+          <div><strong>59</strong><span>items sold on eBay</span></div>
+          <div><strong>46</strong><span>distinct products recovered</span></div>
+          <div><strong>45</strong><span>original listing photos</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="shop-toolbar">
+      <div class="container shop-toolbar-inner">
+        <label class="catalog-search" for="sold-search">
+          <span class="sr-only">Search previously sold products</span>
+          <input id="sold-search" type="search" placeholder="Search the sold archive">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        </label>
+        <div class="category-tabs" aria-label="Filter sold products by department">
+          <button class="category-tab active" type="button" data-sold-filter-category="all">All</button>
+          <button class="category-tab" type="button" data-sold-filter-category="drinks">Rare drinks</button>
+          <button class="category-tab" type="button" data-sold-filter-category="apparel">Sports & apparel</button>
+          <button class="category-tab" type="button" data-sold-filter-category="collectibles">Collectibles</button>
+          <button class="category-tab" type="button" data-sold-filter-category="other">Other finds</button>
+        </div>
+        <div class="catalog-count" id="sold-count">46 products</div>
+      </div>
+    </div>
+
+    <section class="catalog-section">
+      <div class="container">
+        <div class="archive-context"><strong>Archive listings are not current inventory.</strong><span>Open any product for its reference page, or visit the live shop to see what is available now.</span><a href="out-now.html">Shop current inventory &rarr;</a></div>
+        <div class="product-grid" data-sold-catalog></div>
+        <div class="catalog-empty" id="sold-empty"><h2>No archived product matches that search.</h2><p>Try a flavor, brand, team, player, or product type.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/sold-catalog.js"></script>
+  <script src="assets/app.js?v=20"></script>
+</body>
+</html>
