@@ -11,6 +11,7 @@ This is a catalog-driven storefront for the current Discontinued Club eBay inven
 - signed Stripe webhooks that reduce direct inventory once per paid checkout session
 - shipping, returns, privacy, and purchase-term pages
 - separate branded storefront images and logo-free Google Merchant images
+- dedicated indexable product pages with direct checkout, eBay fallback, and multi-photo jersey galleries
 
 Local development
 

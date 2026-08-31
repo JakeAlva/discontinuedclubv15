@@ -13,6 +13,14 @@
     other: 'Other finds'
   };
 
+  function productSlug(item) {
+    const slug = String(item.name || 'product')
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-|-$/g, '');
+    return 'products/' + slug + '-' + item.id + '.html';
+  }
+
   const navItems = [
     { href: 'out-now.html', label: 'Shop', key: 'shop' },
     { href: 'rare-drinks.html', label: 'Rare Drinks', key: 'drinks' },
@@ -126,6 +134,7 @@
 
   function productCard(item) {
     const href = 'https://www.ebay.com/itm/' + item.id;
+    const detailHref = productSlug(item);
     const directCents = getDirectPriceCents(item);
     const ebayCents = parsePriceCents(item.price);
     const savings = Math.max(0, ebayCents - directCents);
@@ -134,10 +143,10 @@
     const imageAlt = escapeHtml(item.name + ' - current Discontinued Club inventory');
     return [
       '<article class="product-card" data-category="' + item.category + '" data-search="' + escapeHtml((item.name + ' ' + item.detail).toLowerCase()) + '">',
-      '  <div class="product-image"><img src="assets/images/listings/branded/' + item.id + '.webp" alt="' + imageAlt + '" loading="lazy" width="1200" height="1200"><span class="condition-badge">' + stockLabel + '</span></div>',
+      '  <a class="product-image" href="' + detailHref + '"><img src="assets/images/listings/branded/' + item.id + '.webp" alt="' + imageAlt + '" loading="lazy" width="1200" height="1200"><span class="condition-badge">' + stockLabel + '</span></a>',
       '  <div class="product-content">',
       '    <div class="product-category">' + categoryLabels[item.category] + '</div>',
-      '    <div class="product-name">' + escapeHtml(item.name) + '</div>',
+      '    <div class="product-name"><a href="' + detailHref + '">' + escapeHtml(item.name) + '</a></div>',
       '    <div class="product-detail">' + escapeHtml(item.detail) + '</div>',
       '    <div class="product-pricing"><span><small>Direct price</small><strong>' + formatMoney(directCents) + '</strong></span><span class="market-price"><small>eBay price</small><s>' + item.price + '</s></span></div>',
       '    <div class="product-savings">Save ' + formatMoney(savings) + ' on the item price</div>',
@@ -520,7 +529,7 @@
           name: item.name,
           description: item.detail,
           image: 'https://discontinuedclub.com/assets/images/listings/merchant/' + item.id + '.webp',
-          url: 'https://discontinuedclub.com/out-now.html?item=' + item.id,
+          url: 'https://discontinuedclub.com/' + productSlug(item),
           offers: {
             '@type': 'Offer',
             priceCurrency: 'USD',
@@ -593,6 +602,21 @@
     if (shouldOpen) window.setTimeout(openFinder, 350);
   }
 
+  function setupProductGallery() {
+    const mainImage = document.querySelector('[data-product-main-image]');
+    const thumbnails = Array.from(document.querySelectorAll('[data-product-gallery-src]'));
+    if (!mainImage || !thumbnails.length) return;
+
+    thumbnails.forEach(function (thumbnail) {
+      thumbnail.addEventListener('click', function () {
+        mainImage.src = thumbnail.dataset.productGallerySrc;
+        mainImage.alt = thumbnail.dataset.productGalleryAlt || '';
+        thumbnails.forEach(function (candidate) { candidate.classList.remove('active'); });
+        thumbnail.classList.add('active');
+      });
+    });
+  }
+
   function replaceOldProductPages() {
     const path = window.location.pathname.split('/').pop() || '';
     if (!path.startsWith('product-')) return;
@@ -609,5 +633,6 @@
   addCatalogSchema();
   addSoldSchema();
   setupFinder();
+  setupProductGallery();
   replaceOldProductPages();
 }());

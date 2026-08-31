@@ -22,6 +22,8 @@ Run `npm run stripe:catalog -- --apply` with a test key to create or update the 
 
 Stripe Product images and website Product structured data use `assets/images/listings/merchant/`. These are 1200 x 1200 product images without the Discontinued Club footer logo. The visible storefront cards may continue using the branded image set, but a Google Merchant Center feed must always use the logo-free merchant URLs to avoid promotional-overlay disapprovals.
 
+Each Stripe Product URL points to its dedicated page under `/products/`. Jersey pages lead with the cleaner generated storefront mockup but provide the actual front and back listing photos in the gallery. Product structured data uses only the real, logo-free merchant image as its primary image.
+
 Run `npm run dev` to serve the storefront and local checkout functions together at `http://127.0.0.1:4173`. The local server forces return URLs back to the local storefront, refuses hidden files such as `.env`, and must only be used with a test key.
 
 Shipping is calculated by the trusted checkout function from packaged weight and item subtotal. It starts at $7.49, increases for heavier carts below $100, and creates a free shipping option at $100 or more, so no reusable Stripe Shipping Rate is required.

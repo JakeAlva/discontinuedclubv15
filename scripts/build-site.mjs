@@ -25,7 +25,7 @@ for (const entry of rootFiles) {
   }
 }
 
-for (const directory of ['assets', 'sold']) {
+for (const directory of ['assets', 'products', 'sold']) {
   await cp(resolve(root, directory), resolve(output, directory), { recursive: true });
 }
 

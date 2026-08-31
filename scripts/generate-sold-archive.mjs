@@ -91,7 +91,7 @@ function productPage(item) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=23">
+  <link rel="stylesheet" href="assets/style.css?v=32">
   <script type="application/ld+json">${JSON.stringify(schema)}</script>
 </head>
 <body data-page="archive">
@@ -119,7 +119,7 @@ function productPage(item) {
     <section class="section section-muted"><div class="container archive-note"><div><div class="section-kicker">The Discontinued Club archive</div><h2>Sold does not mean forgotten.</h2></div><p>Past listings stay searchable as a reference for collectors and anyone trying to identify something that disappeared. Availability changes, so check the current shop or contact us about a specific product.</p><a class="text-link" href="sold-archive.html">Explore all previously sold products &rarr;</a></div></section>
   </main>
   <div id="site-footer"></div>
-  <script src="assets/app.js?v=23"></script>
+  <script src="assets/app.js?v=32"></script>
 </body>
 </html>
 `;

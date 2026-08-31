@@ -2,6 +2,8 @@ import Stripe from 'stripe';
 import { loadEnvFile } from 'node:process';
 import { catalog, directPriceCents, formatMoney, maxQuantity, priceLookupKey, storeConfig } from '../lib/store-catalog.mjs';
 
+const productSlug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
+
 try {
   loadEnvFile('.env');
 } catch (error) {
@@ -54,7 +56,7 @@ for (const item of selected) {
     active: true,
     shippable: true,
     images: [`${publicSiteUrl}/assets/images/listings/merchant/${item.id}.webp`],
-    url: `${publicSiteUrl}/out-now.html?item=${item.id}`,
+    url: `${publicSiteUrl}/products/${productSlug(item)}`,
     metadata: {
       dc_listing_id: item.id,
       ebay_item_id: item.id,

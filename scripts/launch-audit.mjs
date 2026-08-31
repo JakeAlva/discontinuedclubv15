@@ -32,6 +32,7 @@ async function exists(relativePath) {
 }
 
 const ids = catalog.map((item) => item.id);
+const productSlug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
 check(catalog.length > 0, 'Catalog contains current products', 'Add at least one current product.');
 check(new Set(ids).size === ids.length, 'Catalog product IDs are unique', 'Remove duplicate catalog IDs.');
 check(
@@ -53,6 +54,12 @@ for (const id of ids) {
 }
 check(!missingImages.length, 'Every current product has a branded image', `Missing branded images: ${missingImages.join(', ')}`);
 check(!missingMerchantImages.length, 'Every current product has a logo-free merchant image', `Missing merchant images: ${missingMerchantImages.join(', ')}`);
+
+const missingProductPages = [];
+for (const item of catalog) {
+  if (!(await exists(`products/${productSlug(item)}`))) missingProductPages.push(item.id);
+}
+check(!missingProductPages.length, 'Every current product has a dedicated detail page', `Missing product pages: ${missingProductPages.join(', ')}`);
 
 const appSource = await readFile(resolve(root, 'assets/app.js'), 'utf8');
 const stripeSyncSource = await readFile(resolve(root, 'scripts/sync-stripe-products.mjs'), 'utf8');
@@ -94,10 +101,13 @@ check(!missingFunctions.length, 'Checkout and webhook functions exist', `Missing
 check(await exists('google89cd7965ed90b8bf.html'), 'Google Search Console verification file exists', 'Restore the Google verification HTML file.');
 
 const sitemap = await readFile(resolve(root, 'sitemap.xml'), 'utf8');
+const productSitemap = await readFile(resolve(root, 'sitemap-products.xml'), 'utf8');
 const missingSitemapPages = requiredPages
   .filter((page) => page !== 'checkout-success.html')
   .filter((page) => page !== 'index.html' ? !sitemap.includes(`/${page}`) : !sitemap.includes('https://discontinuedclub.com/</loc>'));
 check(!missingSitemapPages.length, 'Public pages are present in the sitemap', `Missing sitemap entries: ${missingSitemapPages.join(', ')}`);
+const missingProductSitemapPages = catalog.filter((item) => !productSitemap.includes(`/products/${productSlug(item)}`)).map((item) => item.id);
+check(!missingProductSitemapPages.length, 'Every current product is present in the product sitemap', `Missing product sitemap entries: ${missingProductSitemapPages.join(', ')}`);
 
 const secretKey = process.env.STRIPE_SECRET_KEY || '';
 const keyMode = /^(sk|rk)_live_/.test(secretKey) ? 'live' : /^(sk|rk)_test_/.test(secretKey) ? 'test' : 'missing';
