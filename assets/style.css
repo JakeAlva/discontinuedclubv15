@@ -55,6 +55,8 @@ button { color: inherit; }
 .btn-acid { background: var(--acid); border-color: var(--acid); color: var(--ink); }
 .btn-acid:hover { background: var(--acid-dark); border-color: var(--acid-dark); }
 .btn-light { background: #fff; border-color: var(--line-dark); }
+.btn-on-dark { border-color: rgba(255,255,255,.48); background: transparent; color: #fff; }
+.btn-on-dark:hover { border-color: #fff; background: #fff; color: var(--ink); }
 .btn-full { width: 100%; }
 
 .mobile-overlay { position: fixed; inset: 0; z-index: 210; background: rgba(0,0,0,.38); opacity: 0; pointer-events: none; transition: opacity .2s ease; }
@@ -79,11 +81,12 @@ button { color: inherit; }
 .store-hero-grid { min-height: 570px; display: grid; grid-template-columns: minmax(0, .88fr) minmax(560px, 1.12fr); gap: 56px; align-items: center; padding-top: 56px; padding-bottom: 56px; }
 .store-hero-campaign { min-height: 520px; background: #fff; }
 .store-hero-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center bottom; }
-.store-hero-campaign .store-hero-grid { position: relative; z-index: 1; min-height: 520px; grid-template-columns: minmax(0, 500px); padding-top: 48px; padding-bottom: 104px; }
+.store-hero-campaign .store-hero-grid { position: relative; z-index: 1; min-height: 520px; grid-template-columns: minmax(0, 500px); padding-top: 48px; padding-bottom: 48px; }
 .store-hero-campaign .hero-copy { max-width: 500px; }
 .store-hero-campaign h1 { max-width: 500px; font-size: 54px; }
 .store-hero-campaign .lead { max-width: 480px; color: #363b36; font-size: 16px; line-height: 1.62; }
-.store-hero-campaign .hero-proof { position: absolute; left: 0; right: 0; bottom: 0; min-height: 62px; display: grid; grid-template-columns: repeat(3, max-content); align-items: center; gap: 32px; max-width: none; margin: 0; padding: 14px 0; border-top: 1px solid var(--line); background: #fff; color: #363b36; box-shadow: 0 0 0 100vmax #fff; clip-path: inset(0 -100vmax); }
+.campaign-proof-band { min-height: 62px; display: flex; align-items: center; border-bottom: 1px solid var(--line); background: #fff; }
+.campaign-proof-band .hero-proof { display: grid; grid-template-columns: repeat(3, max-content); align-items: center; gap: 32px; margin: 0 auto; padding-top: 14px; padding-bottom: 14px; color: #363b36; }
 .hero-copy { max-width: 650px; }
 .eyebrow, .section-kicker { color: #50564f; font-size: 11px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; }
 .eyebrow::before { content: ""; width: 24px; height: 3px; display: inline-block; margin-right: 9px; background: var(--acid-dark); vertical-align: middle; }
@@ -166,7 +169,27 @@ h1, h2, h3, p { margin-top: 0; }
 
 .page-hero { padding: 58px 0 46px; background: var(--canvas); border-bottom: 1px solid var(--line); }
 .page-hero.compact h1 { max-width: 900px; font-size: 48px; }
+.campaign-page-hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); background: #fff; }
+.campaign-page-media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center bottom; }
+.campaign-page-inner { position: relative; z-index: 1; min-height: 520px; display: flex; align-items: center; padding-top: 48px; padding-bottom: 48px; }
+.campaign-page-copy { width: min(500px, 40vw); }
+.campaign-page-copy h1 { margin: 16px 0 0; font-size: 52px; line-height: 1.02; font-weight: 900; letter-spacing: 0; }
+.campaign-page-copy .lead { max-width: 470px; font-size: 16px; line-height: 1.62; }
+.shop-campaign-hero { color: #fff; background: #1b1d1b; }
+.shop-campaign-hero .eyebrow, .shop-campaign-hero .lead { color: rgba(255,255,255,.76); }
+.archive-campaign-hero { background: #f2f3f2; }
+.archive-campaign-hero .campaign-page-inner { min-height: 560px; align-items: flex-start; justify-content: flex-end; padding-top: 40px; }
+.archive-campaign-hero .campaign-page-copy { width: min(680px, 54vw); text-align: left; }
+.archive-campaign-hero .campaign-page-copy h1 { font-size: 49px; }
+.archive-campaign-hero .campaign-page-copy .lead { max-width: 660px; }
+.archive-campaign-hero .hero-actions { justify-content: flex-start; }
+.archive-proof-band { border-bottom: 1px solid var(--line); background: #fff; }
+.archive-proof-band .archive-summary { border-top: 0; border-bottom: 0; }
+.about-campaign-hero { background: #f7f2ea; }
+.about-campaign-hero .campaign-page-copy { width: min(475px, 39vw); }
+.about-campaign-hero .campaign-page-copy h1 { font-size: 49px; }
 .shop-toolbar { position: sticky; top: 106px; z-index: 60; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.96); backdrop-filter: blur(14px); }
+#current-inventory, #sold-inventory, #rare-drinks, #journal { scroll-margin-top: 176px; }
 .shop-toolbar-inner { min-height: 78px; display: flex; align-items: center; gap: 22px; }
 .catalog-search { position: relative; flex: 1 1 320px; max-width: 420px; }
 .catalog-search input { width: 100%; height: 44px; padding: 0 42px 0 14px; border: 1px solid var(--line-dark); border-radius: 5px; outline: 0; background: #fff; }
@@ -336,13 +359,18 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .desktop-nav { gap: 18px; }
   .store-hero-grid { grid-template-columns: .9fr 1.1fr; gap: 32px; }
   .store-hero h1 { font-size: 49px; }
-  .store-hero-campaign { min-height: 0; }
-  .store-hero-campaign .store-hero-media { position: relative; height: 340px; object-position: 72% center; }
-  .store-hero-campaign .store-hero-grid { min-height: 0; grid-template-columns: 1fr; padding-top: 38px; padding-bottom: 42px; }
-  .store-hero-campaign .hero-copy { max-width: 680px; }
-  .store-hero-campaign h1 { max-width: 620px; font-size: 49px; }
-  .store-hero-campaign .lead { max-width: 620px; }
-  .store-hero-campaign .hero-proof { position: static; grid-template-columns: repeat(3, max-content); gap: 12px 24px; min-height: 0; max-width: 680px; margin-top: 24px; padding: 0; border-top: 0; box-shadow: none; clip-path: none; }
+  .store-hero-campaign .store-hero-media { object-fit: contain; object-position: center bottom; }
+  .store-hero-campaign .store-hero-grid { grid-template-columns: minmax(0, 37vw); }
+  .store-hero-campaign .hero-copy, .store-hero-campaign h1, .store-hero-campaign .lead { max-width: 37vw; }
+  .store-hero-campaign h1 { font-size: 43px; }
+  .store-hero-campaign .lead { font-size: 15px; line-height: 1.56; }
+  .store-hero-campaign .hero-actions { margin-top: 22px; }
+  .campaign-page-media { object-fit: contain; object-position: center bottom; }
+  .campaign-page-copy { width: 37vw; }
+  .campaign-page-copy h1, .about-campaign-hero .campaign-page-copy h1 { font-size: 43px; }
+  .campaign-page-copy .lead { font-size: 15px; line-height: 1.56; }
+  .archive-campaign-hero .campaign-page-copy { width: min(620px, 54vw); }
+  .archive-campaign-hero .campaign-page-copy h1 { font-size: 43px; }
   .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .editorial-grid { grid-template-columns: 1fr 1fr; }
   .editorial-card:first-child { grid-column: 1 / 3; min-height: 330px; }
@@ -368,10 +396,8 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .department-links::-webkit-scrollbar { display: none; }
   .department-link { flex: 0 0 auto; min-width: 175px; }
   .store-hero-grid { min-height: 0; grid-template-columns: 1fr; padding-top: 42px; padding-bottom: 42px; }
-  .store-hero-campaign .store-hero-media { position: relative; height: 270px; object-position: 72% center; }
-  .store-hero-campaign .store-hero-grid { min-height: 0; padding-top: 34px; padding-bottom: 40px; }
-  .store-hero-campaign h1 { font-size: 44px; }
-  .store-hero-campaign .hero-proof { grid-template-columns: 1fr 1fr; gap: 10px 18px; }
+  .store-hero-campaign h1 { font-size: 40px; }
+  .campaign-page-copy h1, .archive-campaign-hero .campaign-page-copy h1, .about-campaign-hero .campaign-page-copy h1 { font-size: 40px; }
   .store-hero h1, .page-hero h1 { font-size: 44px; }
   .hero-gallery { min-height: 390px; }
   .section { padding: 58px 0; }
@@ -394,11 +420,25 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .sold-product-copy { max-width: none; }
 }
 
+@media (max-width: 700px) {
+  .store-hero-campaign { min-height: 0; }
+  .store-hero-campaign .store-hero-media { position: relative; height: auto; object-fit: contain; object-position: center; }
+  .store-hero-campaign .store-hero-grid { min-height: 0; grid-template-columns: 1fr; padding-top: 32px; padding-bottom: 38px; }
+  .store-hero-campaign .hero-copy, .store-hero-campaign h1, .store-hero-campaign .lead { max-width: none; }
+  .campaign-proof-band .hero-proof { grid-template-columns: 1fr 1fr; gap: 10px 18px; }
+  .campaign-page-hero { display: flex; flex-direction: column; }
+  .campaign-page-media { position: relative; inset: auto; height: auto; object-fit: contain; }
+  .campaign-page-inner, .archive-campaign-hero .campaign-page-inner { min-height: 0; align-items: flex-start; justify-content: flex-start; padding-top: 34px; padding-bottom: 38px; }
+  .campaign-page-copy, .about-campaign-hero .campaign-page-copy, .archive-campaign-hero .campaign-page-copy { width: 100%; text-align: left; }
+  .archive-campaign-hero .hero-actions { justify-content: flex-start; }
+}
+
 @media (max-width: 560px) {
   .container { width: min(100% - 20px, 1320px); }
   .logo-link img, .mobile-logo img { width: 40px; height: 40px; }
   .store-hero h1, .page-hero h1, .page-hero.compact h1 { font-size: 36px; }
   .store-hero-campaign h1 { font-size: 36px; }
+  .campaign-page-copy h1, .archive-campaign-hero .campaign-page-copy h1, .about-campaign-hero .campaign-page-copy h1 { font-size: 36px; }
   .lead { font-size: 15px; }
   .hero-gallery { min-height: 330px; grid-template-columns: 1fr 1fr; grid-template-rows: 1.2fr .8fr; }
   .hero-tile { min-height: 150px; }
@@ -442,6 +482,7 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .archive-summary > *:last-child { border-bottom: 0; }
   .archive-summary .archive-guide strong { font-size: 12px; }
   .archive-summary strong { font-size: 25px; }
+  .campaign-proof-band .hero-proof { grid-template-columns: 1fr; }
   .archive-promo h2, .archive-note h2 { font-size: 28px; }
   .sold-product-section { padding: 30px 0 58px; }
   .sold-product-copy h1 { font-size: 34px; }
