@@ -5,7 +5,19 @@ import { catalog, directPriceCents, maxQuantity, parsePriceCents, priceLookupKey
 test('catalog contains 48 unique current listings', () => {
   assert.equal(catalog.length, 48);
   assert.equal(new Set(catalog.map((item) => item.id)).size, catalog.length);
-  for (const item of catalog) assert.ok(Number.isInteger(item.shippingWeightOz) && item.shippingWeightOz > 0);
+  for (const item of catalog) {
+    assert.ok(Number.isInteger(item.shippingWeightOz) && item.shippingWeightOz > 0);
+    assert.match(item.taxCode, /^txcd_\d{8}$/);
+  }
+});
+
+test('catalog uses specific Stripe tax categories where they are reliable', () => {
+  assert.equal(catalog.find((item) => item.id === '406717975092').taxCode, 'txcd_41040002');
+  assert.equal(catalog.find((item) => item.id === '407064120905').taxCode, 'txcd_30070022');
+  assert.equal(catalog.find((item) => item.id === '406834655819').taxCode, 'txcd_30011000');
+  assert.equal(catalog.find((item) => item.id === '406763511763').taxCode, 'txcd_32050036');
+  assert.equal(catalog.find((item) => item.id === '406763784733').taxCode, 'txcd_32050006');
+  assert.equal(catalog.find((item) => item.id === '407134859583').taxCode, 'txcd_99999999');
 });
 
 test('direct prices use the approved 3.5 percent starting discount', () => {

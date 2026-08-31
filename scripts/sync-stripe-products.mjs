@@ -64,7 +64,7 @@ for (const item of selected) {
       source: 'discontinuedclub.com'
     }
   };
-  if (process.env.STRIPE_DEFAULT_TAX_CODE) productData.tax_code = process.env.STRIPE_DEFAULT_TAX_CODE;
+  productData.tax_code = item.taxCode || process.env.STRIPE_DEFAULT_TAX_CODE || 'txcd_99999999';
 
   let product = productsByListingId.get(item.id);
   product = product

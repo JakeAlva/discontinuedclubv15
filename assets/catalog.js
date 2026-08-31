@@ -104,8 +104,23 @@ const DC_SHIPPING_WEIGHTS_OZ = {
   '406761145645': 32
 };
 
+const DC_TAX_CODES = {
+  general: 'txcd_99999999',
+  softDrink: 'txcd_41040002',
+  sportsJersey: 'txcd_30070022',
+  clothing: 'txcd_30011000',
+  grooming: 'txcd_32050006',
+  shampoo: 'txcd_32050036'
+};
+
 DC_CATALOG.forEach((item) => {
   item.shippingWeightOz = DC_SHIPPING_WEIGHTS_OZ[item.id];
+  if (item.category === 'drinks' && item.id !== '407039382525') item.taxCode = DC_TAX_CODES.softDrink;
+  else if (item.category === 'apparel' && item.name.includes('Jersey')) item.taxCode = DC_TAX_CODES.sportsJersey;
+  else if (item.id === '406834655819') item.taxCode = DC_TAX_CODES.clothing;
+  else if (item.category === 'care' && item.name.includes('Shampoo')) item.taxCode = DC_TAX_CODES.shampoo;
+  else if (item.category === 'care') item.taxCode = DC_TAX_CODES.grooming;
+  else item.taxCode = DC_TAX_CODES.general;
 });
 
 const DC_CATEGORIES = {
