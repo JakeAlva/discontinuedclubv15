@@ -27,7 +27,8 @@ function validatedCart(payload) {
 }
 
 function checkoutOrigin(request) {
-  const configured = process.env.PUBLIC_SITE_URL || process.env.URL;
+  const deployPreviewUrl = process.env.CONTEXT !== "production" && process.env.DEPLOY_PRIME_URL;
+  const configured = deployPreviewUrl || process.env.PUBLIC_SITE_URL || process.env.URL;
   if (configured) return configured.replace(/\/$/, '');
   return new URL(request.url).origin;
 }
