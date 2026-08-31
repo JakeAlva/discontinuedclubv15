@@ -519,7 +519,7 @@
           '@type': 'Product',
           name: item.name,
           description: item.detail,
-          image: 'https://discontinuedclub.com/assets/images/listings/' + item.image,
+          image: 'https://discontinuedclub.com/assets/images/listings/merchant/' + item.id + '.webp',
           url: 'https://discontinuedclub.com/out-now.html?item=' + item.id,
           offers: {
             '@type': 'Offer',

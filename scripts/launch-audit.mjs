@@ -46,10 +46,21 @@ check(
 );
 
 const missingImages = [];
+const missingMerchantImages = [];
 for (const id of ids) {
   if (!(await exists(`assets/images/listings/branded/${id}.webp`))) missingImages.push(id);
+  if (!(await exists(`assets/images/listings/merchant/${id}.webp`))) missingMerchantImages.push(id);
 }
 check(!missingImages.length, 'Every current product has a branded image', `Missing branded images: ${missingImages.join(', ')}`);
+check(!missingMerchantImages.length, 'Every current product has a logo-free merchant image', `Missing merchant images: ${missingMerchantImages.join(', ')}`);
+
+const appSource = await readFile(resolve(root, 'assets/app.js'), 'utf8');
+const stripeSyncSource = await readFile(resolve(root, 'scripts/sync-stripe-products.mjs'), 'utf8');
+check(
+  appSource.includes('/assets/images/listings/merchant/') && stripeSyncSource.includes('/assets/images/listings/merchant/'),
+  'Product schema and Stripe catalog use merchant-safe images',
+  'Point product schema and Stripe catalog images to the logo-free merchant image directory.'
+);
 
 const requiredPages = [
   'index.html',

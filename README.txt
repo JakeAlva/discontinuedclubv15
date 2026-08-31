@@ -10,6 +10,7 @@ This is a catalog-driven storefront for the current Discontinued Club eBay inven
 - Netlify Functions that validate products, quantities, and prices on the server
 - signed Stripe webhooks that reduce direct inventory once per paid checkout session
 - shipping, returns, privacy, and purchase-term pages
+- separate branded storefront images and logo-free Google Merchant images
 
 Local development
 
