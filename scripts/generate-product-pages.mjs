@@ -90,8 +90,9 @@ function pageMarkup(item, images) {
   <meta property="og:title" content="${escapeHtml(item.name)} | Discontinued Club">
   <meta property="og:description" content="${escapeHtml(item.detail)}">
   <meta property="og:url" content="${productUrl(item)}">
-  <meta property="og:image" content="${publicRoot}/assets/images/listings/branded/${item.id}.webp">
+  <meta property="og:image" content="${publicRoot}/assets/images/listings/merchant/${item.id}.webp">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="${publicRoot}/assets/images/listings/merchant/${item.id}.webp">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
