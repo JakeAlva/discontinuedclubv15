@@ -2,7 +2,7 @@ import { access, readFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { loadEnvFile } from 'node:process';
-import { catalog, directPriceCents, maxQuantity, priceLookupKey } from '../lib/store-catalog.mjs';
+import { catalog, directPriceCents, maxQuantity, priceLookupKey, storeConfig } from '../lib/store-catalog.mjs';
 
 try {
   loadEnvFile('.env');
@@ -12,6 +12,7 @@ try {
 
 const root = resolve(import.meta.dirname, '..');
 const previewMode = process.argv.includes('--preview');
+const directCheckoutEnabled = storeConfig.directCheckoutEnabled === true;
 const results = [];
 
 function check(condition, label, detail) {
@@ -63,10 +64,16 @@ check(!missingProductPages.length, 'Every current product has a dedicated detail
 
 const appSource = await readFile(resolve(root, 'assets/app.js'), 'utf8');
 const stripeSyncSource = await readFile(resolve(root, 'scripts/sync-stripe-products.mjs'), 'utf8');
+const checkoutSource = await readFile(resolve(root, 'netlify/functions/create-checkout.mjs'), 'utf8');
 check(
   appSource.includes('/assets/images/listings/merchant/') && stripeSyncSource.includes('/assets/images/listings/merchant/'),
   'Product schema and Stripe catalog use merchant-safe images',
   'Point product schema and Stripe catalog images to the logo-free merchant image directory.'
+);
+check(
+  directCheckoutEnabled || checkoutSource.includes("STRIPE_CHECKOUT_ENABLED !== 'true'"),
+  'Disabled checkout is also blocked server-side',
+  'Keep the Netlify checkout function behind the STRIPE_CHECKOUT_ENABLED launch flag.'
 );
 
 const requiredPages = [
@@ -109,28 +116,34 @@ check(!missingSitemapPages.length, 'Public pages are present in the sitemap', `M
 const missingProductSitemapPages = catalog.filter((item) => !productSitemap.includes(`/products/${productSlug(item)}`)).map((item) => item.id);
 check(!missingProductSitemapPages.length, 'Every current product is present in the product sitemap', `Missing product sitemap entries: ${missingProductSitemapPages.join(', ')}`);
 
-const secretKey = process.env.STRIPE_SECRET_KEY || '';
-const keyMode = /^(sk|rk)_live_/.test(secretKey) ? 'live' : /^(sk|rk)_test_/.test(secretKey) ? 'test' : 'missing';
-check(
-  previewMode ? keyMode === 'test' : keyMode === 'live',
-  `Stripe ${previewMode ? 'test' : 'live'} key is configured`,
-  previewMode ? 'Use a restricted Stripe test key for preview checkout.' : 'Configure a restricted Stripe live key in Netlify before production.'
-);
+if (directCheckoutEnabled) {
+  const secretKey = process.env.STRIPE_SECRET_KEY || '';
+  const keyMode = /^(sk|rk)_live_/.test(secretKey) ? 'live' : /^(sk|rk)_test_/.test(secretKey) ? 'test' : 'missing';
+  check(
+    previewMode ? keyMode === 'test' : keyMode === 'live',
+    `Stripe ${previewMode ? 'test' : 'live'} key is configured`,
+    previewMode ? 'Use a restricted Stripe test key for preview checkout.' : 'Configure a restricted Stripe live key in Netlify before production.'
+  );
 
-const webhookConfigured = /^whsec_[A-Za-z0-9_]+$/.test(process.env.STRIPE_WEBHOOK_SECRET || '');
-if (previewMode) {
-  warn(webhookConfigured, 'Stripe webhook secret is configured', 'Preview checkout can run without it, but paid test orders will not decrement inventory automatically.');
+  const webhookConfigured = /^whsec_[A-Za-z0-9_]+$/.test(process.env.STRIPE_WEBHOOK_SECRET || '');
+  if (previewMode) {
+    warn(webhookConfigured, 'Stripe webhook secret is configured', 'Preview checkout can run without it, but paid test orders will not decrement inventory automatically.');
+  } else {
+    check(webhookConfigured, 'Stripe live webhook secret is configured', 'Create the production webhook and add its signing secret to Netlify.');
+  }
 } else {
-  check(webhookConfigured, 'Stripe live webhook secret is configured', 'Create the production webhook and add its signing secret to Netlify.');
+  check(true, 'Direct checkout is intentionally disabled', '');
 }
 
 const publicSiteUrl = (process.env.PUBLIC_SITE_URL || '').replace(/\/$/, '');
 check(publicSiteUrl === 'https://discontinuedclub.com', 'Canonical production URL is configured', 'Set PUBLIC_SITE_URL=https://discontinuedclub.com.');
 
-const automaticTax = process.env.STRIPE_AUTOMATIC_TAX;
-check(automaticTax === 'true' || automaticTax === 'false', 'Stripe tax behavior is explicit', 'Set STRIPE_AUTOMATIC_TAX to true or false after reviewing tax registrations.');
-if (!previewMode) {
-  check(process.env.STRIPE_TAX_REVIEWED === 'true', 'Sales-tax registration decision is acknowledged', 'Review tax obligations, then set STRIPE_TAX_REVIEWED=true in Netlify.');
+if (directCheckoutEnabled) {
+  const automaticTax = process.env.STRIPE_AUTOMATIC_TAX;
+  check(automaticTax === 'true' || automaticTax === 'false', 'Stripe tax behavior is explicit', 'Set STRIPE_AUTOMATIC_TAX to true or false after reviewing tax registrations.');
+  if (!previewMode) {
+    check(process.env.STRIPE_TAX_REVIEWED === 'true', 'Sales-tax registration decision is acknowledged', 'Review tax obligations, then set STRIPE_TAX_REVIEWED=true in Netlify.');
+  }
 }
 
 let trackedFiles = [];

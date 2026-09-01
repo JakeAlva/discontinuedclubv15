@@ -44,6 +44,9 @@ function checkoutOrigin(request) {
 
 export default async (request) => {
   if (request.method !== 'POST') return json({ error: 'Method not allowed.' }, 405);
+  if (process.env.STRIPE_CHECKOUT_ENABLED !== 'true') {
+    return json({ error: 'Direct checkout is not available yet. Please use the matching eBay listing.' }, 503);
+  }
   if (!process.env.STRIPE_SECRET_KEY) return json({ error: 'Stripe checkout has not been connected yet.' }, 503);
 
   try {

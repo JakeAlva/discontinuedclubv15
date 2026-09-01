@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { catalog } from '../lib/store-catalog.mjs';
+import { catalog, storeConfig } from '../lib/store-catalog.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const slug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
@@ -17,7 +17,9 @@ test('every current listing has a dedicated indexable product page', async () =>
     const html = await readFile(resolve(root, 'products', filename), 'utf8');
     assert.match(html, new RegExp(`<link rel="canonical" href="https://discontinuedclub\\.com/products/${filename}">`));
     assert.ok(html.includes(`/assets/images/listings/merchant/${item.id}.webp`));
-    assert.ok(html.includes(`data-add-to-cart="${item.id}"`));
+    assert.ok(html.includes(`https://www.ebay.com/itm/${item.id}`));
+    if (storeConfig.directCheckoutEnabled) assert.ok(html.includes(`data-add-to-cart="${item.id}"`));
+    else assert.ok(!html.includes('data-add-to-cart='));
   }
 });
 

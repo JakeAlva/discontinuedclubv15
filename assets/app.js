@@ -4,6 +4,8 @@
   const soldCatalog = window.DC_SOLD_CATALOG || [];
   const categories = window.DC_CATEGORIES || {};
   const storeConfig = window.DC_STORE_CONFIG || { directDiscountPercent: 3.5, standardShippingCents: 749, freeShippingThresholdCents: 10000, defaultMaxQuantity: 1, maxCartLines: 20 };
+  const directCheckoutEnabled = storeConfig.directCheckoutEnabled === true;
+  const directCheckoutDateLabel = storeConfig.directCheckoutDateLabel || 'September 3';
   const CART_KEY = 'dc_direct_cart_v1';
   const categoryLabels = {
     drinks: 'Rare drinks',
@@ -38,26 +40,19 @@
   }
 
   function headerMarkup() {
-    return [
-      '<div class="announcement">Lower direct prices &nbsp;|&nbsp; Free shipping on $100+ &nbsp;|&nbsp; Same-day handling before 12 PM CT</div>',
-      '<header class="site-header">',
-      '  <div class="container site-header-inner">',
-      '    <a class="logo-link" href="index.html" aria-label="Discontinued Club home"><img src="assets/images/logo-mark-clean.png" alt=""><span class="logo-type"><strong>Discontinued</strong><small>Club</small></span></a>',
-      '    <nav class="desktop-nav" aria-label="Primary navigation">' + navMarkup() + '</nav>',
-      '    <div class="header-actions">',
-      '      <a class="icon-button" href="out-now.html" aria-label="Search the store" title="Search the store"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></a>',
-      '      <button class="icon-button cart-trigger" type="button" aria-label="Open shopping cart" title="Shopping cart" data-cart-open><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"></path><path d="M9 8V5a3 3 0 0 1 6 0v3"></path></svg><span class="cart-count" data-cart-count>0</span></button>',
-      '      <a class="btn btn-dark header-shop" href="out-now.html">Shop direct</a>',
-      '      <button class="icon-button mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button>',
-      '    </div>',
-      '  </div>',
-      '</header>',
-      '<div class="mobile-overlay" id="mobile-overlay"></div>',
-      '<aside class="mobile-drawer" id="mobile-drawer" aria-hidden="true">',
-      '  <div class="mobile-drawer-top"><a class="mobile-logo" href="index.html"><img src="assets/images/logo-mark-clean.png" alt=""><span class="logo-type"><strong>Discontinued</strong><small>Club</small></span></a><button class="mobile-close" id="mobile-close" type="button" aria-label="Close menu">&times;</button></div>',
-      '  <nav class="mobile-links" aria-label="Mobile navigation">' + navMarkup() + '<a href="contact.html">Contact</a></nav>',
-      '  <div class="mobile-drawer-bottom"><a class="btn btn-acid" href="out-now.html">Shop direct</a><a class="btn btn-light" href="' + EBAY_STORE + '" target="_blank" rel="noopener">Visit our eBay store</a><div class="mobile-note">Buy direct for the lowest price or use the matching eBay listing when you prefer eBay checkout and buyer protection.</div></div>',
-      '</aside>',
+    const announcement = directCheckoutEnabled
+      ? 'Lower direct prices &nbsp;|&nbsp; Free shipping on $100+ &nbsp;|&nbsp; Same-day handling before 12 PM CT'
+      : 'Direct checkout expected ' + directCheckoutDateLabel + ' &nbsp;|&nbsp; Current inventory available on eBay';
+    const cartControls = directCheckoutEnabled
+      ? '      <button class="icon-button cart-trigger" type="button" aria-label="Open shopping cart" title="Shopping cart" data-cart-open><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"></path><path d="M9 8V5a3 3 0 0 1 6 0v3"></path></svg><span class="cart-count" data-cart-count>0</span></button>'
+      : '';
+    const headerShop = directCheckoutEnabled
+      ? '      <a class="btn btn-dark header-shop" href="out-now.html">Shop direct</a>'
+      : '      <a class="btn btn-dark header-shop" href="' + EBAY_STORE + '" target="_blank" rel="noopener">Shop on eBay</a>';
+    const mobileCheckout = directCheckoutEnabled
+      ? '<a class="btn btn-acid" href="out-now.html">Shop direct</a><a class="btn btn-light" href="' + EBAY_STORE + '" target="_blank" rel="noopener">Visit our eBay store</a><div class="mobile-note">Buy direct for the lowest price or use the matching eBay listing when you prefer eBay checkout and buyer protection.</div>'
+      : '<a class="btn btn-dark" href="' + EBAY_STORE + '" target="_blank" rel="noopener">Shop current inventory on eBay</a><a class="btn btn-light" href="out-now.html">Browse the storefront</a><div class="mobile-note">Direct checkout is expected ' + directCheckoutDateLabel + '. Until then, every current product links to its matching eBay listing.</div>';
+    const cartDrawer = directCheckoutEnabled ? [
       '<div class="cart-overlay" id="cart-overlay" data-cart-close></div>',
       '<aside class="cart-drawer" id="cart-drawer" aria-hidden="true" aria-labelledby="cart-title">',
       '  <div class="cart-drawer-head"><div><span class="section-kicker">Direct checkout</span><h2 id="cart-title">Your cart</h2></div><button class="cart-close" type="button" aria-label="Close cart" data-cart-close>&times;</button></div>',
@@ -73,10 +68,35 @@
       '    <div class="stripe-note"><span aria-hidden="true">S</span> Payments processed securely by Stripe</div>',
       '  </div>',
       '</aside>'
+    ].join('') : '';
+    return [
+      '<div class="announcement">' + announcement + '</div>',
+      '<header class="site-header">',
+      '  <div class="container site-header-inner">',
+      '    <a class="logo-link" href="index.html" aria-label="Discontinued Club home"><img src="assets/images/logo-mark-clean.png" alt=""><span class="logo-type"><strong>Discontinued</strong><small>Club</small></span></a>',
+      '    <nav class="desktop-nav" aria-label="Primary navigation">' + navMarkup() + '</nav>',
+      '    <div class="header-actions">',
+      '      <a class="icon-button" href="out-now.html" aria-label="Search the store" title="Search the store"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></a>',
+      cartControls,
+      headerShop,
+      '      <button class="icon-button mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button>',
+      '    </div>',
+      '  </div>',
+      '</header>',
+      '<div class="mobile-overlay" id="mobile-overlay"></div>',
+      '<aside class="mobile-drawer" id="mobile-drawer" aria-hidden="true">',
+      '  <div class="mobile-drawer-top"><a class="mobile-logo" href="index.html"><img src="assets/images/logo-mark-clean.png" alt=""><span class="logo-type"><strong>Discontinued</strong><small>Club</small></span></a><button class="mobile-close" id="mobile-close" type="button" aria-label="Close menu">&times;</button></div>',
+      '  <nav class="mobile-links" aria-label="Mobile navigation">' + navMarkup() + '<a href="contact.html">Contact</a></nav>',
+      '  <div class="mobile-drawer-bottom">' + mobileCheckout + '</div>',
+      '</aside>',
+      cartDrawer
     ].join('');
   }
 
   function footerMarkup() {
+    const checkoutCopy = directCheckoutEnabled
+      ? 'Direct payments are processed securely by Stripe. eBay remains available as a separate checkout option.'
+      : 'Direct checkout is expected ' + directCheckoutDateLabel + '. Current purchases are completed through eBay.';
     return [
       '<footer>',
       '  <div class="container">',
@@ -87,7 +107,7 @@
       '      <div class="footer-column"><strong>Discontinued Club</strong><a href="about.html">About</a><a href="contact.html">Contact</a><a href="' + EBAY_STORE + '" target="_blank" rel="noopener">eBay profile</a></div>',
       '      <div class="footer-column"><strong>Policies</strong><a href="shipping-returns.html">Shipping & returns</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>',
       '    </div>',
-      '    <div class="footer-bottom"><span>&copy; 2026 Discontinued Club</span><span>Direct payments are processed securely by Stripe. eBay remains available as a separate checkout option.</span></div>',
+      '    <div class="footer-bottom"><span>&copy; 2026 Discontinued Club</span><span>' + checkoutCopy + '</span></div>',
       '  </div>',
       '</footer>'
     ].join('');
@@ -141,6 +161,12 @@
     const stock = getMaxQuantity(item);
     const stockLabel = stock > 1 ? stock + ' in stock' : 'Last one';
     const imageAlt = escapeHtml(item.name + ' - current Discontinued Club inventory');
+    const pricing = directCheckoutEnabled
+      ? '<div class="product-pricing"><span><small>Direct price</small><strong>' + formatMoney(directCents) + '</strong></span><span class="market-price"><small>eBay price</small><s>' + item.price + '</s></span></div><div class="product-savings">Save ' + formatMoney(savings) + ' on the item price</div>'
+      : '<div class="product-pricing"><span><small>Available on eBay</small><strong>' + item.price + '</strong></span><span class="market-price"><small>Expected direct price</small><strong>' + formatMoney(directCents) + '</strong></span></div><div class="product-savings">Expected direct savings: ' + formatMoney(savings) + '</div>';
+    const actions = directCheckoutEnabled
+      ? '<button class="btn btn-dark product-add" type="button" data-add-to-cart="' + item.id + '">Add to cart</button><a class="ebay-option" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a>'
+      : '<a class="btn btn-dark product-add" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a><a class="ebay-option" href="' + detailHref + '">View details</a>';
     return [
       '<article class="product-card" data-category="' + item.category + '" data-search="' + escapeHtml((item.name + ' ' + item.detail).toLowerCase()) + '">',
       '  <a class="product-image" href="' + detailHref + '"><img src="assets/images/listings/branded/' + item.id + '.webp" alt="' + imageAlt + '" loading="lazy" width="1200" height="1200"><span class="condition-badge">' + stockLabel + '</span></a>',
@@ -148,9 +174,8 @@
       '    <div class="product-category">' + categoryLabels[item.category] + '</div>',
       '    <div class="product-name"><a href="' + detailHref + '">' + escapeHtml(item.name) + '</a></div>',
       '    <div class="product-detail">' + escapeHtml(item.detail) + '</div>',
-      '    <div class="product-pricing"><span><small>Direct price</small><strong>' + formatMoney(directCents) + '</strong></span><span class="market-price"><small>eBay price</small><s>' + item.price + '</s></span></div>',
-      '    <div class="product-savings">Save ' + formatMoney(savings) + ' on the item price</div>',
-      '    <div class="product-actions"><button class="btn btn-dark product-add" type="button" data-add-to-cart="' + item.id + '">Add to cart</button><a class="ebay-option" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a></div>',
+      '    ' + pricing,
+      '    <div class="product-actions">' + actions + '</div>',
       '  </div>',
       '</article>'
     ].join('');
@@ -342,6 +367,7 @@
   }
 
   async function startCheckout(button) {
+    if (!directCheckoutEnabled) return;
     if (!cart.length || button.disabled) return;
     const message = document.querySelector('[data-checkout-message]');
     button.disabled = true;
@@ -364,6 +390,7 @@
   }
 
   function setupCart() {
+    if (!directCheckoutEnabled) return;
     document.addEventListener('click', function (event) {
       const addButton = event.target.closest('[data-add-to-cart]');
       if (addButton) { addToCart(addButton.dataset.addToCart); return; }
@@ -533,7 +560,7 @@
           offers: {
             '@type': 'Offer',
             priceCurrency: 'USD',
-            price: (getDirectPriceCents(item) / 100).toFixed(2),
+            price: ((directCheckoutEnabled ? getDirectPriceCents(item) : parsePriceCents(item.price)) / 100).toFixed(2),
             availability: 'https://schema.org/InStock',
             seller: { '@type': 'Organization', name: 'Discontinued Club' }
           }
@@ -556,7 +583,7 @@
       '    <button class="brand-finder-close" type="button" aria-label="Close store finder" data-finder-close>&times;</button>',
       '    <div class="section-kicker">Find it faster</div>',
       '    <h2 id="finder-title">What are you looking for?</h2>',
-      '    <p>Jump straight to one of the four live departments. Buy direct for the lowest price or choose the matching eBay listing.</p>',
+      '    <p>' + (directCheckoutEnabled ? 'Jump straight to one of the four live departments. Buy direct for the lowest price or choose the matching eBay listing.' : 'Jump straight to one of the four live departments. Every current product is available through its matching eBay listing.') + '</p>',
       '    <div class="finder-grid">',
       finderOption('Rare drinks', 'Limited, discontinued, and international beverages', '23 items', 'drinks'),
       finderOption('Sports & apparel', 'Jerseys, shoes, and vintage skate gear', '16 items', 'apparel'),
