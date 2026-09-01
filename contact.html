@@ -1,21 +1,67 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Contact — Discontinued Club</title><meta name="description" content="Contact Discontinued Club."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/style.css"></head><body data-page="contact"><div id="site-header"></div>
-<main><section class="page-hero"><div class="container"><div class="eyebrow">Contact</div><h1>Get in touch.</h1><p class="lead">Questions about availability, future drops, or membership? Send a message below.</p></div></section><form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="hidden-netlify"><input type="hidden" name="form-name" value="contact"><input name="name"><input name="email"><textarea name="message"></textarea></form><section style="padding-top:18px"><div class="container contact-grid"><div class="panel"><div class="section-kicker">Contact</div><div class="card-title" style="font-size:30px">Reach out directly.</div><div class="list-clean"><div>Email: hello@discontinuedclub.co</div><div>Membership: $7.99 / month</div><div>Focus: Limited beverage drops</div></div></div><div class="panel"><div class="section-kicker">Message</div><form class="form-grid" name="contact" method="POST" data-netlify="true" action="contact-success.html" netlify-honeypot="bot-field" style="margin-top:18px"><input type="hidden" name="form-name" value="contact"><p style="display:none"><label>Don’t fill this out if you're human: <input name="bot-field"></label></p><input class="input-light" type="text" name="name" placeholder="Name" required><input class="input-light" type="email" name="email" placeholder="Email address" required><textarea class="textarea-light" name="message" placeholder="Message" required></textarea><button type="submit" class="btn btn-dark">Send Message</button></form></div></div></section></main><footer>
-  <div class="container">
-    <div class="footer-inner" style="flex-direction:column; align-items:flex-start; gap:14px;">
-      <div style="font-size:13px; color:rgba(17,17,17,.5);">
-        © 2026 Discontinued Club
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact Discontinued Club | Product Tips & Inventory Questions</title>
+  <meta name="description" content="Contact Discontinued Club about an eBay order, a hard-to-find product, rare drink availability, bulk interest, or a product discontinuation tip.">
+  <link rel="canonical" href="https://discontinuedclub.com/contact.html">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta property="og:site_name" content="Discontinued Club">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Contact Discontinued Club">
+  <meta property="og:description" content="Ask about inventory, an order, sourcing, or a discontinued-product tip.">
+  <meta property="og:url" content="https://discontinuedclub.com/contact.html">
+  <meta property="og:image" content="https://discontinuedclub.com/assets/images/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css?v=33">
+</head>
+<body data-page="contact">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <div class="eyebrow">Contact</div>
+        <h1>Questions, requests, and product tips.</h1>
+        <p class="lead">Ask about a current listing, tell us what you are trying to find, or share a product that appears to be disappearing from shelves.</p>
       </div>
-      <div style="display:flex; align-items:center; gap:10px; font-size:13px; color:rgba(17,17,17,.5); flex-wrap:wrap;">
-        <span>This site was made by:</span>
-        <img src="assets/images/fairbyte.png" alt="Fairbyte" style="height:28px; width:auto; display:block;">
+    </section>
+
+    <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="hidden-netlify">
+      <input type="hidden" name="form-name" value="contact">
+      <input name="name"><input name="email"><input name="topic"><textarea name="message"></textarea>
+    </form>
+
+    <section class="section">
+      <div class="container contact-layout">
+        <div class="contact-details">
+          <div class="contact-detail"><strong>Email</strong><a href="mailto:hello@discontinuedclub.com">hello@discontinuedclub.com</a></div>
+          <div class="contact-detail"><strong>Order support</strong><span>Include the eBay item number or order number so the listing is easy to locate.</span></div>
+          <div class="contact-detail"><strong>Product tips</strong><span>Brand, flavor or product name, location, retailer, and what changed on the shelf are all helpful.</span></div>
+          <div class="contact-detail"><strong>Response time</strong><span>Messages are reviewed directly. Please allow one business day for a reply.</span></div>
+        </div>
+
+        <form class="form-grid" name="contact" method="POST" data-netlify="true" action="contact-success.html" netlify-honeypot="bot-field">
+          <input type="hidden" name="form-name" value="contact">
+          <p class="hidden-netlify"><label>Do not fill this out: <input name="bot-field"></label></p>
+          <div class="form-row">
+            <div class="field"><label for="contact-name">Name</label><input class="input-light" id="contact-name" type="text" name="name" autocomplete="name" required></div>
+            <div class="field"><label for="contact-email">Email</label><input class="input-light" id="contact-email" type="email" name="email" autocomplete="email" required></div>
+          </div>
+          <div class="field"><label for="contact-topic">What is this about?</label><select class="input-light" id="contact-topic" name="topic" required><option value="">Choose a topic</option><option>Current listing or order</option><option>Product sourcing request</option><option>Discontinuation tip</option><option>Bulk purchase</option><option>Something else</option></select></div>
+          <div class="field"><label for="contact-message">Message</label><textarea class="textarea-light" id="contact-message" name="message" placeholder="Add the product name, listing number, or details that will help us answer." required></textarea></div>
+          <div><button type="submit" class="btn btn-dark">Send message</button></div>
+        </form>
       </div>
-      <div class="footer-nav">
-        <a href="index.html">Home</a>
-        <a href="out-now.html">Out Now</a>
-        <a href="upcoming.html">Upcoming</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-      </div>
-    </div>
-  </div>
-</footer><script src="assets/app.js"></script></body></html>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/catalog.js?v=33"></script>
+  <script src="assets/app.js?v=33"></script>
+</body>
+</html>

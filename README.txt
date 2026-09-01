@@ -1,38 +1,34 @@
-Discontinued Club customer-ready build
+Discontinued Club storefront
 
-Included:
-- Home
-- Out Now
-- Upcoming Drops
-- About
-- Contact
-- Sign Up
-- Join the Club
-- Product pages for every product in the lineup
-- Netlify-ready forms
+This is a catalog-driven storefront for the current Discontinued Club eBay inventory. It includes:
 
-This version is customer-facing:
-- no internal notes
-- no dev-facing copy
-- no black square behind the header logo
-- pricing language uses Market Price / Club Price / Public Price
-- Sign Up and Join the Club are separate pages
+- 48 current products across drinks, apparel, collectibles, and personal care
+- lower direct prices with a matching eBay option on every listing
+- a multi-item cart and Stripe-hosted Checkout
+- $7.49 USPS Ground Advantage below $100 and free shipping at $100+
+- a sold archive and journal content for search visibility
+- Netlify Functions that validate products, quantities, and prices on the server
+- signed Stripe webhooks that reduce direct inventory once per paid checkout session
+- shipping, returns, privacy, and purchase-term pages
+- separate branded storefront images and logo-free Google Merchant images
+- dedicated indexable product pages with direct checkout, eBay fallback, and multi-photo jersey galleries
 
+Local development
 
-This rewrite is optimized for the mobile sticky header and shared right-side slideout menu.
+1. Install dependencies with `npm install`.
+2. Add the test-only Stripe settings described in `STRIPE-SETUP.md` to an untracked `.env` file.
+3. Run `npm run dev`.
+4. Open http://127.0.0.1:4173/out-now.html.
 
-Updated pricing across the site:
-- Pear Cinnamon live: Market $15 / Club $8 / Public $12
-- Blueberry 12oz $9 / 8.4oz $7 market
-- Curuba 12oz $5 / 8.4oz $3 market
-- Amber 12oz $5 market
-- Watermelon 12oz $5 market
-- Fuji Apple Ginger 12oz $6 market
-- Upcoming drops show Market Price only.
+The local server is bound to this computer only, refuses hidden files such as `.env`, and routes checkout through Stripe sandbox mode. The browser never receives the Stripe secret key.
 
+Verification
 
-Live-ready update:
-- kept prior site layout/design intact
-- staggered all upcoming releases one week apart
-- earliest upcoming release set to Fuji Apple & Ginger on 2026-09-21
-- updated footer sitewide with © 2026 Discontinued Club and FairByte logo credit
+- `npm test`
+- `npm run price:audit`
+- `npm run build`
+- `npm run launch:audit:preview`
+
+Run `npm run launch:audit` for the stricter production configuration check.
+
+Do not use a live Stripe key until prices, shipping, tax obligations, deployment variables, and the webhook have all been reviewed.

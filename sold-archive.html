@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Previously Sold Discontinued Products | Discontinued Club Archive</title>
+  <meta name="description" content="Browse real products previously sold by Discontinued Club, including discontinued Mountain Dew, rare soda, NHL and NFL jerseys, Funko Pop figures, Pokemon cards, shoes, and hard-to-find goods.">
+  <link rel="canonical" href="https://discontinuedclub.com/sold-archive.html">
+  <meta name="robots" content="index, follow, max-image-preview:large">
+  <meta property="og:site_name" content="Discontinued Club">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Previously Sold Products | Discontinued Club Archive">
+  <meta property="og:description" content="A real archive of discontinued and hard-to-find products previously sold by Discontinued Club.">
+  <meta property="og:url" content="https://discontinuedclub.com/sold-archive.html">
+  <meta property="og:image" content="https://discontinuedclub.com/assets/images/hero-sold-archive-v1.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css?v=33">
+</head>
+<body data-page="archive">
+  <div id="site-header"></div>
+
+  <main>
+    <section class="campaign-page-hero archive-campaign-hero">
+      <div class="container campaign-page-inner">
+        <div class="campaign-page-copy">
+          <div class="eyebrow">59 completed eBay sales</div>
+          <h1>The finds that came before.</h1>
+          <p class="lead">A searchable record of discontinued drinks, sports gear, collectibles, and hard-to-find goods we have actually handled and sold.</p>
+          <div class="hero-actions"><a class="btn btn-dark" href="#sold-inventory">Explore the archive</a><a class="btn btn-light" href="out-now.html">Shop current inventory</a></div>
+        </div>
+      </div>
+      <img class="campaign-page-media" src="assets/images/hero-sold-archive-v1.webp" alt="A museum-like display of products previously sold by Discontinued Club" width="1774" height="887" fetchpriority="high">
+    </section>
+    <div class="archive-proof-band">
+      <div class="container archive-summary" aria-label="Sold archive summary">
+        <div class="archive-stat"><strong>59</strong><span>items sold on eBay</span></div>
+        <div class="archive-guide"><strong>Research before you buy</strong><span>Compare past releases, packaging, and collector details.</span></div>
+        <a class="archive-guide" href="contact.html"><strong>Looking for one?</strong><span>Ask us to track down a sold-out favorite.</span></a>
+      </div>
+    </div>
+
+    <div class="shop-toolbar" id="sold-inventory">
+      <div class="container shop-toolbar-inner">
+        <label class="catalog-search" for="sold-search">
+          <span class="sr-only">Search previously sold products</span>
+          <input id="sold-search" type="search" placeholder="Search the sold archive">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        </label>
+        <div class="category-tabs" aria-label="Filter sold products by department">
+          <button class="category-tab active" type="button" data-sold-filter-category="all">All</button>
+          <button class="category-tab" type="button" data-sold-filter-category="drinks">Rare drinks</button>
+          <button class="category-tab" type="button" data-sold-filter-category="apparel">Sports & apparel</button>
+          <button class="category-tab" type="button" data-sold-filter-category="collectibles">Collectibles</button>
+          <button class="category-tab" type="button" data-sold-filter-category="other">Other finds</button>
+        </div>
+      </div>
+    </div>
+
+    <section class="catalog-section">
+      <div class="container">
+        <div class="archive-context"><strong>Archive listings are not current inventory.</strong><span>Open any product for its reference page, or visit the live shop to see what is available now.</span><a href="out-now.html">Shop current inventory &rarr;</a></div>
+        <div class="product-grid" data-sold-catalog></div>
+        <div class="catalog-empty" id="sold-empty"><h2>No archived product matches that search.</h2><p>Try a flavor, brand, team, player, or product type.</p></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <script src="assets/sold-catalog.js"></script>
+  <script src="assets/app.js?v=33"></script>
+</body>
+</html>
