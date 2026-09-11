@@ -14,10 +14,12 @@ test('campaign carousel promotes one real product per slide', async () => {
     assert.equal((slide.match(/class="campaign-visual"/g) ?? []).length, 1);
     assert.equal((slide.match(/<img /g) ?? []).length, 1);
     assert.match(slide, /href="products\/[^"]+\.html"/);
-    assert.match(slide, /src="assets\/images\/campaign\/[^"]+\.webp\?v=1"/);
+    assert.match(slide, /src="assets\/images\/campaign\/scenes\/[^"]+-desktop\.webp\?v=3"/);
+    assert.match(slide, /srcset="assets\/images\/campaign\/scenes\/[^"]+-mobile\.webp\?v=3"/);
   }
 
   assert.equal((html.match(/<strong>Out now<\/strong>/gi) ?? []).length, 1);
   assert.match(html, /Destined Rivals four-pack/);
   assert.match(html, /Five lots available/);
+  assert.doesNotMatch(html, /class="campaign-price"/);
 });

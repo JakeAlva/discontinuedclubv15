@@ -91,33 +91,24 @@ button { color: inherit; }
 .campaign-carousel { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); background: #fff; }
 .campaign-track { display: flex; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
 .campaign-track::-webkit-scrollbar { display: none; }
-.campaign-slide { position: relative; flex: 0 0 100%; min-width: 0; overflow: hidden; scroll-snap-align: start; scroll-snap-stop: always; }
-.campaign-slide-liquid { --campaign-bg: #f6f1e9; --campaign-stage: #edd5dc; --campaign-accent: #a71931; background: var(--campaign-bg); }
-.campaign-slide-jersey { --campaign-bg: #f3f0ea; --campaign-stage: #f0a064; --campaign-accent: #d84b19; background: var(--campaign-bg); }
-.campaign-slide-pokemon { --campaign-bg: #f7f2e6; --campaign-stage: #efd04c; --campaign-accent: #761528; background: var(--campaign-bg); }
-.campaign-slide-energy { --campaign-bg: #edf3fa; --campaign-stage: #c8d9f2; --campaign-accent: #1745a6; background: var(--campaign-bg); }
-.campaign-slide-inner { position: relative; min-height: 500px; display: grid; grid-template-columns: minmax(0, .82fr) minmax(500px, 1.18fr); align-items: center; gap: 34px; padding-top: 30px; padding-bottom: 30px; }
-.campaign-copy { position: relative; z-index: 4; max-width: 540px; min-width: 0; }
-.campaign-kicker { display: flex; align-items: center; gap: 13px; color: #555a55; font-size: 10px; font-weight: 850; text-transform: uppercase; }
-.campaign-kicker strong { display: inline-flex; align-items: center; min-height: 28px; padding: 0 9px; background: var(--campaign-accent); color: #fff; font-size: 10px; font-weight: 900; }
+.campaign-slide { position: relative; flex: 0 0 100%; height: clamp(500px, 39.13vw, 650px); min-width: 0; overflow: hidden; scroll-snap-align: start; scroll-snap-stop: always; }
+.campaign-slide-liquid { --campaign-accent: #ffcf32; background: #071d67; color: #fff; }
+.campaign-slide-jersey { --campaign-accent: #f15a24; background: #050505; color: #fff; }
+.campaign-slide-pokemon { --campaign-accent: #ffca2c; background: #17050b; color: #fff; }
+.campaign-slide-energy { --campaign-accent: #bce51f; background: #03143f; color: #fff; }
+.campaign-slide-inner { position: static; height: 100%; display: flex; align-items: center; padding-top: 42px; padding-bottom: 42px; pointer-events: none; }
+.campaign-copy { position: relative; z-index: 2; width: min(500px, 40%); min-width: 0; pointer-events: auto; }
+.campaign-kicker { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,.72); font-size: 10px; font-weight: 850; text-transform: uppercase; }
+.campaign-kicker strong { display: inline-flex; align-items: center; gap: 8px; color: inherit; font-size: inherit; font-weight: 900; }
+.campaign-kicker strong::before { content: ""; width: 24px; height: 3px; background: var(--campaign-accent); }
 .campaign-kicker span { white-space: nowrap; }
-.campaign-copy h1, .campaign-copy h2 { max-width: 570px; margin: 18px 0 0; font-size: 58px; line-height: .96; font-weight: 900; letter-spacing: 0; overflow-wrap: normal; }
-.campaign-copy p { max-width: 500px; margin: 18px 0 0; color: #383c38; font-size: 15px; line-height: 1.58; }
-.campaign-price { display: flex; align-items: baseline; gap: 12px; margin-top: 19px; }
-.campaign-price strong { font-size: 29px; line-height: 1; }
-.campaign-price span { color: #626762; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.campaign-copy h1, .campaign-copy h2 { max-width: 570px; margin: 18px 0 0; font-size: 56px; line-height: .98; font-weight: 900; letter-spacing: 0; overflow-wrap: normal; }
+.campaign-copy p { max-width: 480px; margin: 18px 0 0; color: rgba(255,255,255,.78); font-size: 15px; line-height: 1.58; }
 .campaign-copy .btn { min-height: 48px; margin-top: 22px; }
-.campaign-visual { position: relative; z-index: 1; min-width: 0; min-height: 440px; align-self: stretch; display: block; overflow: hidden; isolation: isolate; }
-.campaign-visual::before { content: ""; position: absolute; inset: 18px 0 18px 8%; z-index: -2; background: var(--campaign-stage); }
-.campaign-visual::after { content: ""; position: absolute; right: 0; bottom: 18px; left: 8%; z-index: 3; height: 1px; background: rgba(17,19,17,.34); }
-.campaign-visual-word { position: absolute; top: 30px; right: 14px; z-index: -1; max-width: 95%; color: var(--campaign-accent); font-size: 88px; line-height: .85; font-weight: 900; text-transform: uppercase; opacity: .18; white-space: nowrap; }
-.campaign-visual img { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; padding: 14px 0 14px 34px; object-fit: contain; object-position: center; filter: drop-shadow(0 24px 22px rgba(17,19,17,.16)); transition: transform .3s ease; }
-.campaign-visual:hover img { transform: scale(1.018); }
-.campaign-slide-pokemon .campaign-visual img { padding: 38px 42px 24px 74px; }
-.campaign-slide-energy .campaign-visual img { padding: 42px 12px 28px 52px; }
-.campaign-visual-note { position: absolute; right: 18px; bottom: 28px; z-index: 4; min-width: 102px; display: grid; justify-items: end; padding: 10px 11px; border-top: 3px solid var(--campaign-accent); background: rgba(255,255,255,.94); color: var(--ink); }
-.campaign-visual-note b { color: var(--campaign-accent); font-size: 25px; line-height: 1; }
-.campaign-visual-note small { margin-top: 3px; font-size: 8px; font-weight: 900; text-transform: uppercase; }
+.campaign-visual { position: absolute; inset: 0; z-index: 0; display: block; overflow: hidden; }
+.campaign-visual picture { display: block; width: 100%; height: 100%; }
+.campaign-media { width: 100%; height: 100%; object-fit: cover; object-position: center; transition: transform .35s ease; }
+.campaign-visual:hover .campaign-media { transform: scale(1.008); }
 .campaign-nav { min-height: 54px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 20px; }
 .campaign-arrows { display: flex; align-items: center; gap: 6px; }
 .campaign-arrows button { width: 39px; height: 34px; display: grid; place-items: center; padding: 0; border: 1px solid var(--line-dark); border-radius: 4px; background: #fff; font-size: 18px; cursor: pointer; }
@@ -454,10 +445,9 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .campaign-page-copy h1, .about-campaign-hero .campaign-page-copy h1 { margin-top: 12px; font-size: 40px; }
   .campaign-page-copy .lead { margin-top: 14px; font-size: 14px; line-height: 1.48; }
   .campaign-page-copy .hero-actions { margin-top: 18px; }
-  .campaign-slide-inner { min-height: 460px; grid-template-columns: minmax(0, .86fr) minmax(430px, 1.14fr); gap: 24px; }
-  .campaign-copy h1, .campaign-copy h2 { font-size: 49px; }
-  .campaign-visual { min-height: 400px; }
-  .campaign-visual-word { font-size: 72px; }
+  .campaign-slide { height: clamp(470px, 44vw, 500px); }
+  .campaign-copy { width: 38vw; }
+  .campaign-copy h1, .campaign-copy h2 { font-size: 46px; }
   .archive-campaign-hero .campaign-page-copy { width: min(620px, 54vw); }
   .archive-campaign-hero .campaign-page-copy h1 { font-size: 40px; }
   .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -485,12 +475,11 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .department-links { display: flex; overflow-x: auto; scrollbar-width: none; }
   .department-links::-webkit-scrollbar { display: none; }
   .department-link { flex: 0 0 auto; min-width: 175px; }
-  .campaign-slide-inner { min-height: 430px; grid-template-columns: minmax(0, 1fr) minmax(340px, .95fr); gap: 16px; padding-top: 26px; padding-bottom: 26px; }
+  .campaign-slide { height: 470px; }
+  .campaign-slide-inner { padding-top: 28px; padding-bottom: 28px; }
+  .campaign-copy { width: 42vw; }
   .campaign-copy h1, .campaign-copy h2 { font-size: 40px; }
   .campaign-copy p { font-size: 13px; }
-  .campaign-price strong { font-size: 25px; }
-  .campaign-visual { min-height: 360px; }
-  .campaign-visual-word { top: 36px; font-size: 56px; }
   .store-hero-grid { min-height: 0; grid-template-columns: 1fr; padding-top: 42px; padding-bottom: 42px; }
   .store-hero-campaign .store-hero-grid, .campaign-page-inner, .archive-campaign-hero .campaign-page-inner { padding-top: 18px; padding-bottom: 18px; }
   .store-hero-campaign h1 { font-size: 36px; }
@@ -539,26 +528,17 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .campaign-page-inner, .archive-campaign-hero .campaign-page-inner { order: 1; }
   .campaign-page-copy, .about-campaign-hero .campaign-page-copy, .archive-campaign-hero .campaign-page-copy { width: 100%; text-align: left; }
   .archive-campaign-hero .hero-actions { justify-content: flex-start; }
-  .campaign-slide-inner { min-height: 640px; display: grid; grid-template-columns: 1fr; grid-template-rows: auto minmax(270px, 1fr); align-content: start; gap: 2px; padding-top: 26px; padding-bottom: 12px; }
-  .campaign-copy { max-width: none; }
+  .campaign-slide { height: auto; display: flex; flex-direction: column; }
+  .campaign-slide-inner { order: 1; width: min(100% - 30px, 1320px); height: auto; display: block; padding-top: 30px; padding-bottom: 32px; }
+  .campaign-copy { width: 100%; max-width: none; }
   .campaign-kicker { gap: 9px; font-size: 8px; }
-  .campaign-kicker strong { min-height: 25px; font-size: 8px; }
+  .campaign-kicker strong { font-size: 8px; }
+  .campaign-kicker strong::before { width: 20px; height: 2px; }
   .campaign-copy h1, .campaign-copy h2 { max-width: 430px; margin-top: 13px; font-size: 38px; line-height: .98; }
   .campaign-copy p { max-width: 430px; margin-top: 11px; font-size: 12px; line-height: 1.48; }
-  .campaign-price { margin-top: 13px; }
-  .campaign-price strong { font-size: 23px; }
-  .campaign-price span { font-size: 8px; }
   .campaign-copy .btn { min-height: 40px; margin-top: 14px; padding-right: 14px; padding-left: 14px; font-size: 10px; }
-  .campaign-visual { width: 100%; min-height: 270px; align-self: stretch; justify-self: stretch; }
-  .campaign-visual::before { inset: 8px 0 8px 12%; }
-  .campaign-visual::after { bottom: 8px; left: 12%; }
-  .campaign-visual-word { top: 19px; right: 4px; font-size: 52px; }
-  .campaign-visual img { padding: 4px 0 4px 10%; object-position: center; }
-  .campaign-slide-pokemon .campaign-visual img { padding: 15px 38px 9px 21%; }
-  .campaign-slide-energy .campaign-visual img { padding: 17px 0 11px 14%; }
-  .campaign-visual-note { right: 5px; bottom: 14px; min-width: 88px; padding: 7px 8px; }
-  .campaign-visual-note b { font-size: 20px; }
-  .campaign-visual-note small { font-size: 7px; }
+  .campaign-visual { position: relative; inset: auto; order: 2; width: 100%; aspect-ratio: 3 / 2; }
+  .campaign-media { object-fit: cover; object-position: center; }
   .campaign-nav { min-height: 50px; gap: 10px; }
   .campaign-arrows button { width: 36px; height: 32px; }
   .campaign-all { font-size: 10px; }
@@ -566,6 +546,7 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
 
 @media (max-width: 560px) {
   .container { width: min(100% - 20px, 1320px); }
+  .campaign-slide-inner { width: min(100% - 20px, 1320px); }
   .logo-link img, .mobile-logo img { width: 40px; height: 40px; }
   .store-hero h1, .page-hero h1, .page-hero.compact h1 { font-size: 33px; }
   .store-hero-campaign h1 { font-size: 33px; }
@@ -628,10 +609,7 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
 }
 
 @media (max-width: 420px) {
-  .campaign-slide-inner { min-height: 620px; grid-template-rows: auto minmax(245px, 1fr); }
   .campaign-copy h1, .campaign-copy h2 { max-width: 350px; font-size: 34px; }
-  .campaign-visual { min-height: 245px; }
-  .campaign-visual-word { font-size: 44px; }
   .campaign-dots { display: none; }
   .campaign-nav { grid-template-columns: auto 1fr; }
   .campaign-all { justify-self: end; }
