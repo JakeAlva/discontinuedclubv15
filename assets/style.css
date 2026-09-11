@@ -92,64 +92,32 @@ button { color: inherit; }
 .campaign-track { display: flex; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
 .campaign-track::-webkit-scrollbar { display: none; }
 .campaign-slide { position: relative; flex: 0 0 100%; min-width: 0; overflow: hidden; scroll-snap-align: start; scroll-snap-stop: always; }
-.campaign-slide-liquid { background: #efcf73; }
-.campaign-slide-jersey { background: #f08a55; }
-.campaign-slide-pokemon { background: #f2c600; }
-.campaign-slide-energy { background: #a7ded2; }
-.campaign-slide-inner { position: relative; min-height: 475px; display: grid; grid-template-columns: minmax(0, .92fr) minmax(430px, 1.08fr); align-items: center; gap: 70px; padding-top: 34px; padding-bottom: 34px; }
-.campaign-copy { position: relative; z-index: 2; max-width: 570px; min-width: 0; }
-.campaign-kicker { display: flex; align-items: center; gap: 12px; font-size: 11px; font-weight: 900; letter-spacing: 0; text-transform: uppercase; }
-.campaign-kicker::before { content: ""; width: 42px; height: 5px; flex: 0 0 auto; background: var(--ink); }
-.campaign-copy h1, .campaign-copy h2 { max-width: 600px; margin: 15px 0 0; font-size: 56px; line-height: .98; font-weight: 900; letter-spacing: 0; overflow-wrap: anywhere; }
-.campaign-copy p { max-width: 520px; margin: 20px 0 0; font-size: 15px; line-height: 1.58; }
-.campaign-copy .btn { min-height: 48px; margin-top: 24px; }
-.campaign-product { position: relative; z-index: 1; width: min(100%, 570px); justify-self: end; color: var(--ink); }
-.campaign-product-frame { aspect-ratio: 1.25 / 1; display: grid; place-items: center; overflow: hidden; padding: 20px; border: 2px solid var(--ink); border-radius: 4px; background: #fff; box-shadow: 14px 14px 0 var(--ink); }
-.campaign-slide-jersey .campaign-product-frame { box-shadow: 14px 14px 0 #2d5bf0; }
-.campaign-slide-pokemon .campaign-product-frame { box-shadow: 14px 14px 0 #2d5bf0; }
-.campaign-slide-energy .campaign-product-frame { box-shadow: 14px 14px 0 #2d5bf0; }
-.campaign-product-frame > img { width: 84%; height: 84%; object-fit: contain; object-position: center; }
-.campaign-art-frame { padding: 0; background: var(--ink); }
-.campaign-art { width: 100%; height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; }
-.campaign-art-head { min-height: 76px; display: grid; align-content: center; gap: 3px; padding: 14px 18px; background: var(--ink); color: #fff; text-transform: uppercase; }
-.campaign-art-head small { font-size: 8px; font-weight: 800; }
-.campaign-art-head strong { font-size: 24px; line-height: 1; }
-.campaign-art-body { position: relative; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(120px, .65fr); align-items: stretch; overflow: hidden; }
-.campaign-art-body > img { position: relative; z-index: 1; width: 88%; height: 88%; min-width: 0; align-self: center; justify-self: center; object-fit: contain; object-position: center; mix-blend-mode: multiply; }
-.campaign-art-offer { position: relative; z-index: 2; display: grid; align-content: end; gap: 4px; padding: 16px; border-left: 2px solid var(--ink); text-transform: uppercase; }
-.campaign-art-offer small { font-size: 8px; font-weight: 800; }
-.campaign-art-offer strong { font-size: 27px; line-height: .95; }
-.campaign-art-offer b { margin-top: 5px; padding: 7px 8px; background: var(--ink); color: #fff; font-size: 10px; line-height: 1.15; }
-.campaign-art-liquid .campaign-art-body { background: #ffd5df; }
-.campaign-art-liquid .campaign-art-offer { background: #f4ffb8; }
-.campaign-art-liquid .campaign-art-offer strong { color: #a41237; }
-.campaign-art-jersey .campaign-art-head { background: #17214b; }
-.campaign-art-jersey .campaign-art-body { background: #f3a06e; }
-.campaign-art-jersey .campaign-art-offer { background: #d6ff42; }
-.campaign-art-number { position: absolute; left: 4px; bottom: -14px; z-index: 0; color: rgba(23, 33, 75, .17); font-size: 180px; font-weight: 900; line-height: .8; }
-.campaign-art-pokemon .campaign-art-head { background: #78162a; }
-.campaign-art-pokemon .campaign-art-body { background: #f7cc16; }
-.campaign-art-pokemon .campaign-art-offer { background: #fff0db; }
-.campaign-art-pokemon .campaign-art-offer strong { color: #78162a; }
-.campaign-energy-frame { padding: 0; background: var(--ink); }
-.campaign-energy-poster { width: 100%; height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; background: #fff; }
-.energy-poster-head { min-height: 76px; display: grid; grid-template-columns: 1fr auto; align-content: center; gap: 3px 18px; padding: 14px 18px; background: var(--ink); color: #fff; text-transform: uppercase; }
-.energy-poster-head small { font-size: 8px; font-weight: 800; }
-.energy-poster-head strong { grid-column: 1; font-size: 25px; line-height: 1; }
-.energy-poster-head b { grid-column: 2; grid-row: 1 / 3; align-self: center; padding: 8px 9px; background: var(--acid); color: var(--ink); font-size: 12px; }
-.energy-poster-products { min-height: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.energy-poster-item { min-width: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto auto; align-items: center; padding: 10px 9px 12px; border-right: 2px solid var(--ink); text-align: center; }
-.energy-poster-item:last-child { border-right: 0; }
-.energy-poster-blue { background: #cadfff; }
-.energy-poster-green { background: #dcf59e; }
-.energy-poster-red { background: #ffd0c7; }
-.energy-poster-item img { width: 100%; height: 100%; min-width: 0; object-fit: contain; object-position: center; mix-blend-mode: multiply; }
-.energy-poster-item strong { padding-top: 4px; font-size: 13px; line-height: 1.1; text-transform: uppercase; }
-.energy-poster-item small { margin-top: 2px; font-size: 8px; font-weight: 800; text-transform: uppercase; }
-.campaign-product-label { position: absolute; right: -8px; top: -13px; z-index: 2; min-height: 29px; display: inline-flex; align-items: center; padding: 0 10px; border: 2px solid var(--ink); border-radius: 3px; background: var(--acid); font-size: 10px; font-weight: 900; letter-spacing: 0; text-transform: uppercase; }
-.campaign-stamp { position: absolute; right: 8px; bottom: 28px; z-index: 3; width: 72px; height: 72px; display: grid; place-content: center; border: 2px solid var(--ink); background: #fff; text-align: center; transform: rotate(3deg); }
-.campaign-stamp strong { font-size: 24px; line-height: 1; }
-.campaign-stamp span { margin-top: 4px; font-size: 8px; font-weight: 900; letter-spacing: 0; text-transform: uppercase; }
+.campaign-slide-liquid { --campaign-bg: #f6f1e9; --campaign-stage: #edd5dc; --campaign-accent: #a71931; background: var(--campaign-bg); }
+.campaign-slide-jersey { --campaign-bg: #f3f0ea; --campaign-stage: #f0a064; --campaign-accent: #d84b19; background: var(--campaign-bg); }
+.campaign-slide-pokemon { --campaign-bg: #f7f2e6; --campaign-stage: #efd04c; --campaign-accent: #761528; background: var(--campaign-bg); }
+.campaign-slide-energy { --campaign-bg: #edf3fa; --campaign-stage: #c8d9f2; --campaign-accent: #1745a6; background: var(--campaign-bg); }
+.campaign-slide-inner { position: relative; min-height: 500px; display: grid; grid-template-columns: minmax(0, .82fr) minmax(500px, 1.18fr); align-items: center; gap: 34px; padding-top: 30px; padding-bottom: 30px; }
+.campaign-copy { position: relative; z-index: 4; max-width: 540px; min-width: 0; }
+.campaign-kicker { display: flex; align-items: center; gap: 13px; color: #555a55; font-size: 10px; font-weight: 850; text-transform: uppercase; }
+.campaign-kicker strong { display: inline-flex; align-items: center; min-height: 28px; padding: 0 9px; background: var(--campaign-accent); color: #fff; font-size: 10px; font-weight: 900; }
+.campaign-kicker span { white-space: nowrap; }
+.campaign-copy h1, .campaign-copy h2 { max-width: 570px; margin: 18px 0 0; font-size: 58px; line-height: .96; font-weight: 900; letter-spacing: 0; overflow-wrap: normal; }
+.campaign-copy p { max-width: 500px; margin: 18px 0 0; color: #383c38; font-size: 15px; line-height: 1.58; }
+.campaign-price { display: flex; align-items: baseline; gap: 12px; margin-top: 19px; }
+.campaign-price strong { font-size: 29px; line-height: 1; }
+.campaign-price span { color: #626762; font-size: 10px; font-weight: 800; text-transform: uppercase; }
+.campaign-copy .btn { min-height: 48px; margin-top: 22px; }
+.campaign-visual { position: relative; z-index: 1; min-width: 0; min-height: 440px; align-self: stretch; display: block; overflow: hidden; isolation: isolate; }
+.campaign-visual::before { content: ""; position: absolute; inset: 18px 0 18px 8%; z-index: -2; background: var(--campaign-stage); }
+.campaign-visual::after { content: ""; position: absolute; right: 0; bottom: 18px; left: 8%; z-index: 3; height: 1px; background: rgba(17,19,17,.34); }
+.campaign-visual-word { position: absolute; top: 30px; right: 14px; z-index: -1; max-width: 95%; color: var(--campaign-accent); font-size: 88px; line-height: .85; font-weight: 900; text-transform: uppercase; opacity: .18; white-space: nowrap; }
+.campaign-visual img { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; padding: 14px 0 14px 34px; object-fit: contain; object-position: center; filter: drop-shadow(0 24px 22px rgba(17,19,17,.16)); transition: transform .3s ease; }
+.campaign-visual:hover img { transform: scale(1.018); }
+.campaign-slide-pokemon .campaign-visual img { padding: 38px 42px 24px 74px; }
+.campaign-slide-energy .campaign-visual img { padding: 42px 12px 28px 52px; }
+.campaign-visual-note { position: absolute; right: 18px; bottom: 28px; z-index: 4; min-width: 102px; display: grid; justify-items: end; padding: 10px 11px; border-top: 3px solid var(--campaign-accent); background: rgba(255,255,255,.94); color: var(--ink); }
+.campaign-visual-note b { color: var(--campaign-accent); font-size: 25px; line-height: 1; }
+.campaign-visual-note small { margin-top: 3px; font-size: 8px; font-weight: 900; text-transform: uppercase; }
 .campaign-nav { min-height: 54px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 20px; }
 .campaign-arrows { display: flex; align-items: center; gap: 6px; }
 .campaign-arrows button { width: 39px; height: 34px; display: grid; place-items: center; padding: 0; border: 1px solid var(--line-dark); border-radius: 4px; background: #fff; font-size: 18px; cursor: pointer; }
@@ -486,9 +454,10 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .campaign-page-copy h1, .about-campaign-hero .campaign-page-copy h1 { margin-top: 12px; font-size: 40px; }
   .campaign-page-copy .lead { margin-top: 14px; font-size: 14px; line-height: 1.48; }
   .campaign-page-copy .hero-actions { margin-top: 18px; }
-  .campaign-slide-inner { min-height: 445px; grid-template-columns: minmax(0, .92fr) minmax(390px, 1.08fr); gap: 42px; }
-  .campaign-copy h1, .campaign-copy h2 { font-size: 47px; }
-  .campaign-product { width: min(100%, 510px); }
+  .campaign-slide-inner { min-height: 460px; grid-template-columns: minmax(0, .86fr) minmax(430px, 1.14fr); gap: 24px; }
+  .campaign-copy h1, .campaign-copy h2 { font-size: 49px; }
+  .campaign-visual { min-height: 400px; }
+  .campaign-visual-word { font-size: 72px; }
   .archive-campaign-hero .campaign-page-copy { width: min(620px, 54vw); }
   .archive-campaign-hero .campaign-page-copy h1 { font-size: 40px; }
   .product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
@@ -516,10 +485,12 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .department-links { display: flex; overflow-x: auto; scrollbar-width: none; }
   .department-links::-webkit-scrollbar { display: none; }
   .department-link { flex: 0 0 auto; min-width: 175px; }
-  .campaign-slide-inner { min-height: 420px; grid-template-columns: minmax(0, 1fr) minmax(330px, .92fr); gap: 28px; padding-top: 28px; padding-bottom: 28px; }
+  .campaign-slide-inner { min-height: 430px; grid-template-columns: minmax(0, 1fr) minmax(340px, .95fr); gap: 16px; padding-top: 26px; padding-bottom: 26px; }
   .campaign-copy h1, .campaign-copy h2 { font-size: 40px; }
   .campaign-copy p { font-size: 13px; }
-  .campaign-stamp { display: none; }
+  .campaign-price strong { font-size: 25px; }
+  .campaign-visual { min-height: 360px; }
+  .campaign-visual-word { top: 36px; font-size: 56px; }
   .store-hero-grid { min-height: 0; grid-template-columns: 1fr; padding-top: 42px; padding-bottom: 42px; }
   .store-hero-campaign .store-hero-grid, .campaign-page-inner, .archive-campaign-hero .campaign-page-inner { padding-top: 18px; padding-bottom: 18px; }
   .store-hero-campaign h1 { font-size: 36px; }
@@ -568,33 +539,26 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .campaign-page-inner, .archive-campaign-hero .campaign-page-inner { order: 1; }
   .campaign-page-copy, .about-campaign-hero .campaign-page-copy, .archive-campaign-hero .campaign-page-copy { width: 100%; text-align: left; }
   .archive-campaign-hero .hero-actions { justify-content: flex-start; }
-  .campaign-slide-inner { min-height: 485px; display: grid; grid-template-columns: 1fr; grid-template-rows: auto minmax(190px, 1fr); align-content: start; gap: 12px; padding-top: 24px; padding-bottom: 22px; }
+  .campaign-slide-inner { min-height: 640px; display: grid; grid-template-columns: 1fr; grid-template-rows: auto minmax(270px, 1fr); align-content: start; gap: 2px; padding-top: 26px; padding-bottom: 12px; }
   .campaign-copy { max-width: none; }
-  .campaign-copy h1, .campaign-copy h2 { max-width: 340px; margin-top: 11px; font-size: 36px; line-height: 1; }
-  .campaign-copy p { max-width: 330px; margin-top: 12px; line-height: 1.48; }
-  .campaign-copy .btn { min-height: 42px; margin-top: 16px; padding-right: 15px; padding-left: 15px; font-size: 11px; }
-  .campaign-product { width: min(72vw, 285px); align-self: end; justify-self: end; }
-  .campaign-product-frame { padding: 10px; box-shadow: 9px 9px 0 var(--ink); }
-  .campaign-slide-jersey .campaign-product-frame { box-shadow: 9px 9px 0 #2d5bf0; }
-  .campaign-slide-pokemon .campaign-product-frame { box-shadow: 9px 9px 0 #2d5bf0; }
-  .campaign-slide-energy .campaign-product-frame { box-shadow: 9px 9px 0 #2d5bf0; }
-  .campaign-art-head { min-height: 46px; gap: 1px; padding: 7px 9px; }
-  .campaign-art-head small { font-size: 6px; }
-  .campaign-art-head strong { font-size: 15px; }
-  .campaign-art-body { grid-template-columns: minmax(0, 1.28fr) minmax(72px, .72fr); }
-  .campaign-art-offer { gap: 2px; padding: 7px; border-left-width: 1px; }
-  .campaign-art-offer small { font-size: 5px; }
-  .campaign-art-offer strong { font-size: 14px; }
-  .campaign-art-offer b { margin-top: 2px; padding: 4px; font-size: 6px; }
-  .campaign-art-number { bottom: -6px; font-size: 88px; }
-  .energy-poster-head { min-height: 48px; gap: 1px 8px; padding: 8px 9px; }
-  .energy-poster-head small { font-size: 6px; }
-  .energy-poster-head strong { font-size: 16px; }
-  .energy-poster-head b { padding: 5px 6px; font-size: 8px; }
-  .energy-poster-item { padding: 5px 4px 7px; border-right-width: 1px; }
-  .energy-poster-item strong { font-size: 8px; }
-  .energy-poster-item small { font-size: 6px; }
-  .campaign-product-label { right: -5px; top: -10px; }
+  .campaign-kicker { gap: 9px; font-size: 8px; }
+  .campaign-kicker strong { min-height: 25px; font-size: 8px; }
+  .campaign-copy h1, .campaign-copy h2 { max-width: 430px; margin-top: 13px; font-size: 38px; line-height: .98; }
+  .campaign-copy p { max-width: 430px; margin-top: 11px; font-size: 12px; line-height: 1.48; }
+  .campaign-price { margin-top: 13px; }
+  .campaign-price strong { font-size: 23px; }
+  .campaign-price span { font-size: 8px; }
+  .campaign-copy .btn { min-height: 40px; margin-top: 14px; padding-right: 14px; padding-left: 14px; font-size: 10px; }
+  .campaign-visual { width: 100%; min-height: 270px; align-self: stretch; justify-self: stretch; }
+  .campaign-visual::before { inset: 8px 0 8px 12%; }
+  .campaign-visual::after { bottom: 8px; left: 12%; }
+  .campaign-visual-word { top: 19px; right: 4px; font-size: 52px; }
+  .campaign-visual img { padding: 4px 0 4px 10%; object-position: center; }
+  .campaign-slide-pokemon .campaign-visual img { padding: 15px 38px 9px 21%; }
+  .campaign-slide-energy .campaign-visual img { padding: 17px 0 11px 14%; }
+  .campaign-visual-note { right: 5px; bottom: 14px; min-width: 88px; padding: 7px 8px; }
+  .campaign-visual-note b { font-size: 20px; }
+  .campaign-visual-note small { font-size: 7px; }
   .campaign-nav { min-height: 50px; gap: 10px; }
   .campaign-arrows button { width: 36px; height: 32px; }
   .campaign-all { font-size: 10px; }
@@ -664,9 +628,10 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
 }
 
 @media (max-width: 420px) {
-  .campaign-slide-inner { min-height: 500px; }
-  .campaign-copy h1, .campaign-copy h2 { max-width: 315px; font-size: 33px; }
-  .campaign-product { width: min(70vw, 250px); }
+  .campaign-slide-inner { min-height: 620px; grid-template-rows: auto minmax(245px, 1fr); }
+  .campaign-copy h1, .campaign-copy h2 { max-width: 350px; font-size: 34px; }
+  .campaign-visual { min-height: 245px; }
+  .campaign-visual-word { font-size: 44px; }
   .campaign-dots { display: none; }
   .campaign-nav { grid-template-columns: auto 1fr; }
   .campaign-all { justify-self: end; }

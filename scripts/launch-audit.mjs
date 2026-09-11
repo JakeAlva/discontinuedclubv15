@@ -1,4 +1,4 @@
-import { access, readFile } from 'node:fs/promises';
+import { access, readFile, readdir } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
 import { loadEnvFile } from 'node:process';
@@ -109,12 +109,47 @@ check(await exists('google89cd7965ed90b8bf.html'), 'Google Search Console verifi
 
 const sitemap = await readFile(resolve(root, 'sitemap.xml'), 'utf8');
 const productSitemap = await readFile(resolve(root, 'sitemap-products.xml'), 'utf8');
+const soldSitemap = await readFile(resolve(root, 'sitemap-sold.xml'), 'utf8');
 const missingSitemapPages = requiredPages
   .filter((page) => page !== 'checkout-success.html')
   .filter((page) => page !== 'index.html' ? !sitemap.includes(`/${page}`) : !sitemap.includes('https://discontinuedclub.com/</loc>'));
 check(!missingSitemapPages.length, 'Public pages are present in the sitemap', `Missing sitemap entries: ${missingSitemapPages.join(', ')}`);
 const missingProductSitemapPages = catalog.filter((item) => !productSitemap.includes(`/products/${productSlug(item)}`)).map((item) => item.id);
 check(!missingProductSitemapPages.length, 'Every current product is present in the product sitemap', `Missing product sitemap entries: ${missingProductSitemapPages.join(', ')}`);
+
+async function publishedHtmlFiles(directory) {
+  const entries = await readdir(directory, { withFileTypes: true });
+  const files = await Promise.all(entries.map(async (entry) => {
+    const path = resolve(directory, entry.name);
+    if (entry.isDirectory()) return publishedHtmlFiles(path);
+    return entry.isFile() && entry.name.endsWith('.html') ? [path] : [];
+  }));
+  return files.flat();
+}
+
+const builtHtmlFiles = await publishedHtmlFiles(resolve(root, 'dist'));
+const combinedSitemaps = `${sitemap}\n${productSitemap}\n${soldSitemap}`;
+const missingCanonicals = [];
+const missingIndexedPages = [];
+const missingFavicons = [];
+for (const file of builtHtmlFiles) {
+  const html = await readFile(file, 'utf8');
+  const relativePath = file.replace(`${resolve(root, 'dist')}/`, '');
+  if (/^google[a-z0-9]+\.html$/i.test(relativePath) && html.includes('google-site-verification:')) continue;
+  if (!html.includes('rel="icon" href="/favicon.png"') && !html.includes('rel="icon" type="image/png" sizes="96x96" href="/favicon.png"')) {
+    missingFavicons.push(relativePath);
+  }
+  if (/<meta\s+name=["']robots["'][^>]*content=["'][^"']*noindex/i.test(html)) continue;
+  const canonical = html.match(/<link\s+rel=["']canonical["'][^>]*href=["']([^"']+)["']/i)?.[1];
+  if (!canonical) {
+    missingCanonicals.push(relativePath);
+  } else if (!combinedSitemaps.includes(`<loc>${canonical.replace(/&/g, '&amp;')}</loc>`)) {
+    missingIndexedPages.push(canonical);
+  }
+}
+check(!missingCanonicals.length, 'Every crawlable page has a canonical URL', `Missing canonical URLs: ${missingCanonicals.join(', ')}`);
+check(!missingIndexedPages.length, 'Every crawlable page is present in a sitemap', `Missing sitemap URLs: ${missingIndexedPages.join(', ')}`);
+check(await exists('favicon.png') && !missingFavicons.length, 'DC favicon is published across the site', `Pages missing the favicon: ${missingFavicons.join(', ')}`);
 
 if (directCheckoutEnabled) {
   const secretKey = process.env.STRIPE_SECRET_KEY || '';
