@@ -95,4 +95,19 @@ for (const item of selected) {
   console.log(`${currentPrice?.id === price.id ? 'updated' : 'synced '}  ${item.id}  ${formatMoney(amount)}  ${item.name}`);
 }
 
+if (!onlyId) {
+  const currentListingIds = new Set(catalog.map((item) => item.id));
+  const staleProducts = existingProducts.filter((product) => (
+    product.active
+    && product.metadata?.source === 'discontinuedclub.com'
+    && product.metadata?.dc_listing_id
+    && !currentListingIds.has(product.metadata.dc_listing_id)
+  ));
+
+  for (const product of staleProducts) {
+    await stripe.products.update(product.id, { active: false });
+    console.log(`archived  ${product.metadata.dc_listing_id}  ${product.name}`);
+  }
+}
+
 console.log(`\nStripe ${liveMode ? 'LIVE' : 'TEST'} catalog sync complete for ${selected.length} products.`);
