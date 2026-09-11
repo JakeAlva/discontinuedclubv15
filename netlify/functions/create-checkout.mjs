@@ -11,6 +11,16 @@ const json = (body, status = 200) => new Response(JSON.stringify(body), {
   headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
 });
 
+export function checkoutLineItem(priceId, quantity, availableQuantity) {
+  return {
+    price: priceId,
+    quantity,
+    ...(availableQuantity > 1 ? {
+      adjustable_quantity: { enabled: true, minimum: 1, maximum: availableQuantity }
+    } : {})
+  };
+}
+
 function validatedCart(payload) {
   if (!payload || !Array.isArray(payload.items)) throw new Error('Your cart could not be read.');
   if (!payload.items.length) throw new Error('Your cart is empty.');
@@ -71,11 +81,7 @@ export default async (request) => {
       if (availableQuantity === null) throw new Error(`Direct checkout inventory is not ready for ${item.name}.`);
       if (availableQuantity < 1) throw new Error(`${item.name} is sold out.`);
       if (quantity > availableQuantity) throw new Error(`Only ${availableQuantity} of ${item.name} is currently available.`);
-      return {
-        price: price.id,
-        quantity,
-        adjustable_quantity: { enabled: true, minimum: 1, maximum: availableQuantity }
-      };
+      return checkoutLineItem(price.id, quantity, availableQuantity);
     });
 
     const itemSubtotalCents = lines.reduce((sum, { item, quantity }) => sum + directPriceCents(item) * quantity, 0);
