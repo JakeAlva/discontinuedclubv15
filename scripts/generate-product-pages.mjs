@@ -6,7 +6,10 @@ const root = resolve(import.meta.dirname, '..');
 const output = resolve(root, 'products');
 const publicRoot = 'https://discontinuedclub.com';
 const directCheckoutEnabled = storeConfig.directCheckoutEnabled === true;
-const directCheckoutDateLabel = storeConfig.directCheckoutDateLabel || 'September 3';
+const directCheckoutDateLabel = storeConfig.directCheckoutDateLabel || 'coming soon';
+const directCheckoutNotice = directCheckoutDateLabel.toLowerCase() === 'coming soon'
+  ? 'Direct checkout coming soon'
+  : `Direct checkout expected ${directCheckoutDateLabel}`;
 const categoryLabels = {
   drinks: 'Rare drinks',
   apparel: 'Sports & apparel',
@@ -60,18 +63,18 @@ function pageMarkup(item, images) {
   const quantity = maxQuantity(item);
   const description = directCheckoutEnabled
     ? `${item.name}. ${item.detail}. Buy direct from Discontinued Club or use the matching eBay listing.`
-    : `${item.name}. ${item.detail}. Available now through the matching Discontinued Club eBay listing. Direct checkout is expected ${directCheckoutDateLabel}.`;
+    : `${item.name}. ${item.detail}. Available now through the matching Discontinued Club eBay listing. ${directCheckoutNotice}.`;
   const pricePanel = directCheckoutEnabled
     ? `<div class="current-price-panel"><span><small>Direct price</small><strong>${formatMoney(directPrice)}</strong></span><span><small>eBay price</small><s>${escapeHtml(item.price)}</s></span></div>
           <div class="product-savings">Save ${formatMoney(savings)} on the item price when buying direct</div>`
     : `<div class="current-price-panel"><span><small>Available on eBay</small><strong>${escapeHtml(item.price)}</strong></span><span><small>Expected direct price</small><strong>${formatMoney(directPrice)}</strong></span></div>
-          <div class="product-savings">Direct checkout expected ${directCheckoutDateLabel} &middot; save ${formatMoney(savings)}</div>`;
+          <div class="product-savings">${directCheckoutNotice} &middot; save ${formatMoney(savings)}</div>`;
   const actions = directCheckoutEnabled
     ? `<button class="btn btn-dark" type="button" data-add-to-cart="${item.id}">Add to cart</button><a class="btn btn-light" href="https://www.ebay.com/itm/${item.id}" target="_blank" rel="noopener">Buy on eBay</a>`
     : `<a class="btn btn-dark" href="https://www.ebay.com/itm/${item.id}" target="_blank" rel="noopener">Buy on eBay</a><a class="btn btn-light" href="out-now.html">Keep shopping</a>`;
   const detailBand = directCheckoutEnabled
     ? '<div><strong>Secure direct checkout</strong><span>Payment details are entered on Stripe-hosted Checkout.</span></div><div><strong>Weight-based shipping</strong><span>Shipping adjusts for heavier carts and becomes free at $100.</span></div><div><strong>Fast handling</strong><span>Orders before 12 PM Central are prepared for same-day carrier drop-off whenever possible.</span></div>'
-    : `<div><strong>Available today on eBay</strong><span>This item links to the matching Discontinued Club eBay listing.</span></div><div><strong>Direct checkout expected ${directCheckoutDateLabel}</strong><span>Lower website pricing and a multi-item cart are planned once registration is active.</span></div><div><strong>Fast handling</strong><span>Orders before 12 PM Central are prepared for same-day carrier drop-off whenever possible.</span></div>`;
+    : `<div><strong>Available today on eBay</strong><span>This item links to the matching Discontinued Club eBay listing.</span></div><div><strong>${directCheckoutNotice}</strong><span>Lower website pricing and a multi-item cart are planned for the direct-store launch.</span></div><div><strong>Fast handling</strong><span>Orders before 12 PM Central are prepared for same-day carrier drop-off whenever possible.</span></div>`;
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -111,7 +114,7 @@ function pageMarkup(item, images) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=33">
+  <link rel="stylesheet" href="assets/style.css?v=34">
   <script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>
 </head>
 <body data-page="shop">
@@ -139,8 +142,8 @@ function pageMarkup(item, images) {
     <section class="product-detail-band"><div class="container product-detail-grid">${detailBand}</div></section>
   </main>
   <div id="site-footer"></div>
-  <script src="assets/catalog.js?v=33"></script>
-  <script src="assets/app.js?v=33"></script>
+  <script src="assets/catalog.js?v=34"></script>
+  <script src="assets/app.js?v=34"></script>
 </body>
 </html>
 `;

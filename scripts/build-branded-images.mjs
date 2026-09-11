@@ -17,6 +17,20 @@ const white = { r: 255, g: 255, b: 255, alpha: 1 };
 // Storefront assets are branded. Merchant assets stay free of retailer overlays for Google Shopping.
 
 const bottomBrandedSources = new Set([
+  '407207453659.webp',
+  '407205693415.webp',
+  '407205665076.webp',
+  '407205596661.webp',
+  '407205565491.webp',
+  '407205333909.webp',
+  '407203191955.webp',
+  '407207373104.webp',
+  '407203141723.webp',
+  '407203121847.webp',
+  '407203102419.webp',
+  '407202995940.webp',
+  '407195902675.webp',
+  '407134944288.webp',
   'b4b4e35b7cc955df.webp',
   '02ac86d4595c4adc.webp',
   '60503c0b5f7d19ce.webp',

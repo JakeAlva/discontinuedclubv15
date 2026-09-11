@@ -5,7 +5,10 @@
   const categories = window.DC_CATEGORIES || {};
   const storeConfig = window.DC_STORE_CONFIG || { directDiscountPercent: 3.5, standardShippingCents: 749, freeShippingThresholdCents: 10000, defaultMaxQuantity: 1, maxCartLines: 20 };
   const directCheckoutEnabled = storeConfig.directCheckoutEnabled === true;
-  const directCheckoutDateLabel = storeConfig.directCheckoutDateLabel || 'September 3';
+  const directCheckoutDateLabel = storeConfig.directCheckoutDateLabel || 'coming soon';
+  const directCheckoutNotice = directCheckoutDateLabel.toLowerCase() === 'coming soon'
+    ? 'Direct checkout coming soon'
+    : 'Direct checkout expected ' + directCheckoutDateLabel;
   const CART_KEY = 'dc_direct_cart_v1';
   const categoryLabels = {
     drinks: 'Rare drinks',
@@ -42,7 +45,7 @@
   function headerMarkup() {
     const announcement = directCheckoutEnabled
       ? 'Lower direct prices &nbsp;|&nbsp; Free shipping on $100+ &nbsp;|&nbsp; Same-day handling before 12 PM CT'
-      : 'Direct checkout expected ' + directCheckoutDateLabel + ' &nbsp;|&nbsp; Current inventory available on eBay';
+      : directCheckoutNotice + ' &nbsp;|&nbsp; Current inventory available on eBay';
     const cartControls = directCheckoutEnabled
       ? '      <button class="icon-button cart-trigger" type="button" aria-label="Open shopping cart" title="Shopping cart" data-cart-open><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"></path><path d="M9 8V5a3 3 0 0 1 6 0v3"></path></svg><span class="cart-count" data-cart-count>0</span></button>'
       : '';
@@ -51,7 +54,7 @@
       : '      <a class="btn btn-dark header-shop" href="' + EBAY_STORE + '" target="_blank" rel="noopener">Shop on eBay</a>';
     const mobileCheckout = directCheckoutEnabled
       ? '<a class="btn btn-acid" href="out-now.html">Shop direct</a><a class="btn btn-light" href="' + EBAY_STORE + '" target="_blank" rel="noopener">Visit our eBay store</a><div class="mobile-note">Buy direct for the lowest price or use the matching eBay listing when you prefer eBay checkout and buyer protection.</div>'
-      : '<a class="btn btn-dark" href="' + EBAY_STORE + '" target="_blank" rel="noopener">Shop current inventory on eBay</a><a class="btn btn-light" href="out-now.html">Browse the storefront</a><div class="mobile-note">Direct checkout is expected ' + directCheckoutDateLabel + '. Until then, every current product links to its matching eBay listing.</div>';
+      : '<a class="btn btn-dark" href="' + EBAY_STORE + '" target="_blank" rel="noopener">Shop current inventory on eBay</a><a class="btn btn-light" href="out-now.html">Browse the storefront</a><div class="mobile-note">' + directCheckoutNotice + '. Until then, every current product links to its matching eBay listing.</div>';
     const cartDrawer = directCheckoutEnabled ? [
       '<div class="cart-overlay" id="cart-overlay" data-cart-close></div>',
       '<aside class="cart-drawer" id="cart-drawer" aria-hidden="true" aria-labelledby="cart-title">',
@@ -96,7 +99,7 @@
   function footerMarkup() {
     const checkoutCopy = directCheckoutEnabled
       ? 'Direct payments are processed securely by Stripe. eBay remains available as a separate checkout option.'
-      : 'Direct checkout is expected ' + directCheckoutDateLabel + '. Current purchases are completed through eBay.';
+      : directCheckoutNotice + '. Current purchases are completed through eBay.';
     return [
       '<footer>',
       '  <div class="container">',
@@ -583,17 +586,23 @@
       '    <button class="brand-finder-close" type="button" aria-label="Close store finder" data-finder-close>&times;</button>',
       '    <div class="section-kicker">Find it faster</div>',
       '    <h2 id="finder-title">What are you looking for?</h2>',
-      '    <p>' + (directCheckoutEnabled ? 'Jump straight to one of the four live departments. Buy direct for the lowest price or choose the matching eBay listing.' : 'Jump straight to one of the four live departments. Every current product is available through its matching eBay listing.') + '</p>',
+      '    <p>' + (directCheckoutEnabled ? 'Jump straight to a live department. Buy direct for the lowest price or choose the matching eBay listing.' : 'Jump straight to a live department. Every current product is available through its matching eBay listing.') + '</p>',
       '    <div class="finder-grid">',
-      finderOption('Rare drinks', 'Limited, discontinued, and international beverages', '23 items', 'drinks'),
-      finderOption('Sports & apparel', 'Jerseys, shoes, and vintage skate gear', '16 items', 'apparel'),
-      finderOption('Collectibles & cards', 'Pokemon, Funko, and collector inventory', '4 items', 'collectibles'),
-      finderOption('Personal care', 'Hard-to-find body wash and hair care', '5 items', 'care'),
+      finderOption('Rare drinks', 'Limited, discontinued, and international beverages', categoryCount('drinks'), 'drinks'),
+      finderOption('Sports & apparel', 'Jerseys, shoes, and vintage skate gear', categoryCount('apparel'), 'apparel'),
+      finderOption('Collectibles & cards', 'Pokemon, Funko, and collector inventory', categoryCount('collectibles'), 'collectibles'),
+      finderOption('Personal care', 'Hard-to-find body wash and hair care', categoryCount('care'), 'care'),
+      finderOption('Other finds', 'Useful products that do not fit the usual departments', categoryCount('other'), 'other'),
       '    </div>',
-      '    <div class="finder-actions"><a class="btn btn-dark" href="out-now.html" data-finder-choice>Browse all 48 listings</a><button class="btn btn-light" type="button" data-finder-close>Keep browsing</button></div>',
+      '    <div class="finder-actions"><a class="btn btn-dark" href="out-now.html" data-finder-choice>Browse all ' + catalog.length + ' listings</a><button class="btn btn-light" type="button" data-finder-close>Keep browsing</button></div>',
       '  </section>',
       '</div>'
     ].join('');
+  }
+
+  function categoryCount(category) {
+    const count = Number(categories[category] && categories[category].count) || catalog.filter(function (item) { return item.category === category; }).length;
+    return count + (count === 1 ? ' item' : ' items');
   }
 
   function finderOption(name, copy, count, category) {
@@ -629,6 +638,75 @@
     if (shouldOpen) window.setTimeout(openFinder, 350);
   }
 
+  function setupCampaignCarousel() {
+    const carousel = document.querySelector('[data-campaign-carousel]');
+    if (!carousel) return;
+    const track = carousel.querySelector('[data-campaign-track]');
+    const slides = Array.from(carousel.querySelectorAll('[data-campaign-slide]'));
+    const dots = Array.from(carousel.querySelectorAll('[data-campaign-dot]'));
+    const previous = carousel.querySelector('[data-campaign-prev]');
+    const next = carousel.querySelector('[data-campaign-next]');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let activeIndex = 0;
+    let timer = 0;
+    let scrollFrame = 0;
+
+    if (!track || slides.length < 2) return;
+
+    function updateControls(index) {
+      activeIndex = (index + slides.length) % slides.length;
+      dots.forEach(function (dot, dotIndex) {
+        const isActive = dotIndex === activeIndex;
+        dot.classList.toggle('active', isActive);
+        if (isActive) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+    }
+
+    function showSlide(index, behavior) {
+      const nextIndex = (index + slides.length) % slides.length;
+      updateControls(nextIndex);
+      track.scrollTo({ left: slides[nextIndex].offsetLeft, behavior: behavior || 'smooth' });
+    }
+
+    function stopAutoplay() {
+      window.clearInterval(timer);
+      timer = 0;
+    }
+
+    function startAutoplay() {
+      stopAutoplay();
+      if (reducedMotion.matches || document.hidden) return;
+      timer = window.setInterval(function () { showSlide(activeIndex + 1, 'smooth'); }, 7000);
+    }
+
+    track.addEventListener('scroll', function () {
+      window.cancelAnimationFrame(scrollFrame);
+      scrollFrame = window.requestAnimationFrame(function () {
+        const index = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+        updateControls(Math.min(slides.length - 1, Math.max(0, index)));
+      });
+    }, { passive: true });
+    if (previous) previous.addEventListener('click', function () { showSlide(activeIndex - 1); startAutoplay(); });
+    if (next) next.addEventListener('click', function () { showSlide(activeIndex + 1); startAutoplay(); });
+    dots.forEach(function (dot) {
+      dot.addEventListener('click', function () { showSlide(Number(dot.dataset.campaignDot) || 0); startAutoplay(); });
+    });
+    carousel.addEventListener('mouseenter', stopAutoplay);
+    carousel.addEventListener('mouseleave', startAutoplay);
+    carousel.addEventListener('focusin', stopAutoplay);
+    carousel.addEventListener('focusout', function (event) {
+      if (!carousel.contains(event.relatedTarget)) startAutoplay();
+    });
+    track.addEventListener('pointerdown', stopAutoplay, { passive: true });
+    track.addEventListener('pointerup', startAutoplay, { passive: true });
+    document.addEventListener('visibilitychange', function () { if (document.hidden) stopAutoplay(); else startAutoplay(); });
+    reducedMotion.addEventListener('change', startAutoplay);
+    window.addEventListener('resize', function () { showSlide(activeIndex, 'auto'); });
+    updateControls(0);
+    startAutoplay();
+  }
+
   function setupProductGallery() {
     const mainImage = document.querySelector('[data-product-main-image]');
     const thumbnails = Array.from(document.querySelectorAll('[data-product-gallery-src]'));
@@ -660,6 +738,7 @@
   addCatalogSchema();
   addSoldSchema();
   setupFinder();
+  setupCampaignCarousel();
   setupProductGallery();
   replaceOldProductPages();
 }());
