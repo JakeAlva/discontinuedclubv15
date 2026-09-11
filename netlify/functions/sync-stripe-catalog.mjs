@@ -8,7 +8,11 @@ export const config = {
 
 const json = (body, status = 200) => new Response(JSON.stringify(body), {
   status,
-  headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
+  headers: {
+    'Content-Type': 'application/json',
+    'Cache-Control': 'no-store',
+    'Access-Control-Allow-Origin': 'http://127.0.0.1:4173'
+  }
 });
 
 async function authorized(request) {
