@@ -15,6 +15,7 @@
     apparel: 'Sports & apparel',
     collectibles: 'Collectibles & cards',
     care: 'Personal care',
+    home: 'Home & hobby',
     other: 'Other finds'
   };
 

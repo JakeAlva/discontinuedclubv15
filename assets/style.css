@@ -71,7 +71,7 @@ button { color: inherit; }
 .mobile-note { color: var(--muted); font-size: 12px; line-height: 1.6; }
 
 .department-bar { border-bottom: 1px solid var(--line); background: var(--canvas); }
-.department-links { display: grid; grid-template-columns: repeat(4, 1fr); }
+.department-links { display: grid; grid-template-columns: repeat(5, 1fr); }
 .department-link { min-height: 62px; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 18px; border-right: 1px solid var(--line); color: #3e433e; font-size: 13px; font-weight: 800; text-align: center; }
 .department-link:first-child { border-left: 1px solid var(--line); }
 .department-link:hover { background: #fff; color: var(--ink); }
@@ -95,6 +95,7 @@ button { color: inherit; }
 .campaign-slide-liquid { background: #efcf73; }
 .campaign-slide-jersey { background: #f08a55; }
 .campaign-slide-pokemon { background: #f2c600; }
+.campaign-slide-energy { background: #a7ded2; }
 .campaign-slide-inner { position: relative; min-height: 475px; display: grid; grid-template-columns: minmax(0, .92fr) minmax(430px, 1.08fr); align-items: center; gap: 70px; padding-top: 34px; padding-bottom: 34px; }
 .campaign-copy { position: relative; z-index: 2; max-width: 570px; min-width: 0; }
 .campaign-kicker { display: flex; align-items: center; gap: 12px; font-size: 11px; font-weight: 900; letter-spacing: 0; text-transform: uppercase; }
@@ -106,7 +107,10 @@ button { color: inherit; }
 .campaign-product-frame { aspect-ratio: 1.25 / 1; display: grid; place-items: center; overflow: hidden; padding: 20px; border: 2px solid var(--ink); border-radius: 4px; background: #fff; box-shadow: 14px 14px 0 var(--ink); }
 .campaign-slide-jersey .campaign-product-frame { box-shadow: 14px 14px 0 #2d5bf0; }
 .campaign-slide-pokemon .campaign-product-frame { box-shadow: 14px 14px 0 #2d5bf0; }
-.campaign-product-frame img { width: 100%; height: 100%; object-fit: contain; }
+.campaign-slide-energy .campaign-product-frame { box-shadow: 14px 14px 0 #2d5bf0; }
+.campaign-product-frame > img { width: 84%; height: 84%; object-fit: contain; object-position: center; }
+.campaign-energy-stack { width: 94%; height: 84%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: 8px; }
+.campaign-energy-stack img { width: 100%; height: 100%; min-width: 0; object-fit: contain; object-position: center; }
 .campaign-product-label { position: absolute; right: -8px; top: -13px; z-index: 2; min-height: 29px; display: inline-flex; align-items: center; padding: 0 10px; border: 2px solid var(--ink); border-radius: 3px; background: var(--acid); font-size: 10px; font-weight: 900; letter-spacing: 0; text-transform: uppercase; }
 .campaign-stamp { position: absolute; right: 8px; bottom: 28px; z-index: 3; width: 72px; height: 72px; display: grid; place-content: center; border: 2px solid var(--ink); background: #fff; text-align: center; transform: rotate(3deg); }
 .campaign-stamp strong { font-size: 24px; line-height: 1; }
@@ -538,6 +542,8 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .campaign-product-frame { padding: 10px; box-shadow: 9px 9px 0 var(--ink); }
   .campaign-slide-jersey .campaign-product-frame { box-shadow: 9px 9px 0 #2d5bf0; }
   .campaign-slide-pokemon .campaign-product-frame { box-shadow: 9px 9px 0 #2d5bf0; }
+  .campaign-slide-energy .campaign-product-frame { box-shadow: 9px 9px 0 #2d5bf0; }
+  .campaign-energy-stack { width: 96%; height: 86%; gap: 4px; }
   .campaign-product-label { right: -5px; top: -10px; }
   .campaign-nav { min-height: 50px; gap: 10px; }
   .campaign-arrows button { width: 36px; height: 32px; }

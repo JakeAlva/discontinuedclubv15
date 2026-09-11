@@ -1,4 +1,17 @@
 const DC_CATALOG = [
+  { id: '407207453659', category: 'drinks', name: 'Monster Energy Ultra Watermelon', detail: 'Discontinued zero-sugar energy drink, full 16 fl oz can', price: '$7.99', image: '407207453659.webp' },
+  { id: '407207373104', category: 'drinks', name: 'Red Bull Red Edition Sugar Free Watermelon (4-Pack)', detail: 'Four discontinued 12 fl oz watermelon energy drink cans', price: '$59.99', image: '407207373104.webp', featured: true },
+  { id: '407205693415', category: 'drinks', name: 'Alani Nu Lime Slush (4-Pack)', detail: 'Four discontinued sugar-free 12 fl oz energy drink cans', price: '$34.98', image: '407205693415.webp', featured: true, maxQuantity: 3 },
+  { id: '407205665076', category: 'drinks', name: 'Monster Juice Strawberry Lemonade', detail: 'Limited discontinued energy and juice drink, full 16 fl oz can', price: '$12.99', image: '407205665076.webp', featured: true },
+  { id: '407205596661', category: 'drinks', name: "Monster Reserve Peaches N' Creme (2-Pack)", detail: 'Two discontinued 16 fl oz energy drink cans', price: '$15.99', image: '407205596661.webp' },
+  { id: '407205565491', category: 'drinks', name: 'Monster Reserve Watermelon (2-Pack)', detail: 'Two discontinued 16 fl oz energy drink cans', price: '$19.99', image: '407205565491.webp' },
+  { id: '407205333909', category: 'drinks', name: 'Monster Energy Ultra Red (2-Pack)', detail: 'Two discontinued zero-sugar 16 fl oz energy drink cans', price: '$13.99', image: '407205333909.webp' },
+  { id: '407203191955', category: 'drinks', name: 'Red Bull Spring Edition Cherry Sakura (4-Pack)', detail: 'Four discontinued 12 fl oz cherry sakura energy drink cans', price: '$49.99', image: '407203191955.webp', featured: true },
+  { id: '407203141723', category: 'drinks', name: 'Red Bull Amber Edition Sugar Free (4-Pack)', detail: 'Four rare 12 fl oz strawberry apricot energy drink cans', price: '$49.99', image: '407203141723.webp' },
+  { id: '407203121847', category: 'drinks', name: 'Red Bull Green Edition Curuba Elderflower (4-Pack)', detail: 'Four discontinued 12 fl oz energy drink cans', price: '$49.99', image: '407203121847.webp', featured: true, maxQuantity: 2 },
+  { id: '407203102419', category: 'drinks', name: 'Red Bull Blue Edition Blueberry (4-Pack)', detail: 'Four discontinued 12 fl oz energy drink cans', price: '$49.99', image: '407203102419.webp', featured: true, maxQuantity: 3 },
+  { id: '407202995940', category: 'home', name: 'Penn-Plax SWF1 Filtration Unit (2-Pack)', detail: 'Two crystal-clear filtration units for 1-gallon tanks', price: '$14.99', image: '407202995940.webp' },
+  { id: '407195902675', category: 'collectibles', name: 'Pokemon Journey Together Booster Bundle', detail: 'Factory-sealed English box with 6 booster packs', price: '$39.99', image: '407195902675.webp', featured: true },
   { id: '407039382525', category: 'drinks', name: 'Liquid Death x Pop-Tarts Carnage', detail: 'Strawberry sparkling water, limited 6-pack, 12 fl oz cans', price: '$13.99', image: '475e0f8d3f1d0a4e.webp', featured: true, maxQuantity: 2 },
   { id: '406730413999', category: 'drinks', name: 'Mountain Dew Maui Burst', detail: 'Pineapple, full unopened 16 oz can, 2020', price: '$12.99', image: 'e2f98160460fb5d0.webp', featured: true, maxQuantity: 6 },
   { id: '406713894369', category: 'drinks', name: 'Mountain Dew Baja Point Break Punch', detail: 'Tropical punch, 12-pack of 12 oz cans, 2024', price: '$44.99', image: '128614ee19f0144e.webp' },
@@ -11,7 +24,7 @@ const DC_CATALOG = [
   { id: '406794860747', category: 'drinks', name: "Mountain Dew Gingerbread Snap'd", detail: 'Full unopened 12 oz can, 2022', price: '$7.99', image: '40ab2123875d4cf0.webp', maxQuantity: 2 },
   { id: '406738058280', category: 'drinks', name: 'Pepsi x Peeps Marshmallow Cola', detail: 'Limited edition, full 20 oz bottle, 2023', price: '$8.99', image: 'a259117f32742e2a.webp' },
   { id: '406735072767', category: 'drinks', name: 'Mountain Dew Voo Dew 2', detail: 'Mystery flavor, four 16.9 oz bottles, 2020', price: '$29.99', image: '9540cd389082cad6.webp' },
-  { id: '407085080884', category: 'drinks', name: 'Mountain Dew Baja Deep Dive', detail: 'Rare full unopened 16 oz can, 2023', price: '$41.99', image: 'b4b4e35b7cc955df.webp', featured: true },
+  { id: '407085080884', category: 'drinks', name: 'Mountain Dew Baja Deep Dive', detail: 'Rare full unopened 16 oz can, 2023', price: '$34.99', image: 'b4b4e35b7cc955df.webp', featured: true },
   { id: '406738070393', category: 'drinks', name: 'Mountain Dew Baja Caribbean Splash', detail: 'Guava, full 12 oz can, 2023', price: '$4.99', image: 'abe1ed1451f5e5a2.webp' },
   { id: '406717975092', category: 'drinks', name: 'Sprite Lymonade Legacy', detail: 'Celebrating 50 Years of Hip-Hop, full 12 oz can', price: '$8.99', image: '0ac898f36113b476.webp', maxQuantity: 10 },
   { id: '406701613482', category: 'drinks', name: 'Mountain Dew Citrus Cherry', detail: 'USA no-promo design, full unopened 12 oz can, 2019', price: '$49.99', image: 'd2c033419f0b6d8f.webp' },
@@ -24,7 +37,6 @@ const DC_CATALOG = [
   { id: '406795016704', category: 'drinks', name: 'Mountain Dew LiveWire', detail: 'Orange old-design can, full unopened 12 oz, 2020', price: '$14.99', image: '0f0f8b1e47eac82d.webp' },
 
   { id: '407064120905', category: 'apparel', name: 'Florida Panthers Vincent Trocheck Jersey', detail: 'NWT Fanatics NHL jersey, white, men\'s size S', price: '$49.99', image: 'mockups/407064120905.webp' },
-  { id: '407119925622', category: 'apparel', name: 'New England Patriots Julian Edelman Jersey', detail: 'NWT Nike Vapor Limited NFL jersey, white, men\'s size L', price: '$249.99', image: '02ac86d4595c4adc.webp', featured: true },
   { id: '406834655819', category: 'apparel', name: 'Etnies x Rockstar Energy Fader Vulc', detail: 'Men\'s black shoes, size 11 with original box, 2012', price: '$99.99', image: '8167a13655984166.webp', featured: true },
   { id: '407063808795', category: 'apparel', name: 'Boston Bruins Taylor Hall Jersey', detail: 'NWT adidas alternate NHL jersey, size 54', price: '$69.99', image: 'mockups/407063808795.webp' },
   { id: '407063633707', category: 'apparel', name: 'Nashville Predators P.K. Subban Jersey', detail: 'NWT Fanatics NHL jersey, gold, men\'s size M', price: '$49.99', image: 'mockups/407063633707.webp' },
@@ -40,10 +52,9 @@ const DC_CATALOG = [
   { id: '407064096234', category: 'apparel', name: "St. Louis Blues Ryan O'Reilly Jersey", detail: 'NWT adidas NHL jersey, blue, size 46', price: '$69.99', image: 'mockups/407064096234.webp' },
   { id: '407086613910', category: 'apparel', name: 'Los Angeles Kings Anze Kopitar Jersey', detail: 'NWT adidas captain NHL jersey, size 46', price: '$149.99', image: 'mockups/407086613910.webp' },
 
-  { id: '407134859583', category: 'collectibles', name: 'Pokemon Destined Rivals Booster Bundle', detail: 'Factory sealed English box with 6 booster packs', price: '$64.99', image: '7ee2bde9fd49cb26.webp', featured: true, maxQuantity: 2 },
   { id: '406760868081', category: 'collectibles', name: 'Funko Pop! Wayne Gretzky #45', detail: 'Los Angeles Kings NHL vinyl figure', price: '$12.99', image: '8da5a3eda84b0bca.webp' },
-  { id: '407086892969', category: 'collectibles', name: 'Pokemon Perfect Order Booster Bundle', detail: 'English box with 6 booster packs', price: '$41.99', image: '1c6ab9f4d119bded.webp', maxQuantity: 2 },
-  { id: '407134944288', category: 'collectibles', name: 'Pokemon Destined Rivals 20-Pack Lot', detail: 'Scarlet & Violet booster packs, 200 cards total', price: '$189.99', image: '4abf1eaee665ec19.webp' },
+  { id: '407086892969', category: 'collectibles', name: 'Pokemon Perfect Order Booster Bundle', detail: 'English box with 6 booster packs', price: '$38.99', image: '1c6ab9f4d119bded.webp', maxQuantity: 2 },
+  { id: '407134944288', category: 'collectibles', name: 'Pokemon Destined Rivals 4-Pack Lot', detail: 'Four Scarlet & Violet booster packs, 40 cards total', price: '$32.99', image: '407134944288.webp', maxQuantity: 5 },
 
   { id: '406763784733', category: 'care', name: 'Caress Shea Butter & Brown Sugar Body Wash', detail: 'Exfoliating and hydrating, 20 fl oz', price: '$9.99', image: '933162e9baba7be6.webp', maxQuantity: 2 },
   { id: '406760474283', category: 'care', name: 'Art of Sport Activated Charcoal Body Wash', detail: 'Compete energizing citrus, 16 fl oz', price: '$29.99', image: '256152db4df7ca68.webp', featured: true },
@@ -54,6 +65,19 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407207453659': 20,
+  '407207373104': 64,
+  '407205693415': 64,
+  '407205665076': 20,
+  '407205596661': 48,
+  '407205565491': 48,
+  '407205333909': 48,
+  '407203191955': 64,
+  '407203141723': 64,
+  '407203121847': 64,
+  '407203102419': 64,
+  '407202995940': 8,
+  '407195902675': 16,
   '407039382525': 96,
   '406730413999': 20,
   '406713894369': 192,
@@ -78,7 +102,6 @@ const DC_SHIPPING_WEIGHTS_OZ = {
   '406741032490': 16,
   '406795016704': 16,
   '407064120905': 32,
-  '407119925622': 32,
   '406834655819': 64,
   '407063808795': 32,
   '407063633707': 32,
@@ -93,10 +116,9 @@ const DC_SHIPPING_WEIGHTS_OZ = {
   '407176877843': 32,
   '407064096234': 32,
   '407086613910': 32,
-  '407134859583': 24,
   '406760868081': 24,
   '407086892969': 24,
-  '407134944288': 32,
+  '407134944288': 16,
   '406763784733': 32,
   '406760474283': 32,
   '406763456229': 32,
@@ -124,11 +146,12 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 48 },
-  drinks: { label: 'Rare drinks', count: 23 },
-  apparel: { label: 'Sports & apparel', count: 16 },
+  all: { label: 'All items', count: 59 },
+  drinks: { label: 'Rare drinks', count: 34 },
+  apparel: { label: 'Sports & apparel', count: 15 },
   collectibles: { label: 'Collectibles & cards', count: 4 },
-  care: { label: 'Personal care', count: 5 }
+  care: { label: 'Personal care', count: 5 },
+  home: { label: 'Home & hobby', count: 1 }
 };
 
 const DC_STORE_CONFIG = {
