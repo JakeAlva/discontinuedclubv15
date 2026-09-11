@@ -86,10 +86,16 @@ export default async (request) => {
             tax_behavior: 'exclusive',
             metadata: { dc_listing_id: item.id, source: 'discontinuedclub.com' }
           });
-          if (currentPrice) await stripe.prices.update(currentPrice.id, { active: false });
           pricesCreated += 1;
         }
-        if (product.default_price !== price.id) await stripe.products.update(product.id, { default_price: price.id });
+        if (product.default_price !== price.id) {
+          product = await stripe.products.update(product.id, { default_price: price.id });
+          const redundantPrices = (await stripe.prices.list({ product: product.id, active: true, limit: 100 })).data
+            .filter((candidate) => candidate.id !== price.id && candidate.metadata?.source === 'discontinuedclub.com');
+          for (const redundantPrice of redundantPrices) {
+            await stripe.prices.update(redundantPrice.id, { active: false });
+          }
+        }
       }));
     }
 
