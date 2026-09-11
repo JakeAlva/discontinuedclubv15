@@ -11,9 +11,13 @@ const json = (body, status = 200) => new Response(JSON.stringify(body), {
   headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
 });
 
-function authorized(request) {
+async function authorized(request) {
   const expected = process.env.STRIPE_SYNC_TOKEN || '';
-  const supplied = (request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');
+  let supplied = (request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '');
+  if (!supplied) {
+    const body = await request.clone().text();
+    supplied = new URLSearchParams(body).get('token') || '';
+  }
   if (!expected || expected.length !== supplied.length) return false;
   return timingSafeEqual(Buffer.from(expected), Buffer.from(supplied));
 }
@@ -22,7 +26,7 @@ const productSlug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, 
 
 export default async (request) => {
   if (request.method !== 'POST') return json({ error: 'Method not allowed.' }, 405);
-  if (!authorized(request)) return json({ error: 'Unauthorized.' }, 401);
+  if (!(await authorized(request))) return json({ error: 'Unauthorized.' }, 401);
 
   const secretKey = process.env.STRIPE_SECRET_KEY || '';
   if (!/^(sk|rk)_live_/.test(secretKey)) return json({ error: 'A live Stripe key is required.' }, 503);
