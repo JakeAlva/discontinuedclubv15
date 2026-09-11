@@ -592,7 +592,6 @@
       finderOption('Sports & apparel', 'Jerseys, shoes, and vintage skate gear', categoryCount('apparel'), 'apparel'),
       finderOption('Collectibles & cards', 'Pokemon, Funko, and collector inventory', categoryCount('collectibles'), 'collectibles'),
       finderOption('Personal care', 'Hard-to-find body wash and hair care', categoryCount('care'), 'care'),
-      finderOption('Other finds', 'Useful products that do not fit the usual departments', categoryCount('other'), 'other'),
       '    </div>',
       '    <div class="finder-actions"><a class="btn btn-dark" href="out-now.html" data-finder-choice>Browse all ' + catalog.length + ' listings</a><button class="btn btn-light" type="button" data-finder-close>Keep browsing</button></div>',
       '  </section>',

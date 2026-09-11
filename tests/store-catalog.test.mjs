@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { catalog, directPriceCents, maxQuantity, parsePriceCents, priceLookupKey, shipmentWeightOz, shippingQuote } from '../lib/store-catalog.mjs';
 
-test('catalog contains 59 unique current listings', () => {
-  assert.equal(catalog.length, 59);
+test('catalog contains 48 unique current listings', () => {
+  assert.equal(catalog.length, 48);
   assert.equal(new Set(catalog.map((item) => item.id)).size, catalog.length);
   for (const item of catalog) {
     assert.ok(Number.isInteger(item.shippingWeightOz) && item.shippingWeightOz > 0);
@@ -17,8 +17,7 @@ test('catalog uses specific Stripe tax categories where they are reliable', () =
   assert.equal(catalog.find((item) => item.id === '406834655819').taxCode, 'txcd_30011000');
   assert.equal(catalog.find((item) => item.id === '406763511763').taxCode, 'txcd_32050036');
   assert.equal(catalog.find((item) => item.id === '406763784733').taxCode, 'txcd_32050006');
-  assert.equal(catalog.find((item) => item.id === '407195902675').taxCode, 'txcd_99999999');
-  assert.equal(catalog.find((item) => item.id === '407202995940').taxCode, 'txcd_99999999');
+  assert.equal(catalog.find((item) => item.id === '407134859583').taxCode, 'txcd_99999999');
 });
 
 test('direct prices use the approved 3.5 percent starting discount', () => {
@@ -36,6 +35,7 @@ test('checkout identifiers and inventory limits are stable', () => {
     ['406717975092', 10],
     ['406795510403', 3],
     ['406741032490', 4],
+    ['407134859583', 2],
     ['407086892969', 2],
     ['406763784733', 2],
     ['406763511763', 3]

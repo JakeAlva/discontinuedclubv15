@@ -2,7 +2,7 @@ Discontinued Club storefront
 
 This is a catalog-driven storefront for the current Discontinued Club eBay inventory. It includes:
 
-- 59 current products across drinks, apparel, collectibles, personal care, and other finds
+- 48 current products across drinks, apparel, collectibles, and personal care
 - lower direct prices with a matching eBay option on every listing
 - a multi-item cart and Stripe-hosted Checkout
 - $7.49 USPS Ground Advantage below $100 and free shipping at $100+

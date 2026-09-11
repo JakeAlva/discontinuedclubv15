@@ -114,7 +114,7 @@ function pageMarkup(item, images) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=34">
+  <link rel="stylesheet" href="assets/style.css?v=35">
   <script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>
 </head>
 <body data-page="shop">
@@ -142,8 +142,8 @@ function pageMarkup(item, images) {
     <section class="product-detail-band"><div class="container product-detail-grid">${detailBand}</div></section>
   </main>
   <div id="site-footer"></div>
-  <script src="assets/catalog.js?v=34"></script>
-  <script src="assets/app.js?v=34"></script>
+  <script src="assets/catalog.js?v=35"></script>
+  <script src="assets/app.js?v=35"></script>
 </body>
 </html>
 `;

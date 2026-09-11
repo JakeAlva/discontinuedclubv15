@@ -71,7 +71,7 @@ button { color: inherit; }
 .mobile-note { color: var(--muted); font-size: 12px; line-height: 1.6; }
 
 .department-bar { border-bottom: 1px solid var(--line); background: var(--canvas); }
-.department-links { display: grid; grid-template-columns: repeat(5, 1fr); }
+.department-links { display: grid; grid-template-columns: repeat(4, 1fr); }
 .department-link { min-height: 62px; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 18px; border-right: 1px solid var(--line); color: #3e433e; font-size: 13px; font-weight: 800; text-align: center; }
 .department-link:first-child { border-left: 1px solid var(--line); }
 .department-link:hover { background: #fff; color: var(--ink); }
@@ -92,8 +92,8 @@ button { color: inherit; }
 .campaign-track { display: flex; width: 100%; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain; }
 .campaign-track::-webkit-scrollbar { display: none; }
 .campaign-slide { position: relative; flex: 0 0 100%; min-width: 0; overflow: hidden; scroll-snap-align: start; scroll-snap-stop: always; }
-.campaign-slide-monster { background: #ef5a4c; }
-.campaign-slide-redbull { background: #cddcff; }
+.campaign-slide-liquid { background: #efcf73; }
+.campaign-slide-jersey { background: #f08a55; }
 .campaign-slide-pokemon { background: #f2c600; }
 .campaign-slide-inner { position: relative; min-height: 475px; display: grid; grid-template-columns: minmax(0, .92fr) minmax(430px, 1.08fr); align-items: center; gap: 70px; padding-top: 34px; padding-bottom: 34px; }
 .campaign-copy { position: relative; z-index: 2; max-width: 570px; min-width: 0; }
@@ -104,7 +104,7 @@ button { color: inherit; }
 .campaign-copy .btn { min-height: 48px; margin-top: 24px; }
 .campaign-product { position: relative; z-index: 1; width: min(100%, 570px); justify-self: end; color: var(--ink); }
 .campaign-product-frame { aspect-ratio: 1.25 / 1; display: grid; place-items: center; overflow: hidden; padding: 20px; border: 2px solid var(--ink); border-radius: 4px; background: #fff; box-shadow: 14px 14px 0 var(--ink); }
-.campaign-slide-redbull .campaign-product-frame { box-shadow: 14px 14px 0 #ef4d8d; }
+.campaign-slide-jersey .campaign-product-frame { box-shadow: 14px 14px 0 #2d5bf0; }
 .campaign-slide-pokemon .campaign-product-frame { box-shadow: 14px 14px 0 #2d5bf0; }
 .campaign-product-frame img { width: 100%; height: 100%; object-fit: contain; }
 .campaign-product-label { position: absolute; right: -8px; top: -13px; z-index: 2; min-height: 29px; display: inline-flex; align-items: center; padding: 0 10px; border: 2px solid var(--ink); border-radius: 3px; background: var(--acid); font-size: 10px; font-weight: 900; letter-spacing: 0; text-transform: uppercase; }
@@ -536,7 +536,7 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .campaign-copy .btn { min-height: 42px; margin-top: 16px; padding-right: 15px; padding-left: 15px; font-size: 11px; }
   .campaign-product { width: min(72vw, 285px); align-self: end; justify-self: end; }
   .campaign-product-frame { padding: 10px; box-shadow: 9px 9px 0 var(--ink); }
-  .campaign-slide-redbull .campaign-product-frame { box-shadow: 9px 9px 0 #ef4d8d; }
+  .campaign-slide-jersey .campaign-product-frame { box-shadow: 9px 9px 0 #2d5bf0; }
   .campaign-slide-pokemon .campaign-product-frame { box-shadow: 9px 9px 0 #2d5bf0; }
   .campaign-product-label { right: -5px; top: -10px; }
   .campaign-nav { min-height: 50px; gap: 10px; }
