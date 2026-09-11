@@ -27,6 +27,12 @@
     return 'products/' + slug + '-' + item.id + '.html';
   }
 
+  function listingImagePath(item, variant, absolute) {
+    const version = item.id === '407134944288' ? '4pack-2' : '38';
+    const path = 'assets/images/listings/' + variant + '/' + item.id + '.webp?v=' + version;
+    return absolute ? 'https://discontinuedclub.com/' + path : path;
+  }
+
   const navItems = [
     { href: 'out-now.html', label: 'Shop', key: 'shop' },
     { href: 'rare-drinks.html', label: 'Rare Drinks', key: 'drinks' },
@@ -173,7 +179,7 @@
       : '<a class="btn btn-dark product-add" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a><a class="ebay-option" href="' + detailHref + '">View details</a>';
     return [
       '<article class="product-card" data-category="' + item.category + '" data-search="' + escapeHtml((item.name + ' ' + item.detail).toLowerCase()) + '">',
-      '  <a class="product-image" href="' + detailHref + '"><img src="assets/images/listings/branded/' + item.id + '.webp" alt="' + imageAlt + '" loading="lazy" width="1200" height="1200"><span class="condition-badge">' + stockLabel + '</span></a>',
+      '  <a class="product-image" href="' + detailHref + '"><img src="' + listingImagePath(item, 'branded', false) + '" alt="' + imageAlt + '" loading="lazy" width="1200" height="1200"><span class="condition-badge">' + stockLabel + '</span></a>',
       '  <div class="product-content">',
       '    <div class="product-category">' + categoryLabels[item.category] + '</div>',
       '    <div class="product-name"><a href="' + detailHref + '">' + escapeHtml(item.name) + '</a></div>',
@@ -321,7 +327,7 @@
         : '<span class="cart-one-only">Quantity 1</span>';
       return [
         '<div class="cart-line">',
-        '  <img src="assets/images/listings/branded/' + item.id + '.webp" alt="">',
+        '  <img src="' + listingImagePath(item, 'branded', false) + '" alt="">',
         '  <div class="cart-line-copy"><strong>' + escapeHtml(item.name) + '</strong><span>' + escapeHtml(item.detail) + '</span><div class="cart-line-controls">' + quantityControl + '<button type="button" class="cart-remove" data-cart-remove="' + item.id + '">Remove</button></div></div>',
         '  <b>' + formatMoney(getDirectPriceCents(item) * line.quantity) + '</b>',
         '</div>'
@@ -559,7 +565,7 @@
           '@type': 'Product',
           name: item.name,
           description: item.detail,
-          image: 'https://discontinuedclub.com/assets/images/listings/merchant/' + item.id + '.webp',
+          image: listingImagePath(item, 'merchant', true),
           url: 'https://discontinuedclub.com/' + productSlug(item),
           offers: {
             '@type': 'Offer',

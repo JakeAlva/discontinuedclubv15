@@ -66,7 +66,7 @@ const appSource = await readFile(resolve(root, 'assets/app.js'), 'utf8');
 const stripeSyncSource = await readFile(resolve(root, 'scripts/sync-stripe-products.mjs'), 'utf8');
 const checkoutSource = await readFile(resolve(root, 'netlify/functions/create-checkout.mjs'), 'utf8');
 check(
-  appSource.includes('/assets/images/listings/merchant/') && stripeSyncSource.includes('/assets/images/listings/merchant/'),
+  appSource.includes("listingImagePath(item, 'merchant', true)") && stripeSyncSource.includes('/assets/images/listings/merchant/'),
   'Product schema and Stripe catalog use merchant-safe images',
   'Point product schema and Stripe catalog images to the logo-free merchant image directory.'
 );

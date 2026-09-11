@@ -28,7 +28,7 @@ test('jersey product pages lead with the mockup and include distinct real photos
   const html = await readFile(resolve(root, 'products', slug(item)), 'utf8');
   const firstMainImage = html.match(/<div class="current-gallery-main"><img src="([^"]+)/)?.[1];
 
-  assert.equal(firstMainImage, `assets/images/listings/branded/${item.id}.webp`);
-  assert.ok(html.includes(`data-product-gallery-src="assets/images/listings/merchant/${item.id}.webp"`));
+  assert.equal(firstMainImage, `assets/images/listings/branded/${item.id}.webp?v=38`);
+  assert.ok(html.includes(`data-product-gallery-src="assets/images/listings/merchant/${item.id}.webp?v=38"`));
   assert.ok(html.includes(`data-product-gallery-src="assets/images/listings/backs/${item.id}.webp"`));
 });

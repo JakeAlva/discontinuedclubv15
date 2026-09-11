@@ -109,8 +109,43 @@ button { color: inherit; }
 .campaign-slide-pokemon .campaign-product-frame { box-shadow: 14px 14px 0 #2d5bf0; }
 .campaign-slide-energy .campaign-product-frame { box-shadow: 14px 14px 0 #2d5bf0; }
 .campaign-product-frame > img { width: 84%; height: 84%; object-fit: contain; object-position: center; }
-.campaign-energy-stack { width: 94%; height: 84%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: 8px; }
-.campaign-energy-stack img { width: 100%; height: 100%; min-width: 0; object-fit: contain; object-position: center; }
+.campaign-art-frame { padding: 0; background: var(--ink); }
+.campaign-art { width: 100%; height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; }
+.campaign-art-head { min-height: 76px; display: grid; align-content: center; gap: 3px; padding: 14px 18px; background: var(--ink); color: #fff; text-transform: uppercase; }
+.campaign-art-head small { font-size: 8px; font-weight: 800; }
+.campaign-art-head strong { font-size: 24px; line-height: 1; }
+.campaign-art-body { position: relative; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(120px, .65fr); align-items: stretch; overflow: hidden; }
+.campaign-art-body > img { position: relative; z-index: 1; width: 88%; height: 88%; min-width: 0; align-self: center; justify-self: center; object-fit: contain; object-position: center; mix-blend-mode: multiply; }
+.campaign-art-offer { position: relative; z-index: 2; display: grid; align-content: end; gap: 4px; padding: 16px; border-left: 2px solid var(--ink); text-transform: uppercase; }
+.campaign-art-offer small { font-size: 8px; font-weight: 800; }
+.campaign-art-offer strong { font-size: 27px; line-height: .95; }
+.campaign-art-offer b { margin-top: 5px; padding: 7px 8px; background: var(--ink); color: #fff; font-size: 10px; line-height: 1.15; }
+.campaign-art-liquid .campaign-art-body { background: #ffd5df; }
+.campaign-art-liquid .campaign-art-offer { background: #f4ffb8; }
+.campaign-art-liquid .campaign-art-offer strong { color: #a41237; }
+.campaign-art-jersey .campaign-art-head { background: #17214b; }
+.campaign-art-jersey .campaign-art-body { background: #f3a06e; }
+.campaign-art-jersey .campaign-art-offer { background: #d6ff42; }
+.campaign-art-number { position: absolute; left: 4px; bottom: -14px; z-index: 0; color: rgba(23, 33, 75, .17); font-size: 180px; font-weight: 900; line-height: .8; }
+.campaign-art-pokemon .campaign-art-head { background: #78162a; }
+.campaign-art-pokemon .campaign-art-body { background: #f7cc16; }
+.campaign-art-pokemon .campaign-art-offer { background: #fff0db; }
+.campaign-art-pokemon .campaign-art-offer strong { color: #78162a; }
+.campaign-energy-frame { padding: 0; background: var(--ink); }
+.campaign-energy-poster { width: 100%; height: 100%; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; background: #fff; }
+.energy-poster-head { min-height: 76px; display: grid; grid-template-columns: 1fr auto; align-content: center; gap: 3px 18px; padding: 14px 18px; background: var(--ink); color: #fff; text-transform: uppercase; }
+.energy-poster-head small { font-size: 8px; font-weight: 800; }
+.energy-poster-head strong { grid-column: 1; font-size: 25px; line-height: 1; }
+.energy-poster-head b { grid-column: 2; grid-row: 1 / 3; align-self: center; padding: 8px 9px; background: var(--acid); color: var(--ink); font-size: 12px; }
+.energy-poster-products { min-height: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.energy-poster-item { min-width: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto auto; align-items: center; padding: 10px 9px 12px; border-right: 2px solid var(--ink); text-align: center; }
+.energy-poster-item:last-child { border-right: 0; }
+.energy-poster-blue { background: #cadfff; }
+.energy-poster-green { background: #dcf59e; }
+.energy-poster-red { background: #ffd0c7; }
+.energy-poster-item img { width: 100%; height: 100%; min-width: 0; object-fit: contain; object-position: center; mix-blend-mode: multiply; }
+.energy-poster-item strong { padding-top: 4px; font-size: 13px; line-height: 1.1; text-transform: uppercase; }
+.energy-poster-item small { margin-top: 2px; font-size: 8px; font-weight: 800; text-transform: uppercase; }
 .campaign-product-label { position: absolute; right: -8px; top: -13px; z-index: 2; min-height: 29px; display: inline-flex; align-items: center; padding: 0 10px; border: 2px solid var(--ink); border-radius: 3px; background: var(--acid); font-size: 10px; font-weight: 900; letter-spacing: 0; text-transform: uppercase; }
 .campaign-stamp { position: absolute; right: 8px; bottom: 28px; z-index: 3; width: 72px; height: 72px; display: grid; place-content: center; border: 2px solid var(--ink); background: #fff; text-align: center; transform: rotate(3deg); }
 .campaign-stamp strong { font-size: 24px; line-height: 1; }
@@ -543,7 +578,22 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .campaign-slide-jersey .campaign-product-frame { box-shadow: 9px 9px 0 #2d5bf0; }
   .campaign-slide-pokemon .campaign-product-frame { box-shadow: 9px 9px 0 #2d5bf0; }
   .campaign-slide-energy .campaign-product-frame { box-shadow: 9px 9px 0 #2d5bf0; }
-  .campaign-energy-stack { width: 96%; height: 86%; gap: 4px; }
+  .campaign-art-head { min-height: 46px; gap: 1px; padding: 7px 9px; }
+  .campaign-art-head small { font-size: 6px; }
+  .campaign-art-head strong { font-size: 15px; }
+  .campaign-art-body { grid-template-columns: minmax(0, 1.28fr) minmax(72px, .72fr); }
+  .campaign-art-offer { gap: 2px; padding: 7px; border-left-width: 1px; }
+  .campaign-art-offer small { font-size: 5px; }
+  .campaign-art-offer strong { font-size: 14px; }
+  .campaign-art-offer b { margin-top: 2px; padding: 4px; font-size: 6px; }
+  .campaign-art-number { bottom: -6px; font-size: 88px; }
+  .energy-poster-head { min-height: 48px; gap: 1px 8px; padding: 8px 9px; }
+  .energy-poster-head small { font-size: 6px; }
+  .energy-poster-head strong { font-size: 16px; }
+  .energy-poster-head b { padding: 5px 6px; font-size: 8px; }
+  .energy-poster-item { padding: 5px 4px 7px; border-right-width: 1px; }
+  .energy-poster-item strong { font-size: 8px; }
+  .energy-poster-item small { font-size: 6px; }
   .campaign-product-label { right: -5px; top: -10px; }
   .campaign-nav { min-height: 50px; gap: 10px; }
   .campaign-arrows button { width: 36px; height: 32px; }

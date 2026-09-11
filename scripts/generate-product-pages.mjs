@@ -39,6 +39,9 @@ const escapeHtml = (value) => String(value)
 
 const slug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}`;
 const productUrl = (item) => `${publicRoot}/products/${slug(item)}.html`;
+const listingAssetVersion = (item) => item.id === '407134944288' ? '4pack-2' : '38';
+const listingImagePath = (item, variant) => `assets/images/listings/${variant}/${item.id}.webp?v=${listingAssetVersion(item)}`;
+const absoluteListingImage = (item, variant) => `${publicRoot}/${listingImagePath(item, variant)}`;
 
 async function fileExists(path) {
   try {
@@ -81,7 +84,7 @@ function pageMarkup(item, images) {
     '@type': 'Product',
     name: item.name,
     description,
-    image: [`${publicRoot}/assets/images/listings/merchant/${item.id}.webp`],
+    image: [absoluteListingImage(item, 'merchant')],
     sku: item.id,
     category: categoryLabels[item.category],
     offers: {
@@ -109,13 +112,13 @@ function pageMarkup(item, images) {
   <meta property="og:title" content="${escapeHtml(item.name)} | Discontinued Club">
   <meta property="og:description" content="${escapeHtml(item.detail)}">
   <meta property="og:url" content="${productUrl(item)}">
-  <meta property="og:image" content="${publicRoot}/assets/images/listings/merchant/${item.id}.webp">
+  <meta property="og:image" content="${absoluteListingImage(item, 'merchant')}">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="${publicRoot}/assets/images/listings/merchant/${item.id}.webp">
+  <meta name="twitter:image" content="${absoluteListingImage(item, 'merchant')}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=37">
+  <link rel="stylesheet" href="assets/style.css?v=38">
   <script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>
 </head>
 <body data-page="shop">
@@ -143,8 +146,8 @@ function pageMarkup(item, images) {
     <section class="product-detail-band"><div class="container product-detail-grid">${detailBand}</div></section>
   </main>
   <div id="site-footer"></div>
-  <script src="assets/catalog.js?v=37"></script>
-  <script src="assets/app.js?v=37"></script>
+  <script src="assets/catalog.js?v=38"></script>
+  <script src="assets/app.js?v=38"></script>
 </body>
 </html>
 `;
@@ -155,13 +158,13 @@ await mkdir(output, { recursive: true });
 
 for (const item of catalog) {
   const images = [{
-    src: `assets/images/listings/branded/${item.id}.webp`,
+    src: listingImagePath(item, 'branded'),
     alt: `${item.name} - Discontinued Club listing view`,
     label: 'listing view'
   }];
   if (jerseyGalleryIds.has(item.id)) {
     images.push({
-      src: `assets/images/listings/merchant/${item.id}.webp`,
+      src: listingImagePath(item, 'merchant'),
       alt: `${item.name} actual front photo`,
       label: 'actual front photo'
     });
