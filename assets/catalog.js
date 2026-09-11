@@ -5,7 +5,7 @@ const DC_CATALOG = [
   { id: '407205665076', category: 'drinks', name: 'Monster Juice Strawberry Lemonade', detail: 'Limited discontinued energy and juice drink, full 16 fl oz can', price: '$12.99', image: '407205665076.webp', featured: true },
   { id: '407205596661', category: 'drinks', name: "Monster Reserve Peaches N' Creme (2-Pack)", detail: 'Two discontinued 16 fl oz energy drink cans', price: '$15.99', image: '407205596661.webp' },
   { id: '407205565491', category: 'drinks', name: 'Monster Reserve Watermelon (2-Pack)', detail: 'Two discontinued 16 fl oz energy drink cans', price: '$19.99', image: '407205565491.webp' },
-  { id: '407205333909', category: 'drinks', name: 'Monster Energy Ultra Red (2-Pack)', detail: 'Two discontinued zero-sugar 16 fl oz energy drink cans', price: '$13.99', image: '407205333909.webp' },
+  { id: '407205333909', category: 'drinks', name: 'Monster Energy Ultra Red (2-Pack)', detail: 'Two hard-to-find zero-sugar 16 fl oz energy drink cans', price: '$13.99', image: '407205333909.webp' },
   { id: '407203191955', category: 'drinks', name: 'Red Bull Spring Edition Cherry Sakura (4-Pack)', detail: 'Four discontinued 12 fl oz cherry sakura energy drink cans', price: '$49.99', image: '407203191955.webp', featured: true },
   { id: '407203141723', category: 'drinks', name: 'Red Bull Amber Edition Sugar Free (4-Pack)', detail: 'Four rare 12 fl oz strawberry apricot energy drink cans', price: '$49.99', image: '407203141723.webp' },
   { id: '407203121847', category: 'drinks', name: 'Red Bull Green Edition Curuba Elderflower (4-Pack)', detail: 'Four discontinued 12 fl oz energy drink cans', price: '$49.99', image: '407203121847.webp', featured: true, maxQuantity: 2 },

@@ -39,11 +39,15 @@ const productPages = (await readdir(resolve(root, 'products'), { withFileTypes: 
 const soldPages = (await readdir(resolve(root, 'sold'), { withFileTypes: true }))
   .filter((entry) => entry.isFile() && entry.name.endsWith('.html'))
   .map((entry) => resolve(root, 'sold', entry.name));
+const journalPages = (await readdir(resolve(root, 'journal'), { withFileTypes: true }))
+  .filter((entry) => entry.isFile() && entry.name.endsWith('.html'))
+  .map((entry) => resolve(root, 'journal', entry.name));
 
 await Promise.all([
   writeFile(resolve(root, 'sitemap.xml'), await sitemapUrls(rootPages)),
   writeFile(resolve(root, 'sitemap-products.xml'), await sitemapUrls(productPages)),
-  writeFile(resolve(root, 'sitemap-sold.xml'), await sitemapUrls(soldPages))
+  writeFile(resolve(root, 'sitemap-sold.xml'), await sitemapUrls(soldPages)),
+  writeFile(resolve(root, 'sitemap-journal.xml'), await sitemapUrls(journalPages))
 ]);
 
 await rm(output, { recursive: true, force: true });
@@ -58,7 +62,7 @@ for (const entry of rootFiles) {
   }
 }
 
-for (const directory of ['assets', 'products', 'sold']) {
+for (const directory of ['assets', 'products', 'sold', 'journal']) {
   await cp(resolve(root, directory), resolve(output, directory), { recursive: true });
 }
 
