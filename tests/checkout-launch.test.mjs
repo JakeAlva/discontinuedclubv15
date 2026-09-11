@@ -3,8 +3,8 @@ import test from 'node:test';
 import createCheckout from '../netlify/functions/create-checkout.mjs';
 import { storeConfig } from '../lib/store-catalog.mjs';
 
-test('direct checkout remains disabled until the storefront launch flag changes', async () => {
-  assert.equal(storeConfig.directCheckoutEnabled, false);
+test('direct checkout is visible but still protected by the server launch flag', async () => {
+  assert.equal(storeConfig.directCheckoutEnabled, true);
 
   const previousValue = process.env.STRIPE_CHECKOUT_ENABLED;
   delete process.env.STRIPE_CHECKOUT_ENABLED;

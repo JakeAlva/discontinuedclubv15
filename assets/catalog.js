@@ -133,8 +133,8 @@ const DC_CATEGORIES = {
 
 const DC_STORE_CONFIG = {
   currency: 'usd',
-  directCheckoutEnabled: false,
-  directCheckoutDateLabel: 'coming soon',
+  directCheckoutEnabled: true,
+  directCheckoutDateLabel: 'live now',
   directDiscountPercent: 3.5,
   standardShippingCents: 749,
   shippingTiers: [

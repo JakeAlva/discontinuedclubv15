@@ -36,7 +36,7 @@ Listen for `checkout.session.completed` and `checkout.session.async_payment_succ
 
 For each paid direct order, the signed webhook subtracts the purchased quantity from the Stripe Product's `dc_stock` metadata. The checkout session ID is saved on the product so a retry of the same Stripe event cannot subtract the same purchase twice. Stripe stock of zero blocks future direct checkout even if the static website has not yet been rebuilt.
 
-The sandbox catalog and checkout flow must be reverified with all 48 products before direct checkout is enabled. The previous completed test covered a paid-shipping order, the $100 free-shipping rule, Stripe's hosted payment page, and the storefront confirmation page. No live products or payments were changed.
+The test catalog and checkout flow were verified with all 48 products before launch. Testing covered a paid-shipping order, the $100 free-shipping rule, Stripe's hosted payment page, and the storefront confirmation page. The live catalog was then synchronized without creating or completing a payment.
 
 ## Live-mode guard
 
@@ -44,7 +44,7 @@ The sync script refuses live keys unless `--live` is explicitly supplied:
 
 `npm run stripe:catalog -- --apply --live`
 
-Do this only after a complete test checkout, price review, shipping review, and tax configuration.
+Do this only after a complete test checkout, price review, shipping review, and tax configuration. The initial live catalog was synchronized on September 11, 2026.
 
 Run `npm run launch:audit:preview` while testing. Before production, run `npm run launch:audit`; it requires a live Stripe key, live webhook signing secret, canonical production URL, and an acknowledged tax review. The audit prints configuration status but never prints secret values.
 
