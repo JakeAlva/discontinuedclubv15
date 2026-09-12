@@ -5,13 +5,14 @@ The storefront includes a private eBay seller-sync engine. Production scheduling
 ## What the sync does
 
 - Reads every active fixed-price listing from the authorized eBay seller account.
-- Adds supported new listings and creates clean storefront and Google Merchant images from the first eBay listing photo.
+- Holds supported new listings for review. Approving specific IDs creates clean storefront and Google Merchant images from each listing's first eBay photo.
 - Updates listing prices and shared quantities.
 - Ends the matching eBay listing with the official `NotAvailable` reason when a direct sale uses the final unit.
 - Removes ended or out-of-stock listings from the live catalog and Google Merchant feed.
 - Rebuilds product pages, related-product links, the Merchant Center feed, and all product sitemaps.
 - Preserves local categories, editorial descriptions, featured choices, shipping weights, tax codes, and custom artwork for existing products.
 - Holds auctions, variation listings, non-USD listings, and listings without a usable photo for manual review instead of guessing.
+- Refuses production changes if eBay returns zero active listings, more than five products would disappear at once, or an individual price would move more than 25 percent.
 
 ## Shared inventory behavior
 
@@ -39,4 +40,10 @@ That command is a dry run. It reads eBay and Stripe but changes nothing. Applyin
 
 ```sh
 npm run ebay:sync -- --apply --live
+```
+
+To approve reviewed new listings, name their eBay item IDs explicitly:
+
+```sh
+npm run ebay:sync -- --apply --live --approve-new=ITEM_ID,ITEM_ID
 ```

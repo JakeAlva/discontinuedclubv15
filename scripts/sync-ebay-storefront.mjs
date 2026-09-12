@@ -3,10 +3,10 @@ import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import Stripe from 'stripe';
 import { ebayAccessToken, endEbayListing, getActiveEbayListings, getEbayListing, reviseEbayQuantity } from '../lib/ebay-api.mjs';
-import { listingSupportReason, reconcileSharedStock, siteItemFromListing } from '../lib/catalog-sync.mjs';
+import { listingSupportReason, reconcileSharedStock, siteItemFromListing, syncGuardViolations } from '../lib/catalog-sync.mjs';
 import { serializeCatalogModule } from '../lib/catalog-file.mjs';
 import { createSyncedListingImageBuffers } from '../lib/listing-images.mjs';
-import { catalog, directPriceCents, maxQuantity, priceLookupKey, storeConfig } from '../lib/store-catalog.mjs';
+import { catalog, directPriceCents, maxQuantity, parsePriceCents, priceLookupKey, storeConfig } from '../lib/store-catalog.mjs';
 import { stripeStock } from '../lib/stripe-inventory.mjs';
 
 try {
@@ -22,6 +22,8 @@ const imageRoot = resolve(root, 'assets/images/listings');
 const args = new Set(process.argv.slice(2));
 const apply = args.has('--apply');
 const allowLive = args.has('--live');
+const approveNewArg = process.argv.slice(2).find((arg) => arg.startsWith('--approve-new='));
+const approvedNewIds = new Set((approveNewArg?.split('=')[1] || '').split(',').map((id) => id.trim()).filter(Boolean));
 const publicSiteUrl = (process.env.PUBLIC_SITE_URL || 'https://discontinuedclub.com').replace(/\/$/, '');
 
 async function readState() {
@@ -160,20 +162,20 @@ for (const record of supported) {
   });
   const managedImage = !record.existing || record.previous?.managedImage === true;
   const sourceImageChanged = managedImage && record.previous?.sourceImageUrl !== record.imageUrl;
-  if (sharedStock > 0 && sourceImageChanged) {
-    imagePlans.set(record.listing.id, await createSyncedListingImageBuffers(record.imageUrl, { root }));
-  }
-  records.push({ ...record, product, previousEbayStock, siteStock, sharedStock, managedImage });
+  records.push({ ...record, product, previousEbayStock, siteStock, sharedStock, managedImage, sourceImageChanged });
 }
 
 const currentCatalog = [];
 const existingRecords = records.filter((record) => record.existing);
 const newRecords = records.filter((record) => !record.existing).sort((a, b) => newestFirst(a.listing, b.listing));
+const approvedNewRecords = newRecords.filter((record) => approvedNewIds.has(record.listing.id));
+const pendingNewRecords = newRecords.filter((record) => !approvedNewIds.has(record.listing.id));
+const managedRecords = [...existingRecords, ...approvedNewRecords];
 const orderedExisting = [
   ...existingRecords,
   ...skipped.filter((record) => record.existing).map((record) => ({ ...record, held: true }))
 ].sort((a, b) => catalog.indexOf(a.existing) - catalog.indexOf(b.existing));
-for (const record of [...newRecords, ...orderedExisting]) {
+for (const record of [...approvedNewRecords, ...orderedExisting]) {
   if (record.held) {
     currentCatalog.push(record.existing);
     continue;
@@ -187,12 +189,22 @@ for (const record of [...newRecords, ...orderedExisting]) {
 }
 
 const removed = catalog.filter((item) => !activeById.has(item.id));
-const changedStock = records.filter((record) => record.sharedStock !== record.listing.quantityAvailable || record.sharedStock !== record.siteStock);
-const priceChanges = records.filter((record) => record.existing?.price !== `$${(record.listing.priceCents / 100).toFixed(2)}`);
+const changedStock = managedRecords.filter((record) => record.sharedStock !== record.listing.quantityAvailable || record.sharedStock !== record.siteStock);
+const priceChanges = existingRecords.filter((record) => record.existing.price !== `$${(record.listing.priceCents / 100).toFixed(2)}`);
+const guardViolations = syncGuardViolations({
+  catalogCount: catalog.length,
+  activeCount: activeListings.length,
+  removedCount: removed.length,
+  priceChangePercents: priceChanges.map((record) => {
+    const previous = parsePriceCents(record.existing.price);
+    return previous > 0 ? Math.abs(record.listing.priceCents - previous) / previous * 100 : Infinity;
+  })
+});
 
 console.log(`eBay active listings: ${activeListings.length}`);
 console.log(`Storefront after sync: ${currentCatalog.length}`);
-console.log(`New supported listings: ${newRecords.length}`);
+console.log(`New listings approved in this run: ${approvedNewRecords.length}`);
+console.log(`New listings awaiting review: ${pendingNewRecords.length}`);
 console.log(`Ended or inactive listings removed: ${removed.length}`);
 console.log(`Price changes: ${priceChanges.length}`);
 console.log(`Inventory reconciliations: ${changedStock.length}`);
@@ -200,9 +212,24 @@ if (skipped.length) {
   console.log('\nListings held for review:');
   for (const { listing, reason } of skipped) console.log(`- ${listing.id} ${listing.title}: ${reason}`);
 }
+if (pendingNewRecords.length) {
+  console.log('\nNew listings awaiting approval:');
+  for (const { listing } of pendingNewRecords) console.log(`- ${listing.id} ${listing.title}`);
+}
+if (guardViolations.length) {
+  console.log('\nSafety guard stopped production apply:');
+  for (const violation of guardViolations) console.log(`- ${violation}`);
+}
 if (!apply) process.exit(0);
+if (guardViolations.length) throw new Error('Sync safety guard requires manual review.');
 
-for (const record of records) {
+for (const record of managedRecords) {
+  if (record.sharedStock > 0 && record.sourceImageChanged) {
+    imagePlans.set(record.listing.id, await createSyncedListingImageBuffers(record.imageUrl, { root }));
+  }
+}
+
+for (const record of managedRecords) {
   if (record.sharedStock !== record.listing.quantityAvailable) {
     if (record.sharedStock === 0) {
       await endEbayListing(accessToken, record.listing);
@@ -232,7 +259,7 @@ for (const [itemId, buffers] of imagePlans) await writeListingImages(itemId, buf
 
 const nextState = {
   version: 1,
-  listings: Object.fromEntries(records.map((record) => [record.listing.id, {
+  listings: Object.fromEntries(managedRecords.map((record) => [record.listing.id, {
     title: record.listing.title,
     priceCents: record.listing.priceCents,
     ebayQuantity: record.sharedStock,

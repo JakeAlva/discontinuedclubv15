@@ -5,7 +5,8 @@ import {
   inferShippingWeightOz,
   listingSupportReason,
   reconcileSharedStock,
-  siteItemFromListing
+  siteItemFromListing,
+  syncGuardViolations
 } from '../lib/catalog-sync.mjs';
 import { catalogCategories, serializeCatalogModule } from '../lib/catalog-file.mjs';
 import { ebayAccessToken, endEbayListing, normalizeEbayListing, reviseEbayQuantity } from '../lib/ebay-api.mjs';
@@ -36,6 +37,13 @@ test('shared inventory preserves sales from either channel', () => {
   assert.equal(reconcileSharedStock({ siteStock: 2, previousEbayStock: 3, currentEbayStock: 2 }), 1);
   assert.equal(reconcileSharedStock({ siteStock: 1, previousEbayStock: 2, currentEbayStock: 5 }), 4);
   assert.equal(reconcileSharedStock({ siteStock: 9, previousEbayStock: 3, currentEbayStock: 2 }), 2);
+});
+
+test('production safety guards stop anomalous syncs', () => {
+  assert.deepEqual(syncGuardViolations({ catalogCount: 59, activeCount: 59, removedCount: 2, priceChangePercents: [3, 12] }), []);
+  assert.match(syncGuardViolations({ catalogCount: 59, activeCount: 0, removedCount: 59 })[0], /zero active/i);
+  assert.ok(syncGuardViolations({ catalogCount: 59, activeCount: 52, removedCount: 7 }).some((message) => /removed/.test(message)));
+  assert.ok(syncGuardViolations({ catalogCount: 59, activeCount: 59, removedCount: 0, priceChangePercents: [26] }).some((message) => /price/.test(message)));
 });
 
 test('unsupported listing shapes are held instead of guessed', () => {
