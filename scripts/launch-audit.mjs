@@ -121,7 +121,7 @@ const journalPages = (await readdir(resolve(root, 'journal'), { withFileTypes: t
   .filter((entry) => entry.isFile() && entry.name.endsWith('.html'))
   .map((entry) => entry.name);
 const missingJournalSitemapPages = journalPages.filter((page) => !journalSitemap.includes(`/journal/${page}`));
-check(journalPages.length >= 3, 'Journal contains substantial launch coverage', 'Publish at least three status reports before launch.');
+check(journalPages.length >= 14, 'Journal contains the complete launch coverage set', 'Publish all 14 researched status reports before launch.');
 check(!missingJournalSitemapPages.length, 'Every journal report is present in the journal sitemap', `Missing journal sitemap entries: ${missingJournalSitemapPages.join(', ')}`);
 
 async function publishedHtmlFiles(directory) {
