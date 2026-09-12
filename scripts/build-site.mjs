@@ -13,7 +13,7 @@ const excludedPages = new Set([
 ]);
 const rootFiles = await readdir(root, { withFileTypes: true });
 const faviconMarkup = '  <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png">\n  <link rel="apple-touch-icon" href="/assets/images/logo-mark-clean.png">';
-const assetVersion = '46';
+const assetVersion = '47';
 
 async function canonicalUrl(file) {
   const html = await readFile(file, 'utf8');
@@ -27,6 +27,14 @@ async function sitemapUrls(files) {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map((url) => `  <url><loc>${url.replace(/&/g, '&amp;')}</loc></url>`).join('\n')}
 </urlset>
+`;
+}
+
+function sitemapIndex(names) {
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${names.map((name) => `  <sitemap><loc>https://discontinuedclub.com/${name}</loc></sitemap>`).join('\n')}
+</sitemapindex>
 `;
 }
 
@@ -45,7 +53,8 @@ const journalPages = (await readdir(resolve(root, 'journal'), { withFileTypes: t
   .map((entry) => resolve(root, 'journal', entry.name));
 
 await Promise.all([
-  writeFile(resolve(root, 'sitemap.xml'), await sitemapUrls(rootPages)),
+  writeFile(resolve(root, 'sitemap.xml'), sitemapIndex(['sitemap-pages.xml', 'sitemap-products.xml', 'sitemap-journal.xml', 'sitemap-sold.xml'])),
+  writeFile(resolve(root, 'sitemap-pages.xml'), await sitemapUrls(rootPages)),
   writeFile(resolve(root, 'sitemap-products.xml'), await sitemapUrls(productPages)),
   writeFile(resolve(root, 'sitemap-sold.xml'), await sitemapUrls(soldPages)),
   writeFile(resolve(root, 'sitemap-journal.xml'), await sitemapUrls(journalPages))
@@ -54,7 +63,8 @@ await Promise.all([
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
 
-for (const entry of rootFiles) {
+const publishRootFiles = await readdir(root, { withFileTypes: true });
+for (const entry of publishRootFiles) {
   if (!entry.isFile()) continue;
   const retiredCatalogPage = entry.name.startsWith('product-') || entry.name.startsWith('brand-');
   if (retiredCatalogPage || excludedPages.has(entry.name)) continue;

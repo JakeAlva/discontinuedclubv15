@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import createCheckout, { checkoutLineItem } from '../netlify/functions/create-checkout.mjs';
+import createCheckout, { checkoutLineItem, isAllowedCheckoutOrigin } from '../netlify/functions/create-checkout.mjs';
 import { storeConfig } from '../lib/store-catalog.mjs';
 
 test('direct checkout is visible but still protected by the server launch flag', async () => {
@@ -11,6 +11,7 @@ test('direct checkout is visible but still protected by the server launch flag',
   try {
     const response = await createCheckout(new Request('https://discontinuedclub.com/.netlify/functions/create-checkout', {
       method: 'POST',
+      headers: { 'Content-Type': 'application/json', Origin: 'https://discontinuedclub.com' },
       body: JSON.stringify({ items: [{ id: '406760474283', quantity: 1 }] })
     }));
     assert.equal(response.status, 503);
@@ -19,6 +20,27 @@ test('direct checkout is visible but still protected by the server launch flag',
     if (previousValue === undefined) delete process.env.STRIPE_CHECKOUT_ENABLED;
     else process.env.STRIPE_CHECKOUT_ENABLED = previousValue;
   }
+});
+
+test('checkout only accepts JSON requests from approved storefront origins', async () => {
+  assert.equal(isAllowedCheckoutOrigin('https://discontinuedclub.com'), true);
+  assert.equal(isAllowedCheckoutOrigin('https://deploy-preview-12--discontinuedclub.netlify.app'), true);
+  assert.equal(isAllowedCheckoutOrigin('https://attacker.example'), false);
+  assert.equal(isAllowedCheckoutOrigin('not-a-url'), false);
+
+  const blocked = await createCheckout(new Request('https://discontinuedclub.com/.netlify/functions/create-checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Origin: 'https://attacker.example' },
+    body: JSON.stringify({ items: [{ id: '406760474283', quantity: 1 }] })
+  }));
+  assert.equal(blocked.status, 403);
+
+  const wrongType = await createCheckout(new Request('https://discontinuedclub.com/.netlify/functions/create-checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain', Origin: 'https://discontinuedclub.com' },
+    body: '{}'
+  }));
+  assert.equal(wrongType.status, 415);
 });
 
 test('single-stock checkout lines omit Stripe adjustable quantity controls', () => {

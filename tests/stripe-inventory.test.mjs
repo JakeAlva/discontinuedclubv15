@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { availableStripeQuantity, inventoryAdjustment, stripeStock } from '../lib/stripe-inventory.mjs';
+import { appendProcessedSession, availableStripeQuantity, inventoryAdjustment, processedSessionIds, stripeStock } from '../lib/stripe-inventory.mjs';
 
 const product = (stock, metadata = {}) => ({
   id: 'prod_test',
@@ -41,4 +41,17 @@ test('repeated delivery of the same checkout session is idempotent', () => {
     inventoryAdjustment(product(3, { dc_last_sale_session: 'cs_paid' }), 2, 'cs_paid'),
     { status: 'already_applied', stock: 3 }
   );
+});
+
+test('recent session history prevents an older webhook replay from decrementing twice', () => {
+  const withHistory = product(2, {
+    dc_sale_sessions: 'cs_first,cs_second',
+    dc_last_sale_session: 'cs_second'
+  });
+  assert.deepEqual(processedSessionIds(withHistory), ['cs_first', 'cs_second']);
+  assert.deepEqual(inventoryAdjustment(withHistory, 1, 'cs_first'), {
+    status: 'already_applied',
+    stock: 2
+  });
+  assert.equal(appendProcessedSession(withHistory, 'cs_third'), 'cs_first,cs_second,cs_third');
 });

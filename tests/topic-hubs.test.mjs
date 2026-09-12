@@ -11,7 +11,7 @@ const hubs = [
 ];
 
 test('topic hubs are indexable, structured, and connected to the journal', async () => {
-  const sitemap = await readFile(resolve(root, 'sitemap.xml'), 'utf8');
+  const sitemap = await readFile(resolve(root, 'sitemap-pages.xml'), 'utf8');
   const blog = await readFile(resolve(root, 'blog.html'), 'utf8');
 
   for (const [file, count] of hubs) {

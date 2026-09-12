@@ -2,6 +2,3 @@ User-agent: *
 Allow: /
 
 Sitemap: https://discontinuedclub.com/sitemap.xml
-Sitemap: https://discontinuedclub.com/sitemap-products.xml
-Sitemap: https://discontinuedclub.com/sitemap-sold.xml
-Sitemap: https://discontinuedclub.com/sitemap-journal.xml

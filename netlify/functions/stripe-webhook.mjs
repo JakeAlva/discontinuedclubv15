@@ -1,12 +1,12 @@
 import Stripe from 'stripe';
-import { inventoryAdjustment } from '../../lib/stripe-inventory.mjs';
+import { appendProcessedSession, inventoryAdjustment, processedSessionIds } from '../../lib/stripe-inventory.mjs';
 import { ebayAccessToken, endEbayListing, reviseEbayQuantity } from '../../lib/ebay-api.mjs';
 
 const ebayConfigured = () => ['EBAY_CLIENT_ID', 'EBAY_CLIENT_SECRET', 'EBAY_REFRESH_TOKEN']
   .every((name) => Boolean(process.env[name]));
 
 async function mirrorWebsiteSaleToEbay(stripe, accessToken, product, targetStock, sessionId) {
-  if (!accessToken || product.metadata?.dc_last_ebay_sale_session === sessionId) return 'not_needed';
+  if (!accessToken || processedSessionIds(product, 'dc_ebay_sale_sessions', 'dc_last_ebay_sale_session').includes(sessionId)) return 'not_needed';
   const itemId = product.metadata?.ebay_item_id || product.metadata?.dc_listing_id;
   if (!itemId) return 'missing_item_id';
   try {
@@ -20,6 +20,7 @@ async function mirrorWebsiteSaleToEbay(stripe, accessToken, product, targetStock
     await stripe.products.update(product.id, {
       metadata: {
         dc_ebay_stock: String(targetStock),
+        dc_ebay_sale_sessions: appendProcessedSession(product, sessionId, 'dc_ebay_sale_sessions', 'dc_last_ebay_sale_session'),
         dc_last_ebay_sale_session: sessionId
       }
     });
@@ -46,7 +47,10 @@ async function updatePurchasedInventory(stripe, sessionId) {
   }
 
   for (const line of lineItems.data) {
-    const product = line.price?.product;
+    const expandedProduct = line.price?.product;
+    const productId = typeof expandedProduct === 'string' ? expandedProduct : expandedProduct?.id;
+    if (!productId) throw new Error(`Could not identify the Stripe product for checkout line ${line.id}`);
+    const product = await stripe.products.retrieve(productId);
     const adjustment = inventoryAdjustment(product, line.quantity, sessionId);
     if (adjustment.status === 'already_applied') {
       const ebay = await mirrorWebsiteSaleToEbay(stripe, ebayToken, product, adjustment.stock, sessionId);
@@ -60,6 +64,7 @@ async function updatePurchasedInventory(stripe, sessionId) {
     await stripe.products.update(product.id, {
       metadata: {
         dc_stock: String(adjustment.nextStock),
+        dc_sale_sessions: appendProcessedSession(product, sessionId),
         dc_last_sale_session: sessionId
       }
     });
@@ -87,6 +92,7 @@ export default async (request) => {
   let event;
   try {
     const body = await request.text();
+    if (body.length > 1_000_000) return new Response('Webhook request is too large', { status: 413 });
     event = stripe.webhooks.constructEvent(body, request.headers.get('stripe-signature'), process.env.STRIPE_WEBHOOK_SECRET);
   } catch (error) {
     console.error('Invalid Stripe webhook signature', error.message);
@@ -102,7 +108,6 @@ export default async (request) => {
           event: 'direct_order_paid',
           sessionId: session.id,
           amountTotal: session.amount_total,
-          customerEmail: session.customer_details?.email,
           listingIds: session.metadata.listing_ids,
           items: lineItems.data.map((line) => ({ description: line.description, quantity: line.quantity })),
           inventory: results

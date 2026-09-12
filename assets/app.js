@@ -379,17 +379,56 @@
     document.querySelectorAll('[data-add-to-cart]').forEach(function (button) {
       if (button.dataset.addToCart !== id) return;
       const label = button.querySelector('[data-add-label]');
+      const arrow = button.querySelector('.purchase-arrow');
       if (label) label.textContent = added > 0 ? 'Added' : 'Cart limit reached';
+      if (arrow) arrow.textContent = added > 0 ? '\u2713' : '!';
       button.classList.toggle('is-added', added > 0);
       button.classList.toggle('is-limited', added === 0);
       window.setTimeout(function () {
         if (label) label.textContent = 'Add to cart';
+        if (arrow) arrow.textContent = '\u2192';
         button.classList.remove('is-added', 'is-limited');
       }, 1400);
     });
     document.querySelectorAll('[data-product-action-feedback]').forEach(function (host) {
       if (host.dataset.productActionFeedback === id) host.textContent = message + '.';
     });
+  }
+
+  function celebrateCartAddition(button) {
+    if (!button || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const rect = button.getBoundingClientRect();
+    const burst = document.createElement('span');
+    const pieces = [
+      [-58, -36, -110, '#d7ff43', 0], [-42, -57, -72, '#2d5bf0', 20], [-21, -66, 95, '#ffca2c', 8],
+      [0, -72, 180, '#e6442f', 26], [23, -65, 80, '#ffffff', 12], [45, -54, 130, '#2d5bf0', 30],
+      [60, -32, 115, '#d7ff43', 4], [-64, -10, -160, '#ffca2c', 24], [64, -7, 155, '#e6442f', 16],
+      [-36, -22, 60, '#ffffff', 32], [34, -25, -45, '#ffca2c', 6], [4, -45, 120, '#d7ff43', 18]
+    ];
+    burst.className = 'purchase-confetti';
+    burst.setAttribute('aria-hidden', 'true');
+    burst.style.left = (rect.left + rect.width / 2) + 'px';
+    burst.style.top = (rect.top + rect.height / 2) + 'px';
+    pieces.forEach(function (piece, index) {
+      const particle = document.createElement('i');
+      particle.style.setProperty('--confetti-x', piece[0] + 'px');
+      particle.style.setProperty('--confetti-y', piece[1] + 'px');
+      particle.style.setProperty('--confetti-mid-x', (piece[0] * .78) + 'px');
+      particle.style.setProperty('--confetti-rotate', piece[2] + 'deg');
+      particle.style.setProperty('--confetti-mid-rotate', (piece[2] * .7) + 'deg');
+      particle.style.setProperty('--confetti-color', piece[3]);
+      particle.style.setProperty('--confetti-delay', piece[4] + 'ms');
+      if (index % 4 === 0) particle.className = 'is-dot';
+      burst.appendChild(particle);
+    });
+    document.body.appendChild(burst);
+    button.classList.remove('purchase-reward');
+    void button.offsetWidth;
+    button.classList.add('purchase-reward');
+    window.setTimeout(function () {
+      button.classList.remove('purchase-reward');
+      burst.remove();
+    }, 720);
   }
 
   function addToCart(id, requestedQuantity) {
@@ -478,6 +517,7 @@
         const result = addToCart(id, requestedQuantity);
         if (result) {
           showAddFeedback(id, result.added, result.maxQuantity);
+          if (result.added > 0) celebrateCartAddition(addButton);
           window.setTimeout(openCart, result.added > 0 ? 420 : 0);
         }
         return;

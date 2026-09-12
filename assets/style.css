@@ -67,8 +67,14 @@ button { color: inherit; }
 .purchase-button.is-added { background: #dff2ad; }
 .purchase-button.is-limited { background: #fff0d5; }
 .purchase-button.is-loading { box-shadow: 0 1px 0 var(--ink); transform: translateY(1px); }
+.purchase-button.purchase-reward { animation: purchase-button-reward .56s cubic-bezier(.2,.82,.28,1); }
 .purchase-arrow { font-size: 16px; line-height: 1; transition: transform .18s ease; }
 .purchase-button:hover .purchase-arrow { transform: translateX(3px); }
+.purchase-confetti { position: fixed; z-index: 1000; width: 0; height: 0; pointer-events: none; }
+.purchase-confetti i { position: absolute; left: -4px; top: -4px; width: 7px; height: 10px; border: 1px solid rgba(17,19,17,.34); border-radius: 1px; background: var(--confetti-color); box-shadow: 0 1px 0 rgba(17,19,17,.14); animation: purchase-confetti-pop .66s cubic-bezier(.12,.72,.24,1) var(--confetti-delay) forwards; opacity: 0; }
+.purchase-confetti i.is-dot { width: 8px; height: 8px; border-radius: 50%; }
+@keyframes purchase-button-reward { 0% { transform: translateY(1px) scale(.98); box-shadow: 0 1px 0 var(--ink); } 38% { transform: translateY(-3px) scale(1.025); box-shadow: 0 5px 0 var(--ink), 0 0 0 7px rgba(215,255,67,.36); } 100% { transform: translateY(-2px) scale(1); box-shadow: 0 4px 0 var(--ink), 0 0 0 0 rgba(215,255,67,0); } }
+@keyframes purchase-confetti-pop { 0% { opacity: 0; transform: translate3d(0, 2px, 0) rotate(0) scale(.45); } 14% { opacity: 1; } 58% { opacity: 1; transform: translate3d(var(--confetti-mid-x), var(--confetti-y), 0) rotate(var(--confetti-mid-rotate)) scale(1); } 100% { opacity: 0; transform: translate3d(var(--confetti-x), calc(var(--confetti-y) + 30px), 0) rotate(var(--confetti-rotate)) scale(.8); } }
 @keyframes cart-count-bump { 0%, 100% { transform: scale(1); } 42% { transform: scale(1.42) rotate(-8deg); } }
 
 .mobile-overlay { position: fixed; inset: 0; z-index: 210; background: rgba(0,0,0,.38); opacity: 0; pointer-events: none; transition: opacity .2s ease; }
@@ -834,7 +840,8 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .purchase-button, .purchase-button::after, .purchase-arrow, .cart-count, .product-related-image img, .mobile-product-bar { animation: none; transition: none; }
+  .purchase-button, .purchase-button::after, .purchase-arrow, .purchase-confetti, .purchase-confetti i, .cart-count, .product-related-image img, .mobile-product-bar { animation: none; transition: none; }
+  .purchase-confetti { display: none; }
 }
 
 @media (max-width: 420px) {

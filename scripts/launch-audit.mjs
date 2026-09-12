@@ -108,13 +108,19 @@ check(!missingFunctions.length, 'Checkout and webhook functions exist', `Missing
 check(await exists('google89cd7965ed90b8bf.html'), 'Google Search Console verification file exists', 'Restore the Google verification HTML file.');
 
 const sitemap = await readFile(resolve(root, 'sitemap.xml'), 'utf8');
+const pageSitemap = await readFile(resolve(root, 'sitemap-pages.xml'), 'utf8');
 const productSitemap = await readFile(resolve(root, 'sitemap-products.xml'), 'utf8');
 const soldSitemap = await readFile(resolve(root, 'sitemap-sold.xml'), 'utf8');
 const journalSitemap = await readFile(resolve(root, 'sitemap-journal.xml'), 'utf8');
 const missingSitemapPages = requiredPages
   .filter((page) => page !== 'checkout-success.html')
-  .filter((page) => page !== 'index.html' ? !sitemap.includes(`/${page}`) : !sitemap.includes('https://discontinuedclub.com/</loc>'));
+  .filter((page) => page !== 'index.html' ? !pageSitemap.includes(`/${page}`) : !pageSitemap.includes('https://discontinuedclub.com/</loc>'));
 check(!missingSitemapPages.length, 'Public pages are present in the sitemap', `Missing sitemap entries: ${missingSitemapPages.join(', ')}`);
+check(
+  ['sitemap-pages.xml', 'sitemap-products.xml', 'sitemap-sold.xml', 'sitemap-journal.xml'].every((name) => sitemap.includes(`https://discontinuedclub.com/${name}`)),
+  'Root sitemap index exposes every URL collection',
+  'Reference the page, product, sold, and journal sitemaps from sitemap.xml.'
+);
 const missingProductSitemapPages = catalog.filter((item) => !productSitemap.includes(`/products/${productSlug(item)}`)).map((item) => item.id);
 check(!missingProductSitemapPages.length, 'Every current product is present in the product sitemap', `Missing product sitemap entries: ${missingProductSitemapPages.join(', ')}`);
 const journalPages = (await readdir(resolve(root, 'journal'), { withFileTypes: true }))
@@ -135,7 +141,7 @@ async function publishedHtmlFiles(directory) {
 }
 
 const builtHtmlFiles = await publishedHtmlFiles(resolve(root, 'dist'));
-const combinedSitemaps = `${sitemap}\n${productSitemap}\n${soldSitemap}\n${journalSitemap}`;
+const combinedSitemaps = `${pageSitemap}\n${productSitemap}\n${soldSitemap}\n${journalSitemap}`;
 const missingCanonicals = [];
 const missingIndexedPages = [];
 const missingFavicons = [];

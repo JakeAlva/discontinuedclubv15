@@ -11,6 +11,18 @@ const json = (body, status = 200) => new Response(JSON.stringify(body), {
   headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' }
 });
 
+export function isAllowedCheckoutOrigin(value) {
+  try {
+    const url = new URL(value);
+    const local = (url.hostname === 'localhost' || url.hostname === '127.0.0.1') && url.protocol === 'http:';
+    const production = ['discontinuedclub.com', 'www.discontinuedclub.com', 'discontinuedclub.netlify.app'].includes(url.hostname) && url.protocol === 'https:';
+    const deployPreview = url.hostname.endsWith('--discontinuedclub.netlify.app') && url.protocol === 'https:';
+    return local || production || deployPreview;
+  } catch {
+    return false;
+  }
+}
+
 export function checkoutLineItem(priceId, quantity, availableQuantity) {
   return {
     price: priceId,
@@ -38,6 +50,8 @@ function validatedCart(payload) {
 }
 
 function checkoutOrigin(request) {
+  const requestOrigin = request.headers.get('origin');
+  if (isAllowedCheckoutOrigin(requestOrigin)) return new URL(requestOrigin).origin;
   const requestUrl = new URL(request.url);
   const requestHost = requestUrl.hostname;
   const allowedRequestHost = requestHost === 'discontinuedclub.com'
@@ -54,6 +68,8 @@ function checkoutOrigin(request) {
 
 export default async (request) => {
   if (request.method !== 'POST') return json({ error: 'Method not allowed.' }, 405);
+  if (!isAllowedCheckoutOrigin(request.headers.get('origin'))) return json({ error: 'Checkout requests must come from Discontinued Club.' }, 403);
+  if (!/^application\/json(?:\s*;|$)/i.test(request.headers.get('content-type') || '')) return json({ error: 'Checkout requests must use JSON.' }, 415);
   if (process.env.STRIPE_CHECKOUT_ENABLED !== 'true') {
     return json({ error: 'Direct checkout is not available yet. Please use the matching eBay listing.' }, 503);
   }
@@ -110,7 +126,8 @@ export default async (request) => {
       }],
       automatic_tax: { enabled: process.env.STRIPE_AUTOMATIC_TAX === 'true' },
       phone_number_collection: { enabled: true },
-      allow_promotion_codes: true,
+      allow_promotion_codes: false,
+      expires_at: Math.floor(Date.now() / 1000) + (31 * 60),
       metadata: { source: 'discontinuedclub.com', listing_ids: listingIds, shipping_tier: shipping.free ? 'free_100_plus' : 'standard_749' },
       payment_intent_data: { metadata: { source: 'discontinuedclub.com', listing_ids: listingIds, shipping_tier: shipping.free ? 'free_100_plus' : 'standard_749' } },
       custom_text: { shipping_address: { message: 'Shipping below $100 is based on estimated packaged weight. Orders of $100+ ship free. Orders placed before 12 PM Central are prepared for same-day carrier drop-off whenever possible.' } }
