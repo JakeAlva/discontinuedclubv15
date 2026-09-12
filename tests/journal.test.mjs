@@ -31,6 +31,8 @@ test('journal publishes every researched report as a substantial, indexable arti
     assert.match(html, /<base href="\.\.\/">/);
     assert.match(html, /"@type":"Article"/);
     assert.match(html, /"@type":"FAQPage"/);
+    assert.match(html, /"about":\{"@type":"Thing"/);
+    assert.doesNotMatch(html, /"about":\{"@type":"Product"/);
     assert.match(html, /<time datetime="2026-09-11">/);
     assert.ok(html.includes(`src="${report.image}"`), `${file} should use its one-can editorial image`);
     assert.ok(html.includes(`status-${report.statusKey}`), `${file} should expose its evidence status`);

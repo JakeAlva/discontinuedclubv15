@@ -41,7 +41,7 @@ function schemaMarkup(report) {
         author: { '@type': 'Organization', name: 'Discontinued Club Research', url: 'https://discontinuedclub.com/about.html' },
         publisher: { '@type': 'Organization', name: 'Discontinued Club', logo: { '@type': 'ImageObject', url: 'https://discontinuedclub.com/assets/images/logo-mark-clean.png' } },
         articleSection: report.lane,
-        about: { '@type': 'Product', name: report.product }
+        about: { '@type': 'Thing', name: report.product }
       },
       {
         '@type': 'FAQPage',
