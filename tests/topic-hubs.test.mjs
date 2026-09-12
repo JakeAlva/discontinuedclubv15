@@ -6,8 +6,8 @@ import { resolve } from 'node:path';
 const root = resolve(import.meta.dirname, '..');
 const hubs = [
   ['discontinued-monster-energy-flavors.html', 7],
-  ['discontinued-red-bull-flavors.html', 4],
-  ['discontinued-energy-drink-flavors-2026.html', 13]
+  ['discontinued-red-bull-flavors.html', 5],
+  ['discontinued-energy-drink-flavors-2026.html', 14]
 ];
 
 test('topic hubs are indexable, structured, and connected to the journal', async () => {

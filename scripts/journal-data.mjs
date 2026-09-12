@@ -1,5 +1,9 @@
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
+const redBullAppleUs = 'https://www.redbull.com/us-en/energydrink/products/red-bull-apple-edition';
+const redBullAppleReturn = 'https://www.prnewswire.com/news-releases/red-bull-brings-back-fan-favorite-fuji-apple--ginger-flavor-permanently-as-red-bull-apple-edition-302864340.html';
+const redBullFujiLaunch = 'https://www.prnewswire.com/news-releases/red-bull-reveals-the-new-red-bull-winter-edition-fuji-apple--ginger-302601938.html';
+const redBullAppleSugarfreeGb = 'https://www.redbull.com/gb-en/energydrink/products/red-bull-apple-edition-sugarfree';
 const monsterCatalog = 'https://www.monsterenergy.com/en-us/energy-drinks/';
 const monsterFiling = 'https://www.sec.gov/Archives/edgar/data/865752/000110465926020831/mnst-20251231x10k.htm';
 const monsterCuts = 'https://sporked.com/article/monster-energy-discontinued-2026/';
@@ -587,6 +591,56 @@ export const reports = [
       { label: 'Monster Beverage 2024 first-quarter release', url: 'https://www.sec.gov/Archives/edgar/data/865752/000110465924056393/tm2413295d1_ex99-1.htm', note: 'official U.S. launch evidence' },
       { label: 'Monster Beverage 2025 Form 10-K', url: monsterFiling, note: 'lists Rio Punch in the year-end portfolio' },
       { label: 'Monster Energy U.S.: current flavor directory', url: monsterCatalog, note: 'reviewed September 11, 2026' }
+    ]
+  },
+  {
+    slug: 'is-red-bull-fuji-apple-ginger-discontinued',
+    brand: 'Red Bull', product: 'Red Bull Fuji Apple & Ginger', theme: 'yellow', statusKey: 'format', statusLabel: 'Flavor returned; U.S. Sugarfree retired', lane: 'U.S. flavor and formula status', readTime: 10, checkedDate: '2026-09-12',
+    title: 'Is Red Bull Fuji Apple & Ginger discontinued?', seoTitle: 'Is Red Bull Fuji Apple & Ginger Discontinued? 2026 U.S. Status',
+    description: 'No. Fuji Apple & Ginger returned permanently as Red Bull Apple Edition in 2026, but the Sugarfree version is not in the permanent U.S. lineup.',
+    deck: 'The flavor is back in the United States as the permanent Red Bull Apple Edition. The part that disappeared is the Sugarfree formula: it launched here for winter 2025, but Red Bull brought back only the regular-sugar version in 2026.',
+    answerHeading: 'The flavor returned permanently. The U.S. Sugarfree version did not.',
+    answer: 'Red Bull relaunched Fuji Apple & Ginger nationwide on August 31, 2026 under the permanent Apple Edition name. Red Bull North America says the U.S. Apple Edition is only available with sugar. That makes the full-sugar flavor current, while the 2025 U.S. Winter Edition Sugarfree is a retired seasonal format rather than part of the new permanent range.',
+    sidebar: 'Permanent U.S. Apple Edition is current; the 2025 U.S. Sugarfree version did not join the permanent lineup.', evidenceGrade: 'Official', evidenceNote: 'Red Bull North America directly confirmed the return date, permanent status, U.S. formats, and with-sugar-only availability.',
+    image: 'assets/images/journal/red-bull-fuji-apple-ginger-sugarfree.webp', imageAlt: 'One Red Bull Winter Edition Sugarfree Fuji Apple and Ginger can', caption: 'The 2025 U.S. Winter Edition Sugarfree can. The flavor returned permanently in 2026, but this formula did not return to the U.S. lineup.', imageCredit: 'Red Bull product packshot',
+    cardCopy: 'Fuji Apple & Ginger is back permanently as Apple Edition, but the U.S. Sugarfree can from winter 2025 did not return with it.',
+    sections: [
+      { id: 'what-returned', heading: 'What exactly returned in August 2026?', toc: 'The permanent return', paragraphs: [
+        'Red Bull North America announced that Fuji Apple & Ginger returned to U.S. retailers on August 31, 2026 as Red Bull Apple Edition. The company describes it as a permanent addition to the Editions lineup, not another short winter run. The flavor profile remains Fuji apple with the warm spiciness of ginger, and the warm red-to-yellow gradient can carries forward the look used for the seasonal release.',
+        'The permanent U.S. offering includes 8.4-fluid-ounce and 12-fluid-ounce individual cans plus 12-fluid-ounce four-packs. That product range matters because it establishes a normal national relaunch. Shoppers who cannot find it immediately may be seeing an uneven rollout or a store-level assortment decision, not a second discontinuation.'
+      ]},
+      { id: 'sugarfree-status', heading: 'Where did the Sugarfree Fuji Apple & Ginger go?', toc: 'Sugarfree status', paragraphs: [
+        'The Sugarfree version was part of the original U.S. launch. Red Bull introduced Winter Edition Fuji Apple & Ginger nationwide on November 3, 2025 in both full-sugar and sugarfree formulas. Both were limited seasonal products, so the end of winter distribution applied to each exact Winter Edition SKU even though remaining cans could continue selling afterward.',
+        'The 2026 return changed that formula lineup. Red Bull North America lists the Apple Edition format as “with sugar” and answers the availability question directly: Apple Edition is only available with sugar in the United States. The current U.S. Apple Edition page likewise describes sugar, lists 26 grams in an 8.4-ounce can, and does not offer an Apple Edition Sugarfree selection.'
+      ]},
+      { id: 'conflicting-pages', heading: 'Why do U.S. searches still show Sugarfree cans?', toc: 'Conflicting search results', paragraphs: [
+        'Retail and brand URLs do not disappear the moment a seasonal SKU leaves the active range. Target and other U.S. retailers can still surface pages labeled Winter Edition Sugarfree or Apple Edition Sugarfree, sometimes with store-specific stock. Those pages document a real product from the 2025 release, but they do not override Red Bull North America’s statement about the permanent 2026 lineup.',
+        'A retailer page can represent leftover inventory, a delayed warehouse allocation, a reused catalog record, or a listing that remains searchable after local stock ends. The useful check is the product identity and production history: a can marked Winter Edition Sugarfree belongs to the limited 2025 U.S. run unless Red Bull announces a new American Sugarfree Apple Edition.'
+      ]},
+      { id: 'international', heading: 'Is Apple Edition Sugarfree still made outside the United States?', toc: 'International availability', paragraphs: [
+        'Yes. Red Bull’s Great Britain site currently presents Apple Edition Sugarfree in a 250-milliliter can with Fuji Apple & Ginger flavoring. That explains why fresh Sugarfree cans can appear in online searches and import listings even though the permanent U.S. range is regular sugar only.',
+        'Country-specific availability must stay separate. A current British can proves that Apple Edition Sugarfree exists in that market; it does not establish current U.S. production or distribution. Buyers should inspect the volume, spelling, nutrition panel, importer label, and country information before deciding whether a can is leftover American stock or a current foreign-market product.'
+      ]},
+      { id: 'package-guide', heading: 'How to tell the seasonal and permanent cans apart', toc: 'Package guide', paragraphs: [
+        'The 2025 U.S. cans say “The Winter Edition” and use the red-to-yellow gradient associated with Fuji Apple & Ginger. Sugarfree cans add a visible blue Sugarfree label and zero-sugar nutrition information. The 2026 permanent product uses the Apple Edition name while retaining the gradient design, so color alone is not enough to identify the release.',
+        'For collectors, the edition name and formula are both part of the item. A Winter Edition Sugarfree can is a retired U.S. seasonal package even though Fuji Apple & Ginger is current again as a full-sugar drink. A current Apple Edition can is the permanent American product. Imported Apple Edition Sugarfree cans represent another market and should be labeled that way when offered for sale.'
+      ]}
+    ],
+    faq: [
+      { question: 'Is Red Bull Fuji Apple & Ginger discontinued in the U.S.?', answer: 'No. It returned nationwide as the permanent Red Bull Apple Edition on August 31, 2026.' },
+      { question: 'Is Red Bull Apple Edition Sugarfree available in the U.S.?', answer: 'Not as part of the permanent 2026 U.S. lineup. Red Bull North America says Apple Edition is only available with sugar in the United States.' },
+      { question: 'Was Fuji Apple & Ginger Sugarfree ever sold in the U.S.?', answer: 'Yes. The limited Winter Edition launched nationwide in both full-sugar and sugarfree versions on November 3, 2025.' },
+      { question: 'Why can Target or another retailer still show Sugarfree?', answer: 'Retail pages can retain 2025 catalog records or remaining local inventory after a seasonal format ends. They do not establish a permanent 2026 U.S. relaunch.' },
+      { question: 'Can current Sugarfree cans be imported?', answer: 'Yes. Red Bull currently lists Apple Edition Sugarfree in Great Britain, so newer foreign-market cans can appear online.' },
+      { question: 'Is the old Winter Edition can collectible?', answer: 'Yes. The Winter Edition name and the U.S. Sugarfree formula are retired formats even though the flavor returned under the permanent Apple Edition name.' }
+    ],
+    sources: [
+      { label: 'Red Bull North America: Apple Edition returns permanently', url: redBullAppleReturn, note: 'official August 31, 2026 announcement and U.S. Sugarfree answer' },
+      { label: 'Red Bull U.S.: Apple Edition Fuji Apple & Ginger', url: redBullAppleUs, note: 'current U.S. product, sizes, and sugar information reviewed September 12, 2026' },
+      { label: 'Red Bull: Winter Edition Fuji Apple & Ginger launch', url: redBullFujiLaunch, note: 'official November 3, 2025 launch of both U.S. formulas' },
+      { label: 'Red Bull U.S.: current Red Bull Editions', url: redBullUsEditions, note: 'current lineup context reviewed September 12, 2026' },
+      { label: 'Red Bull Great Britain: Apple Edition Sugarfree', url: redBullAppleSugarfreeGb, note: 'current foreign-market Sugarfree context reviewed September 12, 2026' },
+      { label: 'Target: Winter 2025 Sugarfree product record', url: 'https://www.target.com/p/-/A-94796555', note: 'remaining U.S. retailer-page context, not current lineup evidence' }
     ]
   }
 ];

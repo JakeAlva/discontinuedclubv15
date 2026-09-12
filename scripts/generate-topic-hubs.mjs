@@ -5,8 +5,8 @@ import { catalog } from '../lib/store-catalog.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const publicRoot = 'https://discontinuedclub.com';
-const checkedDate = '2026-09-11';
-const checkedLabel = 'September 11, 2026';
+const checkedDate = '2026-09-12';
+const checkedLabel = 'September 12, 2026';
 const productSlug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
 const currentProductHrefs = new Set(catalog.map((item) => `products/${productSlug(item)}`));
 
@@ -37,18 +37,20 @@ const hubs = [
     eyebrow: 'Red Bull editions desk',
     title: 'Discontinued Red Bull flavors in the U.S.',
     seoTitle: 'Discontinued Red Bull Flavors: 2026 U.S. Editions List',
-    description: 'See which Red Bull flavors were discontinued in the United States in 2026, including Blueberry, Curuba Elderflower, and two Sugarfree Editions.',
-    lede: 'The 2026 U.S. Red Bull cuts, explained edition by edition so international cans and regular-sugar versions do not muddy the answer.',
+    description: 'See which Red Bull flavors and Sugarfree formats left the United States, plus the 2026 Fuji Apple return and why its Sugarfree version did not come back.',
+    lede: 'The 2026 U.S. Red Bull changes, explained edition by edition so international cans, seasonal stock, and regular-sugar versions do not muddy the answer.',
     filter: (report) => report.brand === 'Red Bull',
-    introHeading: 'Four U.S. Red Bull products left the range in 2026.',
+    introHeading: 'Four 2026 cuts, plus a permanent return without its U.S. Sugarfree format.',
     intro: [
       'The original Blue Edition Blueberry and Green Edition Curuba Elderflower are discontinued from normal U.S. distribution. Red Bull also ended two specific sugarfree variants: Red Edition Watermelon Sugarfree and Amber Edition Strawberry Apricot Sugarfree. Their regular-sugar counterparts are separate products, so seeing a current red or amber can does not reverse the sugarfree discontinuation.',
+      'Fuji Apple & Ginger creates the opposite kind of confusion. The flavor returned permanently in August 2026 as Apple Edition, but Red Bull says the current U.S. product is only offered with sugar. The 2025 Winter Edition Sugarfree was real U.S. inventory, and a Sugarfree Apple Edition remains current in some foreign markets, but neither makes it part of the permanent U.S. lineup.',
       'Red Bull manages its Editions by country. A flavor can still be produced overseas after it disappears from the American range, and imported cans can appear in U.S. search results. This index uses the current United States lineup as its primary market test, then checks specific 2026 reporting and remaining inventory context in each full article.'
     ],
     faq: [
       ['Is Red Bull Blueberry discontinued?', 'Yes in the United States. Current foreign-market Blueberry cans do not make it a current U.S. product.'],
       ['Is Curuba Elderflower discontinued?', 'Yes in normal U.S. distribution. Remaining U.S. cans and imported stock can still be sold after the range change.'],
-      ['Are regular Watermelon and Strawberry Apricot also discontinued?', 'The 2026 reports here concern the Sugarfree Watermelon and Sugarfree Strawberry Apricot variants. Regular-sugar Editions are separate products and must be checked independently.']
+      ['Are regular Watermelon and Strawberry Apricot also discontinued?', 'The 2026 reports here concern the Sugarfree Watermelon and Sugarfree Strawberry Apricot variants. Regular-sugar Editions are separate products and must be checked independently.'],
+      ['Is Fuji Apple & Ginger discontinued?', 'No. The flavor returned permanently in the United States as Apple Edition on August 31, 2026. The U.S. Sugarfree version from the 2025 Winter Edition did not return with it.']
     ]
   },
   {

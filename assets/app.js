@@ -54,9 +54,16 @@
     const announcement = directCheckoutEnabled
       ? 'Lower direct prices &nbsp;|&nbsp; Free shipping on $100+ &nbsp;|&nbsp; Same-day handling before 12 PM CT'
       : directCheckoutNotice + ' &nbsp;|&nbsp; Current inventory available on eBay';
-    const cartControls = directCheckoutEnabled
-      ? '      <button class="icon-button cart-trigger" type="button" aria-label="Open shopping cart" title="Shopping cart" data-cart-open><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"></path><path d="M9 8V5a3 3 0 0 1 6 0v3"></path></svg><span class="cart-count" data-cart-count>0</span></button>'
-      : '';
+    const cartControls = directCheckoutEnabled ? [
+      '      <div class="cart-status" data-cart-status>',
+      '        <button class="icon-button cart-trigger" type="button" aria-label="Open shopping cart" title="Shopping cart" data-cart-open><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"></path><path d="M9 8V5a3 3 0 0 1 6 0v3"></path></svg><span class="cart-count" data-cart-count>0</span></button>',
+      '        <div class="cart-nudge" data-cart-nudge aria-hidden="true" role="status">',
+      '          <div class="cart-nudge-head"><strong data-shipping-progress-copy>Free shipping at $100</strong><span data-shipping-progress-amount></span></div>',
+      '          <div class="shipping-progress-track" aria-hidden="true"><i data-shipping-progress-bar></i></div>',
+      '          <button type="button" data-cart-open>View cart</button>',
+      '        </div>',
+      '      </div>'
+    ].join('') : '';
     const headerShop = directCheckoutEnabled
       ? '      <a class="btn btn-dark header-shop" href="out-now.html">Shop direct</a>'
       : '      <a class="btn btn-dark header-shop" href="' + EBAY_STORE + '" target="_blank" rel="noopener">Shop on eBay</a>';
@@ -288,6 +295,30 @@
   }
 
   let renderedCartCount = null;
+  let cartNudgeTimer = null;
+
+  function hideCartNudge() {
+    const nudge = document.querySelector('[data-cart-nudge]');
+    if (!nudge) return;
+    nudge.classList.remove('show');
+    nudge.setAttribute('aria-hidden', 'true');
+  }
+
+  function acknowledgeCartAddition() {
+    const trigger = document.querySelector('.cart-trigger');
+    const nudge = document.querySelector('[data-cart-nudge]');
+    if (!trigger || !nudge) return;
+    window.clearTimeout(cartNudgeTimer);
+    trigger.classList.remove('cart-attention');
+    void trigger.offsetWidth;
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) trigger.classList.add('cart-attention');
+    nudge.classList.add('show');
+    nudge.setAttribute('aria-hidden', 'false');
+    cartNudgeTimer = window.setTimeout(function () {
+      trigger.classList.remove('cart-attention');
+      hideCartNudge();
+    }, 5200);
+  }
 
   function renderCart() {
     const details = getCartDetails();
@@ -304,6 +335,10 @@
         window.setTimeout(function () { host.classList.remove('bump'); }, 420);
       }
     });
+    document.querySelectorAll('[data-cart-status]').forEach(function (host) {
+      host.classList.toggle('has-items', itemCount > 0);
+    });
+    if (!itemCount) hideCartNudge();
     renderedCartCount = itemCount;
     document.querySelectorAll('[data-cart-subtotal]').forEach(function (host) { host.textContent = formatMoney(subtotal); });
     document.querySelectorAll('[data-cart-shipping]').forEach(function (host) { host.textContent = shipping.amount ? formatMoney(shipping.amount) : 'Free'; });
@@ -349,6 +384,7 @@
     const drawer = document.getElementById('cart-drawer');
     const cartOverlay = document.getElementById('cart-overlay');
     if (!drawer || !cartOverlay) return;
+    hideCartNudge();
     closeMenu();
     document.body.classList.add('cart-open');
     drawer.classList.add('show');
@@ -517,8 +553,10 @@
         const result = addToCart(id, requestedQuantity);
         if (result) {
           showAddFeedback(id, result.added, result.maxQuantity);
-          if (result.added > 0) celebrateCartAddition(addButton);
-          window.setTimeout(openCart, result.added > 0 ? 420 : 0);
+          if (result.added > 0) {
+            celebrateCartAddition(addButton);
+            acknowledgeCartAddition();
+          }
         }
         return;
       }

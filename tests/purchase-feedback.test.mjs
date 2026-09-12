@@ -7,10 +7,27 @@ const styles = await readFile(new URL('../assets/style.css', import.meta.url), '
 
 test('successful cart additions trigger localized purchase feedback', () => {
   assert.match(app, /function celebrateCartAddition\(button\)/);
-  assert.match(app, /if \(result\.added > 0\) celebrateCartAddition\(addButton\)/);
+  assert.match(app, /celebrateCartAddition\(addButton\)/);
   assert.match(app, /className = 'purchase-confetti'/);
   assert.match(styles, /\.purchase-confetti \{ position: fixed;/);
   assert.match(styles, /@keyframes purchase-confetti-pop/);
+});
+
+test('adding an item acknowledges the cart without forcing the drawer open', () => {
+  assert.match(app, /function acknowledgeCartAddition\(\)/);
+  assert.match(app, /data-cart-nudge/);
+  assert.match(app, /acknowledgeCartAddition\(\)/);
+  assert.doesNotMatch(app, /setTimeout\(openCart/);
+  assert.match(styles, /\.cart-trigger\.cart-attention/);
+  assert.match(styles, /@keyframes cart-trigger-shake/);
+});
+
+test('the add confirmation exposes the live free-shipping progress', () => {
+  assert.match(app, /class="cart-nudge" data-cart-nudge/);
+  assert.match(app, /data-shipping-progress-copy/);
+  assert.match(app, /data-shipping-progress-amount/);
+  assert.match(app, /data-shipping-progress-bar/);
+  assert.match(app, /Add ' \+ formatMoney\(shipping\.remaining\) \+ ' more/);
 });
 
 test('purchase motion honors the reduced motion preference', () => {

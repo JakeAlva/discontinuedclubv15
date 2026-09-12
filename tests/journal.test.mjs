@@ -33,7 +33,7 @@ test('journal publishes every researched report as a substantial, indexable arti
     assert.match(html, /"@type":"FAQPage"/);
     assert.match(html, /"about":\{"@type":"Thing"/);
     assert.doesNotMatch(html, /"about":\{"@type":"Product"/);
-    assert.match(html, /<time datetime="2026-09-11">/);
+    assert.ok(html.includes(`<time datetime="${report.checkedDate || '2026-09-11'}">`));
     assert.ok(html.includes(`src="${report.image}"`), `${file} should use its one-can editorial image`);
     assert.ok(html.includes(`status-${report.statusKey}`), `${file} should expose its evidence status`);
     assert.ok(readableWordCount(html) >= 900, `${file} should contain at least 900 readable words`);
@@ -48,12 +48,15 @@ test('journal separates U.S. discontinuations, current formats, and unconfirmed 
   const blueberry = reports.find((report) => report.slug === 'is-red-bull-blue-edition-blueberry-discontinued');
   const ultraRed = reports.find((report) => report.slug === 'is-monster-ultra-red-discontinued');
   const liveWire = reports.find((report) => report.slug === 'is-mountain-dew-livewire-discontinued');
+  const fujiApple = reports.find((report) => report.slug === 'is-red-bull-fuji-apple-ginger-discontinued');
   const rumors = reports.filter((report) => report.statusKey === 'rumor');
 
   assert.equal(blueberry.statusKey, 'discontinued');
   assert.equal(ultraRed.statusKey, 'discontinued');
   assert.equal(liveWire.statusKey, 'current');
   assert.match(liveWire.answer, /older design/i);
+  assert.equal(fujiApple.statusKey, 'format');
+  assert.match(fujiApple.answer, /only available with sugar/i);
   assert.deepEqual(rumors.map((report) => report.product).sort(), [
     'Juice Monster Rio Punch',
     'Monster Rehab Green Tea',
@@ -71,7 +74,7 @@ test('journal index and sitemap expose every status report', async () => {
 
   assert.match(index, /United States market/);
   assert.match(index, /Discontinuation watch/);
-  assert.match(index, /14 individual articles/);
+  assert.match(index, /15 individual articles/);
   for (const report of reports) {
     const file = `${report.slug}.html`;
     assert.ok(index.includes(`journal/${file}`), `blog.html should link to ${file}`);
