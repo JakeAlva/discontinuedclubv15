@@ -30,6 +30,16 @@ test('the add confirmation exposes the live free-shipping progress', () => {
   assert.match(app, /Add ' \+ formatMoney\(shipping\.remaining\) \+ ' more/);
 });
 
+test('purchase buttons become durable cart-aware inventory controls', () => {
+  assert.match(app, /function syncAddButtons\(onlyId\)/);
+  assert.match(app, /button\.disabled = atLimit/);
+  assert.match(app, /maxQuantity === 1 \? 'Last one in cart' : 'All stock in cart'/);
+  assert.match(app, /else if \(quantity > 0\) buttonLabel = 'Add another'/);
+  assert.match(app, /syncAddButtons\(\);/);
+  assert.match(app, /syncAddButtons\(id\);/);
+  assert.match(styles, /\.purchase-button\.is-cart-full/);
+});
+
 test('purchase motion honors the reduced motion preference', () => {
   assert.match(app, /matchMedia\('\(prefers-reduced-motion: reduce\)'\)\.matches/);
   assert.match(styles, /@media \(prefers-reduced-motion: reduce\)/);

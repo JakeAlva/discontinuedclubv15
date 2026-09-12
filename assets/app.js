@@ -263,6 +263,53 @@
 
   let cart = loadCart();
 
+  function cartQuantityFor(id) {
+    const line = cart.find(function (candidate) { return candidate.id === id; });
+    return line ? line.quantity : 0;
+  }
+
+  function syncAddButtons(onlyId) {
+    document.querySelectorAll('[data-add-to-cart]').forEach(function (button) {
+      const id = button.dataset.addToCart;
+      if (onlyId && id !== onlyId) return;
+      const item = catalog.find(function (candidate) { return candidate.id === id; });
+      if (!item) return;
+      const maxQuantity = getMaxQuantity(item);
+      const quantity = cartQuantityFor(id);
+      const atLimit = quantity >= maxQuantity;
+      const label = button.querySelector('[data-add-label]');
+      const arrow = button.querySelector('.purchase-arrow');
+      let buttonLabel = 'Add to cart';
+
+      if (atLimit) buttonLabel = maxQuantity === 1 ? 'Last one in cart' : 'All stock in cart';
+      else if (quantity > 0) buttonLabel = 'Add another';
+
+      button.disabled = atLimit;
+      button.classList.toggle('is-cart-full', atLimit);
+      button.title = atLimit
+        ? (maxQuantity === 1 ? 'The last available one is already in your cart' : 'All available units are already in your cart')
+        : 'Add ' + item.name + ' to cart';
+      button.setAttribute('aria-label', atLimit
+        ? item.name + ': ' + (maxQuantity === 1 ? 'the last available one is already in your cart' : 'all available units are already in your cart')
+        : buttonLabel + ': ' + item.name);
+      if (label) label.textContent = buttonLabel;
+      if (arrow) arrow.textContent = atLimit ? '\u2713' : (quantity > 0 ? '+' : '\u2192');
+    });
+
+    document.querySelectorAll('[data-product-action-feedback]').forEach(function (host) {
+      const id = host.dataset.productActionFeedback;
+      if (onlyId && id !== onlyId) return;
+      const item = catalog.find(function (candidate) { return candidate.id === id; });
+      if (!item) return;
+      const maxQuantity = getMaxQuantity(item);
+      const quantity = cartQuantityFor(id);
+      if (!quantity) host.textContent = 'In-stock items are reserved when checkout is completed.';
+      else if (quantity >= maxQuantity && maxQuantity === 1) host.textContent = 'The last available one is held in your cart.';
+      else if (quantity >= maxQuantity) host.textContent = 'All ' + maxQuantity + ' available units are in your cart.';
+      else host.textContent = quantity + ' of ' + maxQuantity + ' available units ' + (quantity === 1 ? 'is' : 'are') + ' in your cart.';
+    });
+  }
+
   function saveCart() {
     try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (error) { /* Storage can be disabled. */ }
     renderCart();
@@ -353,6 +400,7 @@
       host.textContent = shipping.remaining ? 'Add ' + formatMoney(shipping.remaining) + ' more' : 'Your order ships free';
     });
     document.querySelectorAll('[data-shipping-progress-bar]').forEach(function (host) { host.style.width = shipping.progress + '%'; });
+    syncAddButtons();
 
     const host = document.getElementById('cart-items');
     if (!host) return;
@@ -410,21 +458,23 @@
     return picker ? Math.max(1, Number(picker.querySelector('[data-product-quantity]')?.value) || 1) : 1;
   }
 
-  function showAddFeedback(id, added, maxQuantity) {
-    const message = added > 0 ? (added === 1 ? 'Added to cart' : added + ' added to cart') : 'Maximum ' + maxQuantity + ' in cart';
+  function showAddFeedback(id, added) {
+    if (added <= 0) {
+      syncAddButtons(id);
+      return;
+    }
+    const message = added === 1 ? 'Added to cart' : added + ' added to cart';
     document.querySelectorAll('[data-add-to-cart]').forEach(function (button) {
       if (button.dataset.addToCart !== id) return;
       const label = button.querySelector('[data-add-label]');
       const arrow = button.querySelector('.purchase-arrow');
-      if (label) label.textContent = added > 0 ? 'Added' : 'Cart limit reached';
-      if (arrow) arrow.textContent = added > 0 ? '\u2713' : '!';
-      button.classList.toggle('is-added', added > 0);
-      button.classList.toggle('is-limited', added === 0);
+      if (label) label.textContent = 'Added';
+      if (arrow) arrow.textContent = '\u2713';
+      button.classList.add('is-added');
       window.setTimeout(function () {
-        if (label) label.textContent = 'Add to cart';
-        if (arrow) arrow.textContent = '\u2192';
-        button.classList.remove('is-added', 'is-limited');
-      }, 1400);
+        button.classList.remove('is-added');
+        syncAddButtons(id);
+      }, 1100);
     });
     document.querySelectorAll('[data-product-action-feedback]').forEach(function (host) {
       if (host.dataset.productActionFeedback === id) host.textContent = message + '.';
@@ -552,7 +602,7 @@
         const requestedQuantity = addButton.dataset.addQuantitySource ? selectedProductQuantity(id) : 1;
         const result = addToCart(id, requestedQuantity);
         if (result) {
-          showAddFeedback(id, result.added, result.maxQuantity);
+          showAddFeedback(id, result.added);
           if (result.added > 0) {
             celebrateCartAddition(addButton);
             acknowledgeCartAddition();
