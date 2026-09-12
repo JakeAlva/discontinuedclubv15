@@ -113,7 +113,7 @@
       '    <div class="footer-main">',
       '      <div class="footer-brand"><a class="footer-logo" href="index.html"><img src="assets/images/logo-mark-clean.png" alt=""><span class="logo-type"><strong>Discontinued</strong><small>Club</small></span></a><p>A focused resale store for rare drinks, discontinued goods, sports gear, collectibles, and everyday products that are getting harder to find.</p></div>',
       '      <div class="footer-column"><strong>Shop</strong><a href="out-now.html">All listings</a><a href="out-now.html?category=drinks">Rare drinks</a><a href="out-now.html?category=apparel">Sports & apparel</a></div>',
-      '      <div class="footer-column"><strong>Discover</strong><a href="sold-archive.html">Previously sold</a><a href="out-now.html?category=collectibles">Collectibles & cards</a><a href="blog.html">Discontinued journal</a></div>',
+      '      <div class="footer-column"><strong>Discover</strong><a href="sold-archive.html">Previously sold</a><a href="blog.html">Discontinued journal</a><a href="discontinued-energy-drink-flavors-2026.html">2026 flavor index</a></div>',
       '      <div class="footer-column"><strong>Discontinued Club</strong><a href="about.html">About</a><a href="contact.html">Contact</a><a href="' + EBAY_STORE + '" target="_blank" rel="noopener">eBay profile</a></div>',
       '      <div class="footer-column"><strong>Policies</strong><a href="shipping-returns.html">Shipping & returns</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>',
       '    </div>',

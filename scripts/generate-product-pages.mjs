@@ -1,6 +1,7 @@
 import { access, mkdir, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { catalog, directPriceCents, formatMoney, maxQuantity, parsePriceCents, storeConfig } from '../lib/store-catalog.mjs';
+import { catalog, directPriceCents, formatMoney, maxQuantity, parsePriceCents, shippingQuote, storeConfig } from '../lib/store-catalog.mjs';
+import { productBrand, productCondition, productConditionLabel } from '../lib/product-metadata.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const output = resolve(root, 'products');
@@ -65,6 +66,8 @@ function pageMarkup(item, images) {
   const ebayPrice = parsePriceCents(item.price);
   const savings = Math.max(0, ebayPrice - directPrice);
   const quantity = maxQuantity(item);
+  const condition = productCondition(item);
+  const shipping = shippingQuote(directPrice, [{ item, quantity: 1 }]);
   const description = directCheckoutEnabled
     ? `${item.name}. ${item.detail}. Buy direct from Discontinued Club or use the matching eBay listing.`
     : `${item.name}. ${item.detail}. Available now through the matching Discontinued Club eBay listing. ${directCheckoutNotice}.`;
@@ -86,6 +89,8 @@ function pageMarkup(item, images) {
     description,
     image: [absoluteListingImage(item, 'merchant')],
     sku: item.id,
+    brand: { '@type': 'Brand', name: productBrand(item) },
+    itemCondition: `https://schema.org/${condition === 'used' ? 'UsedCondition' : 'NewCondition'}`,
     category: categoryLabels[item.category],
     offers: {
       '@type': 'Offer',
@@ -93,7 +98,20 @@ function pageMarkup(item, images) {
       price: ((directCheckoutEnabled ? directPrice : ebayPrice) / 100).toFixed(2),
       availability: 'https://schema.org/InStock',
       url: productUrl(item),
-      seller: { '@type': 'Organization', name: 'Discontinued Club' }
+      seller: { '@type': 'Organization', name: 'Discontinued Club' },
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'US' },
+        shippingRate: { '@type': 'MonetaryAmount', value: (shipping.amountCents / 100).toFixed(2), currency: 'USD' }
+      },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'US',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 30,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/ReturnShippingFees'
+      }
     }
   };
 
@@ -136,7 +154,7 @@ function pageMarkup(item, images) {
           ${pricePanel}
           <div class="current-product-actions">${actions}</div>
           <div class="current-product-notes">
-            <div class="current-product-note"><strong>Condition</strong><span>${escapeHtml(item.detail)}</span></div>
+            <div class="current-product-note"><strong>Condition</strong><span>${productConditionLabel(item)}</span></div>
             <div class="current-product-note"><strong>Available</strong><span>${quantity} ${quantity === 1 ? 'unit' : 'units'} currently listed</span></div>
             <div class="current-product-note"><strong>Item ID</strong><span>${item.id}</span></div>
           </div>
