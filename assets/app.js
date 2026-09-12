@@ -73,7 +73,7 @@
       '    <div class="cart-cost-line"><span data-cart-shipping-label>Shipping</span><strong data-cart-shipping>$7.49</strong></div>',
       '    <div class="cart-cost-line cart-estimate"><span>Estimated total</span><strong data-cart-estimate>$0.00</strong></div>',
       '    <p>Estimated total is before any required sales tax. Final details are shown in secure Stripe Checkout.</p>',
-      '    <button class="btn btn-dark btn-full cart-checkout" type="button" data-cart-checkout>Continue to secure checkout</button>',
+      '    <button class="btn btn-acid btn-full cart-checkout purchase-button" type="button" data-cart-checkout><span>Continue to secure checkout</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button>',
       '    <div class="checkout-message" data-checkout-message role="status"></div>',
       '    <div class="stripe-note"><span aria-hidden="true">S</span> Payments processed securely by Stripe</div>',
       '  </div>',
@@ -175,7 +175,7 @@
       ? '<div class="product-pricing"><span><small>Direct price</small><strong>' + formatMoney(directCents) + '</strong></span><span class="market-price"><small>eBay price</small><s>' + item.price + '</s></span></div><div class="product-savings">Save ' + formatMoney(savings) + ' on the item price</div>'
       : '<div class="product-pricing"><span><small>Available on eBay</small><strong>' + item.price + '</strong></span><span class="market-price"><small>Expected direct price</small><strong>' + formatMoney(directCents) + '</strong></span></div><div class="product-savings">Expected direct savings: ' + formatMoney(savings) + '</div>';
     const actions = directCheckoutEnabled
-      ? '<button class="btn btn-dark product-add" type="button" data-add-to-cart="' + item.id + '">Add to cart</button><a class="ebay-option" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a>'
+      ? '<button class="btn btn-acid product-add purchase-button" type="button" data-add-to-cart="' + item.id + '"><span data-add-label>Add to cart</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button><a class="ebay-option" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a>'
       : '<a class="btn btn-dark product-add" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a><a class="ebay-option" href="' + detailHref + '">View details</a>';
     return [
       '<article class="product-card" data-category="' + item.category + '" data-search="' + escapeHtml((item.name + ' ' + item.detail).toLowerCase()) + '">',
@@ -286,6 +286,8 @@
     };
   }
 
+  let renderedCartCount = null;
+
   function renderCart() {
     const details = getCartDetails();
     const itemCount = details.reduce(function (sum, line) { return sum + line.quantity; }, 0);
@@ -294,7 +296,14 @@
     document.querySelectorAll('[data-cart-count]').forEach(function (host) {
       host.textContent = itemCount;
       host.classList.toggle('show', itemCount > 0);
+      if (renderedCartCount !== null && itemCount > renderedCartCount) {
+        host.classList.remove('bump');
+        void host.offsetWidth;
+        host.classList.add('bump');
+        window.setTimeout(function () { host.classList.remove('bump'); }, 420);
+      }
     });
+    renderedCartCount = itemCount;
     document.querySelectorAll('[data-cart-subtotal]').forEach(function (host) { host.textContent = formatMoney(subtotal); });
     document.querySelectorAll('[data-cart-shipping]').forEach(function (host) { host.textContent = shipping.amount ? formatMoney(shipping.amount) : 'Free'; });
     document.querySelectorAll('[data-cart-shipping-label]').forEach(function (host) {
@@ -357,14 +366,43 @@
     if (cartOverlay) cartOverlay.classList.remove('show');
   }
 
-  function addToCart(id) {
+  function selectedProductQuantity(id) {
+    const picker = Array.from(document.querySelectorAll('[data-product-quantity-picker]')).find(function (candidate) {
+      return candidate.dataset.productId === id;
+    });
+    return picker ? Math.max(1, Number(picker.querySelector('[data-product-quantity]')?.value) || 1) : 1;
+  }
+
+  function showAddFeedback(id, added, maxQuantity) {
+    const message = added > 0 ? (added === 1 ? 'Added to cart' : added + ' added to cart') : 'Maximum ' + maxQuantity + ' in cart';
+    document.querySelectorAll('[data-add-to-cart]').forEach(function (button) {
+      if (button.dataset.addToCart !== id) return;
+      const label = button.querySelector('[data-add-label]');
+      if (label) label.textContent = added > 0 ? 'Added' : 'Cart limit reached';
+      button.classList.toggle('is-added', added > 0);
+      button.classList.toggle('is-limited', added === 0);
+      window.setTimeout(function () {
+        if (label) label.textContent = 'Add to cart';
+        button.classList.remove('is-added', 'is-limited');
+      }, 1400);
+    });
+    document.querySelectorAll('[data-product-action-feedback]').forEach(function (host) {
+      if (host.dataset.productActionFeedback === id) host.textContent = message + '.';
+    });
+  }
+
+  function addToCart(id, requestedQuantity) {
     const item = catalog.find(function (candidate) { return candidate.id === id; });
-    if (!item) return;
+    if (!item) return null;
+    const max = getMaxQuantity(item);
+    const quantity = Math.max(1, Math.min(max, Number(requestedQuantity) || 1));
     const line = cart.find(function (candidate) { return candidate.id === id; });
-    if (line) line.quantity = Math.min(getMaxQuantity(item), line.quantity + 1);
-    else if (cart.length < (Number(storeConfig.maxCartLines) || 20)) cart.push({ id: id, quantity: 1 });
+    const before = line ? line.quantity : 0;
+    if (line) line.quantity = Math.min(max, line.quantity + quantity);
+    else if (cart.length < (Number(storeConfig.maxCartLines) || 20)) cart.push({ id: id, quantity: quantity });
     saveCart();
-    openCart();
+    const current = cart.find(function (candidate) { return candidate.id === id; });
+    return { item: item, added: Math.max(0, (current ? current.quantity : 0) - before), maxQuantity: max };
   }
 
   function changeCartQuantity(id, amount) {
@@ -381,7 +419,8 @@
     if (!cart.length || button.disabled) return;
     const message = document.querySelector('[data-checkout-message]');
     button.disabled = true;
-    button.textContent = 'Opening Stripe...';
+    button.classList.add('is-loading');
+    button.innerHTML = '<span>Opening Stripe...</span>';
     if (message) message.textContent = '';
     try {
       const response = await fetch('/.netlify/functions/create-checkout', {
@@ -395,15 +434,53 @@
     } catch (error) {
       if (message) message.textContent = error.message;
       button.disabled = false;
-      button.textContent = 'Continue to secure checkout';
+      button.classList.remove('is-loading');
+      button.innerHTML = '<span>Continue to secure checkout</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span>';
     }
+  }
+
+  function setupProductQuantity() {
+    document.querySelectorAll('[data-product-quantity-picker]').forEach(function (picker) {
+      const output = picker.querySelector('[data-product-quantity]');
+      const decrease = picker.querySelector('[data-product-quantity-decrease]');
+      const increase = picker.querySelector('[data-product-quantity-increase]');
+      const max = Math.max(1, Number(picker.dataset.max) || 1);
+      const price = Math.max(1, Number(picker.dataset.price) || 1);
+      const threshold = Math.max(1, Number(picker.dataset.freeShippingThreshold) || 10000);
+
+      function update(value) {
+        const quantity = Math.max(1, Math.min(max, Number(value) || 1));
+        output.value = quantity;
+        output.textContent = quantity;
+        decrease.disabled = quantity <= 1;
+        increase.disabled = quantity >= max;
+        const note = document.querySelector('[data-product-order-note="' + picker.dataset.productId + '"]');
+        if (note) {
+          const remaining = Math.max(0, threshold - (price * quantity));
+          note.textContent = remaining ? formatMoney(remaining) + ' away from free standard shipping.' : 'This quantity qualifies for free standard shipping.';
+        }
+      }
+
+      decrease.addEventListener('click', function () { update(Number(output.value) - 1); });
+      increase.addEventListener('click', function () { update(Number(output.value) + 1); });
+      update(1);
+    });
   }
 
   function setupCart() {
     if (!directCheckoutEnabled) return;
     document.addEventListener('click', function (event) {
       const addButton = event.target.closest('[data-add-to-cart]');
-      if (addButton) { addToCart(addButton.dataset.addToCart); return; }
+      if (addButton) {
+        const id = addButton.dataset.addToCart;
+        const requestedQuantity = addButton.dataset.addQuantitySource ? selectedProductQuantity(id) : 1;
+        const result = addToCart(id, requestedQuantity);
+        if (result) {
+          showAddFeedback(id, result.added, result.maxQuantity);
+          window.setTimeout(openCart, result.added > 0 ? 420 : 0);
+        }
+        return;
+      }
       if (event.target.closest('[data-cart-open]')) { openCart(); return; }
       if (event.target.closest('[data-cart-close]')) { closeCart(); return; }
       const removeButton = event.target.closest('[data-cart-remove]');
@@ -738,6 +815,7 @@
 
   renderCatalogs();
   renderSoldCatalog();
+  setupProductQuantity();
   setupCart();
   setupCatalogFilters();
   setupSoldFilters();

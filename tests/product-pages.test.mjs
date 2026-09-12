@@ -23,7 +23,14 @@ test('every current listing has a dedicated indexable product page', async () =>
     assert.ok(html.includes(`https://schema.org/${productCondition(item) === 'used' ? 'UsedCondition' : 'NewCondition'}`));
     assert.ok(html.includes('"@type":"OfferShippingDetails"'));
     assert.ok(html.includes('"@type":"MerchantReturnPolicy"'));
-    if (storeConfig.directCheckoutEnabled) assert.ok(html.includes(`data-add-to-cart="${item.id}"`));
+    assert.ok(html.includes('class="product-page"'));
+    assert.equal((html.match(/class="product-related-card"/g) || []).length, Math.min(4, catalog.length - 1));
+    if (storeConfig.directCheckoutEnabled) {
+      assert.ok(html.includes(`data-add-to-cart="${item.id}"`));
+      assert.ok(html.includes('class="mobile-product-bar"'));
+      assert.ok(html.includes('data-add-label>Add to cart'));
+      if ((item.maxQuantity || storeConfig.defaultMaxQuantity || 1) > 1) assert.ok(html.includes(`data-product-id="${item.id}"`));
+    }
     else assert.ok(!html.includes('data-add-to-cart='));
   }
 });
@@ -36,4 +43,16 @@ test('jersey product pages lead with the mockup and include distinct real photos
   assert.equal(firstMainImage, `assets/images/listings/branded/${item.id}.webp?v=38`);
   assert.ok(html.includes(`data-product-gallery-src="assets/images/listings/merchant/${item.id}.webp?v=38"`));
   assert.ok(html.includes(`data-product-gallery-src="assets/images/listings/backs/${item.id}.webp"`));
+});
+
+test('public return policy matches the Merchant Center return settings', async () => {
+  const html = await readFile(resolve(root, 'shipping-returns.html'), 'utf8');
+
+  assert.match(html, /within 30 days of delivery/i);
+  assert.match(html, /by mail only/i);
+  assert.match(html, /buyer is responsible for return shipping/i);
+  assert.match(html, /No restocking fee/i);
+  assert.match(html, /Exchanges are not offered/i);
+  assert.match(html, /within 10 calendar days/i);
+  assert.match(html, /online-only retailer/i);
 });
