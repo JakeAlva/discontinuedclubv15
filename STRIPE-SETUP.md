@@ -52,8 +52,10 @@ Run `npm run launch:audit:preview` while testing. Before production, run `npm ru
 
 The current audit starts conservatively with eBay's 13.25% category rate plus $0.40, Stripe's standard domestic-card rate of 2.9% plus $0.30, and Stripe Tax Basic's possible 0.5%. It assumes eBay shipping revenue of $7.49 and the same postage cost on both channels. The verified recent sports sale was charged 13.6%, which leaves more margin than the audit assumes. Actual eBay shipping charges, promoted-listing fees, international cards, disputes, and a different postage label can change the result.
 
-## Inventory warning
+## Inventory synchronization
 
-Stripe does not automatically reduce an eBay listing's quantity, and an eBay sale does not update Stripe. Until an inventory database and eBay API sync are added, every sale must trigger an immediate manual update on the other channel and a website catalog update when a listing sells out. Direct website payments do reduce Stripe's `dc_stock` through the signed webhook, and Stripe is the final stock check before direct checkout.
+The eBay synchronization engine in `scripts/sync-ebay-storefront.mjs` reconciles active eBay quantities with Stripe's `dc_stock`, updates the static catalog and product pages, and can mirror website sales back to eBay when the Netlify eBay credentials are configured. See `EBAY-SYNC-SETUP.md` for the required OAuth setup and guarded apply commands.
+
+Until the OAuth credentials and scheduled production job are enabled, every sale still requires an immediate update on the other channel. Direct website payments reduce Stripe's `dc_stock` through the signed webhook, and Stripe remains the final stock check before direct checkout.
 
 The webhook's session marker protects against Stripe retrying the same event. Because stock metadata is not a transactional inventory database, simultaneous purchases in separate sessions remain a low-volume edge case that must be watched in Stripe after launch.

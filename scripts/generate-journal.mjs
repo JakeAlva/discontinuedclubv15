@@ -1,11 +1,14 @@
 import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { reports } from './journal-data.mjs';
+import { catalog } from '../lib/store-catalog.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const journalDirectory = resolve(root, 'journal');
 const checkedDate = '2026-09-11';
 const checkedLabel = 'September 11, 2026';
+const productSlug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
+const currentProductHrefs = new Set(catalog.map((item) => `products/${productSlug(item)}`));
 
 function articleUrl(report) {
   return `https://discontinuedclub.com/journal/${report.slug}.html`;
@@ -71,7 +74,9 @@ function relatedReports(report) {
 }
 
 function articleMarkup(report) {
-  const shop = report.shop ? `<section class="article-shop-callout"><div><div class="section-kicker">Collector inventory</div><h2>${report.shop.heading}</h2><p>${report.shop.copy}</p></div><a class="btn btn-dark" href="${report.shop.href}">${report.shop.cta}</a></section>` : '<!-- No matching store listing at publication. -->';
+  const shop = report.shop && currentProductHrefs.has(report.shop.href)
+    ? `<section class="article-shop-callout"><div><div class="section-kicker">Collector inventory</div><h2>${report.shop.heading}</h2><p>${report.shop.copy}</p></div><a class="btn btn-dark" href="${report.shop.href}">${report.shop.cta}</a></section>`
+    : '<!-- No matching current store listing at publication. -->';
   const sections = report.sections.map((section) => `<section id="${section.id}"><h2>${section.heading}</h2>${section.paragraphs.map((paragraph) => `<p>${paragraph}</p>`).join('')}</section>`).join('\n          ');
   const imageCredit = report.imageCredit ? ` Image source: ${report.imageCredit}.` : '';
   const toc = report.sections.map((section) => `<a href="#${section.id}">${section.toc || section.heading}</a>`).join('');

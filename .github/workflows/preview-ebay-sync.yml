@@ -1,0 +1,38 @@
+name: Preview eBay inventory sync
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    env:
+      EBAY_CLIENT_ID: ${{ secrets.EBAY_CLIENT_ID }}
+      EBAY_CLIENT_SECRET: ${{ secrets.EBAY_CLIENT_SECRET }}
+      EBAY_REFRESH_TOKEN: ${{ secrets.EBAY_REFRESH_TOKEN }}
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      PUBLIC_SITE_URL: https://discontinuedclub.com
+      EBAY_ENVIRONMENT: production
+      EBAY_API_VERSION: '1477'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check encrypted sync settings
+        shell: bash
+        run: |
+          if [[ -z "$EBAY_CLIENT_ID" || -z "$EBAY_CLIENT_SECRET" || -z "$EBAY_REFRESH_TOKEN" || -z "$STRIPE_SECRET_KEY" ]]; then
+            echo "The preview remains disabled until all four repository secrets are configured."
+            exit 1
+          fi
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+      - name: Read eBay and Stripe without changing either account
+        run: npm run ebay:sync

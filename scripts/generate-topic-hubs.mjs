@@ -1,11 +1,14 @@
 import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { reports } from './journal-data.mjs';
+import { catalog } from '../lib/store-catalog.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const publicRoot = 'https://discontinuedclub.com';
 const checkedDate = '2026-09-11';
 const checkedLabel = 'September 11, 2026';
+const productSlug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
+const currentProductHrefs = new Set(catalog.map((item) => `products/${productSlug(item)}`));
 
 const hubs = [
   {
@@ -78,7 +81,9 @@ const escapeHtml = (value) => String(value)
   .replace(/'/g, '&#039;');
 
 function reportCard(report) {
-  const shop = report.shop ? `<a class="topic-shop-link" href="${report.shop.href}">Shop the matching product</a>` : '';
+  const shop = report.shop && currentProductHrefs.has(report.shop.href)
+    ? `<a class="topic-shop-link" href="${report.shop.href}">Shop the matching product</a>`
+    : '';
   return `<article class="topic-report-card"><a class="topic-report-media" href="journal/${report.slug}.html"><img src="${report.image}" alt="${escapeHtml(report.imageAlt)}" width="1200" height="1200" loading="lazy"></a><div class="topic-report-copy"><div class="journal-card-meta"><span class="journal-status status-${report.statusKey}">${report.statusLabel}</span><span>${report.brand}</span></div><h3><a href="journal/${report.slug}.html">${escapeHtml(report.title)}</a></h3><p>${escapeHtml(report.cardCopy)}</p><div class="topic-report-links"><a class="text-link" href="journal/${report.slug}.html">Read the evidence &rarr;</a>${shop}</div></div></article>`;
 }
 

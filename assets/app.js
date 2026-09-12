@@ -1,5 +1,6 @@
 (function () {
   const EBAY_STORE = 'https://www.ebay.com/usr/discontinuedclub';
+  const STRIPE_BADGE = '<a class="stripe-badge-link" href="https://stripe.com" target="_blank" rel="noopener noreferrer" aria-label="Payments powered by Stripe"><img class="stripe-badge" src="assets/images/powered-by-stripe.svg" alt="Powered by Stripe" width="150" height="34"></a>';
   const catalog = window.DC_CATALOG || [];
   const soldCatalog = window.DC_SOLD_CATALOG || [];
   const categories = window.DC_CATEGORIES || {};
@@ -72,10 +73,10 @@
       '    <div class="cart-total"><span>Item subtotal</span><strong data-cart-subtotal>$0.00</strong></div>',
       '    <div class="cart-cost-line"><span data-cart-shipping-label>Shipping</span><strong data-cart-shipping>$7.49</strong></div>',
       '    <div class="cart-cost-line cart-estimate"><span>Estimated total</span><strong data-cart-estimate>$0.00</strong></div>',
-      '    <p>Estimated total is before any required sales tax. Final details are shown in secure Stripe Checkout.</p>',
+      '    <p>Estimated total is before any required sales tax. Final details are shown in secure hosted checkout.</p>',
       '    <button class="btn btn-acid btn-full cart-checkout purchase-button" type="button" data-cart-checkout><span>Continue to secure checkout</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button>',
       '    <div class="checkout-message" data-checkout-message role="status"></div>',
-      '    <div class="stripe-note"><span aria-hidden="true">S</span> Payments processed securely by Stripe</div>',
+      '    <div class="stripe-note"><span>Payments processed securely</span>' + STRIPE_BADGE + '</div>',
       '  </div>',
       '</aside>'
     ].join('') : '';
@@ -105,7 +106,7 @@
 
   function footerMarkup() {
     const checkoutCopy = directCheckoutEnabled
-      ? 'Direct payments are processed securely by Stripe. eBay remains available as a separate checkout option.'
+      ? '<span>Direct payments are processed securely</span>' + STRIPE_BADGE + '<span>eBay remains available as a separate checkout option.</span>'
       : directCheckoutNotice + '. Current purchases are completed through eBay.';
     return [
       '<footer>',
@@ -420,7 +421,7 @@
     const message = document.querySelector('[data-checkout-message]');
     button.disabled = true;
     button.classList.add('is-loading');
-    button.innerHTML = '<span>Opening Stripe...</span>';
+    button.innerHTML = '<span>Opening secure checkout...</span>';
     if (message) message.textContent = '';
     try {
       const response = await fetch('/.netlify/functions/create-checkout', {

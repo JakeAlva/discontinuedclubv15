@@ -11,10 +11,13 @@
     "products:build": "node scripts/generate-product-pages.mjs",
     "journal:build": "node scripts/generate-journal.mjs",
     "merchant:feed": "node scripts/generate-merchant-feed.mjs",
+    "ebay:sync": "node scripts/sync-ebay-storefront.mjs",
     "stripe:catalog": "node scripts/sync-stripe-products.mjs",
     "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {
+    "fast-xml-parser": "^5.11.1",
+    "sharp": "^0.35.4",
     "stripe": "^22.6.0"
   }
 }

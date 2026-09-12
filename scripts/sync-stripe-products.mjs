@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 import { loadEnvFile } from 'node:process';
 import { catalog, directPriceCents, formatMoney, maxQuantity, priceLookupKey, storeConfig } from '../lib/store-catalog.mjs';
+import { stripeStock } from '../lib/stripe-inventory.mjs';
 
 const productSlug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
 
@@ -50,6 +51,12 @@ const productsByListingId = new Map(
 
 for (const item of selected) {
   const lookupKey = priceLookupKey(item);
+  let product = productsByListingId.get(item.id);
+  const currentStock = stripeStock(product) ?? maxQuantity(item);
+  const rememberedEbayStock = Number(product?.metadata?.dc_ebay_stock);
+  const ebayStock = Number.isInteger(rememberedEbayStock) && rememberedEbayStock >= 0
+    ? rememberedEbayStock
+    : maxQuantity(item);
   const productData = {
     name: item.name,
     description: item.detail,
@@ -60,7 +67,8 @@ for (const item of selected) {
     metadata: {
       dc_listing_id: item.id,
       ebay_item_id: item.id,
-      dc_stock: String(maxQuantity(item)),
+      dc_stock: String(currentStock),
+      dc_ebay_stock: String(ebayStock),
       dc_weight_oz: String(item.shippingWeightOz),
       category: item.category,
       source: 'discontinuedclub.com'
@@ -68,7 +76,6 @@ for (const item of selected) {
   };
   productData.tax_code = item.taxCode || process.env.STRIPE_DEFAULT_TAX_CODE || 'txcd_99999999';
 
-  let product = productsByListingId.get(item.id);
   product = product
     ? await stripe.products.update(product.id, productData)
     : await stripe.products.create(productData);

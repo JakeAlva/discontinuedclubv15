@@ -11,6 +11,7 @@ const directCheckoutDateLabel = storeConfig.directCheckoutDateLabel || 'coming s
 const directCheckoutNotice = directCheckoutDateLabel.toLowerCase() === 'coming soon'
   ? 'Direct checkout coming soon'
   : `Direct checkout expected ${directCheckoutDateLabel}`;
+const stripeBadge = '<a class="stripe-badge-link stripe-badge-product" href="https://stripe.com" target="_blank" rel="noopener noreferrer" aria-label="Payments powered by Stripe"><img class="stripe-badge" src="assets/images/powered-by-stripe.svg" alt="Powered by Stripe" width="150" height="34"></a>';
 const categoryLabels = {
   drinks: 'Rare drinks',
   apparel: 'Sports & apparel',
@@ -95,7 +96,7 @@ function pageMarkup(item, images) {
     ? 'This item qualifies for free standard shipping.'
     : `${formatMoney(freeShippingThreshold - directPrice)} away from free standard shipping.`;
   const detailBand = directCheckoutEnabled
-    ? '<div><strong>Secure direct checkout</strong><span>Payment details are entered on Stripe-hosted Checkout.</span></div><div><strong>Weight-based shipping</strong><span>Shipping adjusts for heavier carts and becomes free at $100.</span></div><div><strong>Fast handling</strong><span>Orders before 12 PM Central are prepared for same-day carrier drop-off whenever possible.</span></div><div><strong>30-day return window</strong><span>Eligible items may be returned by mail under the posted return policy.</span></div>'
+    ? `<div><strong>Secure direct checkout</strong><span>Payment details stay on a secure hosted checkout.</span>${stripeBadge}</div><div><strong>Weight-based shipping</strong><span>Shipping adjusts for heavier carts and becomes free at $100.</span></div><div><strong>Fast handling</strong><span>Orders before 12 PM Central are prepared for same-day carrier drop-off whenever possible.</span></div><div><strong>30-day return window</strong><span>Eligible items may be returned by mail under the posted return policy.</span></div>`
     : `<div><strong>Available today on eBay</strong><span>This item links to the matching Discontinued Club eBay listing.</span></div><div><strong>${directCheckoutNotice}</strong><span>Lower website pricing and a multi-item cart are planned for the direct-store launch.</span></div><div><strong>Fast handling</strong><span>Orders before 12 PM Central are prepared for same-day carrier drop-off whenever possible.</span></div>`;
   const schema = {
     '@context': 'https://schema.org',

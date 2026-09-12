@@ -1,5 +1,34 @@
 import Stripe from 'stripe';
 import { inventoryAdjustment } from '../../lib/stripe-inventory.mjs';
+import { ebayAccessToken, endEbayListing, reviseEbayQuantity } from '../../lib/ebay-api.mjs';
+
+const ebayConfigured = () => ['EBAY_CLIENT_ID', 'EBAY_CLIENT_SECRET', 'EBAY_REFRESH_TOKEN']
+  .every((name) => Boolean(process.env[name]));
+
+async function mirrorWebsiteSaleToEbay(stripe, accessToken, product, targetStock, sessionId) {
+  if (!accessToken || product.metadata?.dc_last_ebay_sale_session === sessionId) return 'not_needed';
+  const itemId = product.metadata?.ebay_item_id || product.metadata?.dc_listing_id;
+  if (!itemId) return 'missing_item_id';
+  try {
+    const listing = {
+      id: itemId,
+      sku: product.metadata?.ebay_sku || '',
+      inventoryTrackingMethod: product.metadata?.ebay_inventory_tracking || 'ItemID'
+    };
+    if (targetStock === 0) await endEbayListing(accessToken, listing);
+    else await reviseEbayQuantity(accessToken, listing, targetStock);
+    await stripe.products.update(product.id, {
+      metadata: {
+        dc_ebay_stock: String(targetStock),
+        dc_last_ebay_sale_session: sessionId
+      }
+    });
+    return targetStock === 0 ? 'ended' : 'updated';
+  } catch (error) {
+    console.error('Immediate eBay inventory update failed; scheduled sync will retry', itemId, error.message);
+    return 'pending_scheduled_sync';
+  }
+}
 
 async function updatePurchasedInventory(stripe, sessionId) {
   const lineItems = await stripe.checkout.sessions.listLineItems(sessionId, {
@@ -7,12 +36,21 @@ async function updatePurchasedInventory(stripe, sessionId) {
     expand: ['data.price.product']
   });
   const results = [];
+  let ebayToken = null;
+  if (ebayConfigured()) {
+    try {
+      ebayToken = await ebayAccessToken();
+    } catch (error) {
+      console.error('Could not authorize immediate eBay inventory update; scheduled sync will retry', error.message);
+    }
+  }
 
   for (const line of lineItems.data) {
     const product = line.price?.product;
     const adjustment = inventoryAdjustment(product, line.quantity, sessionId);
     if (adjustment.status === 'already_applied') {
-      results.push({ productId: product.id, status: adjustment.status, stock: adjustment.stock });
+      const ebay = await mirrorWebsiteSaleToEbay(stripe, ebayToken, product, adjustment.stock, sessionId);
+      results.push({ productId: product.id, status: adjustment.status, stock: adjustment.stock, ebay });
       continue;
     }
     if (adjustment.status !== 'update') {
@@ -25,12 +63,14 @@ async function updatePurchasedInventory(stripe, sessionId) {
         dc_last_sale_session: sessionId
       }
     });
+    const ebay = await mirrorWebsiteSaleToEbay(stripe, ebayToken, product, adjustment.nextStock, sessionId);
     results.push({
       productId: product.id,
       status: 'updated',
       previousStock: adjustment.previousStock,
       stock: adjustment.nextStock,
-      quantity: line.quantity
+      quantity: line.quantity,
+      ebay
     });
   }
 
