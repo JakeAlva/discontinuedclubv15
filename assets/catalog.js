@@ -1,7 +1,7 @@
 const DC_CATALOG = [
   { id: '407207453659', category: 'drinks', name: 'Monster Energy Ultra Watermelon', detail: 'Discontinued zero-sugar energy drink, full 16 fl oz can', price: '$7.99', image: '407207453659.webp' },
   { id: '407207373104', category: 'drinks', name: 'Red Bull Red Edition Sugar Free Watermelon (4-Pack)', detail: 'Four discontinued 12 fl oz watermelon energy drink cans', price: '$59.99', image: '407207373104.webp', featured: true },
-  { id: '407205693415', category: 'drinks', name: 'Alani Nu Lime Slush (4-Pack)', detail: 'Four discontinued sugar-free 12 fl oz energy drink cans', price: '$34.98', image: '407205693415.webp', featured: true, maxQuantity: 2 },
+  { id: '407205693415', category: 'drinks', name: 'Alani Nu Lime Slush (4-Pack)', detail: 'Four discontinued sugar-free 12 fl oz energy drink cans', price: '$34.98', image: '407205693415.webp', featured: true },
   { id: '407205665076', category: 'drinks', name: 'Monster Juice Strawberry Lemonade', detail: 'Limited discontinued energy and juice drink, full 16 fl oz can', price: '$12.99', image: '407205665076.webp', featured: true },
   { id: '407205596661', category: 'drinks', name: "Monster Reserve Peaches N' Creme (2-Pack)", detail: 'Two discontinued 16 fl oz energy drink cans', price: '$15.99', image: '407205596661.webp' },
   { id: '407205565491', category: 'drinks', name: 'Monster Reserve Watermelon (2-Pack)', detail: 'Two discontinued 16 fl oz energy drink cans', price: '$19.99', image: '407205565491.webp' },
