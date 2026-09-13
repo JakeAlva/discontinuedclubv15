@@ -40,6 +40,17 @@ test('checkout identifiers and inventory limits remain valid after a sync', () =
   }
 });
 
+test('Mega Evolution single packs match the verified eBay listing', () => {
+  const item = catalog.find((candidate) => candidate.id === '407212006333');
+  assert.ok(item);
+  assert.equal(item.category, 'collectibles');
+  assert.equal(parsePriceCents(item.price), 649);
+  assert.equal(directPriceCents(item), 626);
+  assert.equal(maxQuantity(item), 3);
+  assert.equal(item.shippingWeightOz, 8);
+  assert.equal(priceLookupKey(item), 'dc_407212006333_direct');
+});
+
 test('catalog omits listings already known to have ended', () => {
   assert.equal(catalog.find((item) => item.id === '407119925622'), undefined);
   assert.equal(catalog.find((item) => item.id === '407134859583'), undefined);

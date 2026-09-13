@@ -844,8 +844,8 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .brand-finder #finder-description { margin-top: 8px; font-size: 11px; line-height: 1.45; }
   .finder-live-count { display: none; }
   .finder-grid { grid-template-columns: 1fr; gap: 8px; padding: 8px; }
-  .finder-option { min-height: 118px; grid-template-columns: 118px minmax(0, 1fr); }
-  .finder-option-media { min-height: 118px; }
+  .finder-option { min-height: 106px; grid-template-columns: 96px minmax(0, 1fr); }
+  .finder-option-media { min-height: 104px; }
   .finder-option-copy { padding: 13px 13px 11px; }
   .finder-option-topline small { font-size: 7px; }
   .finder-option-topline b { font-size: 8px; }

@@ -824,7 +824,9 @@
   }
 
   function finderOption(name, copy, count, category) {
-    const spotlight = catalog.find(function (item) { return item.category === category; });
+    const spotlightIds = { care: '406760474283' };
+    const spotlight = catalog.find(function (item) { return item.id === spotlightIds[category]; })
+      || catalog.find(function (item) { return item.category === category; });
     const categoryNumber = ['drinks', 'apparel', 'collectibles', 'care'].indexOf(category) + 1;
     const image = spotlight
       ? '<img src="' + listingImagePath(spotlight, 'branded', false) + '" alt="' + escapeHtml(spotlight.name) + '" width="1200" height="1200">'

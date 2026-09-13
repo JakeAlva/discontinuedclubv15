@@ -11,6 +11,7 @@ test('the first-visit store finder uses real current product imagery', () => {
   assert.match(app, /listingImagePath\(spotlight, 'branded', false\)/);
   assert.match(app, /class="finder-option-media"/);
   assert.match(styles, /\.finder-option-media img/);
+  assert.match(app, /const spotlightIds = \{ care: '406760474283' \}/);
 });
 
 test('the richer finder only loads when it is meant to open', () => {
@@ -24,5 +25,5 @@ test('finder departments keep distinct campaign accents and mobile layouts', () 
   assert.match(styles, /\.finder-option\[data-category="apparel"\]::before/);
   assert.match(styles, /\.finder-option\[data-category="collectibles"\]::before/);
   assert.match(styles, /\.finder-option\[data-category="care"\]::before/);
-  assert.match(styles, /grid-template-columns: 118px minmax\(0, 1fr\)/);
+  assert.match(styles, /grid-template-columns: 96px minmax\(0, 1fr\)/);
 });

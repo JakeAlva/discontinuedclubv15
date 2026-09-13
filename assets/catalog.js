@@ -55,6 +55,7 @@ const DC_CATALOG = [
   { id: '406760868081', category: 'collectibles', name: 'Funko Pop! Wayne Gretzky #45', detail: 'Los Angeles Kings NHL vinyl figure', price: '$12.99', image: '8da5a3eda84b0bca.webp' },
   { id: '407086892969', category: 'collectibles', name: 'Pokemon Perfect Order Booster Bundle', detail: 'English box with 6 booster packs', price: '$38.99', image: '1c6ab9f4d119bded.webp', maxQuantity: 2 },
   { id: '407134944288', category: 'collectibles', name: 'Pokemon Destined Rivals 4-Pack Lot', detail: 'Four Scarlet & Violet booster packs, 40 cards total', price: '$32.99', image: '407134944288.webp', maxQuantity: 5 },
+  { id: '407212006333', category: 'collectibles', name: 'Pokemon TCG Mega Evolution Booster Pack', detail: 'Factory-sealed English single pack with 10 game cards', price: '$6.49', image: '407212006333.webp', maxQuantity: 3 },
 
   { id: '406763784733', category: 'care', name: 'Caress Shea Butter & Brown Sugar Body Wash', detail: 'Exfoliating and hydrating, 20 fl oz', price: '$9.99', image: '933162e9baba7be6.webp', maxQuantity: 2 },
   { id: '406760474283', category: 'care', name: 'Art of Sport Activated Charcoal Body Wash', detail: 'Compete energizing citrus, 16 fl oz', price: '$29.99', image: '256152db4df7ca68.webp', featured: true },
@@ -119,6 +120,7 @@ const DC_SHIPPING_WEIGHTS_OZ = {
   '406760868081': 24,
   '407086892969': 24,
   '407134944288': 16,
+  '407212006333': 8,
   '406763784733': 32,
   '406760474283': 32,
   '406763456229': 32,
@@ -146,10 +148,10 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 59 },
+  all: { label: 'All items', count: 60 },
   drinks: { label: 'Rare drinks', count: 34 },
   apparel: { label: 'Sports & apparel', count: 15 },
-  collectibles: { label: 'Collectibles & cards', count: 4 },
+  collectibles: { label: 'Collectibles & cards', count: 5 },
   care: { label: 'Personal care', count: 5 },
   home: { label: 'Home & hobby', count: 1 }
 };
