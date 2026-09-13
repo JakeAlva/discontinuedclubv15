@@ -795,18 +795,24 @@
     return [
       '<div class="brand-finder" id="brand-finder" aria-hidden="true">',
       '  <div class="brand-finder-backdrop" data-finder-close></div>',
-      '  <section class="brand-finder-dialog" role="dialog" aria-modal="true" aria-labelledby="finder-title">',
+      '  <section class="brand-finder-dialog" role="dialog" aria-modal="true" aria-labelledby="finder-title" aria-describedby="finder-description">',
       '    <button class="brand-finder-close" type="button" aria-label="Close store finder" data-finder-close>&times;</button>',
-      '    <div class="section-kicker">Find it faster</div>',
-      '    <h2 id="finder-title">What are you looking for?</h2>',
-      '    <p>' + (directCheckoutEnabled ? 'Jump straight to a live department. Buy direct for the lowest price or choose the matching eBay listing.' : 'Jump straight to a live department. Every current product is available through its matching eBay listing.') + '</p>',
+      '    <div class="finder-editorial-head">',
+      '      <div class="finder-title-block">',
+      '        <div class="finder-brand-line"><img src="assets/images/logo-mark-clean.png" alt=""><span>Discontinued Club / Live storefront</span></div>',
+      '        <div class="section-kicker">Your shortcut into the club</div>',
+      '        <h2 id="finder-title">Where should we take you?</h2>',
+      '        <p id="finder-description">Choose a department and we will open the live shelf. Every image below is a real product from current inventory.</p>',
+      '      </div>',
+      '      <div class="finder-live-count"><strong>' + catalog.length + '</strong><span>current listings<br>ready to explore</span></div>',
+      '    </div>',
       '    <div class="finder-grid">',
       finderOption('Rare drinks', 'Limited, discontinued, and international beverages', categoryCount('drinks'), 'drinks'),
       finderOption('Sports & apparel', 'Jerseys, shoes, and vintage skate gear', categoryCount('apparel'), 'apparel'),
       finderOption('Collectibles & cards', 'Pokemon, Funko, and collector inventory', categoryCount('collectibles'), 'collectibles'),
       finderOption('Personal care', 'Hard-to-find body wash and hair care', categoryCount('care'), 'care'),
       '    </div>',
-      '    <div class="finder-actions"><a class="btn btn-dark" href="out-now.html" data-finder-choice>Browse all ' + catalog.length + ' listings</a><button class="btn btn-light" type="button" data-finder-close>Keep browsing</button></div>',
+      '    <div class="finder-actions"><span><strong>Want the whole shelf?</strong><small>See every current find in one place.</small></span><div><a class="btn btn-dark" href="out-now.html" data-finder-choice>Browse all ' + catalog.length + '</a><button class="btn btn-light" type="button" data-finder-close>Stay here</button></div></div>',
       '  </section>',
       '</div>'
     ].join('');
@@ -818,25 +824,48 @@
   }
 
   function finderOption(name, copy, count, category) {
-    return '<a class="finder-option" href="out-now.html?category=' + category + '" data-finder-choice><span><strong>' + name + '</strong><span>' + copy + '</span></span><b>' + count + '</b></a>';
+    const spotlight = catalog.find(function (item) { return item.category === category; });
+    const categoryNumber = ['drinks', 'apparel', 'collectibles', 'care'].indexOf(category) + 1;
+    const image = spotlight
+      ? '<img src="' + listingImagePath(spotlight, 'branded', false) + '" alt="' + escapeHtml(spotlight.name) + '" width="1200" height="1200">'
+      : '<span class="finder-option-placeholder">DC</span>';
+    return [
+      '<a class="finder-option" data-category="' + category + '" href="out-now.html?category=' + category + '" data-finder-choice aria-label="Shop ' + escapeHtml(name) + ', ' + count + '">',
+      '  <span class="finder-option-media">' + image + '</span>',
+      '  <span class="finder-option-copy">',
+      '    <span class="finder-option-topline"><small>0' + categoryNumber + ' / Department</small><b>' + count + '</b></span>',
+      '    <strong>' + escapeHtml(name) + '</strong>',
+      '    <span class="finder-option-description">' + escapeHtml(copy) + '</span>',
+      '    <span class="finder-option-cta">Explore the shelf <i aria-hidden="true">&rarr;</i></span>',
+      '  </span>',
+      '</a>'
+    ].join('');
   }
 
   function openFinder() {
     const finder = document.getElementById('brand-finder');
     if (!finder) return;
+    document.body.classList.add('finder-open');
     finder.classList.add('show');
     finder.setAttribute('aria-hidden', 'false');
+    const close = finder.querySelector('.brand-finder-close');
+    if (close) close.focus({ preventScroll: true });
   }
 
   function closeFinder() {
     const finder = document.getElementById('brand-finder');
     if (!finder) return;
+    document.body.classList.remove('finder-open');
     finder.classList.remove('show');
     finder.setAttribute('aria-hidden', 'true');
     sessionStorage.setItem(finderKey, '1');
   }
 
   function setupFinder() {
+    const params = new URLSearchParams(window.location.search);
+    const googleEntry = /(^|\.)google\./i.test(document.referrer.replace(/^https?:\/\//, '').split('/')[0]);
+    const shouldOpen = params.get('showFinder') === '1' || (document.body.dataset.page === 'home' && googleEntry && !sessionStorage.getItem(finderKey));
+    if (!shouldOpen) return;
     document.body.insertAdjacentHTML('beforeend', finderMarkup());
     document.querySelectorAll('[data-finder-close]').forEach(function (element) {
       element.addEventListener('click', closeFinder);
@@ -844,10 +873,7 @@
     document.querySelectorAll('[data-finder-choice]').forEach(function (element) {
       element.addEventListener('click', function () { sessionStorage.setItem(finderKey, '1'); });
     });
-    const params = new URLSearchParams(window.location.search);
-    const googleEntry = /(^|\.)google\./i.test(document.referrer.replace(/^https?:\/\//, '').split('/')[0]);
-    const shouldOpen = params.get('showFinder') === '1' || (document.body.dataset.page === 'home' && googleEntry && !sessionStorage.getItem(finderKey));
-    if (shouldOpen) window.setTimeout(openFinder, 350);
+    window.setTimeout(openFinder, 350);
   }
 
   function setupCampaignCarousel() {
