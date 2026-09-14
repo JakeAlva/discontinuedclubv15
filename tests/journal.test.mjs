@@ -35,6 +35,7 @@ test('journal publishes every researched report as a substantial, indexable arti
     assert.doesNotMatch(html, /"about":\{"@type":"Product"/);
     assert.ok(html.includes(`<time datetime="${report.checkedDate || '2026-09-11'}">`));
     assert.ok(html.includes(`src="${report.image}"`), `${file} should use its one-can editorial image`);
+    assert.match(html, /class="article-hero-media"><img[^>]+style="aspect-ratio: 1 \/ 1"/, 'portrait packshots should keep a stable square display area');
     assert.ok(html.includes(`status-${report.statusKey}`), `${file} should expose its evidence status`);
     assert.ok(readableWordCount(html) >= 900, `${file} should contain at least 900 readable words`);
     assert.doesNotMatch(html, /assets\/images\/listings\/branded\//);

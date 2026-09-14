@@ -2,7 +2,7 @@ export const rehabGreenTeaSeptemberReport = {
   slug: 'monster-rehab-green-tea-discontinuation-rumor-september-2026',
   brand: 'Monster Energy', product: 'Monster Rehab Green Tea', theme: 'green',
   statusKey: 'rumor', statusLabel: 'Rumored, not confirmed',
-  lane: 'U.S. news analysis', articleLabel: 'News analysis', featured: true,
+  lane: 'U.S. news analysis', articleLabel: 'News analysis',
   checkedDate: '2026-09-13', readTime: 8,
   title: 'Monster Rehab Green Tea: is an October exit coming?',
   seoTitle: 'Monster Rehab Green Tea Discontinued? September 2026 Update',

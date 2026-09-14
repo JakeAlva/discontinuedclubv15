@@ -1,4 +1,5 @@
 import { rehabGreenTeaSeptemberReport } from './rehab-green-tea-update.mjs';
+import { whitePineappleReport } from './white-pineapple-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -647,5 +648,6 @@ export const reports = [
       { label: 'Target: Winter 2025 Sugarfree product record', url: 'https://www.target.com/p/-/A-94796555', note: 'remaining U.S. retailer-page context, not current lineup evidence' }
     ]
   },
-  rehabGreenTeaSeptemberReport
+  rehabGreenTeaSeptemberReport,
+  whitePineappleReport
 ];

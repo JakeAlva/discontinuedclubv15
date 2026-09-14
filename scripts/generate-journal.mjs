@@ -129,7 +129,7 @@ function articleMarkup(report) {
             <p class="article-deck">${report.deck}</p>
             <div class="article-byline"><span>By Discontinued Club Research</span><time datetime="${checkedDate}">Checked ${checkedLabel}</time><span>${report.readTime} minute read</span></div>
           </div>
-          <figure class="article-hero-media"><img src="${report.image}" alt="${report.imageAlt}" width="1200" height="1200" fetchpriority="high"><figcaption>${report.caption}${imageCredit}</figcaption></figure>
+          <figure class="article-hero-media"><img src="${report.image}" alt="${report.imageAlt}" width="1200" height="1200" style="aspect-ratio: 1 / 1" fetchpriority="high"><figcaption>${report.caption}${imageCredit}</figcaption></figure>
         </div>
       </header>
       <div class="container article-layout">
@@ -163,13 +163,13 @@ function articleMarkup(report) {
 function reportCard(report, featured = false) {
   const checkedDate = reportCheckedDate(report);
   const checkedLabel = checkedLabelFor(report);
-  return `<article class="journal-card${featured ? ' journal-card-featured' : ''}"><a class="journal-card-media" href="journal/${report.slug}.html"><img src="${report.image}" alt="${report.imageAlt}" width="1200" height="1200" loading="lazy"><span class="journal-article-label">${report.articleLabel || 'Status report'}</span></a><div class="journal-card-copy"><div class="journal-card-meta"><span class="journal-status status-${report.statusKey}">${report.statusLabel}</span><span>${report.brand}</span><time datetime="${checkedDate}">${checkedLabel}</time></div><h2><a href="journal/${report.slug}.html">${report.title}</a></h2><p>${report.cardCopy}</p><a class="text-link" href="journal/${report.slug}.html">Read the ${report.readTime}-minute report &rarr;</a></div></article>`;
+  return `<article class="journal-card${featured ? ' journal-card-featured' : ''}"><a class="journal-card-media" href="journal/${report.slug}.html"><img src="${report.image}" alt="${report.imageAlt}" width="1200" height="1200" style="aspect-ratio: 1 / 1" loading="lazy"><span class="journal-article-label">${report.articleLabel || 'Status report'}</span></a><div class="journal-card-copy"><div class="journal-card-meta"><span class="journal-status status-${report.statusKey}">${report.statusLabel}</span><span>${report.brand}</span><time datetime="${checkedDate}">${checkedLabel}</time></div><h2><a href="journal/${report.slug}.html">${report.title}</a></h2><p>${report.cardCopy}</p><a class="text-link" href="journal/${report.slug}.html">Read the ${report.readTime}-minute report &rarr;</a></div></article>`;
 }
 
 function blogMarkup() {
   const lead = reports.find((report) => report.slug === 'is-red-bull-blue-edition-blueberry-discontinued');
-  const confirmed = reports.filter((report) => report.statusKey === 'discontinued' && report.slug !== lead.slug);
   const latest = reports.find((report) => report.featured);
+  const confirmed = reports.filter((report) => report.statusKey === 'discontinued' && report.slug !== lead.slug && report !== latest);
   const watch = reports.filter((report) => report.statusKey === 'rumor' && report !== latest);
   const context = reports.filter((report) => ['current', 'format'].includes(report.statusKey));
   const schema = JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'The Discontinued Journal', url: 'https://discontinuedclub.com/blog.html', hasPart: reports.map((report) => ({ '@type': 'Article', headline: report.title, url: articleUrl(report) })) }).replace(/</g, '\\u003c');
