@@ -5,8 +5,6 @@ import { catalog } from '../lib/store-catalog.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const publicRoot = 'https://discontinuedclub.com';
-const checkedDate = '2026-09-12';
-const checkedLabel = 'September 12, 2026';
 const productSlug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
 const currentProductHrefs = new Set(catalog.map((item) => `products/${productSlug(item)}`));
 
@@ -96,6 +94,8 @@ function reportGroup(title, copy, group) {
 
 function hubMarkup(hub) {
   const selected = reports.filter(hub.filter);
+  const checkedDate = selected.reduce((latest, report) => report.checkedDate > latest ? report.checkedDate : latest, '2026-09-12');
+  const checkedLabel = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${checkedDate}T00:00:00Z`));
   const confirmed = selected.filter((report) => report.statusKey === 'discontinued');
   const watch = selected.filter((report) => report.statusKey === 'rumor');
   const context = selected.filter((report) => ['format', 'current'].includes(report.statusKey));
@@ -147,7 +147,7 @@ function hubMarkup(hub) {
   <main>
     <nav class="breadcrumbs container" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><a href="blog.html">Journal</a><span>/</span><span>${escapeHtml(hub.title)}</span></nav>
     <section class="topic-hero topic-hero-${hub.theme}"><div class="container topic-hero-grid"><div class="topic-hero-copy"><div class="eyebrow">${hub.eyebrow}</div><h1>${hub.title}</h1><p>${hub.lede}</p><div class="hero-actions"><a class="btn btn-dark" href="#reports">Browse the status reports</a><a class="btn btn-light" href="rare-drinks.html">Shop rare drinks</a></div></div><div class="topic-hero-art" aria-hidden="true">${artwork}<span>${selected.length} researched reports</span></div></div></section>
-    <section class="journal-desk-band"><div class="container journal-desk-grid"><div><span>Market covered</span><strong>United States</strong></div><div><span>Reports indexed</span><strong>${selected.length} products</strong></div><div><span>Evidence checked</span><strong>${checkedLabel}</strong></div><div><span>Rule</span><strong>Rumors stay separate</strong></div></div></section>
+    <section class="journal-desk-band"><div class="container journal-desk-grid"><div><span>Market covered</span><strong>United States</strong></div><div><span>Reports indexed</span><strong>${selected.length} articles</strong></div><div><span>Index reviewed</span><strong>${checkedLabel}</strong></div><div><span>Rule</span><strong>Rumors stay separate</strong></div></div></section>
     <section class="section topic-intro" id="reports"><div class="container topic-intro-grid"><div><div class="section-kicker">Current answer</div><h2>${hub.introHeading}</h2></div><div class="topic-intro-copy">${hub.intro.map((paragraph) => `<p>${paragraph}</p>`).join('')}</div></div></section>
 ${reportGroup('Confirmed U.S. discontinuations', 'These products have evidence supporting an end to normal U.S. marketing or distribution. Each article explains the evidence and the limits of the conclusion.', confirmed)}
 ${reportGroup('Retired versions and important distinctions', 'A discontinued package, sub-line, or formula does not always mean the broader flavor name disappeared. These reports identify exactly what changed.', context)}

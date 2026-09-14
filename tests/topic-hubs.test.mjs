@@ -2,12 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { reports } from '../scripts/journal-data.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const hubs = [
-  ['discontinued-monster-energy-flavors.html', 7],
-  ['discontinued-red-bull-flavors.html', 5],
-  ['discontinued-energy-drink-flavors-2026.html', 14]
+  ['discontinued-monster-energy-flavors.html', reports.filter((report) => report.brand === 'Monster Energy').length],
+  ['discontinued-red-bull-flavors.html', reports.filter((report) => report.brand === 'Red Bull').length],
+  ['discontinued-energy-drink-flavors-2026.html', reports.filter((report) => report.brand !== 'Mountain Dew').length]
 ];
 
 test('topic hubs are indexable, structured, and connected to the journal', async () => {

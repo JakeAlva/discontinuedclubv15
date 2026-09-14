@@ -1,3 +1,5 @@
+import { rehabGreenTeaSeptemberReport } from './rehab-green-tea-update.mjs';
+
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
 const redBullAppleUs = 'https://www.redbull.com/us-en/energydrink/products/red-bull-apple-edition';
@@ -511,6 +513,7 @@ export const reports = [
   },
   {
     slug: 'is-monster-rehab-green-tea-being-discontinued',
+    modifiedDate: '2026-09-13',
     brand: 'Monster Energy', product: 'Monster Rehab Green Tea', theme: 'green', statusKey: 'rumor', statusLabel: 'Rumored, not confirmed', lane: 'U.S. discontinuation watch', readTime: 9,
     title: 'Is Monster Rehab Green Tea being discontinued?', seoTitle: 'Is Monster Rehab Green Tea Being Discontinued? 2026 Rumor Watch',
     description: 'Monster Rehab Green Tea is rumored to leave U.S. distribution by October 1, 2026, but the public U.S. page remains active and no official announcement is posted.',
@@ -522,6 +525,7 @@ export const reports = [
     cardCopy: 'A specific report names Rehab Green Tea for October 1, while Monster’s official page still treats it as current.',
     sections: [
       { id: 'claim', heading: 'What exactly is being claimed?', toc: 'The claim', paragraphs: [
+        '<strong>September 13 update:</strong> Read our <a href="journal/monster-rehab-green-tea-discontinuation-rumor-september-2026.html">new analysis of the October rumor</a>, including freshly checked U.S. sources, the 2024 return, and Canadian availability. The assessment below records our original September 11 review.',
         'The September 8 report says a Monster corporate email identified Rehab Green Tea, Juice Monster Rio Punch, and Ultra Fantasy Ruby Red for discontinuation in the United States on or before October 1. It does not claim the products were already gone on the date of the post.',
         'That timing matters because a scheduled cut can be real while official shopping pages and store inventory remain active. The report earns a watch page because it is concrete and near-term, but it does not earn a confirmed badge without the actual notice or independent distribution evidence.'
       ]},
@@ -642,5 +646,6 @@ export const reports = [
       { label: 'Red Bull Great Britain: Apple Edition Sugarfree', url: redBullAppleSugarfreeGb, note: 'current foreign-market Sugarfree context reviewed September 12, 2026' },
       { label: 'Target: Winter 2025 Sugarfree product record', url: 'https://www.target.com/p/-/A-94796555', note: 'remaining U.S. retailer-page context, not current lineup evidence' }
     ]
-  }
+  },
+  rehabGreenTeaSeptemberReport
 ];

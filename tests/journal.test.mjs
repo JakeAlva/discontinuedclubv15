@@ -39,6 +39,13 @@ test('journal publishes every researched report as a substantial, indexable arti
     assert.ok(readableWordCount(html) >= 900, `${file} should contain at least 900 readable words`);
     assert.doesNotMatch(html, /assets\/images\/listings\/branded\//);
     assert.doesNotMatch(html, /(?:href|src)="\.\.\/assets\//);
+    const toc = html.match(/<nav class="article-toc"[\s\S]*?<\/nav>/)?.[0];
+    assert.ok(toc, `${file} should have an article guide`);
+    for (const [, href] of toc.matchAll(/href="([^"]+)"/g)) {
+      const destination = new URL(href, 'https://discontinuedclub.com/');
+      assert.equal(destination.pathname, `/journal/${file}`, 'base href must not send section links to the homepage');
+      assert.ok(html.includes(`id="${destination.hash.slice(1)}"`), `${file} should contain its section target`);
+    }
     for (const source of report.sources) assert.ok(html.includes(source.url), `${file} should link ${source.url}`);
     if (report.shop) assert.ok(html.includes(`href="${report.shop.href}"`), `${file} should link to its relevant product`);
   }
@@ -57,7 +64,7 @@ test('journal separates U.S. discontinuations, current formats, and unconfirmed 
   assert.match(liveWire.answer, /older design/i);
   assert.equal(fujiApple.statusKey, 'format');
   assert.match(fujiApple.answer, /only available with sugar/i);
-  assert.deepEqual(rumors.map((report) => report.product).sort(), [
+  assert.deepEqual([...new Set(rumors.map((report) => report.product))].sort(), [
     'Juice Monster Rio Punch',
     'Monster Rehab Green Tea',
     'Monster Ultra Fantasy Ruby Red'
@@ -74,7 +81,7 @@ test('journal index and sitemap expose every status report', async () => {
 
   assert.match(index, /United States market/);
   assert.match(index, /Discontinuation watch/);
-  assert.match(index, /15 individual articles/);
+  assert.ok(index.includes(`${reports.length} individual articles`));
   for (const report of reports) {
     const file = `${report.slug}.html`;
     assert.ok(index.includes(`journal/${file}`), `blog.html should link to ${file}`);

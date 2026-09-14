@@ -42,7 +42,7 @@ function schemaMarkup(report) {
         headline: report.title,
         description: report.description,
         datePublished: checkedDate,
-        dateModified: checkedDate,
+        dateModified: report.modifiedDate || checkedDate,
         mainEntityOfPage: articleUrl(report),
         image: imageUrl(report),
         author: { '@type': 'Organization', name: 'Discontinued Club Research', url: 'https://discontinuedclub.com/about.html' },
@@ -63,6 +63,7 @@ function schemaMarkup(report) {
 }
 
 function statusExplanation(report) {
+  if (report.statusParagraphs) return report.statusParagraphs.map((paragraph) => `<p>${paragraph}</p>`).join('');
   if (report.statusKey === 'rumor') {
     return `<p><strong>Rumored is not the same as discontinued.</strong> This page exists because the report is specific, recent, and likely to be searched, but the public evidence is not yet strong enough for a final verdict. The product remains current until the reported change takes effect or a manufacturer, distributor, or broad retail reset confirms it.</p><p>That distinction protects readers from a common failure in flavor news: a screenshot or secondhand comment gets repeated until search results present it as an announcement. We preserve the original claim, identify what can be independently checked, and keep the headline answer conditional.</p>`;
   }
@@ -88,7 +89,8 @@ function articleMarkup(report) {
     : '<!-- No matching current store listing at publication. -->';
   const sections = report.sections.map((section) => `<section id="${section.id}"><h2>${section.heading}</h2>${section.paragraphs.map((paragraph) => `<p>${paragraph}</p>`).join('')}</section>`).join('\n          ');
   const imageCredit = report.imageCredit ? ` Image source: ${report.imageCredit}.` : '';
-  const toc = report.sections.map((section) => `<a href="#${section.id}">${section.toc || section.heading}</a>`).join('');
+  const sectionHref = (id) => `journal/${report.slug}.html#${id}`;
+  const toc = report.sections.map((section) => `<a href="${sectionHref(section.id)}">${section.toc || section.heading}</a>`).join('');
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -106,7 +108,7 @@ function articleMarkup(report) {
   <meta property="og:url" content="${articleUrl(report)}">
   <meta property="og:image" content="${imageUrl(report)}">
   <meta property="article:published_time" content="${checkedDate}">
-  <meta property="article:modified_time" content="${checkedDate}">
+  <meta property="article:modified_time" content="${report.modifiedDate || checkedDate}">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -143,7 +145,7 @@ function articleMarkup(report) {
         <aside class="article-sidebar" aria-label="Article guide">
           <div class="article-sidebar-block"><strong>U.S. conclusion</strong><span class="journal-status status-${report.statusKey}">${report.statusLabel}</span><p>${report.sidebar}</p></div>
           <div class="article-sidebar-block evidence-grade"><strong>Evidence level</strong><span>${report.evidenceGrade}</span><p>${report.evidenceNote}</p></div>
-          <nav class="article-toc" aria-label="On this page"><strong>On this page</strong>${toc}<a href="#status-language">Status definition</a><a href="#buyer-notes">Buyer notes</a><a href="#faq">FAQ</a><a href="#sources">Sources</a></nav>
+          <nav class="article-toc" aria-label="On this page"><strong>On this page</strong>${toc}<a href="${sectionHref('status-language')}">Status definition</a><a href="${sectionHref('buyer-notes')}">Buyer notes</a><a href="${sectionHref('faq')}">FAQ</a><a href="${sectionHref('sources')}">Sources</a></nav>
           <div class="article-sidebar-block"><strong>Found new evidence?</strong><p>Send an official statement, distributor notice, package photo, or dated shelf change for review.</p><a class="text-link" href="contact.html">Submit a correction &rarr;</a></div>
         </aside>
       </div>
@@ -161,13 +163,14 @@ function articleMarkup(report) {
 function reportCard(report, featured = false) {
   const checkedDate = reportCheckedDate(report);
   const checkedLabel = checkedLabelFor(report);
-  return `<article class="journal-card${featured ? ' journal-card-featured' : ''}"><a class="journal-card-media" href="journal/${report.slug}.html"><img src="${report.image}" alt="${report.imageAlt}" width="1200" height="1200" loading="lazy"><span class="journal-article-label">Status report</span></a><div class="journal-card-copy"><div class="journal-card-meta"><span class="journal-status status-${report.statusKey}">${report.statusLabel}</span><span>${report.brand}</span><time datetime="${checkedDate}">${checkedLabel}</time></div><h2><a href="journal/${report.slug}.html">${report.title}</a></h2><p>${report.cardCopy}</p><a class="text-link" href="journal/${report.slug}.html">Read the ${report.readTime}-minute report &rarr;</a></div></article>`;
+  return `<article class="journal-card${featured ? ' journal-card-featured' : ''}"><a class="journal-card-media" href="journal/${report.slug}.html"><img src="${report.image}" alt="${report.imageAlt}" width="1200" height="1200" loading="lazy"><span class="journal-article-label">${report.articleLabel || 'Status report'}</span></a><div class="journal-card-copy"><div class="journal-card-meta"><span class="journal-status status-${report.statusKey}">${report.statusLabel}</span><span>${report.brand}</span><time datetime="${checkedDate}">${checkedLabel}</time></div><h2><a href="journal/${report.slug}.html">${report.title}</a></h2><p>${report.cardCopy}</p><a class="text-link" href="journal/${report.slug}.html">Read the ${report.readTime}-minute report &rarr;</a></div></article>`;
 }
 
 function blogMarkup() {
   const lead = reports.find((report) => report.slug === 'is-red-bull-blue-edition-blueberry-discontinued');
   const confirmed = reports.filter((report) => report.statusKey === 'discontinued' && report.slug !== lead.slug);
-  const watch = reports.filter((report) => report.statusKey === 'rumor');
+  const latest = reports.find((report) => report.featured);
+  const watch = reports.filter((report) => report.statusKey === 'rumor' && report !== latest);
   const context = reports.filter((report) => ['current', 'format'].includes(report.statusKey));
   const schema = JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'The Discontinued Journal', url: 'https://discontinuedclub.com/blog.html', hasPart: reports.map((report) => ({ '@type': 'Article', headline: report.title, url: articleUrl(report) })) }).replace(/</g, '\\u003c');
   return `<!doctype html>
@@ -183,6 +186,7 @@ function blogMarkup() {
 <body data-page="blog"><div id="site-header"></div><main>
   <section class="store-hero store-hero-campaign"><picture class="store-hero-picture"><source media="(max-width: 1120px)" srcset="assets/images/hero-journal-v2.webp"><img class="store-hero-media" src="assets/images/hero-journal-v4.webp" alt="Discontinued drink research desk with retired flavors and collector notes" width="1774" height="887" fetchpriority="high"></picture><div class="container store-hero-grid"><div class="hero-copy"><div class="eyebrow">The Discontinued Journal</div><h1>What is leaving U.S. shelves next?</h1><p class="lead">Direct answers for discontinued flavors, package changes, and credible rumors. Every report is dated, sourced, and written for the United States first.</p><div class="hero-actions"><a class="btn btn-dark" href="#confirmed">Read confirmed reports</a><a class="btn btn-light" href="#watch">Open rumor watch</a></div></div></div></section>
   <section class="journal-desk-band"><div class="container journal-desk-grid"><div><span>Coverage standard</span><strong>United States market</strong></div><div><span>Reports published</span><strong>${reports.length} individual articles</strong></div><div><span>Last evidence review</span><strong>${checkedLabelFor(latestCheckedReport)}</strong></div><div><span>Status rule</span><strong>Flavor and package tracked separately</strong></div></div></section>
+  ${latest ? `<section class="section" id="latest"><div class="container"><div class="section-head"><div><div class="section-kicker">Latest from the journal</div><h2 class="section-title">${checkedLabelFor(latest)}</h2></div></div><div class="journal-grid">${reportCard(latest, true)}</div></div></section>` : ''}
   <section class="journal-topic-nav" aria-labelledby="topic-index-title"><div class="container"><div class="journal-topic-heading"><div><div class="section-kicker">Research by topic</div><h2 id="topic-index-title">Start with the complete list.</h2></div><p>Brand and year indexes collect the individual evidence reports into faster answers for broad discontinuation searches.</p></div><div class="journal-topic-links"><a href="discontinued-energy-drink-flavors-2026.html"><span>2026 U.S. index</span><strong>Discontinued energy drink flavors</strong></a><a href="discontinued-monster-energy-flavors.html"><span>Brand index</span><strong>Monster Energy</strong></a><a href="discontinued-red-bull-flavors.html"><span>Brand index</span><strong>Red Bull Editions</strong></a></div></div></section>
   <section class="section" id="confirmed"><div class="container"><div class="section-head"><div><div class="section-kicker">Confirmed and distribution-supported</div><div class="section-title">U.S. discontinued flavor reports</div></div><div class="section-copy">A missing U.S. flavor is classified as discontinued here even when other countries still sell it. Remaining stock and stale product pages are documented, not mistaken for a relaunch.</div></div><div class="journal-grid">${reportCard(lead, true)}${confirmed.map((report) => reportCard(report)).join('')}</div></div></section>
   <section class="section journal-watch-section" id="watch"><div class="container"><div class="section-head"><div><div class="section-kicker">Discontinuation watch</div><div class="section-title">Reported next, not confirmed yet</div></div><div class="section-copy">These stories answer the rumor without promoting it to fact. Each page names the original report, the claimed timing, and the public evidence that still conflicts with it.</div></div><div class="journal-grid journal-grid-three">${watch.map((report) => reportCard(report)).join('')}</div></div></section>
