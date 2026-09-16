@@ -203,7 +203,7 @@
     const image = item.image
       ? '<img src="assets/images/sold/branded/' + item.id + '.webp" alt="' + escapeHtml(item.name + ' previously sold by Discontinued Club') + '" loading="lazy" width="1200" height="1200">'
       : '<div class="sold-placeholder"><img src="assets/images/logo-mark-clean.png" alt=""><strong>Sold archive</strong><span>Original image unavailable</span></div>';
-    const status = item.availableAgain ? 'Available again' : 'Previously sold';
+    const status = item.availableAgain ? 'Available again' : item.soldOut ? 'Sold out' : 'Previously sold';
     return [
       '<article class="product-card sold-card" data-category="' + item.category + '" data-search="' + escapeHtml(item.name.toLowerCase()) + '">',
       '  <a href="sold/' + item.slug + '.html" aria-label="View the archive record for ' + escapeHtml(item.name) + '">',
@@ -212,7 +212,7 @@
       '      <div class="product-category">' + categoryLabels[item.category] + '</div>',
       '      <div class="product-name">' + escapeHtml(item.name) + '</div>',
       '      <div class="product-detail">Real Discontinued Club sales record</div>',
-      '      <div class="product-bottom"><span class="sold-price"><small>Recorded sale</small><strong>' + item.price + '</strong></span><span class="product-buy">View archive &rarr;</span></div>',
+      '      <div class="product-bottom"><span class="sold-price"><small>' + escapeHtml(item.priceLabel || 'Recorded sale') + '</small><strong>' + item.price + '</strong></span><span class="product-buy">View archive &rarr;</span></div>',
       '    </div>',
       '  </a>',
       '</article>'

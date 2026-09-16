@@ -390,6 +390,7 @@ export const reports = [
   },
   {
     slug: 'is-alani-nu-lime-slush-discontinued',
+    modifiedDate: '2026-09-16',
     brand: 'Alani Nu', product: 'Alani Nu Lime Slush', theme: 'green', statusKey: 'discontinued', statusLabel: 'Discontinued in U.S.', lane: 'U.S. limited-release status report', readTime: 8,
     title: 'Is Alani Nu Lime Slush discontinued?', seoTitle: 'Is Alani Nu Lime Slush Discontinued? 2026 U.S. Status',
     description: 'Yes. Alani Nu Lime Slush was a limited U.S. release whose run has ended in 2026. See the evidence, remaining-stock signals, and what a return would look like.',
@@ -397,7 +398,7 @@ export const reports = [
     answerHeading: 'Yes. Alani Nu Lime Slush’s limited U.S. run has ended.',
     answer: 'Lime Slush launched as a limited product rather than a permanent U.S. flavor. Its SmartLabel record and 2026 retail reviews establish that it was a real current release earlier in the year; later sell-through, disappearance from the regular range, and an organized fan campaign to bring it back establish that the limited run ended. A future seasonal return remains possible.',
     sidebar: 'The 2026 limited release ended; a future comeback is possible but not currently announced.', evidenceGrade: 'Moderate', evidenceNote: 'Official product record plus retail chronology and community comeback activity; no public permanent-discontinuation notice.',
-    image: 'assets/images/journal/alani-lime-slush.webp', imageAlt: 'One bright green Alani Nu Lime Slush 12 ounce can', caption: 'One Lime Slush can from Discontinued Club inventory.',
+    image: 'assets/images/journal/alani-lime-slush.webp', imageAlt: 'One bright green Alani Nu Lime Slush 12 ounce can', caption: 'One Lime Slush can previously held by Discontinued Club. Our four-packs are now sold out.',
     cardCopy: 'The bright green limited release ended after its 2026 U.S. run; remaining packs are sell-through inventory.',
     sections: [
       { id: 'limited-release', heading: 'Why a limited release counts as discontinued now', toc: 'Limited-run status', paragraphs: [
@@ -409,6 +410,7 @@ export const reports = [
         'Later in the year, fans organized requests for Alani Nu to bring Lime Slush back. A comeback campaign does not prove an exact last-production date, but it is consistent with a limited item that stopped receiving normal replenishment after its launch window.'
       ]},
       { id: 'remaining-packs', heading: 'Why four-packs can still be available', toc: 'Remaining packs', paragraphs: [
+        '<strong>Store availability update, September 16, 2026:</strong> Discontinued Club has sold its final Lime Slush four-pack on eBay and now has zero packs available. The <a href="sold/alani-nu-lime-slush-4-pack-407205693415.html">sold-out listing archive</a> remains available for reference. We do not have a confirmed restock date.',
         'Retail and specialty inventory can outlast a limited run. Stores may sell through cases at different speeds, while marketplace sellers can hold packs specifically because the flavor became scarce. Availability after the run is expected and does not make the item permanent.',
         'Check the seller’s photos, pack quantity, can condition, and date markings. Lime Slush was sold in several retail configurations, so a single can, a four-pack, and a case should not be treated as interchangeable listings.'
       ]},
@@ -417,7 +419,6 @@ export const reports = [
         'Until that happens, social requests and isolated packs are not a relaunch. This page will preserve the distinction between “people want it back” and “Alani Nu has confirmed it is back.”'
       ]}
     ],
-    shop: { heading: 'Remaining Lime Slush four-packs', copy: 'Discontinued Club currently lists a four-pack of full 12-fluid-ounce Lime Slush cans with exact-item photography.', href: 'products/alani-nu-lime-slush-4-pack-407205693415.html', cta: 'View the Lime Slush four-pack' },
     faq: [
       { question: 'Is Alani Nu Lime Slush discontinued?', answer: 'Yes. Its limited U.S. run ended in 2026 and it is no longer in normal replenishment.' },
       { question: 'Was Lime Slush a permanent flavor?', answer: 'No. The evidence points to a limited release rather than a permanent addition.' },

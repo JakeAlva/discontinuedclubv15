@@ -13,7 +13,7 @@ const excludedPages = new Set([
 ]);
 const rootFiles = await readdir(root, { withFileTypes: true });
 const faviconMarkup = '  <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png">\n  <link rel="apple-touch-icon" href="/assets/images/logo-mark-clean.png">';
-const assetVersion = '52';
+const assetVersion = '53';
 
 async function canonicalUrl(file) {
   const html = await readFile(file, 'utf8');
@@ -87,6 +87,7 @@ async function injectFavicon(directory) {
     html = html
       .replace(/assets\/style\.css\?v=[^"']+/g, `assets/style.css?v=${assetVersion}`)
       .replace(/assets\/catalog\.js\?v=[^"']+/g, `assets/catalog.js?v=${assetVersion}`)
+      .replace(/assets\/sold-catalog\.js\?v=[^"']+/g, `assets/sold-catalog.js?v=${assetVersion}`)
       .replace(/assets\/app\.js\?v=[^"']+/g, `assets/app.js?v=${assetVersion}`);
     if (!html.includes('rel="icon"')) html = html.replace('</head>', `${faviconMarkup}\n</head>`);
     await writeFile(file, html);

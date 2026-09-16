@@ -24,6 +24,9 @@ const publicItems = soldItems.map((item) => ({
   category: item.category,
   name: item.name,
   price: item.price,
+  priceLabel: item.priceLabel,
+  brand: item.brand,
+  soldOut: item.soldOut,
   image: item.imageUrl ? `${item.id}.webp` : null,
   slug: `${slugify(item.name)}-${item.id}`,
   availableAgain: Boolean(item.availableAgain)
@@ -46,7 +49,7 @@ function productPage(item) {
     : imageUrl;
   const description = `${item.name} was previously sold by Discontinued Club. View the archived listing and browse current ${category.copy} inventory.`;
   const availability = item.availableAgain ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
-  const status = item.availableAgain ? 'Available again' : 'Previously sold';
+  const status = item.availableAgain ? 'Available again' : item.soldOut ? 'Sold out' : 'Previously sold';
   const media = item.image
     ? `<img src="assets/images/sold/branded/${item.id}.webp" alt="${escapeHtml(item.name)} previously sold by Discontinued Club" width="1200" height="1200">`
     : '<div class="sold-placeholder"><img src="assets/images/logo-mark-clean.png" alt=""><strong>Sold archive</strong><span>Original image unavailable</span></div>';
@@ -60,7 +63,7 @@ function productPage(item) {
     description,
     image: imageUrl,
     sku: item.id,
-    brand: { '@type': 'Organization', name: 'Discontinued Club' },
+    brand: { '@type': 'Organization', name: item.brand || 'Discontinued Club' },
     offers: {
       '@type': 'Offer',
       priceCurrency: 'USD',
@@ -108,7 +111,7 @@ function productPage(item) {
           <p class="sold-product-lead">This is a real product previously handled and sold by Discontinued Club. The record is preserved for collectors researching discontinued products, past availability, and identifying details.</p>
           <div class="sold-facts">
             <div><strong>Archive status</strong><span>${status}</span></div>
-            <div><strong>Recorded price</strong><span>${escapeHtml(item.price)}</span></div>
+            <div><strong>${escapeHtml(item.priceLabel || 'Recorded price')}</strong><span>${escapeHtml(item.price)}</span></div>
             <div><strong>Department</strong><span>${category.label}</span></div>
             <div><strong>Original item ID</strong><span>${item.id}</span></div>
           </div>
@@ -119,6 +122,7 @@ function productPage(item) {
     <section class="section section-muted"><div class="container archive-note"><div><div class="section-kicker">The Discontinued Club archive</div><h2>Sold does not mean forgotten.</h2></div><p>Past listings stay searchable as a reference for collectors and anyone trying to identify something that disappeared. Availability changes, so check the current shop or contact us about a specific product.</p><a class="text-link" href="sold-archive.html">Explore all previously sold products &rarr;</a></div></section>
   </main>
   <div id="site-footer"></div>
+  <script src="assets/catalog.js?v=38"></script>
   <script src="assets/app.js?v=38"></script>
 </body>
 </html>

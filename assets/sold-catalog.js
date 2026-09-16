@@ -1,5 +1,17 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "407205693415",
+    "category": "drinks",
+    "name": "Alani Nu Lime Slush (4-Pack)",
+    "price": "$34.98",
+    "priceLabel": "Last listed price",
+    "brand": "Alani Nu",
+    "soldOut": true,
+    "image": "407205693415.webp",
+    "slug": "alani-nu-lime-slush-4-pack-407205693415",
+    "availableAgain": false
+  },
+  {
     "id": "406949731414",
     "category": "drinks",
     "name": "Mountain Dew Assorted Full Can Lot (11 Cans)",

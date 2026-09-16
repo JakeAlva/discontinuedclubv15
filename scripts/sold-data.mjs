@@ -1,4 +1,5 @@
 export const soldItems = [
+  { id: '407205693415', category: 'drinks', name: 'Alani Nu Lime Slush (4-Pack)', brand: 'Alani Nu', price: '$34.98', priceLabel: 'Last listed price', soldOut: true, imageUrl: 'https://discontinuedclub.com/assets/images/listings/merchant/407205693415.webp' },
   { id: '406949731414', category: 'drinks', name: 'Mountain Dew Assorted Full Can Lot (11 Cans)', price: '$7.00', imageUrl: 'https://i.ebayimg.com/images/g/c84AAeSw3WpqAU9p/s-l1600.webp' },
   { id: '406938030415', category: 'collectibles', name: 'Funko Pop Sports Lot: Barry Sanders, Blake Griffin & Michael Jordan', price: '$28.99', imageUrl: null },
   { id: '406794979611', category: 'drinks', name: "Mountain Dew Overdrive Casey's Exclusive 20 oz Bottle", price: '$12.00', imageUrl: 'https://i.ebayimg.com/images/g/o98AAeSw9nRpwbRu/s-l1600.webp' },
