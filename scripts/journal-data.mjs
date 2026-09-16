@@ -398,7 +398,7 @@ export const reports = [
     answerHeading: 'Yes. Alani Nu Lime Slush’s limited U.S. run has ended.',
     answer: 'Lime Slush launched as a limited product rather than a permanent U.S. flavor. Its SmartLabel record and 2026 retail reviews establish that it was a real current release earlier in the year; later sell-through, disappearance from the regular range, and an organized fan campaign to bring it back establish that the limited run ended. A future seasonal return remains possible.',
     sidebar: 'The 2026 limited release ended; a future comeback is possible but not currently announced.', evidenceGrade: 'Moderate', evidenceNote: 'Official product record plus retail chronology and community comeback activity; no public permanent-discontinuation notice.',
-    image: 'assets/images/journal/alani-lime-slush.webp', imageAlt: 'One bright green Alani Nu Lime Slush 12 ounce can', caption: 'One Lime Slush can previously held by Discontinued Club. Our four-packs are now sold out.',
+    image: 'assets/images/journal/alani-lime-slush.webp', imageAlt: 'One bright green Alani Nu Lime Slush 12 ounce can', caption: 'Alani Nu Lime Slush. Currently unavailable from Discontinued Club; one four-pack is reserved for a future release with no announced date.',
     cardCopy: 'The bright green limited release ended after its 2026 U.S. run; remaining packs are sell-through inventory.',
     sections: [
       { id: 'limited-release', heading: 'Why a limited release counts as discontinued now', toc: 'Limited-run status', paragraphs: [
@@ -410,7 +410,8 @@ export const reports = [
         'Later in the year, fans organized requests for Alani Nu to bring Lime Slush back. A comeback campaign does not prove an exact last-production date, but it is consistent with a limited item that stopped receiving normal replenishment after its launch window.'
       ]},
       { id: 'remaining-packs', heading: 'Why four-packs can still be available', toc: 'Remaining packs', paragraphs: [
-        '<strong>Store availability update, September 16, 2026:</strong> Discontinued Club has sold its final Lime Slush four-pack on eBay and now has zero packs available. The <a href="sold/alani-nu-lime-slush-4-pack-407205693415.html">sold-out listing archive</a> remains available for reference. We do not have a confirmed restock date.',
+        '<strong>Store availability update, September 16, 2026:</strong> Discontinued Club has sold the last Lime Slush four-pack offered for sale on eBay and now has zero packs available to purchase. The <a href="sold/alani-nu-lime-slush-4-pack-407205693415.html">sold-out listing archive</a> remains available for reference.',
+        '<strong>A future Discontinued Club drop:</strong> We are holding one separate four-pack for a future release. It is not available to buy or preorder, and no release date has been announced. This is existing inventory reserved by our store, not an announcement of new production or a manufacturer relaunch.',
         'Retail and specialty inventory can outlast a limited run. Stores may sell through cases at different speeds, while marketplace sellers can hold packs specifically because the flavor became scarce. Availability after the run is expected and does not make the item permanent.',
         'Check the seller’s photos, pack quantity, can condition, and date markings. Lime Slush was sold in several retail configurations, so a single can, a four-pack, and a case should not be treated as interchangeable listings.'
       ]},
