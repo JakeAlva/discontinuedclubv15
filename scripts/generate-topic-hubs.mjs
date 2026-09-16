@@ -22,7 +22,8 @@ const hubs = [
     intro: [
       'Monster has a large portfolio, frequent line extensions, and product pages that can remain online after normal distribution changes. That makes a simple list unreliable unless every flavor is checked against current U.S. catalogs, retailer resets, and dated reporting. This page separates supported discontinuations from package or formula changes and from claims that are still only rumors.',
       'The confirmed U.S. departures in this index include Ultra Watermelon, Reserve Peaches N Creme, and Ultra Red. Reserve Orange Dreamsicle needs a more precise answer: the Reserve version ended, while Monster introduced a new standard Orange Dreamsicle. Ultra Fantasy Ruby Red, Rehab Green Tea, and Rio Punch remain on the watch list because a specific report names an October date but Monster still presents them publicly.',
-      'Reserve White Pineapple now has a separate report covering its apparent U.S. lineup exit, official overseas listings, and resale availability. Its evidence grade is lineup-based: no dated manufacturer discontinuation notice was located.'
+      'Reserve White Pineapple now has a separate report covering its apparent U.S. lineup exit, official overseas listings, and resale availability. Its evidence grade is lineup-based: no dated manufacturer discontinuation notice was located.',
+      'Aussie Style Lemonade was reported as a 2025 U.S. discontinuation and is absent from the current American catalog. Our September 16, 2026 review also checks its continuing official listings in Australia and Great Britain. This is a current status review of an earlier departure, not a newly announced 2026 cut.'
     ],
     faq: [
       ['Which Monster Energy flavors are confirmed discontinued in the U.S. in this guide?', 'Ultra Watermelon, Reserve Peaches N Creme, and Ultra Red are classified as discontinued in normal U.S. distribution based on the evidence reviewed for their individual reports.'],

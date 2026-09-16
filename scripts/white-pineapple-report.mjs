@@ -2,7 +2,7 @@ export const whitePineappleReport = {
   slug: 'is-monster-reserve-white-pineapple-discontinued',
   brand: 'Monster Energy', product: 'Monster Reserve White Pineapple', theme: 'yellow',
   statusKey: 'discontinued', statusLabel: 'U.S. lineup exit',
-  lane: 'U.S. flavor status report', featured: true,
+  lane: 'U.S. flavor status report',
   checkedDate: '2026-09-14', readTime: 8,
   title: 'Is Monster Reserve White Pineapple discontinued?',
   seoTitle: 'Monster White Pineapple Discontinued? U.S. Status & Where to Buy',
