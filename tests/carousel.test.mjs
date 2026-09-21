@@ -9,20 +9,21 @@ test('campaign carousel promotes one real product per slide', async () => {
   const html = await readFile(resolve(root, 'index.html'), 'utf8');
   const slides = html.match(/<article class="campaign-slide[\s\S]*?<\/article>/g) ?? [];
 
-  assert.equal(slides.length, 5);
+  assert.equal(slides.length, 4);
   for (const [index, slide] of slides.entries()) {
     assert.equal((slide.match(/class="campaign-visual"/g) ?? []).length, 1);
     assert.equal((slide.match(/<img /g) ?? []).length, 1);
-    assert.match(slide, index < 4 ? /href="products\/[^"]+\.html"/ : /href="journal\/is-alani-nu-lime-slush-discontinued\.html"/);
+    assert.match(slide, index < 3 ? /href="products\/[^"]+\.html"/ : /href="journal\/is-alani-nu-lime-slush-discontinued\.html"/);
     assert.match(slide, /src="assets\/images\/campaign\/scenes\/[^"]+-desktop\.webp\?v=\d+"/);
     assert.match(slide, /srcset="assets\/images\/campaign\/scenes\/[^"]+-mobile\.webp\?v=\d+"/);
-    assert.ok(slide.includes('aria-label="' + (index + 1) + ' of 5"'));
+    assert.ok(slide.includes('aria-label="' + (index + 1) + ' of 4"'));
   }
 
   assert.equal((html.match(/<strong>Out now<\/strong>/gi) ?? []).length, 1);
   assert.match(html, /Destined Rivals four-pack/);
   assert.match(html, /Five lots available/);
   assert.doesNotMatch(html, /class="campaign-price"/);
+  assert.doesNotMatch(slides.join(''), /Blueberry|407203102419|redbull-(desktop|mobile)/);
 });
 
 test('Lime Slush teaser stays last, indexable, and unavailable for purchase', async () => {

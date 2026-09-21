@@ -1,5 +1,17 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "407203102419",
+    "category": "drinks",
+    "name": "Red Bull Blue Edition Blueberry (4-Pack)",
+    "price": "$49.99",
+    "priceLabel": "Last listed price",
+    "brand": "Red Bull",
+    "soldOut": true,
+    "image": "407203102419.webp",
+    "slug": "red-bull-blue-edition-blueberry-4-pack-407203102419",
+    "availableAgain": false
+  },
+  {
     "id": "407205693415",
     "category": "drinks",
     "name": "Alani Nu Lime Slush (4-Pack)",

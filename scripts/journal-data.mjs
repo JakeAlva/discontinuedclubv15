@@ -16,6 +16,7 @@ const monsterRumor = 'https://www.reddit.com/r/monsterenergy/comments/1wac5x6/ba
 export const reports = [
   {
     slug: 'is-red-bull-blue-edition-blueberry-discontinued',
+    modifiedDate: '2026-09-21',
     brand: 'Red Bull', product: 'Red Bull Blue Edition Blueberry', theme: 'blue', statusKey: 'discontinued', statusLabel: 'Discontinued in U.S.', lane: 'U.S. flavor status report', readTime: 9,
     title: 'Is Red Bull Blue Edition Blueberry discontinued?', seoTitle: 'Is Red Bull Blueberry Discontinued in the U.S.? 2026 Status',
     description: 'Yes. Red Bull Blue Edition Blueberry was discontinued in the United States in 2026. See the U.S. evidence, remaining inventory, and international context.',
@@ -23,7 +24,7 @@ export const reports = [
     answerHeading: 'Yes. Red Bull Blue Edition Blueberry is discontinued in the United States.',
     answer: 'Red Bull removed the original blueberry edition from its current U.S. Editions range, and 2026 discontinuation reporting identified it among four U.S. products being cut. Red Bull still sells a blueberry Blue Edition in some other countries, but this journal uses U.S. marketing and distribution as the deciding status.',
     sidebar: 'Removed from the current U.S. Editions range in 2026; foreign-market availability does not change the U.S. answer.', evidenceGrade: 'High', evidenceNote: 'Current official U.S. lineup plus specific 2026 discontinuation reporting.',
-    image: 'assets/images/journal/red-bull-blueberry.webp', imageAlt: 'One Red Bull Blue Edition Blueberry 12 ounce can', caption: 'One original U.S. Blue Edition Blueberry can from Discontinued Club inventory.',
+    image: 'assets/images/journal/red-bull-blueberry.webp', imageAlt: 'One Red Bull Blue Edition Blueberry 12 ounce can', caption: 'One original U.S. Blue Edition Blueberry can previously sold by Discontinued Club. Our four-pack is currently sold out.',
     cardCopy: 'Yes. The original blueberry edition left Red Bull’s U.S. lineup in 2026, although foreign-market cans can still appear online.',
     sections: [
       { id: 'us-evidence', heading: 'What confirms the U.S. discontinuation?', toc: 'U.S. evidence', paragraphs: [
@@ -39,11 +40,11 @@ export const reports = [
         'Retail pages sometimes reuse old images, merge reviews, or shorten several products to “blue Red Bull.” The deciding detail is the exact Edition and flavor printed on the can. Original Blue Edition and the word Blueberry together identify the product covered by this report.'
       ]},
       { id: 'remaining-stock', heading: 'Why are U.S. Blueberry cans still for sale?', toc: 'Remaining stock', paragraphs: [
+        '<strong>Store availability update, September 21, 2026:</strong> Discontinued Club has sold its last Blue Edition Blueberry four-pack and now has zero packs available to purchase. The <a href="sold/red-bull-blue-edition-blueberry-4-pack-407203102419.html">sold-out listing archive</a> remains available for reference. No restock date has been announced.',
         'Discontinuation stops future normal distribution; it does not erase inventory already in stores, warehouses, or private collections. Cases can surface months later, and specialty sellers may intentionally hold scarce cans. Marketplace availability therefore tells us that units remain, not that Red Bull restarted U.S. production.',
         'Condition and provenance matter more as the supply ages. Buyers should confirm whether a listing is U.S. old stock or a current import, whether the cans are full, and whether the photograph shows the actual items. A four-pack listing should show and describe four cans rather than use a generic single-can image.'
       ]}
     ],
-    shop: { heading: 'The original U.S. Blue Edition is still available here', copy: 'Discontinued Club currently lists a four-pack of full 12-fluid-ounce Blue Edition Blueberry cans. The product page shows the exact pack, price, condition, and remaining quantity.', href: 'products/red-bull-blue-edition-blueberry-4-pack-407203102419.html', cta: 'View the Blueberry four-pack' },
     faq: [
       { question: 'Is Red Bull Blue Edition Blueberry discontinued in the U.S.?', answer: 'Yes. It left the current U.S. Editions lineup in 2026 and was named in specific U.S. discontinuation reporting.' },
       { question: 'Is Red Bull Blueberry discontinued worldwide?', answer: 'No. Red Bull has continued to list a blueberry Blue Edition in some foreign markets, including Australia.' },

@@ -8,7 +8,6 @@ const DC_CATALOG = [
   { id: '407203191955', category: 'drinks', name: 'Red Bull Spring Edition Cherry Sakura (4-Pack)', detail: 'Four discontinued 12 fl oz cherry sakura energy drink cans', price: '$49.99', image: '407203191955.webp', featured: true },
   { id: '407203141723', category: 'drinks', name: 'Red Bull Amber Edition Sugar Free (4-Pack)', detail: 'Four rare 12 fl oz strawberry apricot energy drink cans', price: '$49.99', image: '407203141723.webp' },
   { id: '407203121847', category: 'drinks', name: 'Red Bull Green Edition Curuba Elderflower (4-Pack)', detail: 'Four discontinued 12 fl oz energy drink cans', price: '$49.99', image: '407203121847.webp', featured: true, maxQuantity: 2 },
-  { id: '407203102419', category: 'drinks', name: 'Red Bull Blue Edition Blueberry (4-Pack)', detail: 'Four discontinued 12 fl oz energy drink cans', price: '$49.99', image: '407203102419.webp', featured: true, maxQuantity: 1 },
   { id: '407202995940', category: 'home', name: 'Penn-Plax SWF1 Filtration Unit (2-Pack)', detail: 'Two crystal-clear filtration units for 1-gallon tanks', price: '$14.99', image: '407202995940.webp' },
   { id: '407195902675', category: 'collectibles', name: 'Pokemon Journey Together Booster Bundle', detail: 'Factory-sealed English box with 6 booster packs', price: '$39.99', image: '407195902675.webp', featured: true },
   { id: '407039382525', category: 'drinks', name: 'Liquid Death x Pop-Tarts Carnage', detail: 'Strawberry sparkling water, limited 6-pack, 12 fl oz cans', price: '$13.99', image: '475e0f8d3f1d0a4e.webp', featured: true, maxQuantity: 2 },
@@ -74,7 +73,6 @@ const DC_SHIPPING_WEIGHTS_OZ = {
   '407203191955': 64,
   '407203141723': 64,
   '407203121847': 64,
-  '407203102419': 64,
   '407202995940': 8,
   '407195902675': 16,
   '407039382525': 96,
@@ -146,8 +144,8 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 59 },
-  drinks: { label: 'Rare drinks', count: 33 },
+  all: { label: 'All items', count: 58 },
+  drinks: { label: 'Rare drinks', count: 32 },
   apparel: { label: 'Sports & apparel', count: 15 },
   collectibles: { label: 'Collectibles & cards', count: 5 },
   care: { label: 'Personal care', count: 5 },
