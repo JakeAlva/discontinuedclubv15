@@ -1,5 +1,17 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "407207453659",
+    "category": "drinks",
+    "name": "Monster Energy Ultra Watermelon",
+    "price": "$7.99",
+    "priceLabel": "Last listed price",
+    "brand": "Monster Energy",
+    "soldOut": true,
+    "image": "407207453659.webp",
+    "slug": "monster-energy-ultra-watermelon-407207453659",
+    "availableAgain": false
+  },
+  {
     "id": "407203102419",
     "category": "drinks",
     "name": "Red Bull Blue Edition Blueberry (4-Pack)",

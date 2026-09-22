@@ -59,6 +59,7 @@ export const reports = [
   },
   {
     slug: 'is-monster-ultra-watermelon-discontinued',
+    modifiedDate: '2026-09-21',
     brand: 'Monster Energy', product: 'Monster Ultra Watermelon', theme: 'red', statusKey: 'discontinued', statusLabel: 'Discontinued in U.S.', lane: 'U.S. flavor status report', readTime: 9,
     title: 'Is Monster Ultra Watermelon discontinued?', seoTitle: 'Is Monster Ultra Watermelon Discontinued? 2026 U.S. Status',
     description: 'Yes. Monster Ultra Watermelon was discontinued from U.S. distribution in 2026. See the retailer-reset evidence, catalog conflict, and remaining-stock guidance.',
@@ -66,7 +67,7 @@ export const reports = [
     answerHeading: 'Yes. Monster Ultra Watermelon is discontinued in U.S. distribution.',
     answer: 'A major retailer’s 2026 discontinued-SKU list identified Ultra Watermelon as a cut, and real-world replenishment has contracted accordingly. Monster’s public flavor directory and 2025 corporate filing still name the product, but those broad catalogs also retain products after distribution decisions. Remaining cases are sell-through inventory, not evidence that the cut was reversed.',
     sidebar: 'A retailer-reset-confirmed U.S. cut for 2026, despite legacy Monster catalog pages.', evidenceGrade: 'High', evidenceNote: 'Specific major-retailer SKU reset corroborated by sustained distribution changes.',
-    image: 'assets/images/journal/monster-ultra-watermelon.webp', imageAlt: 'One Monster Energy Ultra Watermelon 16 ounce can', caption: 'One Ultra Watermelon can from Discontinued Club inventory.',
+    image: 'assets/images/journal/monster-ultra-watermelon.webp', imageAlt: 'One Monster Energy Ultra Watermelon 16 ounce can', caption: 'One Ultra Watermelon can previously sold by Discontinued Club. Our single can is currently sold out.',
     cardCopy: 'A major U.S. retailer reset placed Ultra Watermelon among Monster’s 2026 cuts, even while old catalog pages remain online.',
     sections: [
       { id: 'retailer-reset', heading: 'What supports the 2026 discontinuation?', toc: 'Retailer reset', paragraphs: [
@@ -78,6 +79,7 @@ export const reports = [
         'Brand websites often preserve searchable pages for old products, and annual filings are historical snapshots with legal and trademark purposes. When a dated retailer decision conflicts with a page that has no visible update history, the distribution evidence is more useful for answering whether Americans can expect routine new stock.'
       ]},
       { id: 'timing', heading: 'When did Ultra Watermelon disappear?', toc: 'Timing', paragraphs: [
+        '<strong>Store availability update, September 21, 2026:</strong> Discontinued Club has sold its last Ultra Watermelon single can and now has zero cans available to purchase. The <a href="sold/monster-energy-ultra-watermelon-407207453659.html">sold-out listing archive</a> remains available for reference. No restock date has been announced.',
         'The 2026 reporting described the cut as part of early-year assortment changes. That does not create one universal last-sale date. Distribution centers, convenience chains, grocery stores, and online warehouses sell through at different speeds, sometimes keeping a discontinued flavor visible for months.',
         'A can found later in 2026 can be genuine domestic stock produced before the transition. The relevant question is whether the store can keep ordering newly replenished cases, not whether one unit remains somewhere in the country.'
       ]},
@@ -86,7 +88,6 @@ export const reports = [
         'Fans looking for a substitute should compare flavor descriptions rather than package color. Collectors looking for Ultra Watermelon should verify that the listing is the full 16-ounce U.S. can and not a foreign version, an empty display can, or a mixed pack using an old promotional image.'
       ]}
     ],
-    shop: { heading: 'A final Ultra Watermelon can', copy: 'Discontinued Club currently has a full 16-fluid-ounce Ultra Watermelon can. The listing shows the exact can, condition, price, and quantity.', href: 'products/monster-energy-ultra-watermelon-407207453659.html', cta: 'View the Ultra Watermelon can' },
     faq: [
       { question: 'Is Monster Ultra Watermelon discontinued in the U.S.?', answer: 'Yes. A major retailer’s 2026 discontinued-SKU list identified it as a U.S. cut.' },
       { question: 'Why is it still on Monster’s website?', answer: 'Monster’s broad catalog retains product pages that can outlast distribution changes. The page does not establish routine 2026 replenishment.' },
