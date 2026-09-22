@@ -2,7 +2,7 @@ export const aussieLemonadeReport = {
   slug: 'is-monster-aussie-lemonade-discontinued',
   brand: 'Monster Energy', product: 'Monster Aussie Style Lemonade', theme: 'blue',
   statusKey: 'discontinued', statusLabel: 'Reported U.S. discontinuation',
-  lane: 'U.S. flavor status report', featured: true,
+  lane: 'U.S. flavor status report',
   checkedDate: '2026-09-16', readTime: 7,
   title: 'Is Monster Aussie Lemonade discontinued?',
   seoTitle: 'Is Monster Aussie Lemonade Discontinued? U.S. Status in 2026',

@@ -1,6 +1,7 @@
 import { rehabGreenTeaSeptemberReport } from './rehab-green-tea-update.mjs';
 import { whitePineappleReport } from './white-pineapple-report.mjs';
 import { aussieLemonadeReport } from './aussie-lemonade-report.mjs';
+import { rehabStrawberryLemonadeReport } from './rehab-strawberry-lemonade-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -655,5 +656,6 @@ export const reports = [
   },
   rehabGreenTeaSeptemberReport,
   whitePineappleReport,
-  aussieLemonadeReport
+  aussieLemonadeReport,
+  rehabStrawberryLemonadeReport
 ];

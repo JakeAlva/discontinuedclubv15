@@ -14,8 +14,7 @@ test('Aussie Lemonade distinguishes reported U.S. status from overseas listings'
   assert.match(report.answer, /Australia and Great Britain/);
   assert.match(report.answer, /did not locate a public manufacturer notice/);
   assert.equal(report.shop, undefined, 'do not advertise nonexistent store inventory');
-  assert.deepEqual(reports.filter((item) => item.featured), [report]);
-  for (const file of ['index.html', 'blog.html', 'discontinued-monster-energy-flavors.html', 'sitemap-journal.xml']) {
+  for (const file of ['blog.html', 'discontinued-monster-energy-flavors.html', 'sitemap-journal.xml']) {
     assert.ok((await readFile(resolve(root, file), 'utf8')).includes(`journal/${report.slug}.html`), file);
   }
   const html = await readFile(resolve(root, 'journal', `${report.slug}.html`), 'utf8');
