@@ -39,6 +39,8 @@ test('large journal libraries render six results and bounded page controls', () 
 test('URLs preserve searches and static pagination with defensive page bounds', () => {
   const url = (path) => new URL(path, 'https://discontinuedclub.com/');
   assert.equal(readState(url('blog-page-3.html')).page, 3);
+  assert.equal(readState(url('blog-page-3')).page, 3);
+  assert.equal(readState(url('blog-page-3/')).page, 3);
   assert.equal(readState(url('blog.html?page=-4&sort=evil&status=unknown')).page, 1);
   assert.equal(readState(url('blog.html?page=Infinity')).page, 1);
   assert.equal(readState(url('blog.html?page=1.5')).page, 1);
@@ -62,8 +64,8 @@ test('static journal pages expose every article once and remain independently in
     assert.ok(html.includes(`<link rel="canonical" href="https://discontinuedclub.com/${file}">`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);
     assert.ok(sitemap.includes('https://discontinuedclub.com/' + file));
-    assert.match(html, /journal-library\.mjs\?v=59/);
-    assert.match(html, /journal-index\.json\?v=59/);
+    assert.match(html, /journal-library\.mjs\?v=60/);
+    assert.match(html, /journal-index\.json\?v=60/);
     const cards = [...html.matchAll(/<h2><a href="journal\/([^"#]+)\.html">/g)].map((match) => match[1]);
     assert.ok(cards.length > 0 && cards.length <= PAGE_SIZE);
     linked.push(...cards);

@@ -11,7 +11,7 @@ export const pageFile = (page) => page === 1 ? 'blog.html' : `blog-page-${page}.
 
 export function readState(url) {
   const params = url.searchParams;
-  const staticPage = url.pathname.match(/blog-page-(\d+)\.html$/)?.[1] || '1';
+  const staticPage = url.pathname.match(/\/blog-page-(\d+)(?:\.html)?\/?$/)?.[1] || '1';
   const page = Number(params.get('page') || staticPage);
   return {
     q: (params.get('q') || '').trim().slice(0, 160),
@@ -80,7 +80,7 @@ async function mountLibrary(root) {
   const reset = root.querySelector('[data-journal-reset]');
   let reports;
   try {
-    const response = await fetch(root.dataset.index);
+    const response = await fetch(new URL('/' + root.dataset.index, location.href));
     if (!response.ok) throw new Error('Journal index unavailable');
     reports = await response.json();
     if (!Array.isArray(reports)) throw new Error('Invalid journal index');
@@ -107,7 +107,7 @@ async function mountLibrary(root) {
     pagination.hidden = result.pages <= 1;
     reset.hidden = !(state.q || state.brand || state.status || state.sort === 'az');
     const filtered = Boolean(state.q || state.brand || state.status || state.sort === 'az');
-    const canonical = new URL(pageFile(filtered ? 1 : result.page), location.href).href;
+    const canonical = new URL('/' + pageFile(filtered ? 1 : result.page), location.href).href;
     document.querySelector('link[rel="canonical"]').href = canonical;
     document.querySelector('meta[name="robots"]').content = `${filtered ? 'noindex' : 'index'}, follow, max-image-preview:large`;
     document.querySelector('meta[property="og:url"]').content = canonical;
@@ -116,10 +116,10 @@ async function mountLibrary(root) {
       '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'The Discontinued Journal', url: canonical,
       mainEntity: { '@type': 'ItemList', itemListElement: result.items.map((report, i) => ({
         '@type': 'ListItem', position: (result.page - 1) * PAGE_SIZE + i + 1,
-        url: new URL(`journal/${report.slug}.html`, location.href).href, name: report.title
+        url: new URL(`/journal/${report.slug}.html`, location.href).href, name: report.title
       })) }
     });
-    if (historyMode) history[historyMode]({ journal: true }, '', stateHref(state));
+    if (historyMode) history[historyMode]({ journal: true }, '', '/' + stateHref(state));
     if (focusResults) {
       count.focus({ preventScroll: true });
       count.scrollIntoView({ block: 'start', behavior: 'instant' });

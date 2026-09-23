@@ -26,7 +26,7 @@ export async function generateJournalLibrary(root, reports) {
     const schema = JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'The Discontinued Journal', url: canonical, mainEntity: { '@type': 'ItemList', itemListElement: result.items.map((report, i) => ({ '@type': 'ListItem', position: (page - 1) * PAGE_SIZE + i + 1, url: `https://discontinuedclub.com/journal/${report.slug}.html`, name: report.title })) } }).replace(/</g, '\\u003c');
     await writeFile(resolve(root, pageFile(page)), `<!doctype html>
 <html lang="en"><head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><base href="/">
   <title>${e(title)}</title><meta name="description" content="${e(description)}">
   <link rel="canonical" href="${canonical}"><meta name="robots" content="index, follow, max-image-preview:large">
   <meta property="og:site_name" content="Discontinued Club"><meta property="og:type" content="website"><meta property="og:title" content="The Discontinued Journal"><meta property="og:description" content="${e(description)}"><meta property="og:url" content="${canonical}"><meta property="og:image" content="https://discontinuedclub.com/assets/images/hero-journal-v4.webp"><meta name="twitter:card" content="summary_large_image">
