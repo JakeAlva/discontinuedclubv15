@@ -2,7 +2,7 @@ export const rehabStrawberryLemonadeReport = {
   slug: 'is-monster-rehab-strawberry-lemonade-discontinued',
   brand: 'Monster Energy', product: 'Monster Rehab Strawberry Lemonade', theme: 'red',
   statusKey: 'discontinued', statusLabel: 'Reported U.S. discontinuation',
-  lane: 'U.S. flavor status report', featured: true,
+  lane: 'U.S. flavor status report',
   checkedDate: '2026-09-21', readTime: 7,
   title: 'Is Monster Rehab Strawberry Lemonade discontinued?',
   seoTitle: 'Is Monster Rehab Strawberry Lemonade Discontinued? U.S. Status',

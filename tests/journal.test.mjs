@@ -66,13 +66,14 @@ test('journal separates U.S. discontinuations, current formats, and unconfirmed 
   assert.equal(fujiApple.statusKey, 'format');
   assert.match(fujiApple.answer, /only available with sugar/i);
   assert.deepEqual([...new Set(rumors.map((report) => report.product))].sort(), [
+    'Java Monster Caf\u00e9 Latte',
     'Juice Monster Rio Punch',
     'Monster Rehab Green Tea',
     'Monster Ultra Fantasy Ruby Red'
   ]);
   for (const report of rumors) {
     assert.match(report.statusLabel, /not confirmed/i);
-    assert.match(report.answer, /September 8/i);
+    assert.match(report.answer, report.product === 'Java Monster Caf\u00e9 Latte' ? /September 18/i : /September 8/i);
   }
 });
 
@@ -82,10 +83,12 @@ test('journal index and sitemap expose every status report', async () => {
 
   assert.match(index, /United States market/);
   assert.match(index, /Discontinuation watch/);
-  assert.ok(index.includes(`${reports.length} individual articles`));
+  assert.ok(index.includes(`${reports.length} articles`));
+  const libraryFiles = (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const library = (await Promise.all(libraryFiles.map((file) => readFile(resolve(root, file), 'utf8')))).join('\n');
   for (const report of reports) {
     const file = `${report.slug}.html`;
-    assert.ok(index.includes(`journal/${file}`), `blog.html should link to ${file}`);
+    assert.ok(library.includes(`href="journal/${file}"`), `journal pages should link to ${file}`);
     assert.ok(sitemap.includes(`https://discontinuedclub.com/journal/${file}`), `journal sitemap should include ${file}`);
   }
 });

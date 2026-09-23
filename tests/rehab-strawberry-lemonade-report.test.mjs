@@ -17,7 +17,6 @@ test('new Rehab report keeps reported status, regional caveats, and Juice identi
   assert.match(report.answer, /Juice Monster Strawberry Lemonade/);
   assert.match(report.answer, /different line/);
   assert.equal(report.shop, undefined, 'do not imply we carry the retired Rehab drink');
-  assert.deepEqual(reports.filter((item) => item.featured), [report]);
   assert.ok(report.sources.some((source) => source.url.includes('monster-discontinuing-flavors-2025')));
   assert.ok(report.sources.filter((source) => source.url.includes('monsterenergy.com')).length >= 3);
   const copy = report.sections.flatMap((section) => section.paragraphs).join(' ');
@@ -28,7 +27,7 @@ test('new Rehab report keeps reported status, regional caveats, and Juice identi
 
 test('new Rehab article is discoverable, dated, and indexable with the correct single-can image', async () => {
   const report = reports.find((item) => item.slug === slug);
-  for (const file of ['index.html', 'blog.html', 'discontinued-monster-energy-flavors.html', 'discontinued-energy-drink-flavors-2026.html', 'sitemap-journal.xml']) {
+  for (const file of ['blog.html', 'discontinued-monster-energy-flavors.html', 'discontinued-energy-drink-flavors-2026.html', 'sitemap-journal.xml']) {
     assert.ok((await read(file)).includes('journal/' + slug + '.html'), file);
   }
   const html = await read('dist/journal/' + slug + '.html');

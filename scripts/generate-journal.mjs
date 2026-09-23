@@ -2,6 +2,7 @@ import { mkdir, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { reports } from './journal-data.mjs';
 import { catalog } from '../lib/store-catalog.mjs';
+import { generateJournalLibrary } from './generate-journal-library.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const journalDirectory = resolve(root, 'journal');
@@ -10,9 +11,6 @@ const reportCheckedDate = (report) => report.checkedDate || defaultCheckedDate;
 const checkedLabelFor = (report) => new Intl.DateTimeFormat('en-US', {
   month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC'
 }).format(new Date(`${reportCheckedDate(report)}T00:00:00Z`));
-const latestCheckedReport = reports.reduce((latest, report) => (
-  reportCheckedDate(report) > reportCheckedDate(latest) ? report : latest
-));
 const productSlug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
 const currentProductHrefs = new Set(catalog.map((item) => `products/${productSlug(item)}`));
 
@@ -160,46 +158,10 @@ function articleMarkup(report) {
 `;
 }
 
-function reportCard(report, featured = false) {
-  const checkedDate = reportCheckedDate(report);
-  const checkedLabel = checkedLabelFor(report);
-  return `<article class="journal-card${featured ? ' journal-card-featured' : ''}"><a class="journal-card-media" href="journal/${report.slug}.html"><img src="${report.image}" alt="${report.imageAlt}" width="1200" height="1200" style="aspect-ratio: 1 / 1" loading="lazy"><span class="journal-article-label">${report.articleLabel || 'Status report'}</span></a><div class="journal-card-copy"><div class="journal-card-meta"><span class="journal-status status-${report.statusKey}">${report.statusLabel}</span><span>${report.brand}</span><time datetime="${checkedDate}">${checkedLabel}</time></div><h2><a href="journal/${report.slug}.html">${report.title}</a></h2><p>${report.cardCopy}</p><a class="text-link" href="journal/${report.slug}.html">Read the ${report.readTime}-minute report &rarr;</a></div></article>`;
-}
-
-function blogMarkup() {
-  const lead = reports.find((report) => report.slug === 'is-red-bull-blue-edition-blueberry-discontinued');
-  const latest = reports.find((report) => report.featured);
-  const confirmed = reports.filter((report) => report.statusKey === 'discontinued' && report.slug !== lead.slug && report !== latest);
-  const watch = reports.filter((report) => report.statusKey === 'rumor' && report !== latest);
-  const context = reports.filter((report) => ['current', 'format'].includes(report.statusKey));
-  const schema = JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'The Discontinued Journal', url: 'https://discontinuedclub.com/blog.html', hasPart: reports.map((report) => ({ '@type': 'Article', headline: report.title, url: articleUrl(report) })) }).replace(/</g, '\\u003c');
-  return `<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>U.S. Discontinued Drink News & Flavor Status Reports | Discontinued Club</title>
-  <meta name="description" content="Research-backed U.S. status reports for discontinued and rumored energy drink and soda flavors from Monster, Red Bull, Alani Nu, Celsius, Mountain Dew, and more.">
-  <link rel="canonical" href="https://discontinuedclub.com/blog.html"><meta name="robots" content="index, follow, max-image-preview:large">
-  <meta property="og:site_name" content="Discontinued Club"><meta property="og:type" content="website"><meta property="og:title" content="The Discontinued Journal"><meta property="og:description" content="U.S. flavor status reports with dated evidence, clear conclusions, and rumors kept separate from confirmed departures."><meta property="og:url" content="https://discontinuedclub.com/blog.html"><meta property="og:image" content="https://discontinuedclub.com/assets/images/hero-journal-v4.webp"><meta name="twitter:card" content="summary_large_image">
-  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/style.css?v=44"><script type="application/ld+json">${schema}</script>
-</head>
-<body data-page="blog"><div id="site-header"></div><main>
-  <section class="store-hero store-hero-campaign"><picture class="store-hero-picture"><source media="(max-width: 1120px)" srcset="assets/images/hero-journal-v2.webp"><img class="store-hero-media" src="assets/images/hero-journal-v4.webp" alt="Discontinued drink research desk with retired flavors and collector notes" width="1774" height="887" fetchpriority="high"></picture><div class="container store-hero-grid"><div class="hero-copy"><div class="eyebrow">The Discontinued Journal</div><h1>What is leaving U.S. shelves next?</h1><p class="lead">Direct answers for discontinued flavors, package changes, and credible rumors. Every report is dated, sourced, and written for the United States first.</p><div class="hero-actions"><a class="btn btn-dark" href="#confirmed">Read confirmed reports</a><a class="btn btn-light" href="#watch">Open rumor watch</a></div></div></div></section>
-  <section class="journal-desk-band"><div class="container journal-desk-grid"><div><span>Coverage standard</span><strong>United States market</strong></div><div><span>Reports published</span><strong>${reports.length} individual articles</strong></div><div><span>Last evidence review</span><strong>${checkedLabelFor(latestCheckedReport)}</strong></div><div><span>Status rule</span><strong>Flavor and package tracked separately</strong></div></div></section>
-  ${latest ? `<section class="section" id="latest"><div class="container"><div class="section-head"><div><div class="section-kicker">Latest from the journal</div><h2 class="section-title">${checkedLabelFor(latest)}</h2></div></div><div class="journal-grid">${reportCard(latest, true)}</div></div></section>` : ''}
-  <section class="journal-topic-nav" aria-labelledby="topic-index-title"><div class="container"><div class="journal-topic-heading"><div><div class="section-kicker">Research by topic</div><h2 id="topic-index-title">Start with the complete list.</h2></div><p>Brand and year indexes collect the individual evidence reports into faster answers for broad discontinuation searches.</p></div><div class="journal-topic-links"><a href="discontinued-energy-drink-flavors-2026.html"><span>2026 U.S. index</span><strong>Discontinued energy drink flavors</strong></a><a href="discontinued-monster-energy-flavors.html"><span>Brand index</span><strong>Monster Energy</strong></a><a href="discontinued-red-bull-flavors.html"><span>Brand index</span><strong>Red Bull Editions</strong></a></div></div></section>
-  <section class="section" id="confirmed"><div class="container"><div class="section-head"><div><div class="section-kicker">Confirmed and distribution-supported</div><div class="section-title">U.S. discontinued flavor reports</div></div><div class="section-copy">A missing U.S. flavor is classified as discontinued here even when other countries still sell it. Remaining stock and stale product pages are documented, not mistaken for a relaunch.</div></div><div class="journal-grid">${reportCard(lead, true)}${confirmed.map((report) => reportCard(report)).join('')}</div></div></section>
-  <section class="section journal-watch-section" id="watch"><div class="container"><div class="section-head"><div><div class="section-kicker">Discontinuation watch</div><div class="section-title">Reported next, not confirmed yet</div></div><div class="section-copy">These stories answer the rumor without promoting it to fact. Each page names the original report, the claimed timing, and the public evidence that still conflicts with it.</div></div><div class="journal-grid journal-grid-three">${watch.map((report) => reportCard(report)).join('')}</div></div></section>
-  <section class="section section-muted" id="context"><div class="container"><div class="section-head"><div><div class="section-kicker">Flavor versus package</div><div class="section-title">Current drinks with retired versions</div></div><div class="section-copy">A current flavor can still have a discontinued can design, formula, size, or sub-line. These reports keep those answers separate.</div></div><div class="journal-grid journal-grid-context">${context.map((report) => reportCard(report)).join('')}</div></div></section>
-  <section class="section"><div class="container content-grid"><div class="content-copy"><div class="section-kicker">Editorial standard</div><h2>Useful, specific, and honest about uncertainty.</h2><p>Brand announcements and current U.S. catalogs come first. Distributor notices and broad retail resets can establish real-world discontinuation when a brand leaves an old page online. Community reports start investigations but remain labeled as rumors until stronger evidence arrives.</p><p>There is no authoritative all-brand registry of discontinued flavors. The index expands in researched batches so it can become comprehensive without publishing guesses as facts.</p></div><div class="fact-list"><div class="fact-row"><strong>U.S. first</strong><span>International availability is context, not the deciding status.</span></div><div class="fact-row"><strong>One product</strong><span>Every article image shows one exact can so reports are easy to identify.</span></div><div class="fact-row"><strong>Evidence grade</strong><span>Each story explains whether the conclusion is official, distribution-supported, or unconfirmed.</span></div><div class="fact-row"><strong>Correction trail</strong><span>Reports show a checked date and change when new evidence arrives.</span></div></div></div></section>
-  <section class="section"><div class="container content-grid"><div class="content-copy"><div class="section-kicker">Help the reporting desk</div><h2>Send the shelf photo or notice everyone is talking about.</h2><p>Distributor emails, retailer reset sheets, date-coded cans, package changes, and repeated regional sightings can move a report from rumor to confirmed.</p><div class="hero-actions"><a class="btn btn-dark" href="contact.html">Submit a product tip</a><a class="btn btn-light" href="rare-drinks.html">Shop rare drinks</a></div></div><aside class="note-panel"><h3>Rumor pages are intentionally visible.</h3><p>People search for rumors before brands publish statements. A clearly labeled watch report is more useful than silence, provided the article never disguises a claim as confirmation.</p></aside></div></section>
-</main><div id="site-footer"></div><script src="assets/catalog.js?v=44"></script><script src="assets/app.js?v=44"></script></body></html>
-`;
-}
 
 await mkdir(journalDirectory, { recursive: true });
 await rm(journalDirectory, { recursive: true, force: true });
 await mkdir(journalDirectory, { recursive: true });
 await Promise.all(reports.map((report) => writeFile(resolve(journalDirectory, `${report.slug}.html`), articleMarkup(report))));
-await writeFile(resolve(root, 'blog.html'), blogMarkup());
+await generateJournalLibrary(root, reports);
 console.log(`Generated ${reports.length} journal reports and the journal index.`);
