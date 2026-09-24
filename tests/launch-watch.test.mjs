@@ -18,7 +18,7 @@ test('launch-watch articles distinguish reported concepts from verified existing
   assert.ok(sodas.sections.every((section) => section.paragraphs.length >= 2));
   assert.match(drinks.answer, /Sprite Chill Strawberry Kiwi already has a documented U.S. release history/);
   assert.match(drinks.sections.find((section) => section.id === 'powerade-watermelon').paragraphs.join(' '), /Power Water/);
-  assert.equal(drinks.evidenceImages.length, 5);
+  assert.equal(drinks.evidenceImages, undefined);
   assert.deepEqual(reports.filter((report) => report.featured), [sodas]);
   for (const report of launchReports) {
     assert.equal(report.checkedDate, '2026-09-23');
@@ -58,16 +58,20 @@ test('new articles have crawlable discovery, accurate schema, and no sales or di
   }
 });
 
-test('published evidence photographs preserve pixels but exclude private metadata', async () => {
-  const images = new Set(launchReports.flatMap((report) => [report.image, ...(report.evidenceImages || []).map((item) => item.image)]));
-  assert.equal(images.size, 6);
-  for (const image of images) {
-    const metadata = await sharp(resolve(root, image)).metadata();
-    assert.equal(metadata.format, 'jpeg');
-    assert.equal(metadata.width, 960);
-    assert.equal(metadata.height, 1280);
+test('launch-watch covers use labeled editorial artwork, never phone photos or screenshot galleries', async () => {
+  for (const report of launchReports) {
+    const metadata = await sharp(resolve(root, report.image)).metadata();
+    assert.equal(metadata.format, 'png');
+    assert.ok(metadata.width >= 1200);
+    assert.equal(metadata.width, metadata.height);
     assert.equal(metadata.exif, undefined);
     assert.equal(metadata.iptc, undefined);
-    assert.equal(metadata.xmp, undefined);
+    assert.match(report.caption, /AI-assisted editorial reconstruction/);
+    assert.match(report.caption, /not official photography/i);
+    const html = await read(`dist/journal/${report.slug}.html`);
+    assert.doesNotMatch(html, /article-evidence-gallery|id="evidence-images"/);
+    const renderedImages = [...html.matchAll(/<img\b[^>]*src="([^"]+)"/g)].map((match) => match[1]);
+    assert.ok(renderedImages.includes(report.image));
+    assert.ok(renderedImages.every((src) => !/reel-evidence|new-soda-rumors-september-2026\.jpg/.test(src)));
   }
 });

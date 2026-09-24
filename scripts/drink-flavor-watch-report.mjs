@@ -1,5 +1,4 @@
 const imageRoot = 'assets/images/journal/';
-const evidence = (file, alt) => ({ image: `${imageRoot}${file}.jpg`, alt });
 
 export const drinkFlavorWatchReport = {
   slug: 'core-power-banana-powerade-watermelon-new-drink-flavors',
@@ -17,19 +16,12 @@ export const drinkFlavorWatchReport = {
   sidebar: 'Sprite Strawberry Kiwi is documented, not a first-time reveal. Four other exact pictured versions remain unverified in this review.',
   evidenceGrade: 'Social images + catalog and reporting checks',
   evidenceNote: 'The frames show the handle snachwithzach; two display 9/23/26. The full reel, audio and underlying launch documents were not available for this review.',
-  image: `${imageRoot}core-power-banana-reel-evidence.jpg`,
-  imageAlt: 'Reader-submitted reel photograph showing proposed Core Power Banana bottles marked 26g and 42g, not authenticated final packaging',
-  caption: 'Submitted reel frame showing Banana-labeled Core Power concepts. The protein figures are visible image claims, not independently verified specifications for a new release.',
-  imageCredit: 'reader photograph of a frame bearing the snachwithzach handle; original reel URL not supplied',
+  image: `${imageRoot}drink-launch-watch-editorial-v2.png`,
+  imageAlt: 'Editorial reconstruction of shared Core Power Banana, Powerade Watermelon, Sprite Strawberry Kiwi, Topo Chico Pineapple Coconut and vitaminwater Grape package concepts',
+  caption: 'AI-assisted editorial reconstruction based on the submitted frames bearing the snachwithzach handle. Not official photography or authenticated packaging; pictured label details are not independently verified product specifications.',
+  imageCredit: 'Discontinued Club editorial illustration',
   cardCopy: 'Core Power Banana, Powerade Watermelon, Sprite Strawberry Kiwi, Topo Chico Pineapple Coconut and vitaminwater Grape: new claims versus existing products.',
   relatedSlugs: ['new-soda-rumors-coca-cola-pepsi-mr-pibb', 'is-red-bull-fuji-apple-ginger-discontinued'],
-  evidenceImages: [
-    evidence('core-power-banana-reel-evidence', 'Core Power Banana: submitted 26g and 42g bottle images'),
-    evidence('powerade-watermelon-reel-evidence', 'Powerade Watermelon: submitted sports-drink bottle image'),
-    evidence('sprite-strawberry-kiwi-reel-evidence', 'Sprite Chill Strawberry Kiwi: submitted bottle image'),
-    evidence('topo-chico-pineapple-coconut-reel-evidence', 'Topo Chico Sabores Pineapple Coconut: submitted can image'),
-    evidence('vitaminwater-grape-reel-evidence', 'vitaminwater Zero Sugar Grape: submitted bottle image')
-  ],
   statusParagraphs: [
     '<strong>Mixed evidence</strong> means the five entries do not share one conclusion. Strawberry Kiwi has a documented release history; the other four exact pictured versions remain unverified. That is why this roundup belongs in launch watch, not a list of five officially announced new drinks.',
     'A catalog describes what a brand currently presents publicly, not everything it may be developing. A missing product is not proof that a future release is fake. Equally, a familiar flavor word in a catalog does not authenticate a different formula, package or product line shown in a reel.'
@@ -90,6 +82,10 @@ export const drinkFlavorWatchReport = {
     { label: 'Walmart: Sprite Chill Strawberry Kiwi product record', url: 'https://www.walmart.com/ip/14263556321', note: 'product identity only; local availability not verified' },
     { label: 'Topo Chico: U.S. Sabores catalog', url: 'https://www.coca-cola.com/us/en/brands/topo-chico/products/sabores', note: 'flavor names checked September 23, 2026' },
     { label: 'vitaminwater: U.S. Zero Sugar range', url: 'https://www.coca-cola.com/us/en/brands/vitaminwater/products/vitaminwater-zero-sugar', note: 'checked September 23, 2026; xxx identified as acai blueberry pomegranate' },
-    { label: 'Reader-submitted reel frames', url: 'https://discontinuedclub.com/journal/core-power-banana-powerade-watermelon-new-drink-flavors.html#evidence-images', note: 'visible snachwithzach credit retained; original URL and complete narration not supplied' }
+    { label: 'Submitted reference: Core Power Banana', url: 'https://discontinuedclub.com/assets/images/journal/core-power-banana-reel-evidence.jpg', note: 'original reader photograph with visible snachwithzach credit; full reel URL and narration not supplied' },
+    { label: 'Submitted reference: Powerade Watermelon', url: 'https://discontinuedclub.com/assets/images/journal/powerade-watermelon-reel-evidence.jpg', note: 'original reader photograph, not manufacturer confirmation' },
+    { label: 'Submitted reference: Sprite Strawberry Kiwi', url: 'https://discontinuedclub.com/assets/images/journal/sprite-strawberry-kiwi-reel-evidence.jpg', note: 'original reader photograph, not evidence of a new launch' },
+    { label: 'Submitted reference: Topo Chico Pineapple Coconut', url: 'https://discontinuedclub.com/assets/images/journal/topo-chico-pineapple-coconut-reel-evidence.jpg', note: 'original reader photograph, not authenticated packaging' },
+    { label: 'Submitted reference: vitaminwater Grape', url: 'https://discontinuedclub.com/assets/images/journal/vitaminwater-grape-reel-evidence.jpg', note: 'original reader photograph; small label details remain unverified' }
   ]
 };

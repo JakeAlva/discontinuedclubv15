@@ -95,7 +95,6 @@ function articleMarkup(report) {
     ? `<section id="buyer-notes"><h2>${report.buyerHeading || 'Before you buy'}</h2>${report.buyerParagraphs.map((paragraph) => `<p>${paragraph}</p>`).join('')}</section>`
     : `<section id="buyer-notes"><h2>What buyers and collectors should check</h2><p>Verify the exact flavor name, package design, can size, country labeling, condition, quantity, and the seller's photo before buying. A marketplace listing can combine an old image with newer inventory, and a foreign-market can may use similar colors for a different formula. The can shown here is one specific reference design, not a promise that every listing uses the same package.</p><p>For older full cans, treat the purchase as a collectible first. Storage history is rarely complete, and sealed cans can leak, swell, or change internally over time. A printed date and intact seal help identify an item, but they do not guarantee that an aged beverage remains suitable to drink.</p></section>`;
   const disclosure = report.disclosure || `Discontinued Club is an independent retailer and is not affiliated with or endorsed by ${report.brand}. This report uses a U.S.-market definition of discontinued`;
-  const evidenceImages = report.evidenceImages ? `<section id="evidence-images"><h2>The submitted frames</h2><p>These are reference images from the shared reel, not authenticated product photography. Open a frame to inspect the original photograph and visible credits.</p><div class="article-evidence-gallery">${report.evidenceImages.map((item) => `<figure><a href="${item.image}"><img src="${item.image}" alt="${item.alt}" width="960" height="1280" loading="lazy"></a><figcaption>${item.alt}</figcaption></figure>`).join('')}</div></section>` : '';
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -140,7 +139,7 @@ function articleMarkup(report) {
       <div class="container article-layout">
         <div class="article-body">
           <section class="article-answer" aria-labelledby="short-answer"><div class="section-kicker">The short answer</div><h2 id="short-answer">${report.answerHeading}</h2><p>${report.answer}</p></section>
-          ${sections}${evidenceImages ? `\n          ${evidenceImages}` : ''}
+          ${sections}
           <section id="status-language"><h2>How to read this status</h2>${statusExplanation(report)}</section>
           ${buyerNotes}
           ${shop}

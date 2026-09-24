@@ -64,8 +64,8 @@ test('static journal pages expose every article once and remain independently in
     assert.ok(html.includes(`<link rel="canonical" href="https://discontinuedclub.com/${file}">`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);
     assert.ok(sitemap.includes('https://discontinuedclub.com/' + file));
-    assert.match(html, /journal-library\.mjs\?v=61/);
-    assert.match(html, /journal-index\.json\?v=61/);
+    assert.match(html, /journal-library\.mjs\?v=62/);
+    assert.match(html, /journal-index\.json\?v=62/);
     const cards = [...html.matchAll(/<h2><a href="journal\/([^"#]+)\.html">/g)].map((match) => match[1]);
     assert.ok(cards.length > 0 && cards.length <= PAGE_SIZE);
     linked.push(...cards);
