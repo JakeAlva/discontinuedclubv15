@@ -63,7 +63,7 @@ const hubs = [
     seoTitle: 'Discontinued Energy Drink Flavors 2026: U.S. Status Index',
     description: 'A researched U.S. index of 2026 discontinued energy drink flavors and credible rumors from Monster, Red Bull, Alani Nu, CELSIUS, and more.',
     lede: 'One place to check confirmed U.S. flavor exits, retired versions, and credible rumors without treating every empty shelf as proof.',
-    filter: (report) => report.brand !== 'Mountain Dew',
+    filter: (report) => ['Monster Energy', 'Red Bull', 'Alani Nu', 'CELSIUS'].includes(report.brand),
     introHeading: 'A cross-brand U.S. index built for the question shoppers actually ask.',
     intro: [
       'A flavor can vanish for several reasons: a national discontinuation, a regional distribution change, a limited release ending, a reformulation, or a package redesign. Search results often collapse those situations into the same answer. This index keeps the labels separate and links every conclusion to a full report with dated sources and a plain-English evidence grade.',

@@ -17,7 +17,7 @@ test('journal search combines words, accent-insensitive names, brand and evidenc
   assert.equal(selectReports(data, { ...base, q: 'cafe', brand: 'Red Bull' }).total, 0);
   const rumors = selectReports(data, { ...base, status: 'rumor' });
   assert.ok(rumors.items.every((report) => report.statusKey === 'rumor'));
-  assert.equal(selectReports(data, base).items[0].slug, 'is-java-monster-cafe-latte-being-discontinued');
+  assert.equal(selectReports(data, base).items[0].slug, 'new-soda-rumors-coca-cola-pepsi-mr-pibb');
   const alphabetical = selectReports(data, { ...base, sort: 'az' }).items.map((report) => report.product);
   assert.deepEqual(alphabetical, [...alphabetical].sort((a, b) => a.localeCompare(b, 'en')));
 });
@@ -64,8 +64,8 @@ test('static journal pages expose every article once and remain independently in
     assert.ok(html.includes(`<link rel="canonical" href="https://discontinuedclub.com/${file}">`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);
     assert.ok(sitemap.includes('https://discontinuedclub.com/' + file));
-    assert.match(html, /journal-library\.mjs\?v=60/);
-    assert.match(html, /journal-index\.json\?v=60/);
+    assert.match(html, /journal-library\.mjs\?v=61/);
+    assert.match(html, /journal-index\.json\?v=61/);
     const cards = [...html.matchAll(/<h2><a href="journal\/([^"#]+)\.html">/g)].map((match) => match[1]);
     assert.ok(cards.length > 0 && cards.length <= PAGE_SIZE);
     linked.push(...cards);
@@ -78,12 +78,12 @@ test('Cafe Latte article is sourced, dated, appropriately unconfirmed, and disco
   const report = reports.find((item) => item.slug === 'is-java-monster-cafe-latte-being-discontinued');
   assert.equal(report.statusKey, 'rumor');
   assert.equal(report.checkedDate, '2026-09-23');
-  assert.deepEqual(reports.filter((item) => item.featured), [report]);
+  assert.equal(report.featured, false);
   assert.match(report.answer, /not confirmed discontinued/);
   assert.match(report.answer, /not verified a production end date/);
   assert.equal(report.shop, undefined);
   assert.equal(report.sources.length, 3);
-  for (const file of ['index.html', 'blog.html', 'discontinued-monster-energy-flavors.html', 'discontinued-energy-drink-flavors-2026.html', 'sitemap-journal.xml']) {
+  for (const file of ['blog.html', 'discontinued-monster-energy-flavors.html', 'discontinued-energy-drink-flavors-2026.html', 'sitemap-journal.xml']) {
     assert.ok((await read(file)).includes('journal/' + report.slug + '.html'), file);
   }
   const html = await read('dist/journal/' + report.slug + '.html');

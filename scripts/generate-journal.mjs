@@ -75,7 +75,9 @@ function statusExplanation(report) {
 }
 
 function relatedReports(report) {
-  const related = reports.filter((candidate) => candidate.slug !== report.slug && (candidate.brand === report.brand || candidate.statusKey === report.statusKey)).slice(0, 2);
+  const related = reports.filter((candidate) => candidate.slug !== report.slug && (report.relatedSlugs
+    ? report.relatedSlugs.includes(candidate.slug)
+    : candidate.brand === report.brand || candidate.statusKey === report.statusKey)).slice(0, 2);
   return related.map((candidate) => `<a href="journal/${candidate.slug}.html"><span class="journal-status status-${candidate.statusKey}">${candidate.statusLabel}</span><strong>${candidate.title}</strong><p>${candidate.cardCopy}</p></a>`).join('');
 }
 
@@ -89,6 +91,11 @@ function articleMarkup(report) {
   const imageCredit = report.imageCredit ? ` Image source: ${report.imageCredit}.` : '';
   const sectionHref = (id) => `journal/${report.slug}.html#${id}`;
   const toc = report.sections.map((section) => `<a href="${sectionHref(section.id)}">${section.toc || section.heading}</a>`).join('');
+  const buyerNotes = report.buyerParagraphs
+    ? `<section id="buyer-notes"><h2>${report.buyerHeading || 'Before you buy'}</h2>${report.buyerParagraphs.map((paragraph) => `<p>${paragraph}</p>`).join('')}</section>`
+    : `<section id="buyer-notes"><h2>What buyers and collectors should check</h2><p>Verify the exact flavor name, package design, can size, country labeling, condition, quantity, and the seller's photo before buying. A marketplace listing can combine an old image with newer inventory, and a foreign-market can may use similar colors for a different formula. The can shown here is one specific reference design, not a promise that every listing uses the same package.</p><p>For older full cans, treat the purchase as a collectible first. Storage history is rarely complete, and sealed cans can leak, swell, or change internally over time. A printed date and intact seal help identify an item, but they do not guarantee that an aged beverage remains suitable to drink.</p></section>`;
+  const disclosure = report.disclosure || `Discontinued Club is an independent retailer and is not affiliated with or endorsed by ${report.brand}. This report uses a U.S.-market definition of discontinued`;
+  const evidenceImages = report.evidenceImages ? `<section id="evidence-images"><h2>The submitted frames</h2><p>These are reference images from the shared reel, not authenticated product photography. Open a frame to inspect the original photograph and visible credits.</p><div class="article-evidence-gallery">${report.evidenceImages.map((item) => `<figure><a href="${item.image}"><img src="${item.image}" alt="${item.alt}" width="960" height="1280" loading="lazy"></a><figcaption>${item.alt}</figcaption></figure>`).join('')}</div></section>` : '';
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -133,12 +140,12 @@ function articleMarkup(report) {
       <div class="container article-layout">
         <div class="article-body">
           <section class="article-answer" aria-labelledby="short-answer"><div class="section-kicker">The short answer</div><h2 id="short-answer">${report.answerHeading}</h2><p>${report.answer}</p></section>
-          ${sections}
+          ${sections}${evidenceImages ? `\n          ${evidenceImages}` : ''}
           <section id="status-language"><h2>How to read this status</h2>${statusExplanation(report)}</section>
-          <section id="buyer-notes"><h2>What buyers and collectors should check</h2><p>Verify the exact flavor name, package design, can size, country labeling, condition, quantity, and the seller's photo before buying. A marketplace listing can combine an old image with newer inventory, and a foreign-market can may use similar colors for a different formula. The can shown here is one specific reference design, not a promise that every listing uses the same package.</p><p>For older full cans, treat the purchase as a collectible first. Storage history is rarely complete, and sealed cans can leak, swell, or change internally over time. A printed date and intact seal help identify an item, but they do not guarantee that an aged beverage remains suitable to drink.</p></section>
+          ${buyerNotes}
           ${shop}
-          <section id="faq" class="article-faq"><div class="section-kicker">Frequently asked</div><h2>${report.product} questions</h2>${faqMarkup(report)}</section>
-          <section id="sources" class="article-sources"><div class="section-kicker">Evidence desk</div><h2>Sources checked</h2><ol>${sourceList(report)}</ol><p class="article-disclosure">Discontinued Club is an independent retailer and is not affiliated with or endorsed by ${report.brand}. This report uses a U.S.-market definition of discontinued and was last reviewed ${checkedLabel}. Product status can change after that date; corrections are recorded when stronger evidence appears.</p></section>
+          <section id="faq" class="article-faq"><div class="section-kicker">Frequently asked</div><h2>${report.faqHeading || `${report.product} questions`}</h2>${faqMarkup(report)}</section>
+          <section id="sources" class="article-sources"><div class="section-kicker">Evidence desk</div><h2>Sources checked</h2><ol>${sourceList(report)}</ol><p class="article-disclosure">${disclosure}${report.disclosure ? ' Last reviewed' : ' and was last reviewed'} ${checkedLabel}. Product status can change after that date; corrections are recorded when stronger evidence appears.</p></section>
         </div>
         <aside class="article-sidebar" aria-label="Article guide">
           <div class="article-sidebar-block"><strong>U.S. conclusion</strong><span class="journal-status status-${report.statusKey}">${report.statusLabel}</span><p>${report.sidebar}</p></div>

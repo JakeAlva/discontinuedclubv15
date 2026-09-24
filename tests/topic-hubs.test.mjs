@@ -8,7 +8,7 @@ const root = resolve(import.meta.dirname, '..');
 const hubs = [
   ['discontinued-monster-energy-flavors.html', reports.filter((report) => report.brand === 'Monster Energy').length],
   ['discontinued-red-bull-flavors.html', reports.filter((report) => report.brand === 'Red Bull').length],
-  ['discontinued-energy-drink-flavors-2026.html', reports.filter((report) => report.brand !== 'Mountain Dew').length]
+  ['discontinued-energy-drink-flavors-2026.html', reports.filter((report) => ['Monster Energy', 'Red Bull', 'Alani Nu', 'CELSIUS'].includes(report.brand)).length]
 ];
 
 test('topic hubs are indexable, structured, and connected to the journal', async () => {

@@ -2,6 +2,7 @@ export const PAGE_SIZE = 6;
 export const statuses = [
   ['discontinued', 'U.S. discontinued'],
   ['rumor', 'Rumor watch'],
+  ['launch', 'Launch watch'],
   ['current', 'Still available'],
   ['format', 'Retired versions']
 ];
@@ -25,7 +26,7 @@ export function readState(url) {
 export function selectReports(reports, state) {
   const words = normalize(state.q || '').split(/\s+/).filter(Boolean);
   const filtered = reports.filter((report) => {
-    if (state.brand && report.brand !== state.brand) return false;
+    if (state.brand && !(report.brands || [report.brand]).includes(state.brand)) return false;
     if (state.status && report.statusKey !== state.status) return false;
     const text = normalize(`${report.title} ${report.product} ${report.brand} ${report.cardCopy}`);
     return words.every((word) => text.includes(word));
@@ -95,7 +96,7 @@ async function mountLibrary(root) {
   let timer;
 
   function render(historyMode, focusResults = false) {
-    if (!reports.some((report) => report.brand === state.brand)) state.brand = '';
+    if (!reports.some((report) => (report.brands || [report.brand]).includes(state.brand))) state.brand = '';
     const result = selectReports(reports, state);
     state.page = result.page;
     for (const key of ['q', 'brand', 'status', 'sort']) {

@@ -5,10 +5,11 @@ import { PAGE_SIZE, statuses, escapeHtml, selectReports, cardMarkup, pageFile, p
 export async function generateJournalLibrary(root, reports) {
   const index = reports.map((report) => ({
     slug: report.slug, title: report.title, product: report.product, brand: report.brand,
+    ...(report.brands ? { brands: report.brands } : {}),
     statusKey: report.statusKey, statusLabel: report.statusLabel, image: report.image,
     cardCopy: report.cardCopy, readTime: report.readTime, date: report.checkedDate || '2026-09-11'
   }));
-  const brands = [...new Set(index.map((report) => report.brand))].sort();
+  const brands = [...new Set(index.flatMap((report) => report.brands || [report.brand]))].sort();
   const pages = Math.ceil(index.length / PAGE_SIZE);
   const latest = index.map((report) => report.date).sort().at(-1);
   const e = escapeHtml;
@@ -22,7 +23,7 @@ export async function generateJournalLibrary(root, reports) {
     const result = selectReports(index, state);
     const canonical = `https://discontinuedclub.com/${pageFile(page)}`;
     const title = `Discontinued Drink News & Flavor Status Reports${page > 1 ? ` - Page ${page}` : ''} | Discontinued Club`;
-    const description = `Explore ${reports.length} researched U.S. drink reports. Search Monster, Red Bull, Alani Nu and more, from discontinued flavors to rumors and retired cans.${page > 1 ? ` Page ${page}.` : ''}`;
+    const description = `Explore ${reports.length} researched U.S. drink reports, from discontinued flavors and retired cans to new soda launch rumors. Search by flavor, brand or status.${page > 1 ? ` Page ${page}.` : ''}`;
     const schema = JSON.stringify({ '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'The Discontinued Journal', url: canonical, mainEntity: { '@type': 'ItemList', itemListElement: result.items.map((report, i) => ({ '@type': 'ListItem', position: (page - 1) * PAGE_SIZE + i + 1, url: `https://discontinuedclub.com/journal/${report.slug}.html`, name: report.title })) } }).replace(/</g, '\\u003c');
     await writeFile(resolve(root, pageFile(page)), `<!doctype html>
 <html lang="en"><head>

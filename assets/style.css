@@ -548,6 +548,7 @@ body.finder-open { overflow: hidden; }
 .status-watch { background: #fff0bf; color: #745400; }
 .status-discontinued { background: #f8d9d3; color: #8a1f12; }
 .status-rumor { background: #fff0bf; color: #745400; }
+.status-launch { background: #dcedeb; color: #18564e; letter-spacing: 0; line-height: 1.35; padding: 6px 9px; }
 .status-format { background: #dfe8fb; color: #214890; }
 .journal-card h2 { margin: 0; font-family: Georgia, 'Times New Roman', serif; font-size: 31px; line-height: 1.12; font-weight: 700; }
 .journal-card-featured h2 { font-size: 45px; }
@@ -590,6 +591,10 @@ body.finder-open { overflow: hidden; }
 .article-body h2 { margin-bottom: 20px; font-size: 36px; line-height: 1.17; font-weight: 700; letter-spacing: 0; }
 .article-body h3 { margin: 35px 0 14px; font-size: 24px; line-height: 1.25; }
 .article-body p { margin: 0 0 22px; }
+.article-evidence-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.article-evidence-gallery figure { min-width: 0; margin: 0; }
+.article-evidence-gallery img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: contain; }
+.article-evidence-gallery figcaption { margin-top: 9px; font-family: Inter, Arial, sans-serif; font-size: 12px; line-height: 1.5; color: var(--muted); }
 .article-body ul, .article-body ol { margin: 0 0 24px; padding-left: 24px; }
 .article-body li { margin-top: 10px; padding-left: 4px; }
 .article-body a:not(.btn) { color: #184da9; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }

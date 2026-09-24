@@ -2,7 +2,7 @@ export const cafeLatteReport = {
   slug: 'is-java-monster-cafe-latte-being-discontinued',
   brand: 'Monster Energy', product: 'Java Monster Caf\u00e9 Latte', theme: 'green',
   statusKey: 'rumor', statusLabel: 'Rumored / not confirmed',
-  lane: 'U.S. discontinuation watch', featured: true,
+  lane: 'U.S. discontinuation watch', featured: false,
   checkedDate: '2026-09-23', readTime: 6,
   title: 'Is Java Monster Caf\u00e9 Latte being discontinued?',
   seoTitle: 'Is Java Monster Cafe Latte Being Discontinued? September 2026 Update',
