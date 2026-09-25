@@ -17,7 +17,8 @@ test('journal search combines words, accent-insensitive names, brand and evidenc
   assert.equal(selectReports(data, { ...base, q: 'cafe', brand: 'Red Bull' }).total, 0);
   const rumors = selectReports(data, { ...base, status: 'rumor' });
   assert.ok(rumors.items.every((report) => report.statusKey === 'rumor'));
-  assert.equal(selectReports(data, base).items[0].slug, 'jones-fallout-vault-dweller-nuka-cola-quartz-cranberry');
+  const newest = [...data].sort((a, b) => b.date.localeCompare(a.date) || a.product.localeCompare(b.product, 'en'));
+  assert.equal(selectReports(data, base).items[0].slug, newest[0].slug);
   const alphabetical = selectReports(data, { ...base, sort: 'az' }).items.map((report) => report.product);
   assert.deepEqual(alphabetical, [...alphabetical].sort((a, b) => a.localeCompare(b, 'en')));
 });
@@ -64,8 +65,8 @@ test('static journal pages expose every article once and remain independently in
     assert.ok(html.includes(`<link rel="canonical" href="https://discontinuedclub.com/${file}">`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);
     assert.ok(sitemap.includes('https://discontinuedclub.com/' + file));
-    assert.match(html, /journal-library\.mjs\?v=63/);
-    assert.match(html, /journal-index\.json\?v=63/);
+    assert.match(html, /journal-library\.mjs\?v=64/);
+    assert.match(html, /journal-index\.json\?v=64/);
     const cards = [...html.matchAll(/<h2><a href="journal\/([^"#]+)\.html">/g)].map((match) => match[1]);
     assert.ok(cards.length > 0 && cards.length <= PAGE_SIZE);
     linked.push(...cards);

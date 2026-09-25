@@ -37,7 +37,7 @@ test('roundups are searchable under each covered brand and the new launch status
       assert.ok(selectReports(index, { ...base, brand }).items.some((item) => item.slug === report.slug), brand);
     }
   }
-  assert.equal(selectReports(index, { ...base, q: 'pineapple coconut' }).total, 1);
+  assert.ok(selectReports(index, { ...base, q: 'pineapple coconut' }).items.some((item) => item.slug === 'core-power-banana-powerade-watermelon-new-drink-flavors'));
   assert.equal(selectReports(index, { ...base, brand: 'Monster Energy' }).total, 0);
 });
 

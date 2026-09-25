@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { reports } from '../scripts/journal-data.mjs';
 
@@ -27,7 +27,10 @@ test('new Rehab report keeps reported status, regional caveats, and Juice identi
 
 test('new Rehab article is discoverable, dated, and indexable with the correct single-can image', async () => {
   const report = reports.find((item) => item.slug === slug);
-  for (const file of ['blog.html', 'discontinued-monster-energy-flavors.html', 'discontinued-energy-drink-flavors-2026.html', 'sitemap-journal.xml']) {
+  let library = '';
+  for (const file of (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file))) library += await read(file);
+  assert.ok(library.includes('journal/' + slug + '.html'), 'article remains accessible through crawlable journal pagination');
+  for (const file of ['discontinued-monster-energy-flavors.html', 'discontinued-energy-drink-flavors-2026.html', 'sitemap-journal.xml']) {
     assert.ok((await read(file)).includes('journal/' + slug + '.html'), file);
   }
   const html = await read('dist/journal/' + slug + '.html');
