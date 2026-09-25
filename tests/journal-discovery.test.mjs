@@ -14,9 +14,13 @@ test('Aussie Lemonade distinguishes reported U.S. status from overseas listings'
   assert.match(report.answer, /Australia and Great Britain/);
   assert.match(report.answer, /did not locate a public manufacturer notice/);
   assert.equal(report.shop, undefined, 'do not advertise nonexistent store inventory');
-  for (const file of ['blog.html', 'discontinued-monster-energy-flavors.html', 'sitemap-journal.xml']) {
+  for (const file of ['discontinued-monster-energy-flavors.html', 'sitemap-journal.xml']) {
     assert.ok((await readFile(resolve(root, file), 'utf8')).includes(`journal/${report.slug}.html`), file);
   }
+  const libraryPages = (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  let library = '';
+  for (const file of libraryPages) library += await readFile(resolve(root, file), 'utf8');
+  assert.ok(library.includes(`journal/${report.slug}.html`), 'Aussie Lemonade remains discoverable in the paginated journal');
   const html = await readFile(resolve(root, 'journal', `${report.slug}.html`), 'utf8');
   const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
   const article = schema['@graph'].find((item) => item['@type'] === 'Article');

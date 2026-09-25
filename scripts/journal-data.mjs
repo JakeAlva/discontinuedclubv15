@@ -5,6 +5,8 @@ import { rehabStrawberryLemonadeReport } from './rehab-strawberry-lemonade-repor
 import { cafeLatteReport } from './cafe-latte-report.mjs';
 import { newSodaRumorsReport } from './new-soda-rumors-report.mjs';
 import { drinkFlavorWatchReport } from './drink-flavor-watch-report.mjs';
+import { falloutVaultDwellerReport } from './fallout-vault-dweller-report.mjs';
+import { oreoFlavorVoteReport } from './oreo-flavor-vote-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -663,5 +665,7 @@ export const reports = [
   rehabStrawberryLemonadeReport,
   cafeLatteReport,
   newSodaRumorsReport,
-  drinkFlavorWatchReport
+  drinkFlavorWatchReport,
+  falloutVaultDwellerReport,
+  oreoFlavorVoteReport
 ];
