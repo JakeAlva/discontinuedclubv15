@@ -5,10 +5,11 @@ import { resolve } from 'node:path';
 import { reports } from '../scripts/journal-data.mjs';
 
 const root = resolve(import.meta.dirname, '..');
+const statusReports = reports.filter((report) => report.statusKey !== 'launch');
 const hubs = [
-  ['discontinued-monster-energy-flavors.html', reports.filter((report) => report.brand === 'Monster Energy').length],
-  ['discontinued-red-bull-flavors.html', reports.filter((report) => report.brand === 'Red Bull').length],
-  ['discontinued-energy-drink-flavors-2026.html', reports.filter((report) => ['Monster Energy', 'Red Bull', 'Alani Nu', 'CELSIUS'].includes(report.brand)).length]
+  ['discontinued-monster-energy-flavors.html', statusReports.filter((report) => report.brand === 'Monster Energy').length],
+  ['discontinued-red-bull-flavors.html', statusReports.filter((report) => report.brand === 'Red Bull').length],
+  ['discontinued-energy-drink-flavors-2026.html', statusReports.filter((report) => ['Monster Energy', 'Red Bull', 'Alani Nu', 'CELSIUS'].includes(report.brand)).length]
 ];
 
 test('topic hubs are indexable, structured, and connected to the journal', async () => {
@@ -22,6 +23,7 @@ test('topic hubs are indexable, structured, and connected to the journal', async
     assert.match(html, /"@type":"CollectionPage"/);
     assert.match(html, /"@type":"ItemList"/);
     assert.ok(html.includes(`"numberOfItems":${count}`));
+    assert.equal([...html.matchAll(/class="topic-report-card"/g)].length, count);
     assert.match(html, /journal\/is-[^"<]+\.html/);
     assert.ok(sitemap.includes(`https://discontinuedclub.com/${file}`));
     assert.ok(blog.includes(file));

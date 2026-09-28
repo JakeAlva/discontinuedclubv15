@@ -65,8 +65,8 @@ test('static journal pages expose every article once and remain independently in
     assert.ok(html.includes(`<link rel="canonical" href="https://discontinuedclub.com/${file}">`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);
     assert.ok(sitemap.includes('https://discontinuedclub.com/' + file));
-    assert.match(html, /journal-library\.mjs\?v=64/);
-    assert.match(html, /journal-index\.json\?v=64/);
+    assert.match(html, /journal-library\.mjs\?v=65/);
+    assert.match(html, /journal-index\.json\?v=65/);
     const cards = [...html.matchAll(/<h2><a href="journal\/([^"#]+)\.html">/g)].map((match) => match[1]);
     assert.ok(cards.length > 0 && cards.length <= PAGE_SIZE);
     linked.push(...cards);
@@ -84,7 +84,11 @@ test('Cafe Latte article is sourced, dated, appropriately unconfirmed, and disco
   assert.match(report.answer, /not verified a production end date/);
   assert.equal(report.shop, undefined);
   assert.equal(report.sources.length, 3);
-  for (const file of ['blog.html', 'discontinued-monster-energy-flavors.html', 'discontinued-energy-drink-flavors-2026.html', 'sitemap-journal.xml']) {
+  const libraryFiles = (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  let library = '';
+  for (const file of libraryFiles) library += await read(file);
+  assert.ok(library.includes('journal/' + report.slug + '.html'));
+  for (const file of ['discontinued-monster-energy-flavors.html', 'discontinued-energy-drink-flavors-2026.html', 'sitemap-journal.xml']) {
     assert.ok((await read(file)).includes('journal/' + report.slug + '.html'), file);
   }
   const html = await read('dist/journal/' + report.slug + '.html');

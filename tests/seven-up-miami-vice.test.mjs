@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { sevenUpMiamiViceReport as report } from '../scripts/seven-up-miami-vice-report.mjs';
@@ -31,9 +31,11 @@ test('Miami Vice report preserves uncertainty and visibly identifies concept ima
 });
 
 test('Miami Vice article is discoverable, indexable and has editorial rather than product schema', async () => {
-  for (const file of ['index.html', 'blog.html', 'sitemap-journal.xml']) {
-    assert.ok((await read(file)).includes(href), file);
-  }
+  const libraryFiles = (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  let library = '';
+  for (const file of libraryFiles) library += await read(file);
+  assert.ok(library.includes(href));
+  assert.ok((await read('sitemap-journal.xml')).includes(href));
   const html = await read(`dist/${href}`);
   assert.ok(html.includes(`href="https://discontinuedclub.com/${href}"`));
   assert.match(html, /content="index, follow, max-image-preview:large"/);

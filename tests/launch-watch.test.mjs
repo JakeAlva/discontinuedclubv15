@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { reports } from '../scripts/journal-data.mjs';
@@ -42,9 +42,13 @@ test('roundups are searchable under each covered brand and the new launch status
 });
 
 test('new articles have crawlable discovery, accurate schema, and no sales or discontinued boilerplate', async () => {
+  const libraryFiles = (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  let library = '';
+  for (const file of libraryFiles) library += await read(file);
   for (const report of launchReports) {
     const href = `journal/${report.slug}.html`;
-    for (const file of ['blog.html', 'sitemap-journal.xml']) assert.ok((await read(file)).includes(href), file);
+    assert.ok(library.includes(href));
+    assert.ok((await read('sitemap-journal.xml')).includes(href));
     const html = await read(`dist/${href}`);
     assert.doesNotMatch(html, /article-shop-callout|data-add-to-cart|For older full cans|U.S.-market definition of discontinued/);
     assert.match(html, /content="index, follow, max-image-preview:large"/);

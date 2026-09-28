@@ -97,7 +97,7 @@ function reportGroup(title, copy, group) {
 }
 
 function hubMarkup(hub) {
-  const selected = reports.filter(hub.filter);
+  const selected = reports.filter(hub.filter).filter((report) => report.statusKey !== 'launch');
   const checkedDate = selected.reduce((latest, report) => report.checkedDate > latest ? report.checkedDate : latest, '2026-09-12');
   const checkedLabel = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${checkedDate}T00:00:00Z`));
   const confirmed = selected.filter((report) => report.statusKey === 'discontinued');
