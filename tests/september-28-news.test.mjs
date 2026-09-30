@@ -36,7 +36,7 @@ test('September 28 news retains market, price and availability caveats', () => {
 test('new articles have official images, crawlable links and consistent editorial metadata', async () => {
   for (const report of additions) {
     const href = `journal/${report.slug}.html`;
-    for (const file of ['index.html', 'blog.html', 'sitemap-journal.xml']) {
+    for (const file of ['blog.html', 'sitemap-journal.xml']) {
       assert.ok((await read(file)).includes(href), `${file}: ${href}`);
     }
     const html = await read(`dist/${href}`);

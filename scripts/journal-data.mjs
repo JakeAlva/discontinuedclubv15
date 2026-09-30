@@ -11,6 +11,8 @@ import { sevenUpMiamiViceReport } from './seven-up-miami-vice-report.mjs';
 import { c4AllHoppedUpReport } from './c4-all-hopped-up-report.mjs';
 import { alaniVoodooVanillaReport } from './alani-voodoo-vanilla-report.mjs';
 import { wonka2026Report } from './wonka-2026-report.mjs';
+import { dewTrolli2026Report } from './dew-trolli-2026-report.mjs';
+import { starbucksAerocanoReport } from './starbucks-aerocano-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -675,5 +677,7 @@ export const reports = [
   sevenUpMiamiViceReport,
   c4AllHoppedUpReport,
   alaniVoodooVanillaReport,
-  wonka2026Report
+  wonka2026Report,
+  dewTrolli2026Report,
+  starbucksAerocanoReport
 ];

@@ -21,11 +21,13 @@ test('every current listing has a dedicated indexable product page', async () =>
     assert.ok(html.includes(`https://www.ebay.com/itm/${item.id}`));
     assert.ok(html.includes(`"brand":{"@type":"Brand","name":"${productBrand(item)}"}`));
     assert.ok(html.includes(`https://schema.org/${productCondition(item) === 'used' ? 'UsedCondition' : 'NewCondition'}`));
-    assert.ok(html.includes('"@type":"OfferShippingDetails"'));
-    assert.ok(html.includes('"@type":"MerchantReturnPolicy"'));
+    if (item.directCheckoutEnabled !== false) {
+      assert.ok(html.includes('"@type":"OfferShippingDetails"'));
+      assert.ok(html.includes('"@type":"MerchantReturnPolicy"'));
+    }
     assert.ok(html.includes('class="product-page"'));
     assert.equal((html.match(/class="product-related-card"/g) || []).length, Math.min(4, catalog.length - 1));
-    if (storeConfig.directCheckoutEnabled) {
+    if (storeConfig.directCheckoutEnabled && item.directCheckoutEnabled !== false) {
       assert.ok(html.includes(`data-add-to-cart="${item.id}"`));
       assert.ok(html.includes('class="mobile-product-bar"'));
       assert.ok(html.includes('data-add-label>Add to cart'));

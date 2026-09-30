@@ -6,11 +6,6 @@ import { productBrand, productCondition, productConditionLabel } from '../lib/pr
 const root = resolve(import.meta.dirname, '..');
 const output = resolve(root, 'products');
 const publicRoot = 'https://discontinuedclub.com';
-const directCheckoutEnabled = storeConfig.directCheckoutEnabled === true;
-const directCheckoutDateLabel = storeConfig.directCheckoutDateLabel || 'coming soon';
-const directCheckoutNotice = directCheckoutDateLabel.toLowerCase() === 'coming soon'
-  ? 'Direct checkout coming soon'
-  : `Direct checkout expected ${directCheckoutDateLabel}`;
 const stripeBadge = '<a class="stripe-badge-link stripe-badge-product" href="https://stripe.com" target="_blank" rel="noopener noreferrer" aria-label="Payments powered by Stripe"><img class="stripe-badge" src="assets/images/powered-by-stripe.svg" alt="Powered by Stripe" width="150" height="34"></a>';
 const categoryLabels = {
   drinks: 'Rare drinks',
@@ -67,10 +62,11 @@ function relatedProductsMarkup(item) {
   const otherCategories = catalog.filter((candidate) => candidate.id !== item.id && candidate.category !== item.category);
   const related = [...sameCategory, ...otherCategories].slice(0, 4);
 
-  return `<section class="product-related" aria-labelledby="related-products-title"><div class="container"><div class="product-related-head"><div><div class="section-kicker">More current inventory</div><h2 id="related-products-title">Keep looking.</h2></div><a class="text-link" href="out-now.html?category=${item.category}">Shop ${categoryLabels[item.category].toLowerCase()} &rarr;</a></div><div class="product-related-grid">${related.map((candidate) => `<article class="product-related-card"><a href="products/${slug(candidate)}.html"><div class="product-related-image"><img src="${listingImagePath(candidate, 'branded')}" alt="${escapeHtml(candidate.name)}" loading="lazy" width="1200" height="1200"></div><div class="product-related-copy"><span>${categoryLabels[candidate.category]}</span><h3>${escapeHtml(candidate.name)}</h3><div><strong>${formatMoney(directPriceCents(candidate))}</strong><b>View item &rarr;</b></div></div></a></article>`).join('')}</div></div></section>`;
+  return `<section class="product-related" aria-labelledby="related-products-title"><div class="container"><div class="product-related-head"><div><div class="section-kicker">More current inventory</div><h2 id="related-products-title">Keep looking.</h2></div><a class="text-link" href="out-now.html?category=${item.category}">Shop ${categoryLabels[item.category].toLowerCase()} &rarr;</a></div><div class="product-related-grid">${related.map((candidate) => `<article class="product-related-card"><a href="products/${slug(candidate)}.html"><div class="product-related-image"><img src="${listingImagePath(candidate, 'branded')}" alt="${escapeHtml(candidate.name)}" loading="lazy" width="1200" height="1200"></div><div class="product-related-copy"><span>${categoryLabels[candidate.category]}</span><h3>${escapeHtml(candidate.name)}</h3><div><strong>${formatMoney(storeConfig.directCheckoutEnabled && candidate.directCheckoutEnabled !== false ? directPriceCents(candidate) : parsePriceCents(candidate.price))}</strong><b>View item &rarr;</b></div></div></a></article>`).join('')}</div></div></section>`;
 }
 
 function pageMarkup(item, images) {
+  const directCheckoutEnabled = storeConfig.directCheckoutEnabled === true && item.directCheckoutEnabled !== false;
   const directPrice = directPriceCents(item);
   const ebayPrice = parsePriceCents(item.price);
   const savings = Math.max(0, ebayPrice - directPrice);
@@ -80,16 +76,17 @@ function pageMarkup(item, images) {
   const shipping = shippingQuote(directPrice, [{ item, quantity: 1 }]);
   const description = directCheckoutEnabled
     ? `${item.name}. ${item.detail}. Buy direct from Discontinued Club or use the matching eBay listing.`
-    : `${item.name}. ${item.detail}. Available now through the matching Discontinued Club eBay listing. ${directCheckoutNotice}.`;
+    : `${item.name}. ${item.detail}. Available through the matching Discontinued Club eBay listing.`;
   const pricePanel = directCheckoutEnabled
     ? `<div class="current-price-panel"><span><small>Direct price</small><strong>${formatMoney(directPrice)}</strong></span><span><small>eBay price</small><s>${escapeHtml(item.price)}</s></span></div>
           <div class="product-savings">Save ${formatMoney(savings)} on the item price when buying direct</div>`
-    : `<div class="current-price-panel"><span><small>Available on eBay</small><strong>${escapeHtml(item.price)}</strong></span><span><small>Expected direct price</small><strong>${formatMoney(directPrice)}</strong></span></div>
-          <div class="product-savings">${directCheckoutNotice} &middot; save ${formatMoney(savings)}</div>`;
+    : `<div class="current-price-panel"><span><small>Available on eBay</small><strong>${escapeHtml(item.price)}</strong></span></div>`;
   const actions = directCheckoutEnabled
     ? `<button class="btn btn-acid purchase-button" type="button" data-add-to-cart="${item.id}" data-add-quantity-source="${item.id}"><span data-add-label>Add to cart</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button><a class="btn btn-light" href="https://www.ebay.com/itm/${item.id}" target="_blank" rel="noopener">Buy on eBay</a>`
     : `<a class="btn btn-dark" href="https://www.ebay.com/itm/${item.id}" target="_blank" rel="noopener">Buy on eBay</a><a class="btn btn-light" href="out-now.html">Keep shopping</a>`;
-  const quantityControl = quantity > 1
+  const quantityControl = !directCheckoutEnabled
+    ? `<div class="product-quantity-single"><span>Available</span><strong>${quantity}</strong><small>Choose quantity on eBay</small></div>`
+    : quantity > 1
     ? `<div class="product-quantity-picker" data-product-quantity-picker data-product-id="${item.id}" data-max="${quantity}" data-price="${directPrice}" data-free-shipping-threshold="${freeShippingThreshold}"><span>Quantity</span><div class="product-quantity-control"><button type="button" data-product-quantity-decrease aria-label="Decrease quantity" disabled>&minus;</button><output data-product-quantity aria-live="polite">1</output><button type="button" data-product-quantity-increase aria-label="Increase quantity">+</button></div><small>${quantity} available</small></div>`
     : '<div class="product-quantity-single"><span>Quantity</span><strong>1</strong><small>One available</small></div>';
   const shippingNudge = directPrice >= freeShippingThreshold
@@ -97,7 +94,7 @@ function pageMarkup(item, images) {
     : `${formatMoney(freeShippingThreshold - directPrice)} away from free standard shipping.`;
   const detailBand = directCheckoutEnabled
     ? `<div><strong>Secure direct checkout</strong><span>Payment details stay on a secure hosted checkout.</span>${stripeBadge}</div><div><strong>Weight-based shipping</strong><span>Shipping adjusts for heavier carts and becomes free at $100.</span></div><div><strong>Fast handling</strong><span>Orders before 12 PM Central are prepared for same-day carrier drop-off whenever possible.</span></div><div><strong>30-day return window</strong><span>Eligible items may be returned by mail under the posted return policy.</span></div>`
-    : `<div><strong>Available today on eBay</strong><span>This item links to the matching Discontinued Club eBay listing.</span></div><div><strong>${directCheckoutNotice}</strong><span>Lower website pricing and a multi-item cart are planned for the direct-store launch.</span></div><div><strong>Fast handling</strong><span>Orders before 12 PM Central are prepared for same-day carrier drop-off whenever possible.</span></div>`;
+    : `<div><strong>Available on eBay</strong><span>Purchase from the matching Discontinued Club listing.</span></div><div><strong>Check the full listing</strong><span>Shipping, delivery and returns are shown on eBay before purchase.</span></div><div><strong>Actual item photo</strong><span>Review the pictured package and the condition notes before ordering.</span></div>`;
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -130,6 +127,12 @@ function pageMarkup(item, images) {
       }
     }
   };
+
+  if (!directCheckoutEnabled) {
+    schema.offers.url = `https://www.ebay.com/itm/${item.id}`;
+    delete schema.offers.shippingDetails;
+    delete schema.offers.hasMerchantReturnPolicy;
+  }
 
   return `<!doctype html>
 <html lang="en">
@@ -168,19 +171,19 @@ function pageMarkup(item, images) {
           <h1>${escapeHtml(item.name)}</h1>
           <p class="current-product-lead">${escapeHtml(item.detail)}.</p>
           <div class="product-purchase-panel">
-            <div class="product-purchase-heading"><span>Buy direct</span><strong>Secure checkout</strong></div>
+            <div class="product-purchase-heading"><span>${directCheckoutEnabled ? 'Buy direct' : 'Buy on eBay'}</span><strong>${directCheckoutEnabled ? 'Secure checkout' : 'Our matching listing'}</strong></div>
             ${pricePanel}
-            <div class="product-order-note" data-product-order-note="${item.id}">${shippingNudge}</div>
+            ${directCheckoutEnabled ? `<div class="product-order-note" data-product-order-note="${item.id}">${shippingNudge}</div>` : '<div class="product-order-note">Shipping and returns follow the eBay listing.</div>'}
             <div class="product-purchase-row">
               ${quantityControl}
               <div class="current-product-actions">${actions}</div>
             </div>
-            <p class="product-action-feedback" data-product-action-feedback="${item.id}" role="status" aria-live="polite">In-stock items are reserved when checkout is completed.</p>
+            ${directCheckoutEnabled ? `<p class="product-action-feedback" data-product-action-feedback="${item.id}" role="status" aria-live="polite">In-stock items are reserved when checkout is completed.</p>` : ''}
           </div>
           <div class="current-product-notes">
             <div class="current-product-note"><strong>Condition</strong><span>${productConditionLabel(item)}</span></div>
             <div class="current-product-note"><strong>Available</strong><span>${quantity} ${quantity === 1 ? 'unit' : 'units'} currently listed</span></div>
-            <div class="current-product-note"><strong>Returns</strong><span><a href="shipping-returns.html#returns">30-day window on eligible items</a></span></div>
+            <div class="current-product-note"><strong>Returns</strong><span>${directCheckoutEnabled ? '<a href="shipping-returns.html#returns">30-day window on eligible items</a>' : 'See the eBay listing'}</span></div>
           </div>
           <div class="product-sku">Item ID ${item.id}</div>
         </div>
@@ -195,7 +198,7 @@ function pageMarkup(item, images) {
   <script src="assets/app.js?v=45"></script>
 </body>
 </html>
-`;
+`.replace(/[\t ]+$/gm, '');
 }
 
 await rm(output, { recursive: true, force: true });

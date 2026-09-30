@@ -6,14 +6,19 @@ import { catalog, directPriceCents, shippingQuote } from '../lib/store-catalog.m
 import { productBrand, productCondition } from '../lib/product-metadata.mjs';
 
 const root = resolve(import.meta.dirname, '..');
+const directCatalog = catalog.filter((item) => item.directCheckoutEnabled !== false);
 const slug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}`;
 
-test('Merchant Center feed exposes every active product with current direct pricing', async () => {
+test('Merchant Center feed exposes direct-checkout products and excludes eBay-only listings', async () => {
   const feed = await readFile(resolve(root, 'google-merchant-feed.xml'), 'utf8');
   assert.match(feed, /<rss xmlns:g="http:\/\/base\.google\.com\/ns\/1\.0" version="2\.0">/);
-  assert.equal((feed.match(/<item>/g) || []).length, catalog.length);
+  assert.equal((feed.match(/<item>/g) || []).length, directCatalog.length);
 
   for (const item of catalog) {
+    if (item.directCheckoutEnabled === false) {
+      assert.ok(!feed.includes(`<g:id>dc-${item.id}</g:id>`));
+      continue;
+    }
     const directPrice = `${(directPriceCents(item) / 100).toFixed(2)} USD`;
     const shippingPrice = `${(shippingQuote(directPriceCents(item), [{ item, quantity: 1 }]).amountCents / 100).toFixed(2)} USD`;
     assert.ok(feed.includes(`<g:id>dc-${item.id}</g:id>`));
@@ -29,6 +34,6 @@ test('Merchant Center feed exposes every active product with current direct pric
 test('Merchant feed uses stable unique IDs and omits invented product identifiers', async () => {
   const feed = await readFile(resolve(root, 'google-merchant-feed.xml'), 'utf8');
   const ids = [...feed.matchAll(/<g:id>([^<]+)<\/g:id>/g)].map((match) => match[1]);
-  assert.equal(new Set(ids).size, catalog.length);
+  assert.equal(new Set(ids).size, directCatalog.length);
   assert.doesNotMatch(feed, /<g:(?:gtin|mpn|identifier_exists)>/);
 });

@@ -11,7 +11,7 @@ test('the first-visit store finder uses real current product imagery', () => {
   assert.match(app, /listingImagePath\(spotlight, 'branded', false\)/);
   assert.match(app, /class="finder-option-media"/);
   assert.match(styles, /\.finder-option-media img/);
-  assert.match(app, /const spotlightIds = \{ care: '406760474283' \}/);
+  assert.match(app, /const spotlightIds = \{ care: '406763456229' \}/);
 });
 
 test('the richer finder only loads when it is meant to open', () => {

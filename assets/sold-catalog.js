@@ -1,5 +1,41 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "407195902675",
+    "category": "collectibles",
+    "name": "Pokemon Journey Together Booster Bundle",
+    "price": "$39.99",
+    "priceLabel": "Last listed price",
+    "brand": "Pokemon",
+    "soldOut": true,
+    "image": "407195902675.webp",
+    "slug": "pokemon-journey-together-booster-bundle-407195902675",
+    "availableAgain": false
+  },
+  {
+    "id": "407117217273",
+    "category": "apparel",
+    "name": "Los Angeles Kings Blank Jersey",
+    "price": "$69.99",
+    "priceLabel": "Last listed price",
+    "brand": "adidas",
+    "soldOut": true,
+    "image": "407117217273.webp",
+    "slug": "los-angeles-kings-blank-jersey-407117217273",
+    "availableAgain": false
+  },
+  {
+    "id": "406760474283",
+    "category": "care",
+    "name": "Art of Sport Activated Charcoal Body Wash",
+    "price": "$29.99",
+    "priceLabel": "Last listed price",
+    "brand": "Art of Sport",
+    "soldOut": true,
+    "image": "406760474283.webp",
+    "slug": "art-of-sport-activated-charcoal-body-wash-406760474283",
+    "availableAgain": false
+  },
+  {
     "id": "407207453659",
     "category": "drinks",
     "name": "Monster Energy Ultra Watermelon",

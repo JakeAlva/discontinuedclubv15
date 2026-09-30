@@ -43,6 +43,7 @@ function validatedCart(payload) {
     const item = findCatalogItem(line.id);
     const quantity = Number(line.quantity);
     if (!item || seen.has(item.id)) throw new Error('One of the products is no longer available.');
+    if (item.directCheckoutEnabled === false) throw new Error('This product is available through its eBay listing only.');
     if (!Number.isInteger(quantity) || quantity < 1 || quantity > maxQuantity(item)) throw new Error(`The available quantity changed for ${item.name}.`);
     seen.add(item.id);
     return { item, quantity };

@@ -133,7 +133,7 @@ function articleMarkup(report) {
             <p class="article-deck">${report.deck}</p>
             <div class="article-byline"><span>By Discontinued Club Research</span><time datetime="${checkedDate}">Checked ${checkedLabel}</time><span>${report.readTime} minute read</span></div>
           </div>
-          <figure class="article-hero-media"><img src="${report.image}" alt="${report.imageAlt}" width="1200" height="1200" style="aspect-ratio: 1 / 1" fetchpriority="high"><figcaption>${report.caption}${imageCredit}</figcaption></figure>
+          <figure class="article-hero-media${report.imageWidth > report.imageHeight ? ' article-hero-media-wide' : ''}"><img src="${report.image}" alt="${report.imageAlt}" width="${report.imageWidth || 1200}" height="${report.imageHeight || 1200}" style="aspect-ratio: ${report.imageWidth && report.imageHeight ? `${report.imageWidth} / ${report.imageHeight}` : '1 / 1'}" fetchpriority="high"><figcaption>${report.caption}${imageCredit}</figcaption></figure>
         </div>
       </header>
       <div class="container article-layout">

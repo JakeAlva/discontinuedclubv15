@@ -171,6 +171,7 @@
   });
 
   function productCard(item) {
+    const directCheckoutEnabled = storeConfig.directCheckoutEnabled === true && item.directCheckoutEnabled !== false;
     const href = 'https://www.ebay.com/itm/' + item.id;
     const detailHref = productSlug(item);
     const directCents = getDirectPriceCents(item);
@@ -181,7 +182,7 @@
     const imageAlt = escapeHtml(item.name + ' - current Discontinued Club inventory');
     const pricing = directCheckoutEnabled
       ? '<div class="product-pricing"><span><small>Direct price</small><strong>' + formatMoney(directCents) + '</strong></span><span class="market-price"><small>eBay price</small><s>' + item.price + '</s></span></div><div class="product-savings">Save ' + formatMoney(savings) + ' on the item price</div>'
-      : '<div class="product-pricing"><span><small>Available on eBay</small><strong>' + item.price + '</strong></span><span class="market-price"><small>Expected direct price</small><strong>' + formatMoney(directCents) + '</strong></span></div><div class="product-savings">Expected direct savings: ' + formatMoney(savings) + '</div>';
+      : '<div class="product-pricing"><span><small>Available on eBay</small><strong>' + item.price + '</strong></span></div>';
     const actions = directCheckoutEnabled
       ? '<button class="btn btn-acid product-add purchase-button" type="button" data-add-to-cart="' + item.id + '"><span data-add-label>Add to cart</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button><a class="ebay-option" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a>'
       : '<a class="btn btn-dark product-add" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a><a class="ebay-option" href="' + detailHref + '">View details</a>';
@@ -253,7 +254,7 @@
       if (!Array.isArray(value)) return [];
       return value.map(function (line) {
         const item = catalog.find(function (candidate) { return candidate.id === String(line.id); });
-        if (!item) return null;
+        if (!item || item.directCheckoutEnabled === false) return null;
         return { id: item.id, quantity: Math.min(getMaxQuantity(item), Math.max(1, Number(line.quantity) || 1)) };
       }).filter(Boolean).slice(0, Number(storeConfig.maxCartLines) || 20);
     } catch (error) {
@@ -519,7 +520,7 @@
 
   function addToCart(id, requestedQuantity) {
     const item = catalog.find(function (candidate) { return candidate.id === id; });
-    if (!item) return null;
+    if (!item || item.directCheckoutEnabled === false) return null;
     const max = getMaxQuantity(item);
     const quantity = Math.max(1, Math.min(max, Number(requestedQuantity) || 1));
     const line = cart.find(function (candidate) { return candidate.id === id; });
@@ -776,7 +777,7 @@
           offers: {
             '@type': 'Offer',
             priceCurrency: 'USD',
-            price: ((directCheckoutEnabled ? getDirectPriceCents(item) : parsePriceCents(item.price)) / 100).toFixed(2),
+            price: ((directCheckoutEnabled && item.directCheckoutEnabled !== false ? getDirectPriceCents(item) : parsePriceCents(item.price)) / 100).toFixed(2),
             availability: 'https://schema.org/InStock',
             seller: { '@type': 'Organization', name: 'Discontinued Club' }
           }
@@ -824,7 +825,7 @@
   }
 
   function finderOption(name, copy, count, category) {
-    const spotlightIds = { care: '406760474283' };
+    const spotlightIds = { care: '406763456229' };
     const spotlight = catalog.find(function (item) { return item.id === spotlightIds[category]; })
       || catalog.find(function (item) { return item.category === category; });
     const categoryNumber = ['drinks', 'apparel', 'collectibles', 'care'].indexOf(category) + 1;

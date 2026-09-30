@@ -13,10 +13,13 @@ const listingOutputDir = path.join(listingDir, 'branded');
 const merchantOutputDir = path.join(listingDir, 'merchant');
 const soldOutputDir = path.join(soldDir, 'branded');
 const white = { r: 255, g: 255, b: 255, alpha: 1 };
+const onlyId = process.argv.find((arg) => arg.startsWith('--only='))?.slice(7);
+const selectedCatalog = catalog.filter((item) => !onlyId || item.id === onlyId);
 
 // Storefront assets are branded. Merchant assets stay free of retailer overlays for Google Shopping.
 
 const bottomBrandedSources = new Set([
+  '407253023756.webp',
   '407207453659.webp',
   '407205693415.webp',
   '407205665076.webp',
@@ -90,7 +93,7 @@ async function buildBrandedImage(source, destination) {
   let height = metadata.height;
 
   if (!width || !height) throw new Error(`Could not read image dimensions: ${source}`);
-  if (bottomBrandedSources.has(fileName)) height = Math.max(1, Math.round(height * 0.865));
+  if (bottomBrandedSources.has(fileName)) height = Math.max(1, Math.round(height * (fileName === '407253023756.webp' ? 0.90 : 0.865)));
   if (topBrandedSources.has(fileName)) {
     top = Math.round(height * 0.12);
     height -= top;
@@ -134,7 +137,7 @@ async function buildMerchantImage(source, destination) {
   let cleanedSource = source;
   if (bottomBrandedSources.has(fileName) || jerseyPhotoFileNames.has(fileName)) {
     const maskWidth = Math.round(width * 0.38);
-    const maskHeight = Math.round(height * 0.14);
+    const maskHeight = Math.round(height * (fileName === '407253023756.webp' ? 0.10 : 0.14));
     const mask = await sharp({ create: { width: maskWidth, height: maskHeight, channels: 4, background: white } })
       .png()
       .toBuffer();
@@ -168,8 +171,8 @@ async function buildMerchantImage(source, destination) {
     .toFile(destination);
 }
 
-for (let index = 0; index < catalog.length; index += 6) {
-  await Promise.all(catalog.slice(index, index + 6).flatMap((item) => {
+for (let index = 0; index < selectedCatalog.length; index += 6) {
+  await Promise.all(selectedCatalog.slice(index, index + 6).flatMap((item) => {
     const storefrontSource = path.join(listingDir, item.image);
     const merchantSource = path.join(listingDir, jerseyPhotoSources.get(item.id) || item.image);
     return [
@@ -179,7 +182,7 @@ for (let index = 0; index < catalog.length; index += 6) {
   }));
 }
 
-const soldWithImages = soldItems.filter((item) => item.imageUrl);
+const soldWithImages = soldItems.filter((item) => item.imageUrl && (!onlyId || item.id === onlyId));
 for (let index = 0; index < soldWithImages.length; index += 6) {
   await Promise.all(soldWithImages.slice(index, index + 6).map((item) => buildBrandedImage(
     path.join(soldDir, `${item.id}.webp`),
@@ -187,4 +190,4 @@ for (let index = 0; index < soldWithImages.length; index += 6) {
   )));
 }
 
-console.log(`Built ${catalog.length} branded storefront images, ${catalog.length} clean merchant images, and ${soldWithImages.length} sold branded images.`);
+console.log(`Built ${selectedCatalog.length} branded storefront images, ${selectedCatalog.length} clean merchant images, and ${soldWithImages.length} sold branded images.`);

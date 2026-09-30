@@ -21,7 +21,7 @@ test('campaign carousel promotes one real product per slide', async () => {
 
   assert.equal((html.match(/<strong>Out now<\/strong>/gi) ?? []).length, 1);
   assert.match(html, /Destined Rivals four-pack/);
-  assert.match(html, /Five lots available/);
+  assert.match(html, /Two lots currently listed/);
   assert.doesNotMatch(html, /class="campaign-price"/);
   assert.doesNotMatch(slides.join(''), /Blueberry|407203102419|redbull-(desktop|mobile)/);
 });

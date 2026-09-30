@@ -5,6 +5,7 @@ import { productBrand, productCondition, productType } from '../lib/product-meta
 
 const root = resolve(import.meta.dirname, '..');
 const publicRoot = 'https://discontinuedclub.com';
+const directCatalog = catalog.filter((item) => item.directCheckoutEnabled !== false);
 
 const xml = (value) => String(value)
   .replace(/&/g, '&amp;')
@@ -48,10 +49,10 @@ const feed = `<?xml version="1.0" encoding="UTF-8"?>
   <title>Discontinued Club Current Products</title>
   <link>${publicRoot}</link>
   <description>Current products available for direct purchase from Discontinued Club.</description>
-${catalog.map(itemMarkup).join('\n')}
+${directCatalog.map(itemMarkup).join('\n')}
 </channel>
 </rss>
 `;
 
 await writeFile(resolve(root, 'google-merchant-feed.xml'), feed);
-console.log(`Generated Google Merchant Center feed with ${catalog.length} products.`);
+console.log(`Generated Google Merchant Center feed with ${directCatalog.length} direct-checkout products.`);
