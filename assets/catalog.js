@@ -1,5 +1,5 @@
 const DC_CATALOG = [
-  { id: '407253023756', category: 'apparel', name: "Rubie's Elvis Presley Toddler Costume 2-4T", detail: 'White polyester romper, U.S. size 2-4T. Pre-owned excellent, worn once, with original packaging. Microphone not included', condition: 'Pre-owned - Excellent', price: '$14.99', image: '407253023756.webp', maxQuantity: 1, directCheckoutEnabled: false },
+  { id: '407253023756', category: 'apparel', name: "Rubie's Elvis Presley Toddler Costume 2-4T", detail: 'White polyester romper, U.S. size 2-4T. Pre-owned excellent, worn once, with original packaging. Microphone not included', condition: 'Pre-owned - Excellent', price: '$14.99', image: '407253023756.webp', maxQuantity: 1 },
   { id: '407207373104', category: 'drinks', name: 'Red Bull Red Edition Sugar Free Watermelon (4-Pack)', detail: 'Four discontinued 12 fl oz watermelon energy drink cans', price: '$59.99', image: '407207373104.webp', featured: true },
   { id: '407205665076', category: 'drinks', name: 'Monster Juice Strawberry Lemonade', detail: 'Limited discontinued energy and juice drink, full 16 fl oz can', price: '$12.99', image: '407205665076.webp', featured: true },
   { id: '407205596661', category: 'drinks', name: "Monster Reserve Peaches N' Creme (2-Pack)", detail: 'Two discontinued 16 fl oz energy drink cans', price: '$15.99', image: '407205596661.webp' },
@@ -50,7 +50,7 @@ const DC_CATALOG = [
 
   { id: '406760868081', category: 'collectibles', name: 'Funko Pop! Wayne Gretzky #45', detail: 'Los Angeles Kings NHL vinyl figure', price: '$12.99', image: '8da5a3eda84b0bca.webp' },
   { id: '407086892969', category: 'collectibles', name: 'Pokemon Perfect Order Booster Bundle', detail: 'English box with 6 booster packs', price: '$38.99', image: '1c6ab9f4d119bded.webp', maxQuantity: 2 },
-  { id: '407134944288', category: 'collectibles', name: 'Pokemon Destined Rivals 4-Pack Lot', detail: 'Four Scarlet & Violet booster packs, 40 cards total', price: '$32.99', image: '407134944288.webp', maxQuantity: 2, directCheckoutEnabled: false },
+  { id: '407134944288', category: 'collectibles', name: 'Pokemon Destined Rivals 4-Pack Lot', detail: 'Four Scarlet & Violet booster packs, 40 cards total', price: '$32.99', image: '407134944288.webp', maxQuantity: 2 },
   { id: '407212006333', category: 'collectibles', name: 'Pokemon TCG Mega Evolution Booster Pack', detail: 'Factory-sealed English single pack with 10 game cards', price: '$6.49', image: '407212006333.webp', maxQuantity: 3 },
 
   { id: '406763784733', category: 'care', name: 'Caress Shea Butter & Brown Sugar Body Wash', detail: 'Exfoliating and hydrating, 20 fl oz', price: '$9.99', image: '933162e9baba7be6.webp', maxQuantity: 2 },

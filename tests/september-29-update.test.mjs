@@ -22,7 +22,7 @@ test('September 29 inventory matches the eBay reconciliation and preserves shipp
     assert.equal(metadata.count, category === 'all' ? catalog.length : catalog.filter((item) => item.category === category).length);
   }
   assert.equal(maxQuantity(findCatalogItem('407134944288')), 2);
-  assert.equal(findCatalogItem('407134944288').directCheckoutEnabled, false, 'Hold direct orders until Stripe stock is reconciled');
+  assert.notEqual(findCatalogItem('407134944288').directCheckoutEnabled, false, 'Direct orders enabled after Stripe stock reconciliation');
   assert.equal(maxQuantity(findCatalogItem('407205565491')), 1, 'Reserve Watermelon remains available');
   assert.equal(storeConfig.freeShippingThresholdCents, 10000);
   const home = await read('index.html');
@@ -45,7 +45,7 @@ test('September 29 inventory matches the eBay reconciliation and preserves shipp
   }
 });
 
-test('costume uses verified size, used condition and an honest eBay-only purchase path', async () => {
+test('costume uses verified size, used condition and matching direct checkout offers', async () => {
   const costume = findCatalogItem(costumeId);
   assert.equal(costume.price, '$14.99');
   assert.equal(maxQuantity(costume), 1);
@@ -56,21 +56,23 @@ test('costume uses verified size, used condition and an honest eBay-only purchas
   const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
   assert.equal(schema.itemCondition, 'https://schema.org/UsedCondition');
   assert.equal(schema.brand.name, "Rubie's");
-  assert.equal(schema.offers.price, '14.99');
-  assert.equal(schema.offers.url, `https://www.ebay.com/itm/${costumeId}`);
-  assert.equal(schema.offers.shippingDetails, undefined);
-  assert.doesNotMatch(html, /data-add-to-cart|Expected direct|Direct checkout expected|away from free standard shipping/);
+  assert.notEqual(costume.directCheckoutEnabled, false);
+  assert.equal(schema.offers.price, '14.47');
+  assert.equal(schema.offers.url, `https://discontinuedclub.com/products/rubie-s-elvis-presley-toddler-costume-2-4t-${costumeId}.html`);
+  assert.ok(schema.offers.shippingDetails);
+  assert.ok(html.includes(`data-add-to-cart="${costumeId}"`));
+  assert.doesNotMatch(html, /Expected direct|Direct checkout expected/);
   assert.ok((await read('sitemap-products.xml')).includes(costumeId));
-  assert.ok(!(await read('google-merchant-feed.xml')).includes(costumeId));
+  assert.ok((await read('google-merchant-feed.xml')).includes(costumeId));
 });
 
-test('stale sold carts, excess Destined Rivals packs and eBay-only items are rejected before Stripe', async () => {
+test('stale sold carts and quantities above reconciled stock are rejected before Stripe', async () => {
   const keys = ['STRIPE_CHECKOUT_ENABLED', 'STRIPE_SECRET_KEY'];
   const previous = keys.map((key) => process.env[key]);
   process.env.STRIPE_CHECKOUT_ENABLED = 'true';
   process.env.STRIPE_SECRET_KEY = 'sk_test_no_network_should_be_used';
   try {
-    for (const [id, quantity] of [...soldIds.map((id) => [id, 1]), ['407134944288', 1], ['407134944288', 3], [costumeId, 1]]) {
+    for (const [id, quantity] of [...soldIds.map((id) => [id, 1]), ['407134944288', 3], [costumeId, 2]]) {
       const response = await createCheckout(new Request('https://discontinuedclub.com/.netlify/functions/create-checkout', {
         method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'https://discontinuedclub.com' },
         body: JSON.stringify({ items: [{ id, quantity }] })
