@@ -93,7 +93,13 @@ test('September 29 reporting remains factual, linked, indexable and searchable',
     assert.equal(report.shop, undefined);
     for (const slug of report.relatedSlugs) assert.ok(reports.some((item) => item.slug === slug), slug);
     const href = `journal/${report.slug}.html`;
-    for (const file of ['index.html', 'blog.html', 'sitemap-journal.xml']) assert.ok((await read(file)).includes(href), file);
+    assert.ok((await read('sitemap-journal.xml')).includes(href));
+    const position = selectReports(index, { q: '', brand: '', status: '', sort: 'newest', page: 1 });
+    let linked = false;
+    for (let page = 1; page <= position.pages; page++) {
+      linked ||= (await read(page === 1 ? 'blog.html' : `blog-page-${page}.html`)).includes(href);
+    }
+    assert.ok(linked, 'Older stories remain discoverable after homepage features rotate');
     const html = await read(`dist/${href}`);
     assert.ok(html.includes(`rel="canonical" href="https://discontinuedclub.com/${href}"`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);

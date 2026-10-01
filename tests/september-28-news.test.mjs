@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { c4AllHoppedUpReport as c4 } from '../scripts/c4-all-hopped-up-report.mjs';
@@ -34,11 +34,12 @@ test('September 28 news retains market, price and availability caveats', () => {
 });
 
 test('new articles have official images, crawlable links and consistent editorial metadata', async () => {
+  const libraryFiles = (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const library = (await Promise.all(libraryFiles.map(read))).join('\n');
   for (const report of additions) {
     const href = `journal/${report.slug}.html`;
-    for (const file of ['blog.html', 'sitemap-journal.xml']) {
-      assert.ok((await read(file)).includes(href), `${file}: ${href}`);
-    }
+    assert.ok(library.includes(href), `journal library: ${href}`);
+    assert.ok((await read('sitemap-journal.xml')).includes(href));
     const html = await read(`dist/${href}`);
     assert.ok(html.includes(`href="https://discontinuedclub.com/${href}"`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);
@@ -62,9 +63,8 @@ test('new articles have official images, crawlable links and consistent editoria
 test('new brands and topics are searchable without implying they are discontinued', async () => {
   const index = JSON.parse(await read('assets/journal-index.json'));
   const base = { q: '', brand: '', status: 'launch', sort: 'newest', page: 1 };
-  const latest = selectReports(index, base).items.map((item) => item.slug);
   for (const report of additions) {
-    assert.ok(latest.includes(report.slug));
+    assert.ok(selectReports(index, { ...base, q: report.product }).items.some((item) => item.slug === report.slug));
     assert.equal(selectReports(index, { ...base, brand: report.brand }).items[0].slug, report.slug);
     assert.ok(!(await read('discontinued-energy-drink-flavors-2026.html')).includes(report.slug));
   }

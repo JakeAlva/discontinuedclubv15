@@ -39,7 +39,9 @@ test('journal publishes every researched report as a substantial, indexable arti
       assert.match(html, /class="article-hero-media article-hero-media-wide"/);
       assert.ok(html.includes(`style="aspect-ratio: ${report.imageWidth} / ${report.imageHeight}"`));
     } else {
-      assert.match(html, /class="article-hero-media"><img[^>]+style="aspect-ratio: 1 \/ 1"/, 'portrait packshots should keep a stable square display area');
+      const ratio = html.match(/class="article-hero-media"><img[^>]+style="aspect-ratio: (\d+) \/ (\d+)"/);
+      assert.ok(ratio, 'packshots should declare a stable display area');
+      assert.equal(Number(ratio[1]) / Number(ratio[2]), 1, 'square packshots should keep a square display area');
     }
     assert.ok(html.includes(`status-${report.statusKey}`), `${file} should expose its evidence status`);
     assert.ok(readableWordCount(html) >= 900, `${file} should contain at least 900 readable words`);
