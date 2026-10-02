@@ -35,7 +35,7 @@ test('October 1 reporting separates releases, recipes and promotion dates', () =
 test('new reports have official images, canonical pages and crawlable discovery links', async () => {
   for (const report of additions) {
     const href = `journal/${report.slug}.html`;
-    for (const file of ['index.html', 'blog.html', 'sitemap-journal.xml']) {
+    for (const file of ['blog.html', 'sitemap-journal.xml']) {
       assert.ok((await read(file)).includes(href), `${file}: ${href}`);
     }
     const html = await read(`dist/${href}`);

@@ -1,4 +1,5 @@
 const DC_CATALOG = [
+  { id: '407260159541', category: 'collectibles', name: 'Pokemon Journey Together Booster Bundle', detail: 'Factory-sealed English Scarlet & Violet box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407260159541.webp', maxQuantity: 1 },
   { id: '407253023756', category: 'apparel', name: "Rubie's Elvis Presley Toddler Costume 2-4T", detail: 'White polyester romper, U.S. size 2-4T. Pre-owned excellent, worn once, with original packaging. Microphone not included', condition: 'Pre-owned - Excellent', price: '$14.99', image: '407253023756.webp', maxQuantity: 1 },
   { id: '407207373104', category: 'drinks', name: 'Red Bull Red Edition Sugar Free Watermelon (4-Pack)', detail: 'Four discontinued 12 fl oz watermelon energy drink cans', price: '$59.99', image: '407207373104.webp', featured: true },
   { id: '407205665076', category: 'drinks', name: 'Monster Juice Strawberry Lemonade', detail: 'Limited discontinued energy and juice drink, full 16 fl oz can', price: '$12.99', image: '407205665076.webp', featured: true },
@@ -61,6 +62,7 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407260159541': 24,
   '407253023756': 32,
   '407207373104': 64,
   '407205665076': 20,
@@ -138,10 +140,10 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 55 },
+  all: { label: 'All items', count: 56 },
   drinks: { label: 'Rare drinks', count: 31 },
   apparel: { label: 'Sports & apparel', count: 15 },
-  collectibles: { label: 'Collectibles & cards', count: 4 },
+  collectibles: { label: 'Collectibles & cards', count: 5 },
   care: { label: 'Personal care', count: 4 },
   home: { label: 'Home & hobby', count: 1 }
 };

@@ -16,6 +16,8 @@ import { starbucksAerocanoReport } from './starbucks-aerocano-report.mjs';
 import { dunkinHalloween2026Report } from './dunkin-halloween-2026-report.mjs';
 import { fantaGhostFaceReport } from './fanta-ghost-face-report.mjs';
 import { cheetosPhantomHeatReport } from './cheetos-phantom-heat-report.mjs';
+import { dietCokeCherryReturnReport } from './diet-coke-cherry-return-report.mjs';
+import { cherryFloatStatusReport } from './cherry-float-status-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -685,5 +687,7 @@ export const reports = [
   starbucksAerocanoReport,
   dunkinHalloween2026Report,
   fantaGhostFaceReport,
-  cheetosPhantomHeatReport
+  cheetosPhantomHeatReport,
+  dietCokeCherryReturnReport,
+  cherryFloatStatusReport
 ];
