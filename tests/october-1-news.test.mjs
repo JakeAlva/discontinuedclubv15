@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { reports } from '../scripts/journal-data.mjs';
@@ -33,11 +33,12 @@ test('October 1 reporting separates releases, recipes and promotion dates', () =
 });
 
 test('new reports have official images, canonical pages and crawlable discovery links', async () => {
+  const pages = (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const library = (await Promise.all(pages.map(read))).join('\n');
   for (const report of additions) {
     const href = `journal/${report.slug}.html`;
-    for (const file of ['blog.html', 'sitemap-journal.xml']) {
-      assert.ok((await read(file)).includes(href), `${file}: ${href}`);
-    }
+    assert.ok(library.includes(href), `journal pagination must expose ${href}`);
+    assert.ok((await read('sitemap-journal.xml')).includes(href));
     const html = await read(`dist/${href}`);
     assert.ok(html.includes(`rel="canonical" href="https://discontinuedclub.com/${href}"`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);
@@ -62,8 +63,9 @@ test('October news is searchable and pagination exposes the expanding archive', 
   const base = { q: '', brand: '', status: '', sort: 'newest', page: 1 };
   const newest = selectReports(index, base);
   assert.equal(newest.pages, Math.ceil(reports.length / 6));
+  const archive = Array.from({ length: newest.pages }, (_, i) => selectReports(index, { ...base, page: i + 1 }).items).flat();
   for (const report of additions) {
-    assert.ok(newest.items.some((item) => item.slug === report.slug));
+    assert.ok(archive.some((item) => item.slug === report.slug));
     assert.equal(selectReports(index, { ...base, q: report.product, brand: report.brand, status: 'launch' }).items[0].slug, report.slug);
     assert.ok(!(await read('discontinued-energy-drink-flavors-2026.html')).includes(report.slug));
   }

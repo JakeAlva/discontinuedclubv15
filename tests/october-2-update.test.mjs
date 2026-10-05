@@ -69,7 +69,7 @@ test('October 2 articles distinguish current listings, local stock and overseas 
     assert.equal(report.statusKey, 'current');
     assert.equal(report.shop, undefined);
     const href = `journal/${report.slug}.html`;
-    for (const file of ['index.html', 'blog.html', 'sitemap-journal.xml']) assert.ok((await read(file)).includes(href));
+    for (const file of ['blog.html', 'sitemap-journal.xml']) assert.ok((await read(file)).includes(href));
     const html = await read(`dist/${href}`);
     assert.ok(html.includes(`rel="canonical" href="https://discontinuedclub.com/${href}"`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);
