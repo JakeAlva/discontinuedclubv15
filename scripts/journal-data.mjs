@@ -21,6 +21,8 @@ import { cherryFloatStatusReport } from './cherry-float-status-report.mjs';
 import { crushBigTroppaPunchReport } from './crush-big-troppa-punch-report.mjs';
 import { mugVanillaHowlerReport } from './mug-vanilla-howler-report.mjs';
 import { pitchBlackUkReport } from './pitch-black-uk-report.mjs';
+import { holidayCreamyVanillaReport } from './holiday-creamy-vanilla-report.mjs';
+import { chessmenOrangeCranberryReport } from './chessmen-orange-cranberry-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -695,5 +697,7 @@ export const reports = [
   cherryFloatStatusReport,
   crushBigTroppaPunchReport,
   mugVanillaHowlerReport,
-  pitchBlackUkReport
+  pitchBlackUkReport,
+  holidayCreamyVanillaReport,
+  chessmenOrangeCranberryReport
 ];

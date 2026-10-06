@@ -1,5 +1,17 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "407253023756",
+    "category": "apparel",
+    "name": "Rubie's Elvis Presley Toddler Costume 2-4T",
+    "price": "$14.99",
+    "priceLabel": "Last listed price",
+    "brand": "Rubie's",
+    "soldOut": true,
+    "image": "407253023756.webp",
+    "slug": "rubie-s-elvis-presley-toddler-costume-2-4t-407253023756",
+    "availableAgain": false
+  },
+  {
     "id": "407195902675",
     "category": "collectibles",
     "name": "Pokemon Journey Together Booster Bundle",

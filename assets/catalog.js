@@ -1,6 +1,9 @@
 const DC_CATALOG = [
+  { id: '407269224750', category: 'collectibles', name: 'Pokemon Mega Evolution Chaos Rising Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407269224750.webp', maxQuantity: 3 },
+  { id: '407269188492', category: 'collectibles', name: 'Pokemon Surging Sparks Booster Pack', detail: 'Factory-sealed English Scarlet & Violet single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$6.99', image: '407269188492.webp', maxQuantity: 2 },
+  { id: '407264848037', category: 'collectibles', name: 'Pokemon Mega Evolution Perfect Order Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407264848037.webp', maxQuantity: 1 },
+  { id: '407264808538', category: 'collectibles', name: 'Pokemon Mega Evolution Pitch Black Booster Bundle', detail: 'Factory-sealed English box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407264808538.webp', maxQuantity: 1 },
   { id: '407260159541', category: 'collectibles', name: 'Pokemon Journey Together Booster Bundle', detail: 'Factory-sealed English Scarlet & Violet box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407260159541.webp', maxQuantity: 1 },
-  { id: '407253023756', category: 'apparel', name: "Rubie's Elvis Presley Toddler Costume 2-4T", detail: 'White polyester romper, U.S. size 2-4T. Pre-owned excellent, worn once, with original packaging. Microphone not included', condition: 'Pre-owned - Excellent', price: '$14.99', image: '407253023756.webp', maxQuantity: 1 },
   { id: '407207373104', category: 'drinks', name: 'Red Bull Red Edition Sugar Free Watermelon (4-Pack)', detail: 'Four discontinued 12 fl oz watermelon energy drink cans', price: '$59.99', image: '407207373104.webp', featured: true },
   { id: '407205665076', category: 'drinks', name: 'Monster Juice Strawberry Lemonade', detail: 'Limited discontinued energy and juice drink, full 16 fl oz can', price: '$12.99', image: '407205665076.webp', featured: true },
   { id: '407205596661', category: 'drinks', name: "Monster Reserve Peaches N' Creme (2-Pack)", detail: 'Two discontinued 16 fl oz energy drink cans', price: '$15.99', image: '407205596661.webp' },
@@ -11,7 +14,7 @@ const DC_CATALOG = [
   { id: '407203121847', category: 'drinks', name: 'Red Bull Green Edition Curuba Elderflower (4-Pack)', detail: 'Four discontinued 12 fl oz energy drink cans', price: '$49.99', image: '407203121847.webp', featured: true, maxQuantity: 2 },
   { id: '407202995940', category: 'home', name: 'Penn-Plax SWF1 Filtration Unit (2-Pack)', detail: 'Two crystal-clear filtration units for 1-gallon tanks', price: '$14.99', image: '407202995940.webp' },
   { id: '407039382525', category: 'drinks', name: 'Liquid Death x Pop-Tarts Carnage', detail: 'Strawberry sparkling water, limited 6-pack, 12 fl oz cans', price: '$13.99', image: '475e0f8d3f1d0a4e.webp', featured: true, maxQuantity: 2 },
-  { id: '406730413999', category: 'drinks', name: 'Mountain Dew Maui Burst', detail: 'Pineapple, full unopened 16 oz can, 2020', price: '$12.99', image: 'e2f98160460fb5d0.webp', featured: true, maxQuantity: 6 },
+  { id: '406730413999', category: 'drinks', name: 'Mountain Dew Maui Burst', detail: 'Pineapple, full unopened 16 oz can, 2020', price: '$12.99', image: 'e2f98160460fb5d0.webp', featured: true, maxQuantity: 5 },
   { id: '406713894369', category: 'drinks', name: 'Mountain Dew Baja Point Break Punch', detail: 'Tropical punch, 12-pack of 12 oz cans, 2024', price: '$44.99', image: '128614ee19f0144e.webp' },
   { id: '406711385310', category: 'drinks', name: 'Mountain Dew Baja Laguna Lemonade', detail: 'Mango lemonade, 12-pack of 12 oz cans, 2024', price: '$44.99', image: 'a69e24602a28c9e7.webp' },
   { id: '406705689212', category: 'drinks', name: 'Pepsi Soda Shop Cream Soda', detail: '50th Anniversary, full unopened 20 oz bottle, 2021', price: '$9.99', image: '2921ba8f2b1f6017.webp', featured: true },
@@ -62,8 +65,11 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407269224750': 8,
+  '407269188492': 8,
+  '407264848037': 8,
+  '407264808538': 24,
   '407260159541': 24,
-  '407253023756': 32,
   '407207373104': 64,
   '407205665076': 20,
   '407205596661': 48,
@@ -140,10 +146,10 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 56 },
+  all: { label: 'All items', count: 59 },
   drinks: { label: 'Rare drinks', count: 31 },
-  apparel: { label: 'Sports & apparel', count: 15 },
-  collectibles: { label: 'Collectibles & cards', count: 5 },
+  apparel: { label: 'Sports & apparel', count: 14 },
+  collectibles: { label: 'Collectibles & cards', count: 9 },
   care: { label: 'Personal care', count: 4 },
   home: { label: 'Home & hobby', count: 1 }
 };

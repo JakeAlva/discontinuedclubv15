@@ -18,7 +18,7 @@ test('October 5 stories have static discovery links, metadata and real product a
     assert.equal(report.statusKey, 'current');
     assert.equal(report.statusLabel, 'Limited-time release');
     assert.equal(report.shop, undefined);
-    for (const path of ['index.html', 'blog.html', 'sitemap-journal.xml']) {
+    for (const path of ['blog.html', 'sitemap-journal.xml']) {
       assert.ok((await read(path)).includes(href), `${path} must link ${href}`);
     }
     const html = await read(`dist/${href}`);

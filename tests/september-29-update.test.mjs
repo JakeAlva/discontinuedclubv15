@@ -13,7 +13,7 @@ import createCheckout from '../netlify/functions/create-checkout.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const read = (file) => readFile(resolve(root, file), 'utf8');
-const soldIds = ['407195902675', '407117217273', '406760474283'];
+const soldIds = ['407195902675', '407117217273', '406760474283', '407253023756'];
 const costumeId = '407253023756';
 
 test('September 29 inventory matches the eBay reconciliation and preserves shipping', async () => {
@@ -45,25 +45,18 @@ test('September 29 inventory matches the eBay reconciliation and preserves shipp
   }
 });
 
-test('costume uses verified size, used condition and matching direct checkout offers', async () => {
-  const costume = findCatalogItem(costumeId);
+test('sold costume remains discoverable without a purchasable offer', async () => {
+  assert.equal(findCatalogItem(costumeId), undefined);
+  const costume = soldItems.find((item) => item.id === costumeId);
   assert.equal(costume.price, '$14.99');
-  assert.equal(maxQuantity(costume), 1);
-  assert.match(costume.detail, /U.S. size 2-4T/);
-  assert.match(costume.detail, /worn once/);
-  assert.match(costume.detail, /Microphone not included/);
-  const html = await read(`products/rubie-s-elvis-presley-toddler-costume-2-4t-${costumeId}.html`);
+  assert.equal(costume.soldOut, true);
+  const html = await read(`sold/rubie-s-elvis-presley-toddler-costume-2-4t-${costumeId}.html`);
   const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
-  assert.equal(schema.itemCondition, 'https://schema.org/UsedCondition');
   assert.equal(schema.brand.name, "Rubie's");
-  assert.notEqual(costume.directCheckoutEnabled, false);
-  assert.equal(schema.offers.price, '14.47');
-  assert.equal(schema.offers.url, `https://discontinuedclub.com/products/rubie-s-elvis-presley-toddler-costume-2-4t-${costumeId}.html`);
-  assert.ok(schema.offers.shippingDetails);
-  assert.ok(html.includes(`data-add-to-cart="${costumeId}"`));
-  assert.doesNotMatch(html, /Expected direct|Direct checkout expected/);
-  assert.ok((await read('sitemap-products.xml')).includes(costumeId));
-  assert.ok((await read('google-merchant-feed.xml')).includes(costumeId));
+  assert.equal(schema.offers.availability, 'https://schema.org/OutOfStock');
+  assert.doesNotMatch(html, /data-add-to-cart|Buy on eBay/);
+  assert.ok(!(await read('sitemap-products.xml')).includes(costumeId));
+  assert.ok(!(await read('google-merchant-feed.xml')).includes(costumeId));
 });
 
 test('stale sold carts and quantities above reconciled stock are rejected before Stripe', async () => {

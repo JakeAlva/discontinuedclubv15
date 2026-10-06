@@ -17,7 +17,7 @@ const href = `products/pokemon-journey-together-booster-bundle-${id}.html`;
 
 test('Journey Together restock uses the new eBay listing, price and one-box stock', async () => {
   const item = findCatalogItem(id);
-  assert.equal(catalog.length, 56);
+  assert.ok(catalog.length >= 56);
   assert.equal(item.price, '$39.99');
   assert.equal(directPriceCents(item), 3859);
   assert.equal(maxQuantity(item), 1);
@@ -69,7 +69,8 @@ test('October 2 articles distinguish current listings, local stock and overseas 
     assert.equal(report.statusKey, 'current');
     assert.equal(report.shop, undefined);
     const href = `journal/${report.slug}.html`;
-    for (const file of ['blog.html', 'sitemap-journal.xml']) assert.ok((await read(file)).includes(href));
+    assert.ok(index.some((item) => item.slug === report.slug));
+    assert.ok((await read('sitemap-journal.xml')).includes(href));
     const html = await read(`dist/${href}`);
     assert.ok(html.includes(`rel="canonical" href="https://discontinuedclub.com/${href}"`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);

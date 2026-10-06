@@ -1,4 +1,5 @@
 export const soldItems = [
+  { id: '407253023756', category: 'apparel', name: "Rubie's Elvis Presley Toddler Costume 2-4T", brand: "Rubie's", price: '$14.99', priceLabel: 'Last listed price', soldOut: true, imageUrl: 'https://discontinuedclub.com/assets/images/listings/merchant/407253023756.webp' },
   { id: '407195902675', category: 'collectibles', name: 'Pokemon Journey Together Booster Bundle', brand: 'Pokemon', price: '$39.99', priceLabel: 'Last listed price', soldOut: true, imageUrl: 'https://discontinuedclub.com/assets/images/listings/merchant/407195902675.webp' },
   { id: '407117217273', category: 'apparel', name: 'Los Angeles Kings Blank Jersey', brand: 'adidas', price: '$69.99', priceLabel: 'Last listed price', soldOut: true, imageUrl: 'https://discontinuedclub.com/assets/images/listings/merchant/407117217273.webp' },
   { id: '406760474283', category: 'care', name: 'Art of Sport Activated Charcoal Body Wash', brand: 'Art of Sport', price: '$29.99', priceLabel: 'Last listed price', soldOut: true, imageUrl: 'https://discontinuedclub.com/assets/images/listings/merchant/406760474283.webp' },
