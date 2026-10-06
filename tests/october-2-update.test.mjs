@@ -23,7 +23,7 @@ test('Journey Together restock uses the new eBay listing, price and one-box stoc
   assert.equal(maxQuantity(item), 1);
   assert.match(item.detail, /Factory-sealed English.*6 booster packs/);
   assert.equal(item.shippingWeightOz, 24);
-  assert.equal(storeConfig.freeShippingThresholdCents, 10000);
+  assert.equal(storeConfig.freeShippingThresholdCents, 20000);
   assert.equal(findCatalogItem('407195902675'), undefined);
   assert.equal(soldItems.find((item) => item.id === '407195902675').soldOut, true);
   const html = await read(href);

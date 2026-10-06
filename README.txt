@@ -5,7 +5,7 @@ This is a catalog-driven storefront for the current Discontinued Club eBay inven
 - 48 current products across drinks, apparel, collectibles, and personal care
 - lower direct prices with a matching eBay option on every listing
 - a multi-item cart and Stripe-hosted Checkout
-- $7.49 USPS Ground Advantage below $100 and free shipping at $100+
+- Weight-based USPS Ground Advantage starting at $7.49 below a $200 item subtotal; free standard shipping at $200+ before tax
 - a sold archive and journal content for search visibility
 - Netlify Functions that validate products, quantities, and prices on the server
 - signed Stripe webhooks that reduce direct inventory once per paid checkout session

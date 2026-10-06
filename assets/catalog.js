@@ -170,7 +170,7 @@ const DC_STORE_CONFIG = {
     { maxWeightOz: 640, amountCents: 5499 },
     { maxWeightOz: 1120, amountCents: 7999 }
   ],
-  freeShippingThresholdCents: 10000,
+  freeShippingThresholdCents: 20000,
   maxCartLines: 20,
   defaultMaxQuantity: 1
 };

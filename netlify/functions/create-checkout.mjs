@@ -1,5 +1,5 @@
 import Stripe from 'stripe';
-import { catalog, directPriceCents, findCatalogItem, maxQuantity, priceLookupKey, shippingQuote, storeConfig } from '../../lib/store-catalog.mjs';
+import { catalog, directPriceCents, findCatalogItem, formatMoney, maxQuantity, priceLookupKey, shippingQuote, storeConfig } from '../../lib/store-catalog.mjs';
 import { availableStripeQuantity } from '../../lib/stripe-inventory.mjs';
 
 export const config = {
@@ -23,13 +23,11 @@ export function isAllowedCheckoutOrigin(value) {
   }
 }
 
-export function checkoutLineItem(priceId, quantity, availableQuantity) {
+export function checkoutLineItem(priceId, quantity) {
+  // Shipping is fixed for this session; cart edits must get a fresh server quote.
   return {
     price: priceId,
-    quantity,
-    ...(availableQuantity > 1 ? {
-      adjustable_quantity: { enabled: true, minimum: 1, maximum: availableQuantity }
-    } : {})
+    quantity
   };
 }
 
@@ -98,11 +96,13 @@ export default async (request) => {
       if (availableQuantity === null) throw new Error(`Direct checkout inventory is not ready for ${item.name}.`);
       if (availableQuantity < 1) throw new Error(`${item.name} is sold out.`);
       if (quantity > availableQuantity) throw new Error(`Only ${availableQuantity} of ${item.name} is currently available.`);
-      return checkoutLineItem(price.id, quantity, availableQuantity);
+      return checkoutLineItem(price.id, quantity);
     });
 
     const itemSubtotalCents = lines.reduce((sum, { item, quantity }) => sum + directPriceCents(item) * quantity, 0);
     const shipping = shippingQuote(itemSubtotalCents, lines);
+    const shippingThresholdLabel = formatMoney(shipping.thresholdCents);
+    const shippingTier = shipping.free ? `free_${shipping.thresholdCents / 100}_plus` : 'standard_weight_based';
 
     const listingIds = lines.map(({ item }) => item.id).join(',');
     const origin = checkoutOrigin(request);
@@ -129,9 +129,9 @@ export default async (request) => {
       phone_number_collection: { enabled: true },
       allow_promotion_codes: false,
       expires_at: Math.floor(Date.now() / 1000) + (31 * 60),
-      metadata: { source: 'discontinuedclub.com', listing_ids: listingIds, shipping_tier: shipping.free ? 'free_100_plus' : 'standard_749' },
-      payment_intent_data: { metadata: { source: 'discontinuedclub.com', listing_ids: listingIds, shipping_tier: shipping.free ? 'free_100_plus' : 'standard_749' } },
-      custom_text: { shipping_address: { message: 'Shipping below $100 is based on estimated packaged weight. Orders of $100+ ship free. Orders placed before 12 PM Central are prepared for same-day carrier drop-off whenever possible.' } }
+      metadata: { source: 'discontinuedclub.com', listing_ids: listingIds, shipping_tier: shippingTier },
+      payment_intent_data: { metadata: { source: 'discontinuedclub.com', listing_ids: listingIds, shipping_tier: shippingTier } },
+      custom_text: { shipping_address: { message: `Shipping is weight-based below a ${shippingThresholdLabel} item subtotal. ${shippingThresholdLabel}+ ships free, before tax. Change quantities in the website cart to recalculate shipping. Orders before 12 PM Central are prepared for same-day drop-off whenever possible.` } }
     });
 
     return json({ url: session.url });

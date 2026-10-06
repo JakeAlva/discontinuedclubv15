@@ -5,7 +5,7 @@ The storefront remains static and fast. Netlify Functions securely create Stripe
 ## Before any live products are created
 
 1. Review the current direct prices with `npm run stripe:catalog`, then run `npm run price:audit`. The audit must pass before any live sync.
-2. Confirm the current dynamic shipping tiers and the free-shipping rule at a $100 item subtotal.
+2. Confirm the current dynamic shipping tiers and the free-shipping rule at a $200 item subtotal before tax.
 3. Decide whether Stripe Tax should be enabled based on the states where the business is registered to collect sales tax. Set `STRIPE_TAX_REVIEWED=true` only after that review.
 
 ## Test-mode setup
@@ -26,7 +26,7 @@ Each Stripe Product URL points to its dedicated page under `/products/`. Jersey 
 
 Run `npm run dev` to serve the storefront and local checkout functions together at `http://127.0.0.1:4173`. The local server forces return URLs back to the local storefront, refuses hidden files such as `.env`, and must only be used with a test key.
 
-Shipping is calculated by the trusted checkout function from packaged weight and item subtotal. It starts at $7.49, increases for heavier carts below $100, and creates a free shipping option at $100 or more, so no reusable Stripe Shipping Rate is required.
+Shipping is calculated by the trusted checkout function from packaged weight and item subtotal. It starts at $7.49, increases for heavier carts below $200, and creates a free shipping option at $200 or more before tax, so no reusable Stripe Shipping Rate is required. Quantities are fixed inside Stripe Checkout; buyers must change quantities in the website cart and create a fresh checkout for a recalculated shipping quote.
 
 Configure the Stripe webhook endpoint as:
 
@@ -36,7 +36,7 @@ Listen for `checkout.session.completed` and `checkout.session.async_payment_succ
 
 For each paid direct order, the signed webhook subtracts the purchased quantity from the Stripe Product's `dc_stock` metadata. The checkout session ID is saved on the product so a retry of the same Stripe event cannot subtract the same purchase twice. Stripe stock of zero blocks future direct checkout even if the static website has not yet been rebuilt.
 
-The checkout flow was verified with the complete current catalog before launch. Testing covered a paid-shipping order, the $100 free-shipping rule, Stripe's hosted payment page, and the storefront confirmation page. The live catalog was then synchronized without creating or completing a payment.
+The checkout flow was verified with the complete current catalog before launch. Testing covered a paid-shipping order, the launch-time free-shipping rule, Stripe's hosted payment page, and the storefront confirmation page. The live catalog was then synchronized without creating or completing a payment. The current free-shipping threshold was raised to $200 on October 6, 2026.
 
 ## Live-mode guard
 

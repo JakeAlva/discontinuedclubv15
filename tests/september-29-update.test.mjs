@@ -24,7 +24,7 @@ test('September 29 inventory matches the eBay reconciliation and preserves shipp
   assert.equal(maxQuantity(findCatalogItem('407134944288')), 2);
   assert.notEqual(findCatalogItem('407134944288').directCheckoutEnabled, false, 'Direct orders enabled after Stripe stock reconciliation');
   assert.equal(maxQuantity(findCatalogItem('407205565491')), 1, 'Reserve Watermelon remains available');
-  assert.equal(storeConfig.freeShippingThresholdCents, 10000);
+  assert.equal(storeConfig.freeShippingThresholdCents, 20000);
   const home = await read('index.html');
   assert.ok(home.includes(`Shop all ${catalog.length} listings`));
   assert.ok((await read('out-now.html')).includes(`${catalog.length} current listings`));

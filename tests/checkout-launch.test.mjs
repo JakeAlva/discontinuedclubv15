@@ -43,14 +43,13 @@ test('checkout only accepts JSON requests from approved storefront origins', asy
   assert.equal(wrongType.status, 415);
 });
 
-test('single-stock checkout lines omit Stripe adjustable quantity controls', () => {
-  assert.deepEqual(checkoutLineItem('price_single', 1, 1), {
+test('checkout quantities stay fixed so shipping cannot be bypassed after quoting', () => {
+  assert.deepEqual(checkoutLineItem('price_single', 1), {
     price: 'price_single',
     quantity: 1
   });
-  assert.deepEqual(checkoutLineItem('price_multi', 1, 3), {
+  assert.deepEqual(checkoutLineItem('price_multi', 3), {
     price: 'price_multi',
-    quantity: 1,
-    adjustable_quantity: { enabled: true, minimum: 1, maximum: 3 }
+    quantity: 3
   });
 });

@@ -4,7 +4,8 @@
   const catalog = window.DC_CATALOG || [];
   const soldCatalog = window.DC_SOLD_CATALOG || [];
   const categories = window.DC_CATEGORIES || {};
-  const storeConfig = window.DC_STORE_CONFIG || { directDiscountPercent: 3.5, standardShippingCents: 749, freeShippingThresholdCents: 10000, defaultMaxQuantity: 1, maxCartLines: 20 };
+  const storeConfig = window.DC_STORE_CONFIG || { directDiscountPercent: 3.5, standardShippingCents: 749, freeShippingThresholdCents: 20000, defaultMaxQuantity: 1, maxCartLines: 20 };
+  const freeShippingThresholdCents = Math.max(1, Number(storeConfig.freeShippingThresholdCents) || 20000);
   const directCheckoutEnabled = storeConfig.directCheckoutEnabled === true;
   const directCheckoutDateLabel = storeConfig.directCheckoutDateLabel || 'coming soon';
   const directCheckoutNotice = directCheckoutDateLabel.toLowerCase() === 'coming soon'
@@ -51,14 +52,15 @@
   }
 
   function headerMarkup() {
+    const shippingThresholdLabel = formatMoney(freeShippingThresholdCents);
     const announcement = directCheckoutEnabled
-      ? 'Lower direct prices &nbsp;|&nbsp; Free shipping on $100+ &nbsp;|&nbsp; Same-day handling before 12 PM CT'
+      ? 'Lower direct prices &nbsp;|&nbsp; Free shipping on ' + shippingThresholdLabel + '+ &nbsp;|&nbsp; Same-day handling before 12 PM CT'
       : directCheckoutNotice + ' &nbsp;|&nbsp; Current inventory available on eBay';
     const cartControls = directCheckoutEnabled ? [
       '      <div class="cart-status" data-cart-status>',
       '        <button class="icon-button cart-trigger" type="button" aria-label="Open shopping cart" title="Shopping cart" data-cart-open><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l-1 13H7L6 7Z"></path><path d="M9 8V5a3 3 0 0 1 6 0v3"></path></svg><span class="cart-count" data-cart-count>0</span></button>',
       '        <div class="cart-nudge" data-cart-nudge aria-hidden="true" role="status">',
-      '          <div class="cart-nudge-head"><strong data-shipping-progress-copy>Free shipping at $100</strong><span data-shipping-progress-amount></span></div>',
+      '          <div class="cart-nudge-head"><strong data-shipping-progress-copy>Free shipping at ' + shippingThresholdLabel + '</strong><span data-shipping-progress-amount></span></div>',
       '          <div class="shipping-progress-track" aria-hidden="true"><i data-shipping-progress-bar></i></div>',
       '          <button type="button" data-cart-open>View cart</button>',
       '        </div>',
@@ -76,7 +78,7 @@
       '  <div class="cart-drawer-head"><div><span class="section-kicker">Direct checkout</span><h2 id="cart-title">Your cart</h2></div><button class="cart-close" type="button" aria-label="Close cart" data-cart-close>&times;</button></div>',
       '  <div class="cart-items" id="cart-items"></div>',
       '  <div class="cart-drawer-foot" id="cart-summary">',
-      '    <div class="shipping-progress"><div class="shipping-progress-copy"><strong data-shipping-progress-copy>Free shipping at $100</strong><span data-shipping-progress-amount></span></div><div class="shipping-progress-track" aria-hidden="true"><i data-shipping-progress-bar></i></div></div>',
+      '    <div class="shipping-progress"><div class="shipping-progress-copy"><strong data-shipping-progress-copy>Free shipping at ' + shippingThresholdLabel + '</strong><span data-shipping-progress-amount></span></div><div class="shipping-progress-track" aria-hidden="true"><i data-shipping-progress-bar></i></div></div>',
       '    <div class="cart-total"><span>Item subtotal</span><strong data-cart-subtotal>$0.00</strong></div>',
       '    <div class="cart-cost-line"><span data-cart-shipping-label>Shipping</span><strong data-cart-shipping>$7.49</strong></div>',
       '    <div class="cart-cost-line cart-estimate"><span>Estimated total</span><strong data-cart-estimate>$0.00</strong></div>',
@@ -414,7 +416,7 @@
   }
 
   function getShippingQuote(subtotal, details) {
-    const threshold = Math.max(1, Number(storeConfig.freeShippingThresholdCents) || 10000);
+    const threshold = freeShippingThresholdCents;
     const standardShipping = Math.max(0, Number(storeConfig.standardShippingCents) || 749);
     const weightOz = details.reduce(function (total, line) {
       return total + Math.max(1, Number(line.item.shippingWeightOz) || 32) * line.quantity;
@@ -664,7 +666,7 @@
       const increase = picker.querySelector('[data-product-quantity-increase]');
       const max = Math.max(1, Number(picker.dataset.max) || 1);
       const price = Math.max(1, Number(picker.dataset.price) || 1);
-      const threshold = Math.max(1, Number(picker.dataset.freeShippingThreshold) || 10000);
+      const threshold = Math.max(1, Number(picker.dataset.freeShippingThreshold) || freeShippingThresholdCents);
 
       function update(value) {
         const quantity = Math.max(1, Math.min(max, Number(value) || 1));

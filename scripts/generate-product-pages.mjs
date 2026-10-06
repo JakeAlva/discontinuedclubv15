@@ -71,7 +71,7 @@ function pageMarkup(item, images) {
   const ebayPrice = parsePriceCents(item.price);
   const savings = Math.max(0, ebayPrice - directPrice);
   const quantity = maxQuantity(item);
-  const freeShippingThreshold = Math.max(1, Number(storeConfig.freeShippingThresholdCents) || 10000);
+  const freeShippingThreshold = Math.max(1, Number(storeConfig.freeShippingThresholdCents) || 20000);
   const condition = productCondition(item);
   const shipping = shippingQuote(directPrice, [{ item, quantity: 1 }]);
   const description = directCheckoutEnabled
@@ -93,7 +93,7 @@ function pageMarkup(item, images) {
     ? 'This item qualifies for free standard shipping.'
     : `${formatMoney(freeShippingThreshold - directPrice)} away from free standard shipping.`;
   const detailBand = directCheckoutEnabled
-    ? `<div><strong>Secure direct checkout</strong><span>Payment details stay on a secure hosted checkout.</span>${stripeBadge}</div><div><strong>Weight-based shipping</strong><span>Shipping adjusts for heavier carts and becomes free at $100.</span></div><div><strong>Fast handling</strong><span>Orders before 12 PM Central are prepared for same-day carrier drop-off whenever possible.</span></div><div><strong>30-day return window</strong><span>Eligible items may be returned by mail under the posted return policy.</span></div>`
+    ? `<div><strong>Secure direct checkout</strong><span>Payment details stay on a secure hosted checkout.</span>${stripeBadge}</div><div><strong>Weight-based shipping</strong><span>Shipping adjusts for heavier carts and becomes free at a ${formatMoney(freeShippingThreshold)} item subtotal, before tax.</span></div><div><strong>Fast handling</strong><span>Orders before 12 PM Central are prepared for same-day carrier drop-off whenever possible.</span></div><div><strong>30-day return window</strong><span>Eligible items may be returned by mail under the posted return policy.</span></div>`
     : `<div><strong>Available on eBay</strong><span>Purchase from the matching Discontinued Club listing.</span></div><div><strong>Check the full listing</strong><span>Shipping, delivery and returns are shown on eBay before purchase.</span></div><div><strong>Actual item photo</strong><span>Review the pictured package and the condition notes before ordering.</span></div>`;
   const schema = {
     '@context': 'https://schema.org',

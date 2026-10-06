@@ -56,19 +56,24 @@ test('catalog omits listings already known to have ended', () => {
   assert.equal(catalog.find((item) => item.id === '407134859583'), undefined);
 });
 
-test('shipping is $7.49 below $100 and free at the threshold', () => {
+test('single-can shipping is $7.49 below $200 and free at the threshold', () => {
   const singleCan = [{ item: { shippingWeightOz: 16 }, quantity: 1 }];
-  assert.deepEqual(shippingQuote(9999, singleCan), { amountCents: 749, thresholdCents: 10000, free: false, weightOz: 16 });
-  assert.deepEqual(shippingQuote(10000, singleCan), { amountCents: 0, thresholdCents: 10000, free: true, weightOz: 16 });
-  assert.deepEqual(shippingQuote(25000, singleCan), { amountCents: 0, thresholdCents: 10000, free: true, weightOz: 16 });
+  for (const subtotal of [9999, 10000, 10001, 15000, 19999]) {
+    assert.deepEqual(shippingQuote(subtotal, singleCan), { amountCents: 749, thresholdCents: 20000, free: false, weightOz: 16 });
+  }
+  for (const subtotal of [20000, 20001, 25000]) {
+    assert.deepEqual(shippingQuote(subtotal, singleCan), { amountCents: 0, thresholdCents: 20000, free: true, weightOz: 16 });
+  }
 });
 
-test('shipping increases for heavy drink carts below $100', () => {
+test('shipping increases for heavy drink carts below $200', () => {
   const lines = [
     { item: { shippingWeightOz: 16 }, quantity: 10 },
     { item: { shippingWeightOz: 16 }, quantity: 2 }
   ];
   assert.equal(shipmentWeightOz(lines), 192);
-  assert.deepEqual(shippingQuote(9644, lines), { amountCents: 2999, thresholdCents: 10000, free: false, weightOz: 192 });
-  assert.deepEqual(shippingQuote(10000, lines), { amountCents: 0, thresholdCents: 10000, free: true, weightOz: 192 });
+  for (const subtotal of [9644, 10000, 15000, 19999]) {
+    assert.deepEqual(shippingQuote(subtotal, lines), { amountCents: 2999, thresholdCents: 20000, free: false, weightOz: 192 });
+  }
+  assert.deepEqual(shippingQuote(20000, lines), { amountCents: 0, thresholdCents: 20000, free: true, weightOz: 192 });
 });
