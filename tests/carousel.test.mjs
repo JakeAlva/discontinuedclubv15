@@ -5,6 +5,16 @@ import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
 
+test('homepage search stays separated from the benefits row at every breakpoint', async () => {
+  const css = await readFile(resolve(root, 'assets/style.css'), 'utf8');
+  const rules = [...css.matchAll(/\.store-search-wrap\s*\{([^}]+)\}/g)];
+  assert.ok(rules.length > 0);
+  for (const [, declarations] of rules) {
+    const gap = declarations.match(/margin-top:\s*(-?[\d.]+)px/);
+    assert.ok(gap && Number(gap[1]) >= 24, 'Search needs at least 24px of clear space below the benefits band');
+  }
+});
+
 test('campaign carousel promotes one real product per slide', async () => {
   const html = await readFile(resolve(root, 'index.html'), 'utf8');
   const slides = html.match(/<article class="campaign-slide[\s\S]*?<\/article>/g) ?? [];

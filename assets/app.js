@@ -94,13 +94,23 @@
       '    <a class="logo-link" href="index.html" aria-label="Discontinued Club home"><img src="assets/images/logo-mark-clean.png" alt=""><span class="logo-type"><strong>Discontinued</strong><small>Club</small></span></a>',
       '    <nav class="desktop-nav" aria-label="Primary navigation">' + navMarkup() + '</nav>',
       '    <div class="header-actions">',
-      '      <a class="icon-button" href="out-now.html" aria-label="Search the store" title="Search the store"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></a>',
+      '      <button class="icon-button" type="button" id="store-search-trigger" aria-label="Search the store" title="Search the store" aria-haspopup="dialog" aria-controls="store-search-dialog" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg></button>',
       cartControls,
       headerShop,
       '      <button class="icon-button mobile-trigger" id="mobile-trigger" type="button" aria-label="Open menu" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"></path></svg></button>',
       '    </div>',
       '  </div>',
       '</header>',
+      '<dialog class="header-search" id="store-search-dialog" aria-labelledby="store-search-title">',
+      '  <div class="header-search-head"><h2 id="store-search-title">Search the store</h2><button class="icon-button" type="button" data-search-close aria-label="Close search" title="Close search"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg></button></div>',
+      '  <form action="out-now.html" method="get" role="search" aria-label="Store search">',
+      '    <div class="header-search-field"><label class="sr-only" for="header-search-input">Product, brand, or flavor</label><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input id="header-search-input" name="q" type="search" placeholder="Product, brand, or flavor" autocomplete="off" enterkeyhint="search" autofocus></div>',
+      '    <p class="header-search-status" id="header-search-status" role="status" aria-live="polite" aria-atomic="true"></p>',
+      '    <ul class="header-search-results" id="header-search-results" aria-label="Matching products"></ul>',
+      '    <p class="header-search-empty" id="header-search-empty" hidden>No matching products. Try another brand or flavor.</p>',
+      '    <div class="header-search-foot"><button class="btn btn-dark" type="submit" id="header-search-all">Browse all listings <span aria-hidden="true">&rarr;</span></button></div>',
+      '  </form>',
+      '</dialog>',
       '<div class="mobile-overlay" id="mobile-overlay"></div>',
       '<aside class="mobile-drawer" id="mobile-drawer" aria-hidden="true">',
       '  <div class="mobile-drawer-top"><a class="mobile-logo" href="index.html"><img src="assets/images/logo-mark-clean.png" alt=""><span class="logo-type"><strong>Discontinued</strong><small>Club</small></span></a><button class="mobile-close" id="mobile-close" type="button" aria-label="Close menu">&times;</button></div>',
@@ -143,6 +153,7 @@
 
   function openMenu() {
     if (!trigger || !drawer || !overlay) return;
+    closeHeaderSearch();
     document.body.classList.add('menu-open');
     drawer.classList.add('show');
     overlay.classList.add('show');
@@ -170,6 +181,85 @@
     }
   });
 
+  function normalizeSearch(value) {
+    return String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+  }
+
+  function matchesProductSearch(text, query) {
+    const haystack = normalizeSearch(text);
+    return normalizeSearch(query).split(/\s+/).every(function (word) { return haystack.includes(word); });
+  }
+
+  function closeHeaderSearch() {
+    const dialog = document.getElementById('store-search-dialog');
+    if (dialog && dialog.open) dialog.close();
+  }
+
+  function setupHeaderSearch() {
+    const searchTrigger = document.getElementById('store-search-trigger');
+    const dialog = document.getElementById('store-search-dialog');
+    if (!searchTrigger || !dialog) return;
+    const input = document.getElementById('header-search-input');
+    const results = document.getElementById('header-search-results');
+    const status = document.getElementById('header-search-status');
+    const empty = document.getElementById('header-search-empty');
+    const all = document.getElementById('header-search-all');
+
+    function update() {
+      const query = input.value.trim();
+      const matches = catalog.filter(function (item) {
+        return matchesProductSearch(item.name + ' ' + item.detail + ' ' + categoryLabels[item.category], query);
+      });
+      status.textContent = query ? matches.length + (matches.length === 1 ? ' matching product' : ' matching products') : 'Current listings';
+      empty.hidden = matches.length > 0;
+      all.disabled = matches.length === 0;
+      all.textContent = query ? (matches.length === 1 ? 'View 1 result' : 'View all ' + matches.length + ' results') : 'Browse all listings';
+      results.innerHTML = matches.slice(0, 6).map(function (item) {
+        const price = directCheckoutEnabled && item.directCheckoutEnabled !== false ? formatMoney(getDirectPriceCents(item)) : item.price;
+        return '<li><a class="header-search-result" href="' + productSlug(item) + '"><img src="' + listingImagePath(item, 'branded', false) + '" alt="" width="64" height="64"><span class="header-search-copy"><small>' + escapeHtml(categoryLabels[item.category] || 'Current inventory') + '</small><strong>' + escapeHtml(item.name) + '</strong></span><b>' + escapeHtml(price) + '</b></a></li>';
+      }).join('');
+    }
+
+    searchTrigger.addEventListener('click', function () {
+      closeMenu();
+      closeCart();
+      closeFinder();
+      update();
+      dialog.showModal();
+      document.body.classList.add('search-open');
+      searchTrigger.setAttribute('aria-expanded', 'true');
+      input.focus({ preventScroll: true });
+    });
+    input.addEventListener('input', update);
+    dialog.querySelector('[data-search-close]').addEventListener('click', closeHeaderSearch);
+    dialog.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeHeaderSearch();
+      } else if (event.key === 'Tab') {
+        const controls = Array.from(dialog.querySelectorAll('button:not(:disabled), input, a[href]'));
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    });
+    dialog.addEventListener('close', function () {
+      document.body.classList.remove('search-open');
+      searchTrigger.setAttribute('aria-expanded', 'false');
+      searchTrigger.focus({ preventScroll: true });
+    });
+    dialog.addEventListener('click', function (event) {
+      const bounds = dialog.getBoundingClientRect();
+      if (event.target === dialog && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom)) closeHeaderSearch();
+    });
+  }
+
   function productCard(item) {
     const directCheckoutEnabled = storeConfig.directCheckoutEnabled === true && item.directCheckoutEnabled !== false;
     const href = 'https://www.ebay.com/itm/' + item.id;
@@ -187,7 +277,7 @@
       ? '<button class="btn btn-acid product-add purchase-button" type="button" data-add-to-cart="' + item.id + '"><span data-add-label>Add to cart</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button><a class="ebay-option" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a>'
       : '<a class="btn btn-dark product-add" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a><a class="ebay-option" href="' + detailHref + '">View details</a>';
     return [
-      '<article class="product-card" data-category="' + item.category + '" data-search="' + escapeHtml((item.name + ' ' + item.detail).toLowerCase()) + '">',
+      '<article class="product-card" data-category="' + item.category + '" data-search="' + escapeHtml((item.name + ' ' + item.detail + ' ' + categoryLabels[item.category]).toLowerCase()) + '">',
       '  <a class="product-image" href="' + detailHref + '"><img src="' + listingImagePath(item, 'branded', false) + '" alt="' + imageAlt + '" loading="lazy" width="1200" height="1200"><span class="condition-badge">' + stockLabel + '</span></a>',
       '  <div class="product-content">',
       '    <div class="product-category">' + categoryLabels[item.category] + '</div>',
@@ -435,6 +525,7 @@
     if (!drawer || !cartOverlay) return;
     hideCartNudge();
     closeMenu();
+    closeHeaderSearch();
     document.body.classList.add('cart-open');
     drawer.classList.add('show');
     cartOverlay.classList.add('show');
@@ -662,7 +753,7 @@
       let visible = 0;
       cards.forEach(function (card) {
         const categoryMatch = currentCategory === 'all' || card.dataset.category === currentCategory;
-        const searchMatch = !query || (card.dataset.search || '').includes(query);
+        const searchMatch = matchesProductSearch(card.dataset.search || '', query);
         card.hidden = !(categoryMatch && searchMatch);
         if (!card.hidden) visible += 1;
       });
@@ -975,6 +1066,7 @@
   renderSoldCatalog();
   setupProductQuantity();
   setupCart();
+  setupHeaderSearch();
   setupCatalogFilters();
   setupSoldFilters();
   addCatalogSchema();
