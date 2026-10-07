@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { XMLParser } from 'fast-xml-parser';
@@ -72,9 +72,12 @@ test('October 6 inventory rejects excess quantities and a stale costume cart', a
 
 test('October 6 articles are linked, searchable and indexable with accurate metadata', async () => {
   const index = JSON.parse(await read('assets/journal-index.json'));
+  const pages = (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const library = (await Promise.all(pages.map(read))).join('\n');
   for (const report of [coke, cookies]) {
     const href = `journal/${report.slug}.html`;
-    for (const path of ['index.html', 'blog.html', 'sitemap-journal.xml']) assert.ok((await read(path)).includes(href), path);
+    assert.ok(library.includes(`href="${href}"`), `A static journal page must link ${href}`);
+    assert.ok((await read('sitemap-journal.xml')).includes(href));
     for (const slug of report.relatedSlugs) assert.ok(reports.some((item) => item.slug === slug), slug);
     const html = await read(`dist/${href}`);
     assert.ok(html.includes(`rel="canonical" href="https://discontinuedclub.com/${href}"`));

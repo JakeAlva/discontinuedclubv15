@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { crushBigTroppaPunchReport as crush } from '../scripts/crush-big-troppa-punch-report.mjs';
@@ -12,15 +12,16 @@ const read = (path) => readFile(resolve(root, path), 'utf8');
 
 test('October 5 stories have static discovery links, metadata and real product assets', async () => {
   const index = JSON.parse(await read('assets/journal-index.json'));
+  const pages = (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const library = (await Promise.all(pages.map(read))).join('\n');
   for (const report of [crush, mug]) {
     const href = `journal/${report.slug}.html`;
     assert.equal(report.checkedDate, '2026-10-05');
     assert.equal(report.statusKey, 'current');
     assert.equal(report.statusLabel, 'Limited-time release');
     assert.equal(report.shop, undefined);
-    for (const path of ['blog.html', 'sitemap-journal.xml']) {
-      assert.ok((await read(path)).includes(href), `${path} must link ${href}`);
-    }
+    assert.ok(library.includes(`href="${href}"`), `A static journal page must link ${href}`);
+    assert.ok((await read('sitemap-journal.xml')).includes(href));
     const html = await read(`dist/${href}`);
     assert.ok(html.includes(`rel="canonical" href="https://discontinuedclub.com/${href}"`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { pitchBlackUkReport as report } from '../scripts/pitch-black-uk-report.mjs';
@@ -11,9 +11,10 @@ const read = (file) => readFile(resolve(root, file), 'utf8');
 const href = `journal/${report.slug}.html`;
 
 test('Pitch Black is discoverable as a sourced article with the official UK image', async () => {
-  for (const file of ['index.html', 'blog.html', 'sitemap-journal.xml']) {
-    assert.ok((await read(file)).includes(href), `${file} must link the new article`);
-  }
+  const pages = (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const library = (await Promise.all(pages.map(read))).join('\n');
+  assert.ok(library.includes(`href="${href}"`), 'A static journal page must link the article');
+  assert.ok((await read('sitemap-journal.xml')).includes(href));
   const html = await read(`dist/${href}`);
   assert.ok(html.includes(`rel="canonical" href="https://discontinuedclub.com/${href}"`));
   assert.match(html, /content="index, follow, max-image-preview:large"/);
