@@ -10,6 +10,7 @@ const stripeBadge = '<a class="stripe-badge-link stripe-badge-product" href="htt
 const categoryLabels = {
   drinks: 'Rare drinks',
   apparel: 'Sports & apparel',
+  'kids-shoes': "Designer kids' shoes",
   collectibles: 'Collectibles & cards',
   care: 'Personal care',
   home: 'Home & hobby',
@@ -36,8 +37,9 @@ const escapeHtml = (value) => String(value)
 
 const slug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}`;
 const productUrl = (item) => `${publicRoot}/products/${slug(item)}.html`;
-const listingAssetVersion = (item) => item.id === '407134944288' ? '4pack-2' : '38';
+const listingAssetVersion = (item) => item.imageVersion || (item.id === '407134944288' ? '4pack-2' : '38');
 const listingImagePath = (item, variant) => `assets/images/listings/${variant}/${item.id}.webp?v=${listingAssetVersion(item)}`;
+const galleryImagePath = (item, image) => image.src + (item.imageVersion ? `?v=${item.imageVersion}` : '');
 const absoluteListingImage = (item, variant) => `${publicRoot}/${listingImagePath(item, variant)}`;
 
 async function fileExists(path) {
@@ -60,7 +62,7 @@ function galleryMarkup(item, images) {
 function relatedProductsMarkup(item) {
   const sameCategory = catalog.filter((candidate) => candidate.id !== item.id && candidate.category === item.category);
   const otherCategories = catalog.filter((candidate) => candidate.id !== item.id && candidate.category !== item.category);
-  const related = [...sameCategory, ...otherCategories].slice(0, 4);
+  const related = (item.category === 'kids-shoes' ? sameCategory : [...sameCategory, ...otherCategories]).slice(0, 4);
 
   return `<section class="product-related" aria-labelledby="related-products-title"><div class="container"><div class="product-related-head"><div><div class="section-kicker">More current inventory</div><h2 id="related-products-title">Keep looking.</h2></div><a class="text-link" href="out-now.html?category=${item.category}">Shop ${categoryLabels[item.category].toLowerCase()} &rarr;</a></div><div class="product-related-grid">${related.map((candidate) => `<article class="product-related-card"><a href="products/${slug(candidate)}.html"><div class="product-related-image"><img src="${listingImagePath(candidate, 'branded')}" alt="${escapeHtml(candidate.name)}" loading="lazy" width="1200" height="1200"></div><div class="product-related-copy"><span>${categoryLabels[candidate.category]}</span><h3>${escapeHtml(candidate.name)}</h3><div><strong>${formatMoney(storeConfig.directCheckoutEnabled && candidate.directCheckoutEnabled !== false ? directPriceCents(candidate) : parsePriceCents(candidate.price))}</strong><b>View item &rarr;</b></div></div></a></article>`).join('')}</div></div></section>`;
 }
@@ -100,7 +102,7 @@ function pageMarkup(item, images) {
     '@type': 'Product',
     name: item.name,
     description,
-    image: [absoluteListingImage(item, 'merchant'), ...(item.gallery || []).map((image) => `${publicRoot}/${image.src}`)],
+    image: [absoluteListingImage(item, 'merchant'), ...(item.gallery || []).map((image) => `${publicRoot}/${galleryImagePath(item, image)}`)],
     sku: item.id,
     brand: { '@type': 'Brand', name: productBrand(item) },
     itemCondition: `https://schema.org/${condition === 'used' ? 'UsedCondition' : 'NewCondition'}`,
@@ -218,7 +220,7 @@ for (const item of catalog) {
     label: 'listing view'
   }];
   for (const image of item.gallery || []) {
-    images.push({ ...image, alt: `${item.name} - ${image.label}` });
+    images.push({ ...image, src: galleryImagePath(item, image), alt: `${item.name} - ${image.label}` });
   }
   if (jerseyGalleryIds.has(item.id)) {
     images.push({

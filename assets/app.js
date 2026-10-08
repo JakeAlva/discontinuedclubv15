@@ -15,6 +15,7 @@
   const categoryLabels = {
     drinks: 'Rare drinks',
     apparel: 'Sports & apparel',
+    'kids-shoes': "Designer kids' shoes",
     collectibles: 'Collectibles & cards',
     care: 'Personal care',
     home: 'Home & hobby',
@@ -30,7 +31,7 @@
   }
 
   function listingImagePath(item, variant, absolute) {
-    const version = item.id === '407134944288' ? '4pack-2' : '38';
+    const version = item.imageVersion || (item.id === '407134944288' ? '4pack-2' : '38');
     const path = 'assets/images/listings/' + variant + '/' + item.id + '.webp?v=' + version;
     return absolute ? 'https://discontinuedclub.com/' + path : path;
   }
@@ -132,7 +133,7 @@
       '  <div class="container">',
       '    <div class="footer-main">',
       '      <div class="footer-brand"><a class="footer-logo" href="index.html"><img src="assets/images/logo-mark-clean.png" alt=""><span class="logo-type"><strong>Discontinued</strong><small>Club</small></span></a><p>A focused resale store for rare drinks, discontinued goods, sports gear, collectibles, and everyday products that are getting harder to find.</p></div>',
-      '      <div class="footer-column"><strong>Shop</strong><a href="out-now.html">All listings</a><a href="out-now.html?category=drinks">Rare drinks</a><a href="out-now.html?category=apparel">Sports & apparel</a></div>',
+      '      <div class="footer-column"><strong>Shop</strong><a href="out-now.html">All listings</a><a href="out-now.html?category=drinks">Rare drinks</a><a href="out-now.html?category=apparel">Sports & apparel</a><a href="out-now.html?category=kids-shoes">Designer kids&#39; shoes</a></div>',
       '      <div class="footer-column"><strong>Discover</strong><a href="sold-archive.html">Previously sold</a><a href="blog.html">Discontinued journal</a><a href="discontinued-energy-drink-flavors-2026.html">2026 flavor index</a></div>',
       '      <div class="footer-column"><strong>Discontinued Club</strong><a href="about.html">About</a><a href="contact.html">Contact</a><a href="' + EBAY_STORE + '" target="_blank" rel="noopener">eBay profile</a></div>',
       '      <div class="footer-column"><strong>Policies</strong><a href="shipping-returns.html">Shipping & returns</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>',
@@ -760,8 +761,19 @@
         if (!card.hidden) visible += 1;
       });
       tabs.forEach(function (tab) {
-        tab.classList.toggle('active', tab.dataset.filterCategory === currentCategory);
+        const active = tab.dataset.filterCategory === currentCategory;
+        tab.classList.toggle('active', active);
+        tab.setAttribute('aria-pressed', String(active));
       });
+      const activeTab = tabs.find(function (tab) { return tab.dataset.filterCategory === currentCategory; });
+      const tabRow = activeTab && activeTab.parentElement;
+      if (tabRow && tabRow.scrollWidth > tabRow.clientWidth) {
+        const rowBounds = tabRow.getBoundingClientRect();
+        const tabBounds = activeTab.getBoundingClientRect();
+        if (tabBounds.left < rowBounds.left || tabBounds.right > rowBounds.right) {
+          tabRow.scrollLeft += tabBounds.left - rowBounds.left - (tabRow.clientWidth - tabBounds.width) / 2;
+        }
+      }
       if (count) count.textContent = visible + (visible === 1 ? ' item' : ' items');
       if (empty) empty.classList.toggle('show', visible === 0);
     }
@@ -903,8 +915,10 @@
       '    <div class="finder-grid">',
       finderOption('Rare drinks', 'Limited, discontinued, and international beverages', categoryCount('drinks'), 'drinks'),
       finderOption('Sports & apparel', 'Jerseys, shoes, and vintage skate gear', categoryCount('apparel'), 'apparel'),
+      finderOption("Designer kids' shoes", "Pre-owned designer sneakers in children's sizes", categoryCount('kids-shoes'), 'kids-shoes'),
       finderOption('Collectibles & cards', 'Pokemon, Funko, and collector inventory', categoryCount('collectibles'), 'collectibles'),
       finderOption('Personal care', 'Hard-to-find body wash and hair care', categoryCount('care'), 'care'),
+      finderOption('Home & hobby', 'Practical finds for home and hobby projects', categoryCount('home'), 'home'),
       '    </div>',
       '    <div class="finder-actions"><span><strong>Want the whole shelf?</strong><small>See every current find in one place.</small></span><div><a class="btn btn-dark" href="out-now.html" data-finder-choice>Browse all ' + catalog.length + '</a><button class="btn btn-light" type="button" data-finder-close>Stay here</button></div></div>',
       '  </section>',
@@ -921,7 +935,7 @@
     const spotlightIds = { care: '406763456229' };
     const spotlight = catalog.find(function (item) { return item.id === spotlightIds[category]; })
       || catalog.find(function (item) { return item.category === category; });
-    const categoryNumber = ['drinks', 'apparel', 'collectibles', 'care'].indexOf(category) + 1;
+    const categoryNumber = ['drinks', 'apparel', 'kids-shoes', 'collectibles', 'care', 'home'].indexOf(category) + 1;
     const image = spotlight
       ? '<img src="' + listingImagePath(spotlight, 'branded', false) + '" alt="' + escapeHtml(spotlight.name) + '" width="1200" height="1200">'
       : '<span class="finder-option-placeholder">DC</span>';

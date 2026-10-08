@@ -26,7 +26,10 @@ test('every current listing has a dedicated indexable product page', async () =>
       assert.ok(html.includes('"@type":"MerchantReturnPolicy"'));
     }
     assert.ok(html.includes('class="product-page"'));
-    assert.equal((html.match(/class="product-related-card"/g) || []).length, Math.min(4, catalog.length - 1));
+    const relatedCount = item.category === 'kids-shoes'
+      ? catalog.filter((candidate) => candidate.category === item.category && candidate.id !== item.id).length
+      : catalog.length - 1;
+    assert.equal((html.match(/class="product-related-card"/g) || []).length, Math.min(4, relatedCount));
     if (storeConfig.directCheckoutEnabled && item.directCheckoutEnabled !== false) {
       assert.ok(html.includes(`data-add-to-cart="${item.id}"`));
       assert.ok(html.includes('class="mobile-product-bar"'));

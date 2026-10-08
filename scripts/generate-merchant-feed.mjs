@@ -16,7 +16,7 @@ const xml = (value) => String(value)
 
 const slug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}`;
 const productUrl = (item) => `${publicRoot}/products/${slug(item)}.html`;
-const imageUrl = (item) => `${publicRoot}/assets/images/listings/merchant/${item.id}.webp`;
+const imageUrl = (item) => `${publicRoot}/assets/images/listings/merchant/${item.id}.webp${item.imageVersion ? `?v=${item.imageVersion}` : ''}`;
 const dollars = (cents) => `${(cents / 100).toFixed(2)} USD`;
 
 function itemMarkup(item) {

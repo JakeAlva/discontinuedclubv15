@@ -7,6 +7,7 @@ const soldDir = path.join(root, 'sold');
 const categoryInfo = {
   drinks: { label: 'Rare drinks', href: 'rare-drinks.html', copy: 'rare and discontinued drink' },
   apparel: { label: 'Sports & apparel', href: 'out-now.html?category=apparel', copy: 'sports and apparel' },
+  'kids-shoes': { label: "Designer kids' shoes", href: 'out-now.html?category=kids-shoes', copy: "designer kids' shoe" },
   collectibles: { label: 'Collectibles', href: 'out-now.html?category=collectibles', copy: 'collectible' },
   care: { label: 'Personal care', href: 'out-now.html?category=care', copy: 'discontinued personal care' },
   other: { label: 'Other finds', href: 'out-now.html', copy: 'hard-to-find' }

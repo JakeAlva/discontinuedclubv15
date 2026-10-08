@@ -133,7 +133,7 @@ button { color: inherit; }
 .mobile-note { color: var(--muted); font-size: 12px; line-height: 1.6; }
 
 .department-bar { border-bottom: 1px solid var(--line); background: var(--canvas); }
-.department-links { display: grid; grid-template-columns: repeat(5, 1fr); }
+.department-links { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); }
 .department-link { min-height: 62px; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 18px; border-right: 1px solid var(--line); color: #3e433e; font-size: 13px; font-weight: 800; text-align: center; }
 .department-link:first-child { border-left: 1px solid var(--line); }
 .department-link:hover { background: #fff; color: var(--ink); }
@@ -468,6 +468,8 @@ body.finder-open { overflow: hidden; }
 .finder-option { position: relative; min-width: 0; min-height: 174px; display: grid; grid-template-columns: 174px minmax(0, 1fr); overflow: hidden; border: 1px solid var(--ink); border-radius: 4px; background: #fff; transition: box-shadow .18s ease, transform .18s ease; }
 .finder-option::before { content: ""; position: absolute; z-index: 2; top: 0; right: 0; left: 0; height: 5px; background: var(--acid); }
 .finder-option[data-category="apparel"]::before { background: #ff7958; }
+.finder-option[data-category="kids-shoes"]::before { background: #72c9bf; }
+.finder-option[data-category="home"]::before { background: #e6b747; }
 .finder-option[data-category="collectibles"]::before { background: #5270ff; }
 .finder-option[data-category="care"]::before { background: #f2a6b9; }
 .finder-option:hover { box-shadow: 5px 5px 0 var(--ink); transform: translate(-2px, -2px); }

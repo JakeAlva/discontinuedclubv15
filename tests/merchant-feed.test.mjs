@@ -28,7 +28,7 @@ test('Merchant Center feed exposes direct-checkout products and excludes eBay-on
     const entry = entriesById.get(`dc-${item.id}`);
     assert.ok(entry, item.id);
     assert.equal(entry['g:link'], `https://discontinuedclub.com/products/${slug(item)}.html`);
-    assert.equal(entry['g:image_link'], `https://discontinuedclub.com/assets/images/listings/merchant/${item.id}.webp`);
+    assert.equal(entry['g:image_link'], `https://discontinuedclub.com/assets/images/listings/merchant/${item.id}.webp${item.imageVersion ? `?v=${item.imageVersion}` : ''}`);
     assert.equal(entry['g:price'], directPrice);
     assert.equal(entry['g:condition'], productCondition(item));
     assert.equal(entry['g:brand'], productBrand(item));
