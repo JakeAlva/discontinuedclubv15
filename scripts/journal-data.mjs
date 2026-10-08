@@ -26,6 +26,9 @@ import { chessmenOrangeCranberryReport } from './chessmen-orange-cranberry-repor
 import { drPepperIceCreamFloatReport } from './dr-pepper-ice-cream-float-report.mjs';
 import { ghostAwRootBeerReport } from './ghost-aw-root-beer-report.mjs';
 import { dunkinDoomsdayReport } from './dunkin-doomsday-report.mjs';
+import { cocaColaPrebioticReport } from './coca-cola-prebiotic-report.mjs';
+import { bloomStrawberryShortieReport } from './bloom-strawberry-shortie-report.mjs';
+import { smoodCandyDatesReport } from './smood-candy-dates-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -705,5 +708,8 @@ export const reports = [
   chessmenOrangeCranberryReport,
   drPepperIceCreamFloatReport,
   ghostAwRootBeerReport,
-  dunkinDoomsdayReport
+  dunkinDoomsdayReport,
+  cocaColaPrebioticReport,
+  bloomStrawberryShortieReport,
+  smoodCandyDatesReport
 ];

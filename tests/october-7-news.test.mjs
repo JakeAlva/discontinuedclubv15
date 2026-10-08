@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { XMLParser } from 'fast-xml-parser';
@@ -17,12 +17,14 @@ const additions = [pepper, ghost, dunkin];
 test('October 7 stories have crawlable discovery, accurate schema and verified image dimensions', async () => {
   const index = JSON.parse(await read('assets/journal-index.json'));
   const sitemap = new XMLParser().parse(await read('dist/sitemap-journal.xml')).urlset.url.map((item) => item.loc);
+  const libraryFiles = (await readdir(resolve(root, 'dist'))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const library = (await Promise.all(libraryFiles.map((file) => read(`dist/${file}`)))).join('\n');
   for (const report of additions) {
     const href = `journal/${report.slug}.html`;
     const canonical = `https://discontinuedclub.com/${href}`;
     assert.ok(reports.includes(report));
     assert.equal(sitemap.filter((url) => url === canonical).length, 1);
-    for (const file of ['dist/index.html', 'dist/blog.html']) assert.ok((await read(file)).includes(`href="${href}"`), file);
+    assert.ok(library.includes(`href="${href}"`), 'Older stories remain linked in the static journal archive');
     const html = await read(`dist/${href}`);
     assert.ok(html.includes(`rel="canonical" href="${canonical}"`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);
