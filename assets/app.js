@@ -927,7 +927,7 @@
   }
 
   function categoryCount(category) {
-    const count = Number(categories[category] && categories[category].count) || catalog.filter(function (item) { return item.category === category; }).length;
+    const count = catalog.filter(function (item) { return item.category === category; }).length;
     return count + (count === 1 ? ' item' : ' items');
   }
 
@@ -1078,6 +1078,10 @@
     main.innerHTML = '<section class="page-hero compact"><div class="container"><div class="eyebrow">Listing status</div><h1>This item is not currently listed.</h1><p class="lead">Discontinued Club only publishes items that are ready to buy. Browse the current storefront to see all live inventory.</p><div class="hero-actions"><a class="btn btn-dark" href="out-now.html">View current listings</a><a class="btn btn-light" href="' + EBAY_STORE + '" target="_blank" rel="noopener">Open eBay store</a></div></div></section>';
   }
 
+  document.querySelectorAll('[data-listing-count]').forEach(function (host) {
+    const category = host.dataset.listingCount;
+    host.textContent = category === 'all' ? catalog.length : catalog.filter(function (item) { return item.category === category; }).length;
+  });
   renderCatalogs();
   renderSoldCatalog();
   setupProductQuantity();

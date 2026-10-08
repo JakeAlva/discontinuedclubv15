@@ -1,5 +1,7 @@
 import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { catalog } from '../lib/store-catalog.mjs';
+import { renderListingCounts } from '../lib/catalog-file.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const output = resolve(root, 'dist');
@@ -13,7 +15,7 @@ const excludedPages = new Set([
 ]);
 const rootFiles = await readdir(root, { withFileTypes: true });
 const faviconMarkup = '  <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png">\n  <link rel="apple-touch-icon" href="/assets/images/logo-mark-clean.png">';
-const assetVersion = '79';
+const assetVersion = '80';
 
 async function canonicalUrl(file) {
   const html = await readFile(file, 'utf8');
@@ -42,6 +44,11 @@ const rootPages = rootFiles
   .filter((entry) => entry.isFile() && entry.name.endsWith('.html'))
   .filter((entry) => !entry.name.startsWith('product-') && !entry.name.startsWith('brand-') && !excludedPages.has(entry.name))
   .map((entry) => resolve(root, entry.name));
+for (const file of rootPages) {
+  const html = await readFile(file, 'utf8');
+  const updated = renderListingCounts(html, catalog);
+  if (updated !== html) await writeFile(file, updated);
+}
 const productPages = (await readdir(resolve(root, 'products'), { withFileTypes: true }))
   .filter((entry) => entry.isFile() && entry.name.endsWith('.html'))
   .map((entry) => resolve(root, 'products', entry.name));
