@@ -21,10 +21,10 @@ const additions = [
 ];
 
 test('October 6 listings have reconciled stock, direct prices and feed entries', async () => {
-  assert.equal(catalog.length, 61);
+  assert.equal(catalog.length, 62);
   assert.equal(categories.collectibles.count, 9);
   assert.equal(categories.apparel.count, 14);
-  assert.equal(categories['kids-shoes'].count, 2);
+  assert.equal(categories['kids-shoes'].count, 3);
   assert.equal(maxQuantity(findCatalogItem('406730413999')), 5);
   assert.equal(findCatalogItem('407253023756'), undefined);
   assert.equal(storeConfig.freeShippingThresholdCents, 20000);

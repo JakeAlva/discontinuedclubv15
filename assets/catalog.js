@@ -1,4 +1,11 @@
 const DC_CATALOG = [
+  { id: '407277122050', category: 'kids-shoes', name: 'Versace Kids Medusa Slip-On Sneakers - EU 26 / US 9.5', detail: "One pair of pink, white and silver unisex children's slip-on sneakers with metallic accents. Pre-owned; review all six condition photos. Original box included", condition: 'Pre-owned - Good', price: '$119.99', image: '407277122050.webp', maxQuantity: 1, brand: 'Versace', productType: 'Apparel & Accessories > Shoes > Kids Sneakers', size: '26', sizeSystem: 'EU', sizeLabel: 'EU 26 / US 9.5 (eBay listing)', color: 'Pink/White/Silver', gender: 'unisex', ageGroup: 'toddler', mpn: '1A06103 2PF60', googleProductCategory: '187', purchaseNote: "eBay Authenticity Guarantee applies only to purchases made through the linked eBay listing. Direct purchases do not include eBay authentication.", gallery: [
+    { src: 'assets/images/listings/gallery/407277122050-2.webp', label: 'front and toe condition' },
+    { src: 'assets/images/listings/gallery/407277122050-3.webp', label: 'side condition' },
+    { src: 'assets/images/listings/gallery/407277122050-4.webp', label: 'rear condition' },
+    { src: 'assets/images/listings/gallery/407277122050-5.webp', label: 'sole condition' },
+    { src: 'assets/images/listings/gallery/407277122050-6.webp', label: 'included original box' }
+  ] },
   { id: '407276996786', category: 'kids-shoes', name: 'Alexander McQueen Kids Leather Sneakers - EU 26 / US 9.5', detail: "One pair of white and pink unisex children's leather sneakers, width D. Pre-owned; review all six condition photos. Original box not included", condition: 'Pre-owned - Good', price: '$99.99', image: '407276996786.webp', maxQuantity: 1, brand: 'Alexander McQueen', productType: 'Apparel & Accessories > Shoes > Kids Sneakers', size: '26', sizeSystem: 'EU', sizeLabel: 'EU 26 / US 9.5 (eBay listing), width D', color: 'White/Pink', gender: 'unisex', ageGroup: 'toddler', mpn: '587691 26 D', googleProductCategory: '187', gallery: [
     { src: 'assets/images/listings/gallery/407276996786-2.webp', label: 'front and toe condition' },
     { src: 'assets/images/listings/gallery/407276996786-3.webp', label: 'side condition' },
@@ -79,6 +86,7 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407277122050': 64,
   '407276996786': 64,
   '407274649287': 64,
   '407269224750': 8,
@@ -164,10 +172,10 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 61 },
+  all: { label: 'All items', count: 62 },
   drinks: { label: 'Rare drinks', count: 31 },
   apparel: { label: 'Sports & apparel', count: 14 },
-  'kids-shoes': { label: "Designer kids' shoes", count: 2 },
+  'kids-shoes': { label: "Designer kids' shoes", count: 3 },
   collectibles: { label: 'Collectibles & cards', count: 9 },
   care: { label: 'Personal care', count: 4 },
   home: { label: 'Home & hobby', count: 1 }

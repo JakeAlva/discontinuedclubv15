@@ -67,8 +67,8 @@ test('later inventory sync preserves curated shoe details and gallery', () => {
 
 test('designer kids shoes are separate from adult sportswear throughout navigation', async () => {
   const shoes = catalog.filter((candidate) => candidate.category === 'kids-shoes');
-  assert.deepEqual(shoes.map((candidate) => candidate.id).sort(), ['407274649287', '407276996786']);
-  assert.equal(categories['kids-shoes'].count, 2);
+  assert.deepEqual(shoes.map((candidate) => candidate.id).sort(), ['407274649287', '407276996786', '407277122050']);
+  assert.equal(categories['kids-shoes'].count, 3);
   assert.equal(categories.apparel.count, 14);
   assert.equal(catalog.find((candidate) => candidate.id === '406834655819').category, 'apparel');
   for (const file of ['../out-now.html', '../index.html', '../assets/app.js']) {
@@ -106,4 +106,37 @@ test('Alexander McQueen listing has verified pricing, stock, six photos and inde
   assert.ok(sitemap.includes(path));
   const feed = await readFile(new URL('../google-merchant-feed.xml', import.meta.url), 'utf8');
   assert.match(feed, /<g:id>dc-407276996786<\/g:id>/);
+});
+
+test('Versace listing has one pair, original box, six photos and matching searchable offers', async () => {
+  const versace = catalog.find((candidate) => candidate.id === '407277122050');
+  assert.equal(versace.category, 'kids-shoes');
+  assert.equal(versace.price, '$119.99');
+  assert.equal(directPriceCents(versace), 11579);
+  assert.equal(maxQuantity(versace), 1);
+  assert.equal(versace.shippingWeightOz, 64);
+  assert.equal(versace.taxCode, 'txcd_30011200');
+  const path = 'products/versace-kids-medusa-slip-on-sneakers-eu-26-us-9-5-407277122050.html';
+  const html = await readFile(new URL(`../${path}`, import.meta.url), 'utf8');
+  assert.match(html, /Original box included/);
+  assert.match(html, /Direct purchases do not include eBay authentication/);
+  assert.match(html, /index, follow/);
+  assert.equal((html.match(/data-product-gallery-src=/g) || []).length, 6);
+  const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
+  assert.equal(schema.brand.name, 'Versace');
+  assert.equal(schema.size.name, '26');
+  assert.equal(schema.itemCondition, 'https://schema.org/UsedCondition');
+  assert.equal(schema.offers.price, '115.79');
+  assert.equal(schema.offers.availability, 'https://schema.org/InStock');
+  assert.equal(schema.image.length, 6);
+  for (const image of versace.gallery) await access(new URL(`../${image.src}`, import.meta.url));
+  const sitemap = await readFile(new URL('../sitemap-products.xml', import.meta.url), 'utf8');
+  assert.ok(sitemap.includes(path));
+  const feed = await readFile(new URL('../google-merchant-feed.xml', import.meta.url), 'utf8');
+  const entry = feed.match(/<item>\s*<g:id>dc-407277122050<\/g:id>[\s\S]*?<\/item>/)[0];
+  assert.match(entry, /<g:price>115\.79 USD<\/g:price>/);
+  assert.match(entry, /<g:condition>used<\/g:condition>/);
+  assert.match(entry, /<g:size>26<\/g:size>/);
+  assert.match(entry, /<g:availability>in_stock<\/g:availability>/);
+  assert.ok(!entry.includes('<g:gtin>'));
 });
