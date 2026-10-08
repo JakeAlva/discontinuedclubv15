@@ -100,7 +100,7 @@ function pageMarkup(item, images) {
     '@type': 'Product',
     name: item.name,
     description,
-    image: [absoluteListingImage(item, 'merchant')],
+    image: [absoluteListingImage(item, 'merchant'), ...(item.gallery || []).map((image) => `${publicRoot}/${image.src}`)],
     sku: item.id,
     brand: { '@type': 'Brand', name: productBrand(item) },
     itemCondition: `https://schema.org/${condition === 'used' ? 'UsedCondition' : 'NewCondition'}`,
@@ -127,6 +127,10 @@ function pageMarkup(item, images) {
       }
     }
   };
+
+  if (item.color) schema.color = item.color;
+  if (item.mpn) schema.mpn = item.mpn;
+  if (item.size) schema.size = { '@type': 'SizeSpecification', name: item.size, sizeSystem: `https://schema.org/WearableSizeSystem${item.sizeSystem}` };
 
   if (!directCheckoutEnabled) {
     schema.offers.url = `https://www.ebay.com/itm/${item.id}`;
@@ -181,10 +185,13 @@ function pageMarkup(item, images) {
             ${directCheckoutEnabled ? `<p class="product-action-feedback" data-product-action-feedback="${item.id}" role="status" aria-live="polite">In-stock items are reserved when checkout is completed.</p>` : ''}
           </div>
           <div class="current-product-notes">
-            <div class="current-product-note"><strong>Condition</strong><span>${productConditionLabel(item)}</span></div>
+            <div class="current-product-note"><strong>Condition</strong><span>${escapeHtml(item.condition || productConditionLabel(item))}</span></div>
+            ${item.sizeLabel ? `<div class="current-product-note"><strong>Size</strong><span>${escapeHtml(item.sizeLabel)}</span></div>` : ''}
+            ${item.color ? `<div class="current-product-note"><strong>Color</strong><span>${escapeHtml(item.color)}</span></div>` : ''}
             <div class="current-product-note"><strong>Available</strong><span>${quantity} ${quantity === 1 ? 'unit' : 'units'} currently listed</span></div>
             <div class="current-product-note"><strong>Returns</strong><span>${directCheckoutEnabled ? '<a href="shipping-returns.html#returns">30-day window on eligible items</a>' : 'See the eBay listing'}</span></div>
           </div>
+          ${item.purchaseNote ? `<p class="current-product-lead product-purchase-disclosure">${escapeHtml(item.purchaseNote)}</p>` : ''}
           <div class="product-sku">Item ID ${item.id}</div>
         </div>
       </div>
@@ -198,7 +205,7 @@ function pageMarkup(item, images) {
   <script src="assets/app.js?v=45"></script>
 </body>
 </html>
-`.replace(/[\t ]+$/gm, '');
+`.replace(/\n(?:[\t ]*\n)+/g, '\n').replace(/[\t ]+$/gm, '');
 }
 
 await rm(output, { recursive: true, force: true });
@@ -210,6 +217,9 @@ for (const item of catalog) {
     alt: `${item.name} - Discontinued Club listing view`,
     label: 'listing view'
   }];
+  for (const image of item.gallery || []) {
+    images.push({ ...image, alt: `${item.name} - ${image.label}` });
+  }
   if (jerseyGalleryIds.has(item.id)) {
     images.push({
       src: listingImagePath(item, 'merchant'),

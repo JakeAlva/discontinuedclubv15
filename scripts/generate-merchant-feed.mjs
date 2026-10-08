@@ -23,6 +23,14 @@ function itemMarkup(item) {
   const priceCents = directPriceCents(item);
   const shippingCents = shippingQuote(priceCents, [{ item, quantity: 1 }]).amountCents;
   const description = `${item.name}. ${item.detail}. Available directly from Discontinued Club with secure Stripe checkout.`;
+  const attributes = {
+    size: item.size, size_system: item.sizeSystem, color: item.color,
+    gender: item.gender, age_group: item.ageGroup, mpn: item.mpn,
+    google_product_category: item.googleProductCategory
+  };
+  const attributeMarkup = Object.entries(attributes)
+    .filter(([, value]) => value)
+    .map(([key, value]) => `    <g:${key}>${xml(value)}</g:${key}>`).join('\n');
   return `  <item>
     <g:id>${xml(`dc-${item.id}`)}</g:id>
     <g:title>${xml(item.name)}</g:title>
@@ -33,7 +41,7 @@ function itemMarkup(item) {
     <g:price>${dollars(priceCents)}</g:price>
     <g:condition>${productCondition(item)}</g:condition>
     <g:brand>${xml(productBrand(item))}</g:brand>
-    <g:product_type>${xml(productType(item))}</g:product_type>
+    <g:product_type>${xml(productType(item))}</g:product_type>${attributeMarkup ? `\n${attributeMarkup}` : ''}
     <g:shipping_weight>${Number(item.shippingWeightOz)} oz</g:shipping_weight>
     <g:shipping>
       <g:country>US</g:country>

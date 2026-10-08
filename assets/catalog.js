@@ -1,4 +1,11 @@
 const DC_CATALOG = [
+  { id: '407274649287', category: 'apparel', name: 'Balenciaga Triple S Kids Sneakers - EU 26 / US 9.5', detail: "One pair of unisex children's shoes in white, green and gray. Pre-owned with signs of wear; review all six photos. Original box not included", condition: 'Pre-owned - Good', price: '$174.99', image: '407274649287.webp', maxQuantity: 1, brand: 'Balenciaga', productType: 'Apparel & Accessories > Shoes > Kids Sneakers', size: '26', sizeSystem: 'EU', sizeLabel: 'EU 26 / US 9.5 (shoe label)', color: 'White/Green/Gray', gender: 'unisex', ageGroup: 'toddler', mpn: '654251', googleProductCategory: '187', purchaseNote: "eBay Authenticity Guarantee applies only to purchases made through the linked eBay listing. Direct purchases do not include eBay authentication.", gallery: [
+    { src: 'assets/images/listings/gallery/407274649287-2.webp', label: 'front and toe condition' },
+    { src: 'assets/images/listings/gallery/407274649287-3.webp', label: 'side condition' },
+    { src: 'assets/images/listings/gallery/407274649287-4.webp', label: 'rear condition' },
+    { src: 'assets/images/listings/gallery/407274649287-5.webp', label: 'sole condition' },
+    { src: 'assets/images/listings/gallery/407274649287-6.webp', label: 'size and product label' }
+  ] },
   { id: '407269224750', category: 'collectibles', name: 'Pokemon Mega Evolution Chaos Rising Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407269224750.webp', maxQuantity: 3 },
   { id: '407269188492', category: 'collectibles', name: 'Pokemon Surging Sparks Booster Pack', detail: 'Factory-sealed English Scarlet & Violet single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$6.99', image: '407269188492.webp', maxQuantity: 2 },
   { id: '407264848037', category: 'collectibles', name: 'Pokemon Mega Evolution Perfect Order Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407264848037.webp', maxQuantity: 1 },
@@ -65,6 +72,7 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407274649287': 64,
   '407269224750': 8,
   '407269188492': 8,
   '407264848037': 8,
@@ -131,6 +139,7 @@ const DC_TAX_CODES = {
   softDrink: 'txcd_41040002',
   sportsJersey: 'txcd_30070022',
   clothing: 'txcd_30011000',
+  childrensClothing: 'txcd_30011200',
   grooming: 'txcd_32050006',
   shampoo: 'txcd_32050036'
 };
@@ -140,15 +149,16 @@ DC_CATALOG.forEach((item) => {
   if (item.category === 'drinks' && item.id !== '407039382525') item.taxCode = DC_TAX_CODES.softDrink;
   else if (item.category === 'apparel' && item.name.includes('Jersey')) item.taxCode = DC_TAX_CODES.sportsJersey;
   else if (item.id === '406834655819') item.taxCode = DC_TAX_CODES.clothing;
+  else if (item.category === 'apparel' && ['toddler', 'kids', 'infant', 'newborn'].includes(item.ageGroup)) item.taxCode = DC_TAX_CODES.childrensClothing;
   else if (item.category === 'care' && item.name.includes('Shampoo')) item.taxCode = DC_TAX_CODES.shampoo;
   else if (item.category === 'care') item.taxCode = DC_TAX_CODES.grooming;
   else item.taxCode = DC_TAX_CODES.general;
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 59 },
+  all: { label: 'All items', count: 60 },
   drinks: { label: 'Rare drinks', count: 31 },
-  apparel: { label: 'Sports & apparel', count: 14 },
+  apparel: { label: 'Sports & apparel', count: 15 },
   collectibles: { label: 'Collectibles & cards', count: 9 },
   care: { label: 'Personal care', count: 4 },
   home: { label: 'Home & hobby', count: 1 }

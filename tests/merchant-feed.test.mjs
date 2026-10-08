@@ -40,5 +40,10 @@ test('Merchant feed uses stable unique IDs and omits invented product identifier
   const feed = await readFile(resolve(root, 'google-merchant-feed.xml'), 'utf8');
   const ids = [...feed.matchAll(/<g:id>([^<]+)<\/g:id>/g)].map((match) => match[1]);
   assert.equal(new Set(ids).size, directCatalog.length);
-  assert.doesNotMatch(feed, /<g:(?:gtin|mpn|identifier_exists)>/);
+  assert.doesNotMatch(feed, /<g:(?:gtin|identifier_exists)>/);
+  const entries = new XMLParser({ parseTagValue: false }).parse(feed).rss.channel.item;
+  for (const entry of entries) {
+    const item = directCatalog.find((candidate) => `dc-${candidate.id}` === entry['g:id']);
+    assert.equal(entry['g:mpn'], item.mpn);
+  }
 });
