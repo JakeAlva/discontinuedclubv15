@@ -11,7 +11,7 @@ const item = catalog.find((item) => item.id === '407274649287');
 const productPath = 'products/balenciaga-triple-s-kids-sneakers-eu-26-us-9-5-407274649287.html';
 
 for (const expected of [
-  { id: '407277242488', price: '$79.99', directCents: 7719, brand: 'adidas', size: '28', photos: 6, mpn: 'EG7492' },
+  { id: '407277242488', price: '$74.99', directCents: 7237, brand: 'adidas', size: '28', photos: 6, mpn: 'EG7492' },
   { id: '407277210158', price: '$64.99', directCents: 6272, brand: 'Burberry', size: '25', photos: 5 }
 ]) {
   test(`${expected.brand} addition preserves verified size, price, quantity and real photos`, async () => {
