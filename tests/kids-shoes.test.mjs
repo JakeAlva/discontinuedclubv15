@@ -12,7 +12,7 @@ const productPath = 'products/balenciaga-triple-s-kids-sneakers-eu-26-us-9-5-407
 
 for (const expected of [
   { id: '407277346224', price: '$74.99', directCents: 7237, brand: 'adidas', size: '28', photos: 6, mpn: 'EF2905' },
-  { id: '407277320481', price: '$69.99', directCents: 6754, brand: 'adidas', size: '27', photos: 6, mpn: 'FX9033' },
+  { id: '407277320481', price: '$69.99', directCents: 6754, brand: 'adidas', size: '27', photos: 6, mpn: 'FX9033', imageVersion: '20261008-2' },
   { id: '407277242488', price: '$74.99', directCents: 7237, brand: 'adidas', size: '28', photos: 6, mpn: 'EG7492' },
   { id: '407277210158', price: '$64.99', directCents: 6272, brand: 'Burberry', size: '25', photos: 5 }
 ]) {
@@ -53,6 +53,12 @@ for (const expected of [
       assert.ok(entry.includes(`<g:${field}>${value}</g:${field}>`));
     }
     assert.ok(!entry.includes('<g:gtin>'));
+    if (expected.imageVersion) {
+      assert.equal(shoe.imageVersion, expected.imageVersion);
+      for (const image of schema.image) assert.equal(new URL(image).searchParams.get('v'), expected.imageVersion);
+      const feedImage = entry.match(/<g:image_link>(.*?)<\/g:image_link>/)[1];
+      assert.equal(new URL(feedImage).searchParams.get('v'), expected.imageVersion);
+    }
   });
 }
 
