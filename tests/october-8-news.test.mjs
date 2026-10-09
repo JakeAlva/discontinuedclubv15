@@ -22,7 +22,7 @@ test('October 8 reports have crawlable links, accurate dates and real high-resol
     const href = `journal/${report.slug}.html`;
     const canonical = `https://discontinuedclub.com/${href}`;
     assert.equal(sitemap.filter((url) => url === canonical).length, 1);
-    for (const file of ['dist/index.html', 'dist/blog.html']) assert.ok((await read(file)).includes(`href="${href}"`), file);
+    assert.ok((await read('dist/blog.html')).includes(`href="${href}"`), 'October 8 reports remain discoverable after the homepage rotates');
     const html = await read(`dist/${href}`);
     assert.ok(html.includes(`rel="canonical" href="${canonical}"`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);
