@@ -272,6 +272,7 @@
     const savings = Math.max(0, ebayCents - directCents);
     const stock = getMaxQuantity(item);
     const stockLabel = stock > 1 ? stock + ' in stock' : 'Last one';
+    const stockBadge = item.category === 'kids-shoes' ? '' : '<span class="condition-badge">' + stockLabel + '</span>';
     const imageAlt = escapeHtml(item.name + ' - current Discontinued Club inventory');
     const pricing = directCheckoutEnabled
       ? '<div class="product-pricing"><span><small>Direct price</small><strong>' + formatMoney(directCents) + '</strong></span><span class="market-price"><small>eBay price</small><s>' + item.price + '</s></span></div><div class="product-savings">Save ' + formatMoney(savings) + ' on the item price</div>'
@@ -281,7 +282,7 @@
       : '<a class="btn btn-dark product-add" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a><a class="ebay-option" href="' + detailHref + '">View details</a>';
     return [
       '<article class="product-card" data-category="' + item.category + '" data-search="' + escapeHtml((item.name + ' ' + item.detail + ' ' + categoryLabels[item.category]).toLowerCase()) + '">',
-      '  <a class="product-image" href="' + detailHref + '"><img src="' + listingImagePath(item, 'branded', false) + '" alt="' + imageAlt + '" loading="lazy" width="1200" height="1200"><span class="condition-badge">' + stockLabel + '</span></a>',
+      '  <a class="product-image" href="' + detailHref + '"><img src="' + listingImagePath(item, 'branded', false) + '" alt="' + imageAlt + '" loading="lazy" width="1200" height="1200">' + stockBadge + '</a>',
       '  <div class="product-content">',
       '    <div class="product-category">' + categoryLabels[item.category] + '</div>',
       '    <div class="product-name"><a href="' + detailHref + '">' + escapeHtml(item.name) + '</a></div>',
@@ -369,22 +370,24 @@
       const item = catalog.find(function (candidate) { return candidate.id === id; });
       if (!item) return;
       const maxQuantity = getMaxQuantity(item);
+      const singlePair = item.category === 'kids-shoes' && maxQuantity === 1;
       const quantity = cartQuantityFor(id);
       const atLimit = quantity >= maxQuantity;
       const label = button.querySelector('[data-add-label]');
       const arrow = button.querySelector('.purchase-arrow');
       let buttonLabel = 'Add to cart';
 
-      if (atLimit) buttonLabel = maxQuantity === 1 ? 'Last one in cart' : 'All stock in cart';
+      if (atLimit) buttonLabel = singlePair ? 'In your cart' : (maxQuantity === 1 ? 'Last one in cart' : 'All stock in cart');
       else if (quantity > 0) buttonLabel = 'Add another';
 
+      const limitMessage = singlePair ? 'This pair is already in your cart' : (maxQuantity === 1 ? 'The last available one is already in your cart' : 'All available units are already in your cart');
       button.disabled = atLimit;
       button.classList.toggle('is-cart-full', atLimit);
       button.title = atLimit
-        ? (maxQuantity === 1 ? 'The last available one is already in your cart' : 'All available units are already in your cart')
+        ? limitMessage
         : 'Add ' + item.name + ' to cart';
       button.setAttribute('aria-label', atLimit
-        ? item.name + ': ' + (maxQuantity === 1 ? 'the last available one is already in your cart' : 'all available units are already in your cart')
+        ? item.name + ': ' + limitMessage.toLowerCase()
         : buttonLabel + ': ' + item.name);
       if (label) label.textContent = buttonLabel;
       if (arrow) arrow.textContent = atLimit ? '\u2713' : (quantity > 0 ? '+' : '\u2192');
@@ -398,6 +401,7 @@
       const maxQuantity = getMaxQuantity(item);
       const quantity = cartQuantityFor(id);
       if (!quantity) host.textContent = 'In-stock items are reserved when checkout is completed.';
+      else if (item.category === 'kids-shoes') host.textContent = 'In your cart. Availability is confirmed at checkout.';
       else if (quantity >= maxQuantity && maxQuantity === 1) host.textContent = 'The last available one is held in your cart.';
       else if (quantity >= maxQuantity) host.textContent = 'All ' + maxQuantity + ' available units are in your cart.';
       else host.textContent = quantity + ' of ' + maxQuantity + ' available units ' + (quantity === 1 ? 'is' : 'are') + ' in your cart.';

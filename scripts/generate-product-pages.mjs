@@ -73,6 +73,7 @@ function pageMarkup(item, images) {
   const ebayPrice = parsePriceCents(item.price);
   const savings = Math.max(0, ebayPrice - directPrice);
   const quantity = maxQuantity(item);
+  const stockBadge = item.category === 'kids-shoes' ? '' : `<div class="sold-status available">${quantity > 1 ? `${quantity} available` : 'Last one'}</div>`;
   const freeShippingThreshold = Math.max(1, Number(storeConfig.freeShippingThresholdCents) || 20000);
   const condition = productCondition(item);
   const shipping = shippingQuote(directPrice, [{ item, quantity: 1 }]);
@@ -172,7 +173,7 @@ function pageMarkup(item, images) {
       <div class="container current-product-layout">
         ${galleryMarkup(item, images)}
         <div class="current-product-copy">
-          <div class="sold-status available">${quantity > 1 ? `${quantity} available` : 'Last one'}</div>
+          ${stockBadge}
           <div class="product-category">${categoryLabels[item.category]}</div>
           <h1>${escapeHtml(item.name)}</h1>
           <p class="current-product-lead">${escapeHtml(item.detail)}.</p>
@@ -190,7 +191,7 @@ function pageMarkup(item, images) {
             <div class="current-product-note"><strong>Condition</strong><span>${escapeHtml(item.condition || productConditionLabel(item))}</span></div>
             ${item.sizeLabel ? `<div class="current-product-note"><strong>Size</strong><span>${escapeHtml(item.sizeLabel)}</span></div>` : ''}
             ${item.color ? `<div class="current-product-note"><strong>Color</strong><span>${escapeHtml(item.color)}</span></div>` : ''}
-            <div class="current-product-note"><strong>Available</strong><span>${quantity} ${quantity === 1 ? 'unit' : 'units'} currently listed</span></div>
+            <div class="current-product-note"><strong>Available</strong><span>${quantity} ${item.category === 'kids-shoes' ? (quantity === 1 ? 'pair' : 'pairs') : (quantity === 1 ? 'unit' : 'units')} currently listed</span></div>
             <div class="current-product-note"><strong>Returns</strong><span>${directCheckoutEnabled ? '<a href="shipping-returns.html#returns">30-day window on eligible items</a>' : 'See the eBay listing'}</span></div>
           </div>
           ${item.purchaseNote ? `<p class="current-product-lead product-purchase-disclosure">${escapeHtml(item.purchaseNote)}</p>` : ''}
