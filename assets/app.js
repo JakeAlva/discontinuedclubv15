@@ -1064,18 +1064,29 @@
     const thumbnails = Array.from(document.querySelectorAll('[data-product-gallery-src]'));
     if (!mainImage) return;
     const zoom = document.querySelector('[data-product-zoom]');
+    const lens = document.querySelector('[data-product-lens]');
     let zoomed = false;
     let scale = 1;
     let x = 50;
     let y = 50;
     let drag = null;
     let dragged = false;
+    let geometry = null;
+    let touchLens = false;
 
     function position(nextX, nextY) {
       x = Math.max(0, Math.min(100, nextX));
       y = Math.max(0, Math.min(100, nextY));
-      zoom.style.setProperty('--zoom-x', x + '%');
-      zoom.style.setProperty('--zoom-y', y + '%');
+      if (!geometry || !lens) return;
+      const pointX = geometry.width * x / 100;
+      const pointY = geometry.height * y / 100;
+      const radius = geometry.diameter / 2;
+      const centerX = Math.max(radius + 6, Math.min(geometry.width - radius - 6, pointX));
+      // Keep the touch lens above the fingertip so it does not obscure the detail.
+      const centerY = Math.max(radius + 6, Math.min(geometry.height - radius - 20, pointY - (touchLens ? radius + 24 : 0)));
+      lens.style.left = (centerX - radius) + 'px';
+      lens.style.top = (centerY - radius) + 'px';
+      lens.style.backgroundPosition = (radius - (pointX - geometry.offsetX) * scale) + 'px ' + (radius - (pointY - geometry.offsetY) * scale) + 'px';
     }
 
     function setZoom(active) {
@@ -1083,26 +1094,45 @@
       zoomed = active && !zoom.disabled;
       zoom.classList.toggle('is-zoomed', zoomed);
       zoom.setAttribute('aria-pressed', String(zoomed));
-      const label = zoomed ? 'Zoom out of product photo' : 'Zoom in on product photo';
+      const label = zoomed ? 'Close photo magnifier' : 'Magnify product photo';
       zoom.setAttribute('aria-label', label);
       zoom.title = label;
       if (!zoomed) position(50, 50);
     }
 
     function measureZoom() {
-      if (!zoom) return;
-      // Stop at the original photo's resolution instead of enlarging blurry pixels.
-      scale = Math.min(2.5, Math.max(1, mainImage.naturalWidth / Math.max(1, mainImage.clientWidth), mainImage.naturalHeight / Math.max(1, mainImage.clientHeight)));
-      zoom.style.setProperty('--zoom-scale', scale);
-      zoom.disabled = !mainImage.naturalWidth || scale <= 1;
+      if (!zoom || !lens) return;
+      const styles = window.getComputedStyle(mainImage);
+      const left = parseFloat(styles.paddingLeft) || 0;
+      const top = parseFloat(styles.paddingTop) || 0;
+      const contentWidth = mainImage.clientWidth - left - (parseFloat(styles.paddingRight) || 0);
+      const contentHeight = mainImage.clientHeight - top - (parseFloat(styles.paddingBottom) || 0);
+      const ratio = Math.min(contentWidth / mainImage.naturalWidth, contentHeight / mainImage.naturalHeight);
+      // Match object-fit: contain, including padding, without exceeding original resolution.
+      scale = Math.min(2.5, Math.max(1, 1 / ratio));
+      zoom.disabled = !mainImage.naturalWidth || !mainImage.naturalHeight || !Number.isFinite(ratio) || ratio <= 0 || scale <= 1;
+      if (!zoom.disabled) {
+        const width = zoom.clientWidth;
+        const height = zoom.clientHeight;
+        const photoWidth = mainImage.naturalWidth * ratio;
+        const photoHeight = mainImage.naturalHeight * ratio;
+        const diameter = Math.min(220, Math.max(150, Math.min(width, height) * 0.45));
+        geometry = { width: width, height: height, diameter: diameter, offsetX: left + (contentWidth - photoWidth) / 2, offsetY: top + (contentHeight - photoHeight) / 2 };
+        lens.style.width = diameter + 'px';
+        lens.style.height = diameter + 'px';
+        lens.style.backgroundImage = 'url(' + JSON.stringify(mainImage.currentSrc || mainImage.src) + ')';
+        lens.style.backgroundSize = (photoWidth * scale) + 'px ' + (photoHeight * scale) + 'px';
+        position(x, y);
+      }
       if (zoom.disabled) setZoom(false);
     }
 
-    if (zoom) {
+    if (zoom && lens) {
       const hover = window.matchMedia('(hover: hover) and (pointer: fine)');
       function followPointer(event) {
         const bounds = zoom.getBoundingClientRect();
-        position((event.clientX - bounds.left) / bounds.width * 100, (event.clientY - bounds.top) / bounds.height * 100);
+        touchLens = event.pointerType === 'touch' || event.pointerType === 'pen';
+        position((event.clientX - bounds.left - zoom.clientLeft) / zoom.clientWidth * 100, (event.clientY - bounds.top - zoom.clientTop) / zoom.clientHeight * 100);
       }
       zoom.addEventListener('pointerenter', function (event) {
         if (event.pointerType !== 'mouse' || !hover.matches) return;
@@ -1115,8 +1145,10 @@
       });
       zoom.addEventListener('pointerdown', function (event) {
         dragged = false;
-        if (!zoomed || event.pointerType === 'mouse') return;
-        drag = { id: event.pointerId, clientX: event.clientX, clientY: event.clientY, x: x, y: y };
+        if (event.pointerType === 'mouse') return;
+        followPointer(event);
+        if (!zoomed) return;
+        drag = { id: event.pointerId, clientX: event.clientX, clientY: event.clientY };
         zoom.setPointerCapture(event.pointerId);
       });
       zoom.addEventListener('pointermove', function (event) {
@@ -1127,8 +1159,7 @@
           const dx = event.clientX - drag.clientX;
           const dy = event.clientY - drag.clientY;
           if (Math.abs(dx) + Math.abs(dy) > 5) dragged = true;
-          const bounds = zoom.getBoundingClientRect();
-          position(drag.x - dx / (bounds.width * (scale - 1)) * 100, drag.y - dy / (bounds.height * (scale - 1)) * 100);
+          followPointer(event);
         }
       });
       function endDrag(event) {
@@ -1139,6 +1170,7 @@
       zoom.addEventListener('pointercancel', function (event) { endDrag(event); setZoom(false); });
       zoom.addEventListener('click', function (event) {
         if (dragged && event.detail !== 0) { dragged = false; return; }
+        if (event.detail === 0) { touchLens = false; position(50, 50); }
         measureZoom();
         setZoom(!zoomed);
       });

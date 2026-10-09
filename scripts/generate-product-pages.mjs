@@ -58,7 +58,7 @@ function galleryMarkup(item, images) {
     : '';
   const image = `<img src="${first.src}" alt="${escapeHtml(first.alt)}" width="1200" height="1200" data-product-main-image>`;
   const main = item.category === 'kids-shoes'
-    ? `<button class="current-gallery-main current-gallery-zoom" type="button" data-product-zoom aria-label="Zoom in on product photo" aria-pressed="false" title="Zoom in on product photo" disabled>${image}<span class="gallery-zoom-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3M8 11h6"></path><path class="gallery-zoom-plus" d="M11 8v6"></path></svg></span></button>`
+    ? `<button class="current-gallery-main current-gallery-zoom" type="button" data-product-zoom aria-label="Magnify product photo" aria-pressed="false" title="Magnify product photo" disabled>${image}<span class="gallery-magnifier" data-product-lens aria-hidden="true"></span><span class="gallery-zoom-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3M8 11h6"></path><path class="gallery-zoom-plus" d="M11 8v6"></path></svg></span></button>`
     : `<div class="current-gallery-main">${image}</div>`;
   return `<div class="current-product-gallery">${main}${thumbnails}</div>`;
 }
