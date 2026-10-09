@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { readFile, access } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { monsterArchive, monsterArchiveSources, monsterArchiveStatuses } from '../scripts/monster-archive.mjs';
+import { monsterPhotos } from '../scripts/monster-photos.mjs';
+import sharp from 'sharp';
 import { reports } from '../scripts/journal-data.mjs';
 import { catalog } from '../lib/store-catalog.mjs';
 import { soldItems } from '../scripts/sold-data.mjs';
@@ -31,8 +33,32 @@ test('timeline is crawlable without scripts and explicitly qualifies incomplete 
   assert.match(html, /not a claim that every regional size or formula/);
   assert.match(html, /documented-by year is not an invented launch or retirement date/);
   assert.match(html, /data-archive-filters hidden/);
-  assert.match(html, /assets\/monster-archive.js\?v=90/);
+  assert.match(html, /assets\/monster-archive.js\?v=91/);
   assert.match(await read('sitemap-pages.xml'), /discontinued-monster-energy-flavors.html<\/loc><lastmod>2026-10-09/);
+});
+
+test('each flavor has a real, locally available packaging image and credit', async () => {
+  for (const item of monsterArchive) {
+    const photo = monsterPhotos[item.name];
+    assert.ok(photo?.credit && photo.caption, item.name);
+    const image = await sharp(resolve(root, photo.image)).metadata();
+    assert.ok(image.width >= 100 && image.height >= 100, item.name);
+  }
+});
+
+test('history uses open chronological sections, without duplicated report grids or hidden FAQ schema', async () => {
+  const html = await read('dist/discontinued-monster-energy-flavors.html');
+  const years = [...new Set(monsterArchive.map((item) => item.year))];
+  assert.equal((html.match(/data-archive-year/g) || []).length, years.length);
+  assert.equal((html.match(/class="monster-entry-photo"/g) || []).length, monsterArchive.length);
+  assert.doesNotMatch(html, /data-archive-era|topic-report-section|FAQPage/);
+  const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
+  assert.equal(schema.mainEntity.numberOfItems, monsterArchive.length);
+  for (const item of schema.mainEntity.itemListElement) {
+    assert.ok(html.includes(`id="${item.url.split('#')[1]}"`));
+  }
+  assert.equal(monsterArchive[0].status, 'current');
+  assert.match(html, /not as a discontinued flavor/);
 });
 
 test('Green Tea coverage has one canonical article and a permanent redirect from the duplicate', async () => {

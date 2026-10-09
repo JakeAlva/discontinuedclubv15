@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { reports } from '../scripts/journal-data.mjs';
+import { monsterArchive } from '../scripts/monster-archive.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const statusReports = reports.filter((report) => report.statusKey !== 'launch');
@@ -22,19 +23,20 @@ test('topic hubs are indexable, structured, and connected to the journal', async
     assert.match(html, /<meta name="robots" content="index, follow, max-image-preview:large">/);
     assert.match(html, /"@type":"CollectionPage"/);
     assert.match(html, /"@type":"ItemList"/);
-    assert.ok(html.includes(`"numberOfItems":${count}`));
-    assert.equal([...html.matchAll(/class="topic-report-card"/g)].length, count);
+    const isMonster = file === 'discontinued-monster-energy-flavors.html';
+    assert.ok(html.includes(`"numberOfItems":${isMonster ? monsterArchive.length : count}`));
+    assert.equal([...html.matchAll(isMonster ? /data-archive-entry/g : /class="topic-report-card"/g)].length, isMonster ? monsterArchive.length : count);
     assert.match(html, /journal\/is-[^"<]+\.html/);
     assert.ok(sitemap.includes(`https://discontinuedclub.com/${file}`));
     assert.ok(blog.includes(file));
   }
 });
 
-test('topic hub report cards keep confirmed and rumor statuses visibly distinct', async () => {
+test('Monster timeline keeps completed and reported future departures visibly distinct', async () => {
   const monster = await readFile(resolve(root, 'discontinued-monster-energy-flavors.html'), 'utf8');
-  assert.match(monster, /Confirmed U\.S\. discontinuations/);
-  assert.match(monster, /Rumored next, not confirmed/);
-  assert.match(monster, /status-discontinued/);
-  assert.match(monster, /status-rumor/);
+  assert.match(monster, /U\.S\. discontinued/);
+  assert.match(monster, /Reported exit before 2027/);
+  assert.match(monster, /monster-evidence-discontinued/);
+  assert.match(monster, /monster-evidence-watch/);
   assert.match(monster, /Reserve Orange Dreamsicle/);
 });

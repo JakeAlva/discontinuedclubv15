@@ -16,7 +16,7 @@ const hubs = [
     eyebrow: 'The U.S. Monster archive / 2002 onward',
     title: 'Discontinued Monster Energy flavors in the U.S.',
     seoTitle: 'Discontinued Monster Energy Flavors: U.S. List & Timeline',
-    description: 'Explore discontinued Monster flavors, historical cans, rebrands and 2026 exit reports in a searchable U.S. timeline, with dated sources and clear evidence labels.',
+    description: 'A visual history of Monster Energy from 2002 to today. See real cans, discontinued U.S. flavors, retired versions and the latest exit reports in one timeline.',
     lede: 'The flavors we lost. The names that changed. The ones still on watch. Explore Monster history, then follow the evidence behind each U.S. status.',
     filter: (report) => report.brand === 'Monster Energy',
     introHeading: 'What has changed, and what is still unconfirmed?',
@@ -117,8 +117,10 @@ function hubMarkup(hub) {
     dateModified: checkedDate,
     mainEntity: {
       '@type': 'ItemList',
-      numberOfItems: selected.length,
-      itemListElement: selected.map((report, index) => ({ '@type': 'ListItem', position: index + 1, url: `${publicRoot}/journal/${report.slug}.html`, name: report.title }))
+      numberOfItems: hub.theme === 'monster' ? monsterArchive.length : selected.length,
+      itemListElement: hub.theme === 'monster'
+        ? monsterArchive.map((item, index) => ({ '@type': 'ListItem', position: index + 1, url: `${url}#monster-${item.id}`, name: item.name }))
+        : selected.map((report, index) => ({ '@type': 'ListItem', position: index + 1, url: `${publicRoot}/journal/${report.slug}.html`, name: report.title }))
     }
   };
   const faqSchema = {
@@ -147,26 +149,28 @@ function hubMarkup(hub) {
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css?v=44">
   <script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>
-  <script type="application/ld+json">${JSON.stringify(faqSchema).replace(/</g, '\\u003c')}</script>
+${hub.theme === 'monster' ? '' : `  <script type="application/ld+json">${JSON.stringify(faqSchema).replace(/</g, '\\u003c')}</script>`}
 </head>
 <body data-page="blog">
   <div id="site-header"></div>
   <main>
     <nav class="breadcrumbs container" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><a href="blog.html">Journal</a><span>/</span><span>${escapeHtml(hub.title)}</span></nav>
-    <section class="topic-hero topic-hero-${hub.theme}"><div class="container topic-hero-grid"><div class="topic-hero-copy"><div class="eyebrow">${hub.eyebrow}</div><h1>${hub.title}</h1><p>${hub.lede}</p><div class="hero-actions"><a class="btn btn-dark" href="${hub.theme === 'monster' ? '#timeline' : '#reports'}">${hub.theme === 'monster' ? 'Explore the timeline' : 'Browse the status reports'}</a><a class="text-link" href="${hub.theme === 'monster' ? '#reports' : 'rare-drinks.html'}">${hub.theme === 'monster' ? 'Latest status reports &rarr;' : 'Shop rare drinks &rarr;'}</a></div></div><div class="topic-hero-art" aria-hidden="true">${artwork}<span>${hub.theme === 'monster' ? `${monsterArchive.length} archive records` : `${selected.length} researched reports`}</span></div></div></section>
+${hub.theme === 'monster' ? `<header class="monster-history-header" id="monster-history-top"><div class="container"><p class="monster-history-kicker">The U.S. Monster archive</p><h1>Monster Energy:<br>A flavor history.</h1><p class="monster-history-deck">From the first release in 2002 to the flavors that disappeared from U.S. shelves. The cans, the changes, and what happened next.</p></div></header>
+${monsterTimelineMarkup(escapeHtml)}` : `
+    <section class="topic-hero topic-hero-${hub.theme}"><div class="container topic-hero-grid"><div class="topic-hero-copy"><div class="eyebrow">${hub.eyebrow}</div><h1>${hub.title}</h1><p>${hub.lede}</p><div class="hero-actions"><a class="btn btn-dark" href="#reports">Browse the status reports</a><a class="text-link" href="rare-drinks.html">Shop rare drinks &rarr;</a></div></div><div class="topic-hero-art" aria-hidden="true">${artwork}<span>${selected.length} researched reports</span></div></div></section>
     <section class="journal-desk-band"><div class="container journal-desk-grid"><div><span>Market covered</span><strong>United States</strong></div><div><span>Reports indexed</span><strong>${selected.length} articles</strong></div><div><span>Index reviewed</span><strong>${checkedLabel}</strong></div><div><span>Rule</span><strong>Rumors stay separate</strong></div></div></section>
-${hub.theme === 'monster' ? monsterTimelineMarkup(escapeHtml) : ''}
     <section class="section topic-intro" id="reports"><div class="container topic-intro-grid"><div><div class="section-kicker">Current answer</div><h2>${hub.introHeading}</h2></div><div class="topic-intro-copy">${hub.intro.map((paragraph) => `<p>${paragraph}</p>`).join('')}</div></div></section>
 ${reportGroup('Confirmed U.S. discontinuations', 'These products have evidence supporting an end to normal U.S. marketing or distribution. Each article explains the evidence and the limits of the conclusion.', confirmed)}
 ${reportGroup('Retired versions and important distinctions', 'A discontinued package, sub-line, or formula does not always mean the broader flavor name disappeared. These reports identify exactly what changed.', context)}
 ${reportGroup('Rumored next, not confirmed', 'These claims are specific enough to investigate but do not yet meet the standard for a confirmed U.S. discontinuation.', watch)}
     <section class="section topic-method"><div class="container topic-method-grid"><div class="topic-method-copy"><div class="section-kicker">How this index works</div><h2>Current U.S. distribution decides the label.</h2><p>Discontinued Club checks official U.S. product catalogs first, then looks for dated brand statements, distributor notices, retailer resets, and broad changes in availability. A single empty shelf, a marketplace listing, or an old product page is not enough by itself.</p><p>International production is still useful context. It can explain why a flavor appears in search results or can be imported after American distribution ends. For this index, however, a product that is no longer sold through normal U.S. channels is treated as discontinued in the United States.</p><p>Remaining inventory does not reverse a discontinuation. Retailers and collectors can sell sealed stock long after a product leaves production. Product pages linked from these reports show the exact item offered by Discontinued Club rather than a generic replacement photo.</p></div><aside class="topic-checklist"><strong>Before trusting a status claim</strong><span>Check the exact flavor and sub-line.</span><span>Separate U.S. and foreign availability.</span><span>Look for a dated evidence review.</span><span>Do not confuse old stock with current production.</span></aside></div></section>
     <section class="section topic-faq"><div class="container"><div class="section-head"><div><div class="section-kicker">Quick answers</div><div class="section-title">Questions this index settles</div></div><a class="text-link" href="blog.html">Open the full journal &rarr;</a></div><div class="topic-faq-grid">${hub.faq.map(([question, answer]) => `<details><summary>${question}</summary><p>${answer}</p></details>`).join('')}</div></div></section>
+`}
   </main>
   <div id="site-footer"></div>
   <script src="assets/catalog.js?v=44"></script>
   <script src="assets/app.js?v=44"></script>
-${hub.theme === 'monster' ? '<script src="assets/monster-archive.js?v=90" defer></script>' : ''}
+${hub.theme === 'monster' ? '<script src="assets/monster-archive.js?v=91" defer></script>' : ''}
 </body>
 </html>
 `;
