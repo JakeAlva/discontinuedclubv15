@@ -1,4 +1,16 @@
 const DC_CATALOG = [
+  { id: '407279351355', category: 'kids-shoes', name: 'adidas Yeezy Slide Pure Beige Infant Sandals - US 7K / EU 24', detail: "One pair of beige children's slides with heel straps. Pre-owned - Good; review all five condition photos. Original box not included", condition: 'Pre-owned - Good', price: '$24.99', image: '407279351355.webp', maxQuantity: 1, brand: 'adidas', productType: 'Apparel & Accessories > Shoes > Kids Sandals', size: '24', sizeSystem: 'EU', sizeLabel: 'US 7K / EU 24 (eBay listing)', color: 'Beige', gender: 'unisex', ageGroup: 'toddler', mpn: 'FW6348', googleProductCategory: '187', gallery: [
+    { src: 'assets/images/listings/gallery/407279351355-2.webp', label: 'condition photo 2' },
+    { src: 'assets/images/listings/gallery/407279351355-3.webp', label: 'condition photo 3' },
+    { src: 'assets/images/listings/gallery/407279351355-4.webp', label: 'condition photo 4' },
+    { src: 'assets/images/listings/gallery/407279351355-5.webp', label: 'sole condition' }
+  ] },
+  { id: '407279322970', category: 'kids-shoes', name: 'adidas Yeezy Slide Dark Onyx Infant Sandals - US 7K / EU 24', detail: "One pair of black children's slides with heel straps. Pre-owned - Good; review all five condition photos. Original box not included", condition: 'Pre-owned - Good', price: '$24.99', image: '407279322970.webp', maxQuantity: 1, brand: 'adidas', productType: 'Apparel & Accessories > Shoes > Kids Sandals', size: '24', sizeSystem: 'EU', sizeLabel: 'US 7K / EU 24 (eBay listing)', color: 'Black', gender: 'unisex', ageGroup: 'toddler', mpn: 'ID5106', googleProductCategory: '187', gallery: [
+    { src: 'assets/images/listings/gallery/407279322970-2.webp', label: 'condition photo 2' },
+    { src: 'assets/images/listings/gallery/407279322970-3.webp', label: 'condition photo 3' },
+    { src: 'assets/images/listings/gallery/407279322970-4.webp', label: 'condition photo 4' },
+    { src: 'assets/images/listings/gallery/407279322970-5.webp', label: 'sole condition' }
+  ] },
   { id: '407277346224', category: 'kids-shoes', name: 'adidas Yeezy Boost 350 V2 Static Non-Reflective Kids Sneakers - US 10.5K / EU 28', detail: "One pair of gray and white children's knit sneakers. Pre-owned with signs of wear; review all six condition photos. Original box not included", condition: 'Pre-owned - Good', price: '$74.99', image: '407277346224.webp', maxQuantity: 1, brand: 'adidas', productType: 'Apparel & Accessories > Shoes > Kids Sneakers', size: '28', sizeSystem: 'EU', sizeLabel: 'EU 28 (shoe label) / US 10.5K (eBay listing)', color: 'Gray/White', gender: 'unisex', ageGroup: 'kids', mpn: 'EF2905', googleProductCategory: '187', gallery: [
     { src: 'assets/images/listings/gallery/407277346224-2.webp', label: 'front and toe condition' },
     { src: 'assets/images/listings/gallery/407277346224-3.webp', label: 'side condition' },
@@ -119,6 +131,8 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407279351355': 12,
+  '407279322970': 12,
   '407277346224': 64,
   '407277320481': 64,
   '407277242488': 64,
@@ -209,10 +223,10 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 66 },
+  all: { label: 'All items', count: 68 },
   drinks: { label: 'Rare drinks', count: 31 },
   apparel: { label: 'Sports & apparel', count: 13 },
-  'kids-shoes': { label: "Designer kids' shoes", count: 8 },
+  'kids-shoes': { label: "Designer kids' shoes", count: 10 },
   collectibles: { label: 'Collectibles & cards', count: 9 },
   care: { label: 'Personal care', count: 4 },
   home: { label: 'Home & hobby', count: 1 }
