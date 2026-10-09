@@ -6,6 +6,8 @@ import { productBrand, productCondition, productConditionLabel } from '../lib/pr
 const root = resolve(import.meta.dirname, '..');
 const output = resolve(root, 'products');
 const publicRoot = 'https://discontinuedclub.com';
+const repeatedNames = new Set(catalog.filter((item, index) => catalog.findIndex((candidate) => candidate.name === item.name) !== index).map((item) => item.name));
+const searchTitle = (item) => repeatedNames.has(item.name) ? `${item.name} - ${item.detail}` : item.name;
 const stripeBadge = '<a class="stripe-badge-link stripe-badge-product" href="https://stripe.com" target="_blank" rel="noopener noreferrer" aria-label="Payments powered by Stripe"><img class="stripe-badge" src="assets/images/powered-by-stripe.svg" alt="Powered by Stripe" width="150" height="34"></a>';
 const categoryLabels = {
   drinks: 'Rare drinks',
@@ -151,13 +153,13 @@ function pageMarkup(item, images) {
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <base href="../">
-  <title>${escapeHtml(item.name)} | Discontinued Club</title>
+  <title>${escapeHtml(searchTitle(item))} | Discontinued Club</title>
   <meta name="description" content="${escapeHtml(description)}">
   <link rel="canonical" href="${productUrl(item)}">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta property="og:site_name" content="Discontinued Club">
   <meta property="og:type" content="product">
-  <meta property="og:title" content="${escapeHtml(item.name)} | Discontinued Club">
+  <meta property="og:title" content="${escapeHtml(searchTitle(item))} | Discontinued Club">
   <meta property="og:description" content="${escapeHtml(item.detail)}">
   <meta property="og:url" content="${productUrl(item)}">
   <meta property="og:image" content="${absoluteListingImage(item, 'merchant')}">

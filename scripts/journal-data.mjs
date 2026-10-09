@@ -1,4 +1,3 @@
-import { rehabGreenTeaSeptemberReport } from './rehab-green-tea-update.mjs';
 import { whitePineappleReport } from './white-pineapple-report.mjs';
 import { aussieLemonadeReport } from './aussie-lemonade-report.mjs';
 import { rehabStrawberryLemonadeReport } from './rehab-strawberry-lemonade-report.mjs';
@@ -43,6 +42,7 @@ const monsterCatalog = 'https://www.monsterenergy.com/en-us/energy-drinks/';
 const monsterFiling = 'https://www.sec.gov/Archives/edgar/data/865752/000110465926020831/mnst-20251231x10k.htm';
 const monsterCuts = 'https://sporked.com/article/monster-energy-discontinued-2026/';
 const monsterRumor = 'https://www.reddit.com/r/monsterenergy/comments/1wac5x6/bad_news_all_there_are_3_flavors_being/';
+const monsterSeptemberUpdate = 'https://sporked.com/article/heres-all-12-monster-energy-drinks-being-discontinued-by-2027/';
 
 export const reports = [
   {
@@ -508,15 +508,16 @@ export const reports = [
   },
   {
     slug: 'is-monster-ultra-fantasy-ruby-red-being-discontinued',
+    modifiedDate: '2026-10-09',
     brand: 'Monster Energy', product: 'Monster Ultra Fantasy Ruby Red', theme: 'berry', statusKey: 'rumor', statusLabel: 'Rumored, not confirmed', lane: 'U.S. discontinuation watch', readTime: 9,
     title: 'Is Monster Ultra Fantasy Ruby Red being discontinued?', seoTitle: 'Is Monster Ultra Fantasy Ruby Red Being Discontinued? 2026 Rumor',
-    description: 'Monster Ultra Fantasy Ruby Red is rumored to leave U.S. distribution by October 1, 2026, but Monster has not publicly confirmed it and current pages remain active.',
-    deck: 'A recent U.S. distributor report says Ultra Fantasy Ruby Red will be discontinued on or before October 1. Monster still lists it publicly, so the correct status today is credible rumor, not confirmed discontinuation.',
-    answerHeading: 'It is rumored to be ending in the U.S., but it is not confirmed yet.',
-    answer: 'On September 8, 2026, a community member reported receiving a Monster corporate email naming Ultra Fantasy Ruby Red, Rehab Green Tea, and Rio Punch for U.S. discontinuation on or before October 1. The claim is specific and has attracted additional distributor discussion, but the underlying email has not been published in a form we can authenticate. Monster’s U.S. product page remains active.',
-    sidebar: 'Specific September 2026 report claims an October 1 U.S. end; public Monster sources still show the product.', evidenceGrade: 'Developing', evidenceNote: 'One detailed distributor report with community corroboration, but no public corporate notice or completed retail reset.',
+    description: 'October 9 update: Ruby Red is named in reporting about a U.S. exit before 2027. What is sourced, what Monster still lists, and why October 1 is not a verified cutoff.',
+    deck: 'Ruby Red is named in later reporting about a planned U.S. withdrawal. The original October 1 claim remains unverified, and a product page is not a production schedule.',
+    answerHeading: 'A U.S. exit is reported, but a completed nationwide withdrawal is not independently verified.',
+    answer: 'As of October 9, 2026, our status remains reported, not manufacturer-confirmed. Sporked’s September 28 report names Ruby Red for withdrawal before 2027. Monster still lists it in the U.S. directory. Neither source establishes a verified last-production, last-shipment or last-sale date.',
+    sidebar: 'Updated October 9. Later reporting strengthens the watch; it does not authenticate the earlier October 1 cutoff.', evidenceGrade: 'Dated reporting / not independently confirmed', evidenceNote: 'Named-publication reporting plus a fresh official catalog check. No authenticated manufacturer cutoff reviewed.',
     image: 'assets/images/journal/monster-fantasy-ruby-red.webp', imageAlt: 'One Monster Ultra Fantasy Ruby Red 16 ounce can', caption: 'Ultra Fantasy Ruby Red remains a current-looking U.S. product while the October rumor is investigated.', imageCredit: 'Viking Coca-Cola product packshot',
-    cardCopy: 'A reported corporate email names October 1, but Monster still lists Ruby Red. The rumor is credible enough to watch, not confirm.',
+    cardCopy: 'October update: a reported U.S. exit, an unverified cutoff, and the distinction between remaining cans and future supply.',
     sections: [
       { id: 'origin', heading: 'Where did the Ruby Red discontinuation rumor start?', toc: 'Rumor origin', paragraphs: [
         'The current rumor traces to a September 8 post in the Monster Energy community. The poster said an email received that day named three U.S. products for discontinuation on or before October 1: Rehab Green Tea, Rio Punch, and Ultra Ruby Red. The claimed market and date make it more testable than vague social chatter.',
@@ -527,7 +528,7 @@ export const reports = [
         'Monster’s 2025 Form 10-K listed Ultra Fantasy Ruby Red as part of the portfolio at December 31, 2025. Those sources establish that it was current before the rumor and is still being presented publicly. They do not tell us whether an October 2026 distributor stop has been scheduled internally.'
       ]},
       { id: 'october', heading: 'Why the October 1 date matters', toc: 'October timing', paragraphs: [
-        'The claimed date was still in the future when this report was checked. A product can remain genuinely current while a discontinuation is scheduled, and stores can continue selling inventory long after the final distributor order. Calling it already discontinued would collapse those stages.',
+        'October 1 has now passed. The arrival of a rumored date does not validate it. We have not authenticated the original email or independently established when U.S. production or distributor ordering ends. A store can sell remaining cans after either event.',
         'The next useful checks are whether distributor ordering closes, whether chain resets remove the shelf tag, and whether newly produced U.S. cans continue after October. A change across several unrelated retailers would carry more weight than one local stockout.'
       ]},
       { id: 'international', heading: 'Could Ruby Red remain available abroad?', toc: 'International launches', paragraphs: [
@@ -536,37 +537,39 @@ export const reports = [
       ]}
     ],
     faq: [
-      { question: 'Is Monster Ultra Fantasy Ruby Red discontinued?', answer: 'Not confirmed as of September 11, 2026. A specific report says U.S. distribution may end on or before October 1.' },
+      { question: 'Is Monster Ultra Fantasy Ruby Red discontinued?', answer: 'As of October 9, a U.S. withdrawal is reported but a completed nationwide exit is not independently verified. October 1 is not an authenticated cutoff.' },
       { question: 'Did Monster announce the discontinuation?', answer: 'No public Monster announcement was found. The claim comes from a reported corporate email that has not been independently authenticated.' },
-      { question: 'Why is it still in stores?', answer: 'The claimed end date is in the future, and existing inventory can remain after distributor orders stop.' },
+      { question: 'Why is it still in stores?', answer: 'Retail inventory can remain after production or ordering changes. A shelf sighting alone does not establish future replenishment.' },
       { question: 'Could Ruby Red continue outside the U.S.?', answer: 'Yes. International markets follow different launch and discontinuation schedules.' }
     ],
     sources: [
       { label: 'Reddit r/monsterenergy: September 8 U.S. discontinuation report', url: monsterRumor, note: 'original community claim; unverified' },
       { label: 'Monster Energy U.S.: Ultra Fantasy Ruby Red', url: 'https://www.monsterenergy.com/en-us/energy-drinks/zero-sugar/ultra-fantasy-ruby-red/', note: 'current public page reviewed September 11, 2026' },
+      { label: 'Sporked: planned departures before 2027', url: monsterSeptemberUpdate, note: 'September 28, 2026; secondary reporting, not independently authenticated manufacturer instructions' },
+      { label: 'Monster: U.S. product directory', url: monsterCatalog, note: 'checked October 9, 2026; still includes Ruby Red' },
       { label: 'Monster Beverage 2025 Form 10-K', url: monsterFiling, note: 'year-end portfolio evidence' },
       { label: 'Sinebrychoff: Finland Ruby Red launch', url: 'https://www.sinebrychoff.fi/newsroom/monster-ultra-fantasy-ruby-red/', note: 'international context dated August 10, 2026' }
     ]
   },
   {
     slug: 'is-monster-rehab-green-tea-being-discontinued',
-    modifiedDate: '2026-09-13',
+    modifiedDate: '2026-10-09',
     brand: 'Monster Energy', product: 'Monster Rehab Green Tea', theme: 'green', statusKey: 'rumor', statusLabel: 'Rumored, not confirmed', lane: 'U.S. discontinuation watch', readTime: 9,
     title: 'Is Monster Rehab Green Tea being discontinued?', seoTitle: 'Is Monster Rehab Green Tea Being Discontinued? 2026 Rumor Watch',
-    description: 'Monster Rehab Green Tea is rumored to leave U.S. distribution by October 1, 2026, but the public U.S. page remains active and no official announcement is posted.',
-    deck: 'A September distributor report says Rehab Green Tea is scheduled to leave U.S. distribution by October 1. The source is not yet independently verified, and Monster continues to present the product as current.',
+    description: 'October 9 update on Monster Rehab Green Tea: reported U.S. withdrawal, the unverified October 1 claim, its 2024 return and what current brand listings actually prove.',
+    deck: 'Green Tea returned in 2024. Now it is the subject of another reported U.S. exit. Here is the dated evidence, without turning a rumored cutoff into an established fact.',
     answerHeading: 'Rehab Green Tea is on discontinuation watch, not confirmed discontinued.',
-    answer: 'The same September 8 report that named Ultra Fantasy Ruby Red and Rio Punch also named Rehab Green Tea for a U.S. end on or before October 1, 2026. Monster’s official U.S. page still lists the 15.5-ounce drink, and the 2025 corporate filing includes Green Tea in the Rehab range. Until the reported change takes effect or stronger documentation appears, the status remains rumor.',
-    sidebar: 'An October 1 U.S. cut is reported; official product and corporate pages remain current.', evidenceGrade: 'Developing', evidenceNote: 'Specific distributor claim, but no authenticated notice or completed assortment change.',
+    answer: 'As of October 9, 2026, a completed U.S. withdrawal is not independently verified. Sporked’s September 28 report names Rehab Green Tea for departure before 2027. Monster still lists it in the U.S. directory. The earlier October 1 community claim remains unverified; reaching that date does not prove it was correct.',
+    sidebar: 'Updated October 9. A reported withdrawal is not an authenticated nationwide last-sale date.', evidenceGrade: 'Dated reporting / not independently confirmed', evidenceNote: 'Later publication coverage supports a watch status, but no manufacturer cutoff has been authenticated.',
     image: 'assets/images/journal/monster-rehab-green-tea.webp', imageAlt: 'One Monster Rehab Green Tea can', caption: 'Rehab Green Tea is still listed publicly while the reported October change is monitored.', imageCredit: 'Family Dollar product packshot',
-    cardCopy: 'A specific report names Rehab Green Tea for October 1, while Monster’s official page still treats it as current.',
+    cardCopy: 'Updated after October 1: what later reporting says, why the cutoff remains unverified, and how the 2024 return fits the history.',
     sections: [
       { id: 'claim', heading: 'What exactly is being claimed?', toc: 'The claim', paragraphs: [
-        '<strong>September 13 update:</strong> Read our <a href="journal/monster-rehab-green-tea-discontinuation-rumor-september-2026.html">new analysis of the October rumor</a>, including freshly checked U.S. sources, the 2024 return, and Canadian availability. The assessment below records our original September 11 review.',
+        '<strong>October 9 editorial update:</strong> We have combined our original September 11 report and September 13 follow-up here. The original October 1 claim is retained as history, not as a verified date. New evidence is assessed in this same report rather than another near-duplicate article.',
         'The September 8 report says a Monster corporate email identified Rehab Green Tea, Juice Monster Rio Punch, and Ultra Fantasy Ruby Red for discontinuation in the United States on or before October 1. It does not claim the products were already gone on the date of the post.',
         'That timing matters because a scheduled cut can be real while official shopping pages and store inventory remain active. The report earns a watch page because it is concrete and near-term, but it does not earn a confirmed badge without the actual notice or independent distribution evidence.'
       ]},
-      { id: 'official', heading: 'What official evidence conflicts with the rumor?', toc: 'Official evidence', paragraphs: [
+      { id: 'official', heading: 'What does the official listing establish?', toc: 'Official evidence', paragraphs: [
         'Monster’s U.S. Rehab Green Tea page remains active with a 15.5-ounce size, flavor description, caffeine information, and shop and store-locator paths. The product also appears in Monster’s broad flavor directory.',
         'The company’s Form 10-K for 2025 lists Green Tea alongside Tea + Lemonade, Peach Tea, and Wild Berry Tea in the Rehab line. The filing is a year-end snapshot rather than a September 2026 schedule, but it confirms that Green Tea entered the year as an active company product.'
       ]},
@@ -574,13 +577,17 @@ export const reports = [
         'Rehab Green Tea has disappeared and returned before, giving fans a reason to worry when availability changes. It was part of Monster’s earlier Rehab history and returned to U.S. resets in 2024 alongside Ruby Red and Rio Punch.',
         'A prior return also means “discontinued” would not necessarily mean “gone forever.” The useful task is to document each distribution period accurately instead of merging earlier versions, the 2024 return, and a possible 2026 exit into one vague timeline.'
       ]},
+      { id: 'documented-return', heading: 'The 2024 announcement is history, not a new supply guarantee', toc: 'The documented return', paragraphs: [
+        'Monster published a Green Tea promotional release on September 6, 2024. That primary source establishes the returning product and its historical marketing. It does not answer whether a later withdrawal has been scheduled. The <a href="discontinued-monster-energy-flavors.html#timeline">Monster archive timeline</a> separates the earlier Green Tea version from the returning one.',
+        'Country-specific pages need the same care. A Canadian listing concerns Canada; an imported can offered by an American seller does not demonstrate normal U.S. replenishment. Read the country labeling and exact product name, not only the green color of the package.'
+      ]},
       { id: 'signals', heading: 'What evidence would confirm the cut?', toc: 'Confirmation signals', paragraphs: [
         'An authenticated distributor communication, a major retailer discontinued-SKU sheet, removal from Monster’s current Rehab range, or a broad post-October replenishment stop would materially strengthen the report. Several independent distribution territories reporting the same end date would also matter.',
         'One store being out of stock is not enough. Rehab products already have narrower shelf placement than core Monster cans, so normal assortment differences can look like a national exit before one occurs.'
       ]}
     ],
     faq: [
-      { question: 'Is Monster Rehab Green Tea discontinued?', answer: 'Not confirmed as of September 11, 2026. A distributor report says it may leave U.S. distribution on or before October 1.' },
+      { question: 'Is Monster Rehab Green Tea discontinued?', answer: 'As of October 9, a U.S. withdrawal is reported, but we have not independently verified a completed nationwide exit. The October 1 cutoff remains unverified.' },
       { question: 'Is the official product page still active?', answer: 'Yes. Monster still lists Rehab Green Tea with product and shopping information.' },
       { question: 'Has Rehab Green Tea disappeared before?', answer: 'Yes. The product has had earlier availability gaps and a documented U.S. return in 2024.' },
       { question: 'What would confirm the rumor?', answer: 'An authenticated notice, official lineup removal, or broad distributor and retailer resets after the reported date.' }
@@ -588,21 +595,25 @@ export const reports = [
     sources: [
       { label: 'Reddit r/monsterenergy: September 8 U.S. discontinuation report', url: monsterRumor, note: 'original community claim; unverified' },
       { label: 'Monster Energy U.S.: Rehab Green Tea', url: 'https://www.monsterenergy.com/en-us/energy-drinks/rehab-monster/green-tea/', note: 'current public page reviewed September 11, 2026' },
+      { label: 'Sporked: planned departures before 2027', url: monsterSeptemberUpdate, note: 'September 28, 2026; later secondary reporting' },
+      { label: 'Monster: U.S. product directory', url: monsterCatalog, note: 'checked October 9, 2026; still includes Green Tea' },
+      { label: 'Monster: Green Tea announcement', url: 'https://www.prnewswire.com/news-releases/monster-energy-introduces-rehab-green-tea-for-ultimate-refreshment-and-recovery-302239820.html', note: 'September 6, 2024; historical return evidence' },
       { label: 'Monster Beverage 2025 Form 10-K', url: monsterFiling, note: 'lists Green Tea in the Rehab range' },
       { label: 'Monster 2023 annual report', url: 'https://www.sec.gov/Archives/edgar/data/865752/000110465924053094/tm242702d4_ars.pdf', note: 'documents the 2024 U.S. return' }
     ]
   },
   {
     slug: 'is-monster-rio-punch-being-discontinued',
+    modifiedDate: '2026-10-09',
     brand: 'Monster Energy', product: 'Juice Monster Rio Punch', theme: 'yellow', statusKey: 'rumor', statusLabel: 'Rumored, not confirmed', lane: 'U.S. discontinuation watch', readTime: 9,
     title: 'Is Monster Rio Punch being discontinued?', seoTitle: 'Is Monster Rio Punch Being Discontinued? 2026 U.S. Rumor',
-    description: 'Monster Rio Punch is rumored to leave U.S. distribution by October 1, 2026. The report is specific but unconfirmed, and Monster still lists Rio Punch publicly.',
-    deck: 'A recent distributor report says Rio Punch may be discontinued in the United States by October 1. Monster still lists the drink, so this is a dated rumor watch rather than a confirmed goodbye.',
+    description: 'October 9 update: Rio Punch is named in reporting about a U.S. exit before 2027. Read the evidence, current Monster listing and limits of the October 1 claim.',
+    deck: 'Later reporting continues to name Rio Punch for a planned U.S. exit. The original October 1 date has passed, but it has not become a verified cutoff simply with time.',
     answerHeading: 'Rio Punch is rumored to be ending in the U.S., but it is not confirmed.',
-    answer: 'A September 8 community report says a Monster corporate email named Rio Punch, Rehab Green Tea, and Ultra Fantasy Ruby Red for discontinuation on or before October 1, 2026. Monster’s U.S. catalog and corporate filing still include Rio Punch, and no public manufacturer announcement was found. The claim is credible enough to monitor and too weak to publish as final fact.',
-    sidebar: 'Reported October 1 U.S. exit; Monster still includes Rio Punch in public sources.', evidenceGrade: 'Developing', evidenceNote: 'Detailed distributor report with no authenticated document or completed national reset yet.',
+    answer: 'As of October 9, 2026, a completed nationwide exit is not independently verified. Sporked’s September 28 report includes Rio Punch among planned departures before 2027. Monster still lists the drink in its U.S. directory. We have not authenticated a production or distributor cutoff.',
+    sidebar: 'Updated October 9. Later reporting supports continued scrutiny, not an invented nationwide last-can date.', evidenceGrade: 'Dated reporting / not independently confirmed', evidenceNote: 'Named-publication coverage and an official catalog check, without an authenticated final-shipment notice.',
     image: 'assets/images/journal/monster-rio-punch.webp', imageAlt: 'One Juice Monster Rio Punch 16 ounce can', caption: 'Rio Punch remains publicly listed while the reported October 2026 exit is investigated.', imageCredit: 'Smouk product packshot',
-    cardCopy: 'Rio Punch appears in the same October rumor as Ruby Red and Green Tea, but public Monster sources still list it.',
+    cardCopy: 'The latest evidence on a reported U.S. withdrawal, surviving product listings and the unverified October cutoff.',
     sections: [
       { id: 'report', heading: 'Where the Rio Punch rumor comes from', toc: 'Rumor source', paragraphs: [
         'The current claim comes from a September 8, 2026 post by someone who said they received a Monster corporate email. The post names three products and gives an on-or-before October 1 date for the United States, which makes the claim specific enough to verify over time.',
@@ -622,7 +633,7 @@ export const reports = [
       ]}
     ],
     faq: [
-      { question: 'Is Monster Rio Punch discontinued?', answer: 'Not confirmed as of September 11, 2026. A specific distributor report says a U.S. exit may occur on or before October 1.' },
+      { question: 'Is Monster Rio Punch discontinued?', answer: 'As of October 9, its U.S. withdrawal is reported but a completed nationwide exit is not independently verified. The original October 1 claim remains unverified.' },
       { question: 'Has Monster announced the change publicly?', answer: 'No public Monster announcement was found during this review.' },
       { question: 'When did Rio Punch launch?', answer: 'Monster documented the U.S. launch in early 2024.' },
       { question: 'Could Rio Punch remain available abroad?', answer: 'Yes. Country lineups and discontinuation schedules can differ.' }
@@ -630,6 +641,8 @@ export const reports = [
     sources: [
       { label: 'Reddit r/monsterenergy: September 8 U.S. discontinuation report', url: monsterRumor, note: 'original community claim; unverified' },
       { label: 'Monster Beverage 2024 first-quarter release', url: 'https://www.sec.gov/Archives/edgar/data/865752/000110465924056393/tm2413295d1_ex99-1.htm', note: 'official U.S. launch evidence' },
+      { label: 'Sporked: planned departures before 2027', url: monsterSeptemberUpdate, note: 'September 28, 2026; later secondary reporting' },
+      { label: 'Monster: U.S. product directory', url: monsterCatalog, note: 'checked October 9, 2026; still includes Rio Punch' },
       { label: 'Monster Beverage 2025 Form 10-K', url: monsterFiling, note: 'lists Rio Punch in the year-end portfolio' },
       { label: 'Monster Energy U.S.: current flavor directory', url: monsterCatalog, note: 'reviewed September 11, 2026' }
     ]
@@ -684,7 +697,6 @@ export const reports = [
       { label: 'Target: Winter 2025 Sugarfree product record', url: 'https://www.target.com/p/-/A-94796555', note: 'remaining U.S. retailer-page context, not current lineup evidence' }
     ]
   },
-  rehabGreenTeaSeptemberReport,
   whitePineappleReport,
   aussieLemonadeReport,
   rehabStrawberryLemonadeReport,

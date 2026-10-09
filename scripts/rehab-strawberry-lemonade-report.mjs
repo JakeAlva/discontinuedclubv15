@@ -53,7 +53,7 @@ export const rehabStrawberryLemonadeReport = {
     { id: 'return', heading: 'Will Rehab Strawberry Lemonade return?', toc: 'A possible return', paragraphs: [
       'We found no verified announcement of a U.S. Rehab Strawberry Lemonade return in the sources reviewed. There is no supported comeback date to give readers. The May 2026 Juice launch is an announcement about a different product line.',
       'A stronger update would name Rehab explicitly and connect that announcement to renewed U.S. distribution. Until then, a red can appearing online, a reused product photo, or a familiar flavor name on a new package should not be described as a confirmed return.',
-      'For the broader picture, see our <a href="discontinued-monster-energy-flavors.html">Monster discontinuation index</a> and <a href="journal/is-monster-aussie-lemonade-discontinued.html">Aussie Lemonade status report</a>. Our <a href="journal/monster-rehab-green-tea-discontinuation-rumor-september-2026.html">Rehab Green Tea rumor report</a> covers a separate claim; it should not be used as evidence for Strawberry Lemonade\'s timeline.'
+      'For the broader picture, see our <a href="discontinued-monster-energy-flavors.html">Monster discontinuation index</a> and <a href="journal/is-monster-aussie-lemonade-discontinued.html">Aussie Lemonade status report</a>. Our <a href="journal/is-monster-rehab-green-tea-being-discontinued.html">Rehab Green Tea rumor report</a> covers a separate claim; it should not be used as evidence for Strawberry Lemonade\'s timeline.'
     ]}
   ],
   faq: [

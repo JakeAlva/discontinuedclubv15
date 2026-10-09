@@ -80,7 +80,9 @@ test('journal separates U.S. discontinuations, current formats, and unconfirmed 
   ]);
   for (const report of rumors) {
     assert.match(report.statusLabel, /not confirmed/i);
-    assert.match(report.answer, report.product === 'Java Monster Caf\u00e9 Latte' ? /September 18/i : /September 8/i);
+    assert.equal(report.modifiedDate, '2026-10-09');
+    assert.match(report.answer, /September 28/i);
+    assert.match(report.answer, /not independently|unconfirmed|not manufacturer-confirmed/);
   }
 });
 

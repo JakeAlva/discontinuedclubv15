@@ -2,6 +2,7 @@ import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { reports } from './journal-data.mjs';
 import { catalog } from '../lib/store-catalog.mjs';
+import { monsterArchive, monsterArchiveReviewed, monsterTimelineMarkup } from './monster-archive.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const publicRoot = 'https://discontinuedclub.com';
@@ -12,25 +13,27 @@ const hubs = [
   {
     slug: 'discontinued-monster-energy-flavors',
     theme: 'monster',
-    eyebrow: 'Monster Energy status desk',
+    eyebrow: 'The U.S. Monster archive / 2002 onward',
     title: 'Discontinued Monster Energy flavors in the U.S.',
-    seoTitle: 'Discontinued Monster Energy Flavors: 2026 U.S. List',
-    description: 'A researched 2026 U.S. list of discontinued Monster Energy flavors, retired versions, and current discontinuation rumors with evidence for every status.',
-    lede: 'A current, evidence-graded guide to Monster flavors that left U.S. distribution, changed form, or are only rumored to be next.',
+    seoTitle: 'Discontinued Monster Energy Flavors: U.S. List & Timeline',
+    description: 'Explore discontinued Monster flavors, historical cans, rebrands and 2026 exit reports in a searchable U.S. timeline, with dated sources and clear evidence labels.',
+    lede: 'The flavors we lost. The names that changed. The ones still on watch. Explore Monster history, then follow the evidence behind each U.S. status.',
     filter: (report) => report.brand === 'Monster Energy',
-    introHeading: 'The clearest Monster discontinuation list we can support right now.',
+    introHeading: 'What has changed, and what is still unconfirmed?',
     intro: [
       'Monster has a large portfolio, frequent line extensions, and product pages that can remain online after normal distribution changes. That makes a simple list unreliable unless every flavor is checked against current U.S. catalogs, retailer resets, and dated reporting. This page separates supported discontinuations from package or formula changes and from claims that are still only rumors.',
-      'The confirmed U.S. departures in this index include Ultra Watermelon, Reserve Peaches N Creme, and Ultra Red. Reserve Orange Dreamsicle needs a more precise answer: the Reserve version ended, while Monster introduced a new standard Orange Dreamsicle. Ultra Fantasy Ruby Red, Rehab Green Tea, and Rio Punch remain on the watch list because a specific report names an October date but Monster still presents them publicly.',
+      'Recent U.S. departure reporting covers Ultra Watermelon, Reserve Peaches N Creme, Ultra Red, Ultra Rosa, Aussie Style Lemonade and Rehab Strawberry Lemonade. Reserve Orange Dreamsicle needs a more precise answer: the Reserve version ended, while standard Orange Dreamsicle continued the flavor concept. The timeline separates flavors from formats and renamed products.',
       'Reserve White Pineapple now has a separate report covering its apparent U.S. lineup exit, official overseas listings, and resale availability. Its evidence grade is lineup-based: no dated manufacturer discontinuation notice was located.',
       'Aussie Style Lemonade was reported as a 2025 U.S. discontinuation and is absent from the current American catalog. Our September 16, 2026 review also checks its continuing official listings in Australia and Great Britain. This is a current status review of an earlier departure, not a newly announced 2026 cut.',
-      'Our September 21 report checks Rehab Strawberry Lemonade, another reported 2025 departure. It distinguishes the retired red Rehab can from the separate Juice Strawberry Lemonade introduced in 2026, and explains the limits of a surviving regional product page.'
+      '<strong>October 9 review:</strong> September 28 reporting names six Monster-branded products for a proposed exit before 2027. They are in the timeline as reported future departures, not six independently confirmed completed discontinuations. An earlier October 1 community claim is not a verified last-sale date. Official product pages can outlast a distribution decision.'
     ],
     faq: [
       ['Which Monster Energy flavors are confirmed discontinued in the U.S. in this guide?', 'Ultra Watermelon, Reserve Peaches N Creme, and Ultra Red are classified as discontinued in normal U.S. distribution based on the evidence reviewed for their individual reports.'],
       ['Is Monster Reserve White Pineapple discontinued?', 'It appears to have left the U.S. range, while remaining officially listed in Spain, Portugal, and South Africa. The report identifies that conclusion as lineup-based rather than an authenticated manufacturer notice.'],
-      ['Are Ruby Red, Rehab Green Tea, and Rio Punch discontinued?', 'Not yet in this guide. They are labeled rumored, not confirmed, because public Monster pages remain active and no official public announcement has been located.'],
-      ['Is Orange Dreamsicle discontinued?', 'The older Monster Reserve Orange Dreamsicle version is discontinued, but a newer standard Monster Orange Dreamsicle continues the flavor concept.']
+      ['Are Ruby Red, Rehab Green Tea, and Rio Punch discontinued?', 'They are named in September 2026 reporting about planned departures before 2027. We have not independently verified a completed nationwide exit or an authenticated manufacturer cutoff. A live brand page does not settle future supply.'],
+      ['Is Orange Dreamsicle discontinued?', 'The older Monster Reserve Orange Dreamsicle version is discontinued, but a newer standard Monster Orange Dreamsicle continues the flavor concept.'],
+      ['Does the timeline give the discontinuation year for every Monster?', 'No. A documented-by year proves a product appears in a dated source, not when it launched or left U.S. distribution. Undated historical records are explicitly separated from supported departures.'],
+      ['Are all historical Monster cans included?', 'This is an expanding archive of sourced U.S.-relevant products, not a claim of completeness for every regional formula, package size or foreign release. Missing records need evidence before being added.']
     ]
   },
   {
@@ -98,7 +101,7 @@ function reportGroup(title, copy, group) {
 
 function hubMarkup(hub) {
   const selected = reports.filter(hub.filter).filter((report) => report.statusKey !== 'launch');
-  const checkedDate = selected.reduce((latest, report) => report.checkedDate > latest ? report.checkedDate : latest, '2026-09-12');
+  const checkedDate = selected.reduce((latest, report) => (report.modifiedDate || report.checkedDate || '') > latest ? (report.modifiedDate || report.checkedDate) : latest, hub.theme === 'monster' ? monsterArchiveReviewed : '2026-09-12');
   const checkedLabel = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${checkedDate}T00:00:00Z`));
   const confirmed = selected.filter((report) => report.statusKey === 'discontinued');
   const watch = selected.filter((report) => report.statusKey === 'rumor');
@@ -150,8 +153,9 @@ function hubMarkup(hub) {
   <div id="site-header"></div>
   <main>
     <nav class="breadcrumbs container" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><a href="blog.html">Journal</a><span>/</span><span>${escapeHtml(hub.title)}</span></nav>
-    <section class="topic-hero topic-hero-${hub.theme}"><div class="container topic-hero-grid"><div class="topic-hero-copy"><div class="eyebrow">${hub.eyebrow}</div><h1>${hub.title}</h1><p>${hub.lede}</p><div class="hero-actions"><a class="btn btn-dark" href="#reports">Browse the status reports</a><a class="btn btn-light" href="rare-drinks.html">Shop rare drinks</a></div></div><div class="topic-hero-art" aria-hidden="true">${artwork}<span>${selected.length} researched reports</span></div></div></section>
+    <section class="topic-hero topic-hero-${hub.theme}"><div class="container topic-hero-grid"><div class="topic-hero-copy"><div class="eyebrow">${hub.eyebrow}</div><h1>${hub.title}</h1><p>${hub.lede}</p><div class="hero-actions"><a class="btn btn-dark" href="${hub.theme === 'monster' ? '#timeline' : '#reports'}">${hub.theme === 'monster' ? 'Explore the timeline' : 'Browse the status reports'}</a><a class="text-link" href="${hub.theme === 'monster' ? '#reports' : 'rare-drinks.html'}">${hub.theme === 'monster' ? 'Latest status reports &rarr;' : 'Shop rare drinks &rarr;'}</a></div></div><div class="topic-hero-art" aria-hidden="true">${artwork}<span>${hub.theme === 'monster' ? `${monsterArchive.length} archive records` : `${selected.length} researched reports`}</span></div></div></section>
     <section class="journal-desk-band"><div class="container journal-desk-grid"><div><span>Market covered</span><strong>United States</strong></div><div><span>Reports indexed</span><strong>${selected.length} articles</strong></div><div><span>Index reviewed</span><strong>${checkedLabel}</strong></div><div><span>Rule</span><strong>Rumors stay separate</strong></div></div></section>
+${hub.theme === 'monster' ? monsterTimelineMarkup(escapeHtml) : ''}
     <section class="section topic-intro" id="reports"><div class="container topic-intro-grid"><div><div class="section-kicker">Current answer</div><h2>${hub.introHeading}</h2></div><div class="topic-intro-copy">${hub.intro.map((paragraph) => `<p>${paragraph}</p>`).join('')}</div></div></section>
 ${reportGroup('Confirmed U.S. discontinuations', 'These products have evidence supporting an end to normal U.S. marketing or distribution. Each article explains the evidence and the limits of the conclusion.', confirmed)}
 ${reportGroup('Retired versions and important distinctions', 'A discontinued package, sub-line, or formula does not always mean the broader flavor name disappeared. These reports identify exactly what changed.', context)}
@@ -162,6 +166,7 @@ ${reportGroup('Rumored next, not confirmed', 'These claims are specific enough t
   <div id="site-footer"></div>
   <script src="assets/catalog.js?v=44"></script>
   <script src="assets/app.js?v=44"></script>
+${hub.theme === 'monster' ? '<script src="assets/monster-archive.js?v=90" defer></script>' : ''}
 </body>
 </html>
 `;

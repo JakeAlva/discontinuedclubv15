@@ -59,7 +59,7 @@ export const aussieLemonadeReport = {
     { id: 'return', heading: 'Will Aussie Style Lemonade return to America?', toc: 'What would count as a return', paragraphs: [
       'No verified U.S. relaunch announcement was located in the sources checked for this report. That is not a prediction that it will never return. It means there is no supported return date to give readers today.',
       'A convincing update would pair a U.S.-specific announcement or catalog restoration with evidence of renewed domestic distribution. A marketplace restock, an overseas launch, or an old page appearing in search results would not be enough on its own.',
-      'For more market-by-market reporting, visit our <a href="discontinued-monster-energy-flavors.html">discontinued Monster flavor index</a>. Our <a href="journal/is-monster-reserve-white-pineapple-discontinued.html">White Pineapple report</a> examines another U.S.-versus-overseas distinction, while the <a href="journal/monster-rehab-green-tea-discontinuation-rumor-september-2026.html">Rehab Green Tea update</a> explains why a rumor deserves a different label.'
+      'For more market-by-market reporting, visit our <a href="discontinued-monster-energy-flavors.html">discontinued Monster flavor index</a>. Our <a href="journal/is-monster-reserve-white-pineapple-discontinued.html">White Pineapple report</a> examines another U.S.-versus-overseas distinction, while the <a href="journal/is-monster-rehab-green-tea-being-discontinued.html">Rehab Green Tea update</a> explains why a rumor deserves a different label.'
     ]}
   ],
   faq: [

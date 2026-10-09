@@ -2,6 +2,7 @@ import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { catalog } from '../lib/store-catalog.mjs';
 import { renderListingCounts } from '../lib/catalog-file.mjs';
+import { renderStaticCatalogs } from './static-catalog.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const output = resolve(root, 'dist');
@@ -15,7 +16,7 @@ const excludedPages = new Set([
 ]);
 const rootFiles = await readdir(root, { withFileTypes: true });
 const faviconMarkup = '  <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png">\n  <link rel="apple-touch-icon" href="/assets/images/logo-mark-clean.png">';
-const assetVersion = '89';
+const assetVersion = '90';
 
 async function canonicalUrl(file) {
   const html = await readFile(file, 'utf8');
@@ -24,10 +25,21 @@ async function canonicalUrl(file) {
 }
 
 async function sitemapUrls(files) {
-  const urls = (await Promise.all(files.map(canonicalUrl))).filter(Boolean).sort();
+  const urls = [...new Set((await Promise.all(files.map(canonicalUrl))).filter(Boolean))].sort();
+  const modified = new Map();
+  for (const file of files) {
+    const html = await readFile(file, 'utf8');
+    const url = await canonicalUrl(file);
+    for (const match of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+      const data = JSON.parse(match[1]);
+      for (const entity of data['@graph'] || [data]) {
+        if (['Article', 'CollectionPage'].includes(entity['@type']) && /^\d{4}-\d{2}-\d{2}$/.test(entity.dateModified || '')) modified.set(url, entity.dateModified);
+      }
+    }
+  }
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.map((url) => `  <url><loc>${url.replace(/&/g, '&amp;')}</loc></url>`).join('\n')}
+${urls.map((url) => `  <url><loc>${url.replace(/&/g, '&amp;')}</loc>${modified.has(url) ? `<lastmod>${modified.get(url)}</lastmod>` : ''}</url>`).join('\n')}
 </urlset>
 `;
 }
@@ -91,6 +103,7 @@ async function injectFavicon(directory) {
     if (entry.isDirectory()) return injectFavicon(file);
     if (!entry.isFile() || !entry.name.endsWith('.html')) return;
     let html = await readFile(file, 'utf8');
+    html = await renderStaticCatalogs(html, root);
     html = html
       .replace(/assets\/style\.css\?v=[^"']+/g, `assets/style.css?v=${assetVersion}`)
       .replace(/assets\/catalog\.js\?v=[^"']+/g, `assets/catalog.js?v=${assetVersion}`)

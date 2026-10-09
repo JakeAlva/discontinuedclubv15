@@ -4,12 +4,13 @@ export const cafeLatteReport = {
   statusKey: 'rumor', statusLabel: 'Rumored / not confirmed',
   lane: 'U.S. discontinuation watch', featured: false,
   checkedDate: '2026-09-23', readTime: 6,
+  modifiedDate: '2026-10-09',
   title: 'Is Java Monster Caf\u00e9 Latte being discontinued?',
-  seoTitle: 'Is Java Monster Cafe Latte Being Discontinued? September 2026 Update',
+  seoTitle: 'Is Java Monster Cafe Latte Being Discontinued? October 2026 Update',
   description: 'Java Monster Cafe Latte faces a September 2026 discontinuation rumor. Here is the source, what Monster still lists in the U.S., and what remains unconfirmed.',
   deck: 'A fresh report puts the coffee-and-cream flavor on discontinuation watch. Before treating it as gone, separate the reported plan from what can actually be verified.',
   answerHeading: 'There is a new report, but no verified U.S. cutoff date.',
-  answer: 'As of September 23, 2026, Java Monster Caf\u00e9 Latte is rumored to be discontinued, not confirmed discontinued. Sporked named it in a September 18 report and explicitly said Monster had not confirmed the information. The official U.S. product page remains online. We have not verified a production end date or a final shipment schedule.',
+  answer: 'As of October 9, Java Monster Cafe Latte remains on our unconfirmed withdrawal watch. Sporked\'s September 28 follow-up names it for departure before 2027. Monster still lists it in the U.S. directory. We have not independently authenticated a production cutoff or completed nationwide exit.',
   sidebar: 'A reported future departure is not proof that U.S. production has already stopped.',
   evidenceGrade: 'Dated report / unconfirmed claim',
   evidenceNote: 'The reporting is specific enough to track. A public product page does not independently establish future production plans.',
@@ -53,7 +54,7 @@ export const cafeLatteReport = {
     { id: 'updates', heading: 'What would change this report?', toc: 'What comes next', paragraphs: [
       'We would revise the status if stronger, attributable evidence establishes a U.S. withdrawal or contradicts the claim. Useful evidence would identify the exact flavor, the applicable market, and a date. A retailer notice without the product name or an undated cropped screenshot would need more verification.',
       'Until then, the accurate answer is that Cafe Latte is on our rumor watch, not our confirmed-discontinued list. The checked date above tells you when this assessment was made. It is not a promise of continuous monitoring or a claim that the product was discontinued on publication day.',
-      'For more context, visit the <a href="discontinued-monster-energy-flavors.html">Monster flavor status index</a>. Our <a href="journal/monster-rehab-green-tea-discontinuation-rumor-september-2026.html">Rehab Green Tea report</a> covers a separate rumored change. Evidence about a tea flavor should not be used as confirmation of a coffee flavor\'s fate.'
+      'For more context, visit the <a href="discontinued-monster-energy-flavors.html">Monster flavor status index</a>. Our <a href="journal/is-monster-rehab-green-tea-being-discontinued.html">Rehab Green Tea report</a> covers a separate rumored change. Evidence about a tea flavor should not be used as confirmation of a coffee flavor\'s fate.'
     ]}
   ],
   faq: [
@@ -65,6 +66,8 @@ export const cafeLatteReport = {
     { question: 'Does Discontinued Club sell Cafe Latte?', answer: 'Not at publication. This is a sourced news report, not an available-stock announcement.' }
   ],
   sources: [
+    { label: 'Sporked: planned departures before 2027', url: 'https://sporked.com/article/heres-all-12-monster-energy-drinks-being-discontinued-by-2027/', note: 'September 28, 2026; later reporting, not an independently authenticated production notice' },
+    { label: 'Monster: U.S. directory', url: 'https://www.monsterenergy.com/en-us/energy-drinks/', note: 'checked October 9, 2026; Cafe Latte still listed' },
     { label: 'Sporked: four rumored Monster departures', url: 'https://sporked.com/article/monster-energy-discontinuing-4-flavors/', note: 'September 18, 2026; explicitly unconfirmed by Monster' },
     { label: 'Monster Energy: U.S. Cafe Latte product page', url: 'https://www.monsterenergy.com/en-us/energy-drinks/java-monster/cafe-latte/', note: 'product identity and single-can image, reviewed September 23, 2026' },
     { label: 'Monster Energy: Cafe Latte launch announcement', url: 'https://www.multivu.com/players/English/9132554-new-java-monster-cafe-latte-available-now/', note: 'manufacturer-issued release, August 15, 2023; historical context, not current inventory' }

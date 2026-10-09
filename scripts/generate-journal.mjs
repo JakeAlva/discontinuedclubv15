@@ -75,15 +75,21 @@ function statusExplanation(report) {
 }
 
 function relatedReports(report) {
-  const related = reports.filter((candidate) => candidate.slug !== report.slug && (report.relatedSlugs
-    ? report.relatedSlugs.includes(candidate.slug)
-    : candidate.brand === report.brand || candidate.statusKey === report.statusKey)).slice(0, 2);
+  const candidates = reports.filter((candidate) => candidate.slug !== report.slug);
+  const related = (report.relatedSlugs
+    ? report.relatedSlugs.map((slug) => candidates.find((candidate) => candidate.slug === slug)).filter(Boolean)
+    : [...candidates.filter((candidate) => candidate.brand === report.brand), ...candidates.filter((candidate) => candidate.brand !== report.brand && candidate.statusKey === report.statusKey)]).slice(0, 3);
   return related.map((candidate) => `<a href="journal/${candidate.slug}.html"><span class="journal-status status-${candidate.statusKey}">${candidate.statusLabel}</span><strong>${candidate.title}</strong><p>${candidate.cardCopy}</p></a>`).join('');
 }
 
 function articleMarkup(report) {
   const checkedDate = reportCheckedDate(report);
   const checkedLabel = checkedLabelFor(report);
+  const updatedLabel = report.modifiedDate ? new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${report.modifiedDate}T00:00:00Z`)) : null;
+  const hubLink = report.brand === 'Monster Energy'
+    ? '<div class="article-hub-link"><strong>The complete research hub</strong><a href="discontinued-monster-energy-flavors.html">Discontinued Monster flavors: U.S. archive and timeline &rarr;</a></div>'
+    : report.brand === 'Red Bull'
+      ? '<div class="article-hub-link"><strong>Compare the Editions</strong><a href="discontinued-red-bull-flavors.html">Discontinued Red Bull flavors in the U.S. &rarr;</a></div>' : '';
   const shop = report.shop && currentProductHrefs.has(report.shop.href)
     ? `<section class="article-shop-callout"><div><div class="section-kicker">Collector inventory</div><h2>${report.shop.heading}</h2><p>${report.shop.copy}</p></div><a class="btn btn-dark" href="${report.shop.href}">${report.shop.cta}</a></section>`
     : '<!-- No matching current store listing at publication. -->';
@@ -131,7 +137,7 @@ function articleMarkup(report) {
             <div class="article-status-row"><span class="journal-status status-${report.statusKey}">${report.statusLabel}</span><span>${report.lane}</span></div>
             <h1>${report.title}</h1>
             <p class="article-deck">${report.deck}</p>
-            <div class="article-byline"><span>By Discontinued Club Research</span><time datetime="${checkedDate}">Checked ${checkedLabel}</time><span>${report.readTime} minute read</span></div>
+            <div class="article-byline"><span>By Discontinued Club Research</span><time datetime="${checkedDate}">Published ${checkedLabel}</time>${updatedLabel ? `<time datetime="${report.modifiedDate}">Updated ${updatedLabel}</time>` : ''}<span>${report.readTime} minute read</span></div>
           </div>
           <figure class="article-hero-media${report.imageWidth > report.imageHeight ? ' article-hero-media-wide' : ''}"><img src="${report.image}" alt="${report.imageAlt}" width="${report.imageWidth || 1200}" height="${report.imageHeight || 1200}" style="aspect-ratio: ${report.imageWidth && report.imageHeight ? `${report.imageWidth} / ${report.imageHeight}` : '1 / 1'}" fetchpriority="high"><figcaption>${report.caption}${imageCredit}</figcaption></figure>
         </div>
@@ -144,9 +150,10 @@ function articleMarkup(report) {
           ${buyerNotes}
           ${shop}
           <section id="faq" class="article-faq"><div class="section-kicker">Frequently asked</div><h2>${report.faqHeading || `${report.product} questions`}</h2>${faqMarkup(report)}</section>
-          <section id="sources" class="article-sources"><div class="section-kicker">Evidence desk</div><h2>Sources checked</h2><ol>${sourceList(report)}</ol><p class="article-disclosure">${disclosure}${report.disclosure ? ' Last reviewed' : ' and was last reviewed'} ${checkedLabel}. Product status can change after that date; corrections are recorded when stronger evidence appears.</p></section>
+          <section id="sources" class="article-sources"><div class="section-kicker">Evidence desk</div><h2>Sources checked</h2><ol>${sourceList(report)}</ol><p class="article-disclosure">${disclosure}${report.disclosure ? ' Last reviewed' : ' and was last reviewed'} ${updatedLabel || checkedLabel}. Individual source dates are noted above. Product status can change after that date; corrections are recorded when stronger evidence appears.</p></section>
         </div>
         <aside class="article-sidebar" aria-label="Article guide">
+${hubLink}
           <div class="article-sidebar-block"><strong>U.S. conclusion</strong><span class="journal-status status-${report.statusKey}">${report.statusLabel}</span><p>${report.sidebar}</p></div>
           <div class="article-sidebar-block evidence-grade"><strong>Evidence level</strong><span>${report.evidenceGrade}</span><p>${report.evidenceNote}</p></div>
           <nav class="article-toc" aria-label="On this page"><strong>On this page</strong>${toc}<a href="${sectionHref('status-language')}">Status definition</a><a href="${sectionHref('buyer-notes')}">Buyer notes</a><a href="${sectionHref('faq')}">FAQ</a><a href="${sectionHref('sources')}">Sources</a></nav>

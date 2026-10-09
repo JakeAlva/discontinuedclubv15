@@ -65,8 +65,8 @@ test('static journal pages expose every article once and remain independently in
     assert.ok(html.includes(`<link rel="canonical" href="https://discontinuedclub.com/${file}">`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);
     assert.ok(sitemap.includes('https://discontinuedclub.com/' + file));
-    assert.match(html, /journal-library\.mjs\?v=89/);
-    assert.match(html, /journal-index\.json\?v=89/);
+    assert.match(html, /journal-library\.mjs\?v=90/);
+    assert.match(html, /journal-index\.json\?v=90/);
     const cards = [...html.matchAll(/<h2><a href="journal\/([^"#]+)\.html">/g)].map((match) => match[1]);
     assert.ok(cards.length > 0 && cards.length <= PAGE_SIZE);
     linked.push(...cards);
@@ -80,10 +80,11 @@ test('Cafe Latte article is sourced, dated, appropriately unconfirmed, and disco
   assert.equal(report.statusKey, 'rumor');
   assert.equal(report.checkedDate, '2026-09-23');
   assert.equal(report.featured, false);
-  assert.match(report.answer, /not confirmed discontinued/);
-  assert.match(report.answer, /not verified a production end date/);
+  assert.equal(report.modifiedDate, '2026-10-09');
+  assert.match(report.answer, /unconfirmed withdrawal watch/);
+  assert.match(report.answer, /not independently authenticated a production cutoff/);
   assert.equal(report.shop, undefined);
-  assert.equal(report.sources.length, 3);
+  assert.equal(report.sources.length, 5);
   const libraryFiles = (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
   let library = '';
   for (const file of libraryFiles) library += await read(file);
@@ -94,7 +95,7 @@ test('Cafe Latte article is sourced, dated, appropriately unconfirmed, and disco
   const html = await read('dist/journal/' + report.slug + '.html');
   const graph = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1])['@graph'];
   assert.equal(graph[0].datePublished, '2026-09-23');
-  assert.equal(graph[0].dateModified, '2026-09-23');
+  assert.equal(graph[0].dateModified, '2026-10-09');
   assert.doesNotMatch(html, /article-shop-callout|data-add-to-cart/);
   const image = await readFile(resolve(root, report.image));
   assert.equal(image.subarray(1, 4).toString(), 'PNG');
