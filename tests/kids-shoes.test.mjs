@@ -11,6 +11,8 @@ const item = catalog.find((item) => item.id === '407274649287');
 const productPath = 'products/balenciaga-triple-s-kids-sneakers-eu-26-us-9-5-407274649287.html';
 
 for (const expected of [
+  { id: '407277346224', price: '$74.99', directCents: 7237, brand: 'adidas', size: '28', photos: 6, mpn: 'EF2905' },
+  { id: '407277320481', price: '$69.99', directCents: 6754, brand: 'adidas', size: '27', photos: 6, mpn: 'FX9033' },
   { id: '407277242488', price: '$74.99', directCents: 7237, brand: 'adidas', size: '28', photos: 6, mpn: 'EG7492' },
   { id: '407277210158', price: '$64.99', directCents: 6272, brand: 'Burberry', size: '25', photos: 5 }
 ]) {
@@ -145,8 +147,8 @@ test('later inventory sync preserves curated shoe details and gallery', () => {
 
 test('designer kids shoes are separate from adult sportswear throughout navigation', async () => {
   const shoes = catalog.filter((candidate) => candidate.category === 'kids-shoes');
-  assert.deepEqual(shoes.map((candidate) => candidate.id).sort(), ['407274649287', '407276996786', '407277122050', '407277156219', '407277210158', '407277242488']);
-  assert.equal(categories['kids-shoes'].count, 6);
+  assert.deepEqual(shoes.map((candidate) => candidate.id).sort(), ['407274649287', '407276996786', '407277122050', '407277156219', '407277210158', '407277242488', '407277320481', '407277346224']);
+  assert.equal(categories['kids-shoes'].count, 8);
   assert.equal(categories.apparel.count, 14);
   assert.equal(catalog.find((candidate) => candidate.id === '406834655819').category, 'apparel');
   for (const file of ['../out-now.html', '../index.html', '../assets/app.js']) {

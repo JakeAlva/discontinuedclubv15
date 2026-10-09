@@ -1,4 +1,18 @@
 const DC_CATALOG = [
+  { id: '407277346224', category: 'kids-shoes', name: 'adidas Yeezy Boost 350 V2 Static Non-Reflective Kids Sneakers - US 10.5K / EU 28', detail: "One pair of gray and white children's knit sneakers. Pre-owned with signs of wear; review all six condition photos. Original box not included", condition: 'Pre-owned - Good', price: '$74.99', image: '407277346224.webp', maxQuantity: 1, brand: 'adidas', productType: 'Apparel & Accessories > Shoes > Kids Sneakers', size: '28', sizeSystem: 'EU', sizeLabel: 'EU 28 (shoe label) / US 10.5K (eBay listing)', color: 'Gray/White', gender: 'unisex', ageGroup: 'kids', mpn: 'EF2905', googleProductCategory: '187', gallery: [
+    { src: 'assets/images/listings/gallery/407277346224-2.webp', label: 'front and toe condition' },
+    { src: 'assets/images/listings/gallery/407277346224-3.webp', label: 'side condition' },
+    { src: 'assets/images/listings/gallery/407277346224-4.webp', label: 'rear condition' },
+    { src: 'assets/images/listings/gallery/407277346224-5.webp', label: 'sole condition' },
+    { src: 'assets/images/listings/gallery/407277346224-6.webp', label: 'size and product label' }
+  ] },
+  { id: '407277320481', category: 'kids-shoes', name: 'adidas Yeezy Boost 350 V2 Earth Kids Sneakers - US 10K / EU 27', detail: "One pair of brown children's knit sneakers. Pre-owned with signs of wear; review all six condition photos. Original box not included", condition: 'Pre-owned - Good', price: '$69.99', image: '407277320481.webp', maxQuantity: 1, brand: 'adidas', productType: 'Apparel & Accessories > Shoes > Kids Sneakers', size: '27', sizeSystem: 'EU', sizeLabel: 'EU 27 / US 10K (shoe label)', color: 'Brown', gender: 'unisex', ageGroup: 'kids', mpn: 'FX9033', googleProductCategory: '187', gallery: [
+    { src: 'assets/images/listings/gallery/407277320481-2.webp', label: 'front and toe condition' },
+    { src: 'assets/images/listings/gallery/407277320481-3.webp', label: 'side condition' },
+    { src: 'assets/images/listings/gallery/407277320481-4.webp', label: 'rear condition' },
+    { src: 'assets/images/listings/gallery/407277320481-5.webp', label: 'sole condition' },
+    { src: 'assets/images/listings/gallery/407277320481-6.webp', label: 'size and product label' }
+  ] },
   { id: '407277242488', category: 'kids-shoes', name: 'adidas Yeezy Boost 350 V2 True Form Kids Sneakers - US 10.5K / EU 28', detail: "One pair of gray children's knit sneakers with orange accents. Pre-owned with signs of wear; review all six condition photos. Original box not included", condition: 'Pre-owned - Good', price: '$74.99', image: '407277242488.webp', maxQuantity: 1, brand: 'adidas', productType: 'Apparel & Accessories > Shoes > Kids Sneakers', size: '28', sizeSystem: 'EU', sizeLabel: 'EU 28 (shoe label) / US 10.5K (eBay listing)', color: 'Gray/Orange', gender: 'unisex', ageGroup: 'kids', mpn: 'EG7492', googleProductCategory: '187', purchaseNote: "eBay Authenticity Guarantee applies only to purchases made through the linked eBay listing. Direct purchases do not include eBay authentication.", gallery: [
     { src: 'assets/images/listings/gallery/407277242488-2.webp', label: 'front and toe condition' },
     { src: 'assets/images/listings/gallery/407277242488-3.webp', label: 'side condition' },
@@ -106,6 +120,8 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407277346224': 64,
+  '407277320481': 64,
   '407277242488': 64,
   '407277210158': 64,
   '407277156219': 64,
@@ -195,10 +211,10 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 65 },
+  all: { label: 'All items', count: 67 },
   drinks: { label: 'Rare drinks', count: 31 },
   apparel: { label: 'Sports & apparel', count: 14 },
-  'kids-shoes': { label: "Designer kids' shoes", count: 6 },
+  'kids-shoes': { label: "Designer kids' shoes", count: 8 },
   collectibles: { label: 'Collectibles & cards', count: 9 },
   care: { label: 'Personal care', count: 4 },
   home: { label: 'Home & hobby', count: 1 }
