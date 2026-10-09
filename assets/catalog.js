@@ -1,4 +1,17 @@
 const DC_CATALOG = [
+  { id: '407277242488', category: 'kids-shoes', name: 'adidas Yeezy Boost 350 V2 True Form Kids Sneakers - US 10.5K / EU 28', detail: "One pair of gray children's knit sneakers with orange accents. Pre-owned with signs of wear; review all six condition photos. Original box not included", condition: 'Pre-owned - Good', price: '$79.99', image: '407277242488.webp', maxQuantity: 1, brand: 'adidas', productType: 'Apparel & Accessories > Shoes > Kids Sneakers', size: '28', sizeSystem: 'EU', sizeLabel: 'EU 28 (shoe label) / US 10.5K (eBay listing)', color: 'Gray/Orange', gender: 'unisex', ageGroup: 'kids', mpn: 'EG7492', googleProductCategory: '187', purchaseNote: "eBay Authenticity Guarantee applies only to purchases made through the linked eBay listing. Direct purchases do not include eBay authentication.", gallery: [
+    { src: 'assets/images/listings/gallery/407277242488-2.webp', label: 'front and toe condition' },
+    { src: 'assets/images/listings/gallery/407277242488-3.webp', label: 'side condition' },
+    { src: 'assets/images/listings/gallery/407277242488-4.webp', label: 'rear condition' },
+    { src: 'assets/images/listings/gallery/407277242488-5.webp', label: 'sole condition' },
+    { src: 'assets/images/listings/gallery/407277242488-6.webp', label: 'size and product label' }
+  ] },
+  { id: '407277210158', category: 'kids-shoes', name: 'Burberry Housecheck Strap Kids Sneakers - EU 25 / US 8', detail: "One pair of beige, black, red and white children's check sneakers with hook-and-loop straps. Pre-owned with signs of wear; review all five condition photos. Original box not included", condition: 'Pre-owned - Good', price: '$64.99', image: '407277210158.webp', maxQuantity: 1, brand: 'Burberry', productType: 'Apparel & Accessories > Shoes > Kids Sneakers', size: '25', sizeSystem: 'EU', sizeLabel: 'EU 25 / US 8 (eBay listing)', color: 'Beige/Black/Red/White', gender: 'unisex', ageGroup: 'toddler', googleProductCategory: '187', gallery: [
+    { src: 'assets/images/listings/gallery/407277210158-2.webp', label: 'front and toe condition' },
+    { src: 'assets/images/listings/gallery/407277210158-3.webp', label: 'side condition' },
+    { src: 'assets/images/listings/gallery/407277210158-4.webp', label: 'rear condition' },
+    { src: 'assets/images/listings/gallery/407277210158-5.webp', label: 'sole condition' }
+  ] },
   { id: '407277156219', category: 'kids-shoes', name: 'Nike x Off-White Rubber Dunk Kids Sneakers - US 9C / EU 26', detail: "One pair of University Blue, silver and gum children's sneakers with orange accents. Pre-owned with signs of wear; review all six condition photos", condition: 'Pre-owned - Good', price: '$79.99', image: '407277156219.webp', maxQuantity: 1, brand: 'Nike', productType: 'Apparel & Accessories > Shoes > Kids Sneakers', size: '9C', sizeSystem: 'US', sizeLabel: 'US 9C / EU 26 (shoe label)', color: 'Silver/Blue/Orange/Gum', gender: 'unisex', ageGroup: 'toddler', mpn: 'CW7444-100', googleProductCategory: '187', gallery: [
     { src: 'assets/images/listings/gallery/407277156219-2.webp', label: 'front and toe condition' },
     { src: 'assets/images/listings/gallery/407277156219-3.webp', label: 'side condition' },
@@ -93,6 +106,8 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407277242488': 64,
+  '407277210158': 64,
   '407277156219': 64,
   '407277122050': 64,
   '407276996786': 64,
@@ -180,10 +195,10 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 63 },
+  all: { label: 'All items', count: 65 },
   drinks: { label: 'Rare drinks', count: 31 },
   apparel: { label: 'Sports & apparel', count: 14 },
-  'kids-shoes': { label: "Designer kids' shoes", count: 4 },
+  'kids-shoes': { label: "Designer kids' shoes", count: 6 },
   collectibles: { label: 'Collectibles & cards', count: 9 },
   care: { label: 'Personal care', count: 4 },
   home: { label: 'Home & hobby', count: 1 }

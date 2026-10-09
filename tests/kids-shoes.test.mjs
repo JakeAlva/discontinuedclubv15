@@ -10,6 +10,50 @@ import { runInNewContext } from 'node:vm';
 const item = catalog.find((item) => item.id === '407274649287');
 const productPath = 'products/balenciaga-triple-s-kids-sneakers-eu-26-us-9-5-407274649287.html';
 
+for (const expected of [
+  { id: '407277242488', price: '$79.99', directCents: 7719, brand: 'adidas', size: '28', photos: 6, mpn: 'EG7492' },
+  { id: '407277210158', price: '$64.99', directCents: 6272, brand: 'Burberry', size: '25', photos: 5 }
+]) {
+  test(`${expected.brand} addition preserves verified size, price, quantity and real photos`, async () => {
+    const shoe = catalog.find((candidate) => candidate.id === expected.id);
+    assert.equal(shoe.category, 'kids-shoes');
+    assert.equal(shoe.price, expected.price);
+    assert.equal(directPriceCents(shoe), expected.directCents);
+    assert.equal(maxQuantity(shoe), 1);
+    assert.equal(shoe.brand, expected.brand);
+    assert.equal(shoe.size, expected.size);
+    assert.equal(shoe.sizeSystem, 'EU');
+    assert.equal(shoe.mpn, expected.mpn);
+    assert.equal(shoe.shippingWeightOz, 64);
+    assert.equal(shoe.taxCode, 'txcd_30011200');
+    const slug = `${shoe.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${shoe.id}`;
+    const path = `products/${slug}.html`;
+    const html = await readFile(new URL(`../${path}`, import.meta.url), 'utf8');
+    assert.equal((html.match(/data-product-gallery-src=/g) || []).length, expected.photos);
+    assert.match(html, /Original box not included/);
+    assert.doesNotMatch(html, /Last one/);
+    assert.match(html, /index, follow/);
+    const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
+    assert.equal(schema.brand.name, expected.brand);
+    assert.equal(schema.mpn, expected.mpn);
+    assert.equal(schema.size.name, expected.size);
+    assert.equal(schema.itemCondition, 'https://schema.org/UsedCondition');
+    assert.equal(schema.offers.price, (expected.directCents / 100).toFixed(2));
+    assert.equal(schema.offers.availability, 'https://schema.org/InStock');
+    assert.equal(schema.image.length, expected.photos);
+    for (const image of shoe.gallery) await access(new URL(`../${image.src}`, import.meta.url));
+    for (const variant of ['branded', 'merchant']) await access(new URL(`../assets/images/listings/${variant}/${shoe.id}.webp`, import.meta.url));
+    const sitemap = await readFile(new URL('../sitemap-products.xml', import.meta.url), 'utf8');
+    assert.ok(sitemap.includes(path));
+    const feed = await readFile(new URL('../google-merchant-feed.xml', import.meta.url), 'utf8');
+    const entry = feed.match(new RegExp(`<item>\\s*<g:id>dc-${shoe.id}</g:id>[\\s\\S]*?</item>`))[0];
+    for (const [field, value] of Object.entries({ brand: expected.brand, size: expected.size, size_system: 'EU', price: `${(expected.directCents / 100).toFixed(2)} USD`, condition: 'used', availability: 'in_stock' })) {
+      assert.ok(entry.includes(`<g:${field}>${value}</g:${field}>`));
+    }
+    assert.ok(!entry.includes('<g:gtin>'));
+  });
+}
+
 test('Nike Off-White listing uses the photographed size and style code, with one pair available', async () => {
   const nike = catalog.find((candidate) => candidate.id === '407277156219');
   assert.equal(nike.category, 'kids-shoes');
@@ -101,8 +145,8 @@ test('later inventory sync preserves curated shoe details and gallery', () => {
 
 test('designer kids shoes are separate from adult sportswear throughout navigation', async () => {
   const shoes = catalog.filter((candidate) => candidate.category === 'kids-shoes');
-  assert.deepEqual(shoes.map((candidate) => candidate.id).sort(), ['407274649287', '407276996786', '407277122050', '407277156219']);
-  assert.equal(categories['kids-shoes'].count, 4);
+  assert.deepEqual(shoes.map((candidate) => candidate.id).sort(), ['407274649287', '407276996786', '407277122050', '407277156219', '407277210158', '407277242488']);
+  assert.equal(categories['kids-shoes'].count, 6);
   assert.equal(categories.apparel.count, 14);
   assert.equal(catalog.find((candidate) => candidate.id === '406834655819').category, 'apparel');
   for (const file of ['../out-now.html', '../index.html', '../assets/app.js']) {
