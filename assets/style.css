@@ -338,6 +338,16 @@ h1, h2, h3, p { margin-top: 0; }
 .current-product-gallery { min-width: 0; }
 .current-gallery-main { aspect-ratio: 1 / 1; display: grid; place-items: center; overflow: hidden; border: 1px solid var(--line); border-radius: 6px; background: #fff; }
 .current-gallery-main img { width: 100%; height: 100%; object-fit: contain; padding: 18px; }
+.current-gallery-zoom { position: relative; width: 100%; padding: 0; color: var(--ink); cursor: zoom-in; touch-action: pan-y pinch-zoom; -webkit-tap-highlight-color: transparent; }
+.current-gallery-zoom img { display: block; pointer-events: none; user-select: none; transform-origin: var(--zoom-x, 50%) var(--zoom-y, 50%); }
+.current-gallery-zoom.is-zoomed { cursor: zoom-out; touch-action: none; }
+.current-gallery-zoom.is-zoomed img { transform: scale(var(--zoom-scale, 1)); }
+.current-gallery-zoom:focus-visible { outline: 3px solid var(--ink); outline-offset: 4px; }
+.current-gallery-zoom:disabled { cursor: default; }
+.gallery-zoom-icon { position: absolute; right: 14px; bottom: 14px; display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 50%; background: #fff; box-shadow: 0 2px 8px #00000012; pointer-events: none; }
+.gallery-zoom-icon svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.current-gallery-zoom.is-zoomed .gallery-zoom-plus { visibility: hidden; }
+.current-gallery-zoom:disabled .gallery-zoom-icon { display: none; }
 .current-gallery-thumbs { display: grid; grid-template-columns: repeat(auto-fit, 82px); gap: 10px; margin-top: 12px; }
 .current-gallery-thumb { width: 82px; aspect-ratio: 1 / 1; overflow: hidden; padding: 4px; border: 1px solid var(--line); border-radius: 5px; background: #fff; cursor: pointer; }
 .current-gallery-thumb.active { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
