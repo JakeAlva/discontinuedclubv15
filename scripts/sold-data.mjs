@@ -1,4 +1,5 @@
 export const soldItems = [
+  { id: '407117478926', category: 'apparel', name: 'Chicago Bears Mike Ditka Jersey', brand: 'Nike', price: '$149.99', priceLabel: 'Last listed price', soldOut: true, imageUrl: 'https://discontinuedclub.com/assets/images/listings/merchant/407117478926.webp' },
   { id: '407253023756', category: 'apparel', name: "Rubie's Elvis Presley Toddler Costume 2-4T", brand: "Rubie's", price: '$14.99', priceLabel: 'Last listed price', soldOut: true, imageUrl: 'https://discontinuedclub.com/assets/images/listings/merchant/407253023756.webp' },
   { id: '407195902675', category: 'collectibles', name: 'Pokemon Journey Together Booster Bundle', brand: 'Pokemon', price: '$39.99', priceLabel: 'Last listed price', soldOut: true, imageUrl: 'https://discontinuedclub.com/assets/images/listings/merchant/407195902675.webp' },
   { id: '407117217273', category: 'apparel', name: 'Los Angeles Kings Blank Jersey', brand: 'adidas', price: '$69.99', priceLabel: 'Last listed price', soldOut: true, imageUrl: 'https://discontinuedclub.com/assets/images/listings/merchant/407117217273.webp' },

@@ -1,5 +1,17 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "407117478926",
+    "category": "apparel",
+    "name": "Chicago Bears Mike Ditka Jersey",
+    "price": "$149.99",
+    "priceLabel": "Last listed price",
+    "brand": "Nike",
+    "soldOut": true,
+    "image": "407117478926.webp",
+    "slug": "chicago-bears-mike-ditka-jersey-407117478926",
+    "availableAgain": false
+  },
+  {
     "id": "407253023756",
     "category": "apparel",
     "name": "Rubie's Elvis Presley Toddler Costume 2-4T",

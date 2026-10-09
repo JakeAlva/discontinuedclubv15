@@ -155,7 +155,7 @@ test('designer kids shoes are separate from adult sportswear throughout navigati
   const shoes = catalog.filter((candidate) => candidate.category === 'kids-shoes');
   assert.deepEqual(shoes.map((candidate) => candidate.id).sort(), ['407274649287', '407276996786', '407277122050', '407277156219', '407277210158', '407277242488', '407277320481', '407277346224']);
   assert.equal(categories['kids-shoes'].count, 8);
-  assert.equal(categories.apparel.count, 14);
+  assert.equal(categories.apparel.count, 13);
   assert.equal(catalog.find((candidate) => candidate.id === '406834655819').category, 'apparel');
   for (const file of ['../out-now.html', '../index.html', '../assets/app.js']) {
     const content = await readFile(new URL(file, import.meta.url), 'utf8');

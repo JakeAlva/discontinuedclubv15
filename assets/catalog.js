@@ -96,7 +96,6 @@ const DC_CATALOG = [
   { id: '406834655819', category: 'apparel', name: 'Etnies x Rockstar Energy Fader Vulc', detail: 'Men\'s black shoes, size 11 with original box, 2012', price: '$99.99', image: '8167a13655984166.webp', featured: true },
   { id: '407063808795', category: 'apparel', name: 'Boston Bruins Taylor Hall Jersey', detail: 'NWT adidas alternate NHL jersey, size 54', price: '$69.99', image: 'mockups/407063808795.webp' },
   { id: '407063633707', category: 'apparel', name: 'Nashville Predators P.K. Subban Jersey', detail: 'NWT Fanatics NHL jersey, gold, men\'s size M', price: '$49.99', image: 'mockups/407063633707.webp' },
-  { id: '407117478926', category: 'apparel', name: 'Chicago Bears Mike Ditka Jersey', detail: 'NWT Nike NFL alternate jersey, white, men\'s size L', price: '$149.99', image: '60503c0b5f7d19ce.webp' },
   { id: '406876226806', category: 'apparel', name: 'Powell Peralta Mini-Logo Skateboard', detail: 'Vintage teal 7.875-inch deck with warranty card, 2002', price: '$179.99', image: '3447acd32941fd18.webp', featured: true },
   { id: '407063650804', category: 'apparel', name: 'Nashville Predators P.K. Subban Jersey', detail: 'NWT Fanatics NHL jersey, white, men\'s size M', price: '$49.99', image: 'mockups/407063650804.webp' },
   { id: '407063463950', category: 'apparel', name: 'Columbus Blue Jackets Sergei Bobrovsky Jersey', detail: 'NWT Fanatics NHL jersey, men\'s size M', price: '$49.99', image: 'mockups/407063463950.webp' },
@@ -169,7 +168,6 @@ const DC_SHIPPING_WEIGHTS_OZ = {
   '406834655819': 64,
   '407063808795': 32,
   '407063633707': 32,
-  '407117478926': 32,
   '406876226806': 112,
   '407063650804': 32,
   '407063463950': 32,
@@ -211,9 +209,9 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 67 },
+  all: { label: 'All items', count: 66 },
   drinks: { label: 'Rare drinks', count: 31 },
-  apparel: { label: 'Sports & apparel', count: 14 },
+  apparel: { label: 'Sports & apparel', count: 13 },
   'kids-shoes': { label: "Designer kids' shoes", count: 8 },
   collectibles: { label: 'Collectibles & cards', count: 9 },
   care: { label: 'Personal care', count: 4 },
