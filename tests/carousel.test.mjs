@@ -16,7 +16,7 @@ test('homepage search stays separated from the benefits row at every breakpoint'
   }
 });
 
-test('campaign carousel promotes current products and the Pokemon collection', async () => {
+test('campaign carousel promotes current products and curated collections', async () => {
   const html = await readFile(resolve(root, 'index.html'), 'utf8');
   const slides = html.match(/<article class="campaign-slide[\s\S]*?<\/article>/g) ?? [];
 
@@ -24,7 +24,9 @@ test('campaign carousel promotes current products and the Pokemon collection', a
   for (const [index, slide] of slides.entries()) {
     assert.equal((slide.match(/class="campaign-visual"/g) ?? []).length, 1);
     assert.equal((slide.match(/<img /g) ?? []).length, 1);
-    const destination = index === 2
+    const destination = index === 1
+      ? /href="out-now\.html\?category=kids-shoes"/
+      : index === 2
       ? /href="out-now\.html\?category=collectibles"/
       : index === 3
         ? /href="journal\/is-alani-nu-lime-slush-discontinued\.html"/
@@ -46,7 +48,7 @@ test('campaign carousel promotes current products and the Pokemon collection', a
 
 test('refreshed campaigns use native-resolution artwork and dedicated mobile compositions', async () => {
   const html = await readFile(resolve(root, 'index.html'), 'utf8');
-  for (const campaign of ['liquid-carnage', 'pokemon-arrivals']) {
+  for (const campaign of ['liquid-carnage', 'pokemon-arrivals', 'designer-kids-shoes']) {
     for (const size of ['desktop', 'mobile']) {
       const file = 'assets/images/campaign/scenes/' + campaign + '-' + size + '.webp';
       const metadata = await sharp(resolve(root, file)).metadata();
@@ -60,6 +62,25 @@ test('refreshed campaigns use native-resolution artwork and dedicated mobile com
   assert.doesNotMatch(html, /scenes\/(?:liquid|pokemon)-(?:desktop|mobile)\.webp/);
   const css = await readFile(resolve(root, 'assets/style.css'), 'utf8');
   assert.match(css, /@media \(min-width: 1662px\)[\s\S]*?\.campaign-slide-pokemon \.campaign-media \{ object-fit: contain; object-position: right center; \}/);
+});
+
+test('designer kids shoes replace the jersey campaign without changing the jersey listing', async () => {
+  const html = await readFile(resolve(root, 'index.html'), 'utf8');
+  const slides = html.match(/<article class="campaign-slide[\s\S]*?<\/article>/g) ?? [];
+  const shoes = slides[1];
+  assert.match(shoes, /campaign-slide-shoes/);
+  assert.match(shoes, /<h2>Designer kids' shoes<\/h2>/);
+  assert.match(shoes, /pre-owned pairs/);
+  assert.equal((shoes.match(/href="out-now\.html\?category=kids-shoes"/g) ?? []).length, 2);
+  assert.doesNotMatch(shoes, /new with tags|authenticity guarantee|last one|\$\d/i);
+  assert.doesNotMatch(slides.join(''), /jersey-(desktop|mobile)|Drysdale|407176877843/);
+  const { catalog } = await import('../lib/store-catalog.mjs');
+  for (const id of ['407277122050', '407274649287']) {
+    const item = catalog.find((product) => product.id === id);
+    assert.equal(item.category, 'kids-shoes');
+    assert.match(item.condition, /Pre-owned/);
+  }
+  assert.ok(catalog.some((item) => item.id === '407176877843'));
 });
 
 test('Lime Slush teaser stays last, indexable, and unavailable for purchase', async () => {

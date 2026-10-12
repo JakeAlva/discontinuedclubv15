@@ -156,7 +156,7 @@ button { color: inherit; }
 .campaign-track::-webkit-scrollbar { display: none; }
 .campaign-slide { position: relative; flex: 0 0 100%; height: clamp(500px, 39.13vw, 650px); min-width: 0; overflow: hidden; scroll-snap-align: start; scroll-snap-stop: always; }
 .campaign-slide-liquid { --campaign-accent: #ffcf32; background: #071d67; color: #fff; }
-.campaign-slide-jersey { --campaign-accent: #f15a24; background: #050505; color: #fff; }
+.campaign-slide-shoes { --campaign-accent: #72c9bf; background: #101315; color: #fff; }
 .campaign-slide-pokemon { --campaign-accent: #ffca2c; background: #101315; color: #fff; }
 .campaign-slide-energy { --campaign-accent: #bce51f; background: #03143f; color: #fff; }
 .campaign-slide-lime { --campaign-accent: #c3ff21; background: #081810; color: #fff; }
@@ -176,10 +176,13 @@ button { color: inherit; }
 .campaign-visual:hover .campaign-media { transform: scale(1.008); }
 @media (min-width: 1662px) {
   .campaign-slide-liquid .campaign-visual picture { width: calc(650px * 1942 / 809); }
+  .campaign-slide-shoes .campaign-visual picture { width: calc(650px * 2006 / 784); }
   .campaign-slide-pokemon .campaign-visual picture { width: calc(650px * 2004 / 785); }
   .campaign-slide-liquid .campaign-visual picture,
+  .campaign-slide-shoes .campaign-visual picture,
   .campaign-slide-pokemon .campaign-visual picture { max-width: 100%; margin-left: auto; mask-image: linear-gradient(to right, transparent, #000 160px); }
   .campaign-slide-liquid .campaign-media,
+  .campaign-slide-shoes .campaign-media,
   .campaign-slide-pokemon .campaign-media { object-fit: contain; object-position: right center; }
 }
 .campaign-nav { min-height: 54px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 20px; }
@@ -193,9 +196,11 @@ button { color: inherit; }
 @media (min-width: 701px) and (max-width: 1000px) {
   .campaign-slide-lime .campaign-visual,
   .campaign-slide-liquid .campaign-visual,
+  .campaign-slide-shoes .campaign-visual,
   .campaign-slide-pokemon .campaign-visual { left: 46%; width: 54%; }
   .campaign-slide-lime .campaign-media,
   .campaign-slide-liquid .campaign-media,
+  .campaign-slide-shoes .campaign-media,
   .campaign-slide-pokemon .campaign-media { object-fit: contain; }
 }
 .hero-copy { max-width: 650px; }
