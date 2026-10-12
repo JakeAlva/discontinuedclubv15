@@ -1,5 +1,17 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "406794860747",
+    "category": "drinks",
+    "name": "Mountain Dew Gingerbread Snap'd",
+    "price": "$7.99",
+    "priceLabel": "Last listed price",
+    "brand": "Mountain Dew",
+    "soldOut": true,
+    "image": "406794860747.webp",
+    "slug": "mountain-dew-gingerbread-snap-d-406794860747",
+    "availableAgain": false
+  },
+  {
     "id": "407063650804",
     "category": "apparel",
     "name": "Nashville Predators P.K. Subban Jersey - White, Size M",

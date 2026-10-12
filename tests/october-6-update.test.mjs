@@ -14,14 +14,14 @@ import createCheckout from '../netlify/functions/create-checkout.mjs';
 const root = resolve(import.meta.dirname, '..');
 const read = (path) => readFile(resolve(root, path), 'utf8');
 const additions = [
-  ['407269224750', 3, 578, 8],
+  ['407269224750', 4, 578, 8],
   ['407269188492', 2, 675, 8],
   ['407264848037', 1, 578, 8],
   ['407264808538', 1, 3859, 24]
 ];
 
 test('October 6 listings have reconciled stock, direct prices and feed entries', async () => {
-  assert.equal(catalog.length, 69);
+  assert.equal(catalog.length, 68);
   assert.equal(categories.collectibles.count, 11);
   assert.equal(categories.apparel.count, 12);
   assert.equal(categories['kids-shoes'].count, 10);

@@ -11,7 +11,7 @@ const DC_CATALOG = [
   { id: '407264808538', category: 'collectibles', name: 'Pokemon Mega Evolution Pitch Black Booster Bundle', detail: 'Factory-sealed English box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407264808538.webp', maxQuantity: 1 },
   { id: '407260159541', category: 'collectibles', name: 'Pokemon Journey Together Booster Bundle', detail: 'Factory-sealed English Scarlet & Violet box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407260159541.webp', maxQuantity: 2 },
   { id: '407086892969', category: 'collectibles', name: 'Pokemon Perfect Order Booster Bundle', detail: 'English box with 6 booster packs', price: '$38.99', image: '1c6ab9f4d119bded.webp', maxQuantity: 2 },
-  { id: '407269224750', category: 'collectibles', name: 'Pokemon Mega Evolution Chaos Rising Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407269224750.webp', maxQuantity: 3 },
+  { id: '407269224750', category: 'collectibles', name: 'Pokemon Mega Evolution Chaos Rising Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407269224750.webp', maxQuantity: 4 },
   { id: '407269188492', category: 'collectibles', name: 'Pokemon Surging Sparks Booster Pack', detail: 'Factory-sealed English Scarlet & Violet single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$6.99', image: '407269188492.webp', maxQuantity: 2 },
   { id: '407264848037', category: 'collectibles', name: 'Pokemon Mega Evolution Perfect Order Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407264848037.webp', maxQuantity: 1 },
   { id: '407212006333', category: 'collectibles', name: 'Pokemon TCG Mega Evolution Booster Pack', detail: 'Factory-sealed English single pack with 10 game cards', price: '$6.49', image: '407212006333.webp', maxQuantity: 3 },
@@ -101,7 +101,6 @@ const DC_CATALOG = [
   { id: '406794914124', category: 'drinks', name: 'Mountain Dew Zero Sugar Frost Bite', detail: 'Black tab, full unopened 12 oz can, 2021', price: '$8.99', image: '4b55cca74675b8ca.webp' },
   { id: '406730391892', category: 'drinks', name: 'Mountain Dew Baja Point Break Punch', detail: 'Tropical punch, full 20 oz bottle, 2024', price: '$11.99', image: '9b5398669bcaea4d.webp' },
   { id: '406738141008', category: 'drinks', name: 'Mountain Dew Baja Laguna Lemonade', detail: 'Mango lemonade, full 12 oz can, 2024', price: '$7.99', image: 'ed8766fc4d8c8e54.webp' },
-  { id: '406794860747', category: 'drinks', name: "Mountain Dew Gingerbread Snap'd", detail: 'Full unopened 12 oz can, 2022', price: '$7.99', image: '40ab2123875d4cf0.webp', maxQuantity: 1 },
   { id: '406738058280', category: 'drinks', name: 'Pepsi x Peeps Marshmallow Cola', detail: 'Limited edition, full 20 oz bottle, 2023', price: '$8.99', image: 'a259117f32742e2a.webp' },
   { id: '406735072767', category: 'drinks', name: 'Mountain Dew Voo Dew 2', detail: 'Mystery flavor, four 16.9 oz bottles, 2020', price: '$29.99', image: '9540cd389082cad6.webp' },
   { id: '407085080884', category: 'drinks', name: 'Mountain Dew Baja Deep Dive', detail: 'Rare full unopened 16 oz can, 2023', price: '$34.99', image: 'b4b4e35b7cc955df.webp', featured: true },
@@ -173,7 +172,6 @@ const DC_SHIPPING_WEIGHTS_OZ = {
   '406794914124': 16,
   '406730391892': 32,
   '406738141008': 16,
-  '406794860747': 16,
   '406738058280': 32,
   '406735072767': 96,
   '407085080884': 20,
@@ -231,8 +229,8 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 69 },
-  drinks: { label: 'Rare drinks', count: 31 },
+  all: { label: 'All items', count: 68 },
+  drinks: { label: 'Rare drinks', count: 30 },
   apparel: { label: 'Sports & apparel', count: 12 },
   'kids-shoes': { label: "Designer kids' shoes", count: 10 },
   collectibles: { label: 'Collectibles & cards', count: 11 },

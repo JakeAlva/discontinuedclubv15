@@ -1,0 +1,46 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+import { XMLParser } from 'fast-xml-parser';
+import { catalog, categories, directPriceCents, maxQuantity } from '../lib/store-catalog.mjs';
+
+const read = (file) => readFile(new URL(`../${file}`, import.meta.url), 'utf8');
+const audit = JSON.parse(await read('data/ebay-inventory-audit-2026-10-12.json'));
+
+test('every active listing matches the complete October 12 eBay quantity and price audit', () => {
+  const expected = new Map(audit.active.map(([id, quantity, price]) => [id, { quantity, price }]));
+  assert.equal(expected.size, audit.active.length, 'Audit must not contain duplicate listing IDs');
+  assert.deepEqual(catalog.map((item) => item.id).sort(), [...expected.keys()].sort());
+  for (const item of catalog) {
+    assert.equal(maxQuantity(item), expected.get(item.id).quantity, `${item.id} ${item.name}: available listing units`);
+    assert.equal(item.price, expected.get(item.id).price, `${item.id} ${item.name}: eBay price`);
+  }
+  assert.equal(categories.all.count, expected.size);
+  for (const [category, { count }] of Object.entries(categories)) {
+    if (category !== 'all') assert.equal(count, catalog.filter((item) => item.category === category).length, category);
+  }
+});
+
+test('published catalog, purchase limits and feed use the audited inventory', async () => {
+  const feed = new XMLParser({ parseTagValue: false }).parse(await read('google-merchant-feed.xml')).rss.channel.item;
+  assert.deepEqual(feed.map((item) => item['g:id']).sort(), audit.active.map(([id]) => `dc-${id}`).sort());
+  const publicCatalog = await read('dist/assets/catalog.js');
+  assert.equal(publicCatalog, await read('assets/catalog.js'));
+  for (const item of catalog) {
+    const slug = `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}`;
+    const html = await read(`dist/products/${slug}.html`);
+    const quantity = maxQuantity(item);
+    if (quantity > 1) assert.ok(html.includes(`data-max="${quantity}"`), `${item.id}: product quantity control`);
+    else assert.match(html, /class="product-quantity-single"/);
+    const record = feed.find((row) => row['g:id'] === `dc-${item.id}`);
+    assert.equal(record['g:availability'], 'in_stock');
+    assert.equal(record['g:price'], `${(directPriceCents(item) / 100).toFixed(2)} USD`);
+  }
+  for (const id of audit.endedListingIds) {
+    assert.ok(!publicCatalog.includes(id), `${id} must not be purchasable`);
+    assert.ok(!(await read('dist/out-now.html')).includes(id), `${id} must not appear in static shop listings`);
+  }
+  for (const file of ['dist/index.html', 'dist/out-now.html']) {
+    assert.ok((await read(file)).includes('data-listing-count="all">68</span>'), file);
+  }
+});
