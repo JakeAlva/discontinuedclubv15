@@ -16,7 +16,7 @@ const excludedPages = new Set([
 ]);
 const rootFiles = await readdir(root, { withFileTypes: true });
 const faviconMarkup = '  <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png">\n  <link rel="apple-touch-icon" href="/assets/images/logo-mark-clean.png">';
-const assetVersion = '98';
+const assetVersion = '99';
 
 async function canonicalUrl(file) {
   const html = await readFile(file, 'utf8');

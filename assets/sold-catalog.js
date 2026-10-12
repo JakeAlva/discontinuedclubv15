@@ -1,5 +1,17 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "407063650804",
+    "category": "apparel",
+    "name": "Nashville Predators P.K. Subban Jersey - White, Size M",
+    "price": "$49.99",
+    "priceLabel": "Last listed price",
+    "brand": "Fanatics",
+    "soldOut": true,
+    "image": "407063650804.webp",
+    "slug": "nashville-predators-p-k-subban-jersey-white-size-m-407063650804",
+    "availableAgain": false
+  },
+  {
     "id": "407117478926",
     "category": "apparel",
     "name": "Chicago Bears Mike Ditka Jersey",

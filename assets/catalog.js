@@ -101,7 +101,7 @@ const DC_CATALOG = [
   { id: '406794914124', category: 'drinks', name: 'Mountain Dew Zero Sugar Frost Bite', detail: 'Black tab, full unopened 12 oz can, 2021', price: '$8.99', image: '4b55cca74675b8ca.webp' },
   { id: '406730391892', category: 'drinks', name: 'Mountain Dew Baja Point Break Punch', detail: 'Tropical punch, full 20 oz bottle, 2024', price: '$11.99', image: '9b5398669bcaea4d.webp' },
   { id: '406738141008', category: 'drinks', name: 'Mountain Dew Baja Laguna Lemonade', detail: 'Mango lemonade, full 12 oz can, 2024', price: '$7.99', image: 'ed8766fc4d8c8e54.webp' },
-  { id: '406794860747', category: 'drinks', name: "Mountain Dew Gingerbread Snap'd", detail: 'Full unopened 12 oz can, 2022', price: '$7.99', image: '40ab2123875d4cf0.webp', maxQuantity: 2 },
+  { id: '406794860747', category: 'drinks', name: "Mountain Dew Gingerbread Snap'd", detail: 'Full unopened 12 oz can, 2022', price: '$7.99', image: '40ab2123875d4cf0.webp', maxQuantity: 1 },
   { id: '406738058280', category: 'drinks', name: 'Pepsi x Peeps Marshmallow Cola', detail: 'Limited edition, full 20 oz bottle, 2023', price: '$8.99', image: 'a259117f32742e2a.webp' },
   { id: '406735072767', category: 'drinks', name: 'Mountain Dew Voo Dew 2', detail: 'Mystery flavor, four 16.9 oz bottles, 2020', price: '$29.99', image: '9540cd389082cad6.webp' },
   { id: '407085080884', category: 'drinks', name: 'Mountain Dew Baja Deep Dive', detail: 'Rare full unopened 16 oz can, 2023', price: '$34.99', image: 'b4b4e35b7cc955df.webp', featured: true },
@@ -121,7 +121,6 @@ const DC_CATALOG = [
   { id: '407063808795', category: 'apparel', name: 'Boston Bruins Taylor Hall Jersey', detail: 'NWT adidas alternate NHL jersey, size 54', price: '$69.99', image: 'mockups/407063808795.webp' },
   { id: '407063633707', category: 'apparel', name: 'Nashville Predators P.K. Subban Jersey', detail: 'NWT Fanatics NHL jersey, gold, men\'s size M', price: '$49.99', image: 'mockups/407063633707.webp' },
   { id: '406876226806', category: 'apparel', name: 'Powell Peralta Mini-Logo Skateboard', detail: 'Vintage teal 7.875-inch deck with warranty card, 2002', price: '$179.99', image: '3447acd32941fd18.webp', featured: true },
-  { id: '407063650804', category: 'apparel', name: 'Nashville Predators P.K. Subban Jersey', detail: 'NWT Fanatics NHL jersey, white, men\'s size M', price: '$49.99', image: 'mockups/407063650804.webp' },
   { id: '407063463950', category: 'apparel', name: 'Columbus Blue Jackets Sergei Bobrovsky Jersey', detail: 'NWT Fanatics NHL jersey, men\'s size M', price: '$49.99', image: 'mockups/407063463950.webp' },
   { id: '407120051396', category: 'apparel', name: 'Michigan Wolverines Jordan Football Jersey', detail: 'Number 1 yellow and blue V-neck, men\'s size S', price: '$49.99', image: '3dd9f435b93f0c64.webp' },
   { id: '407063539708', category: 'apparel', name: 'Buffalo Sabres Jack Eichel Jersey', detail: 'NWT Fanatics NHL jersey, blue, men\'s size L', price: '$49.99', image: 'mockups/407063539708.webp' },
@@ -193,7 +192,6 @@ const DC_SHIPPING_WEIGHTS_OZ = {
   '407063808795': 32,
   '407063633707': 32,
   '406876226806': 112,
-  '407063650804': 32,
   '407063463950': 32,
   '407120051396': 32,
   '407063539708': 32,
@@ -233,9 +231,9 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 70 },
+  all: { label: 'All items', count: 69 },
   drinks: { label: 'Rare drinks', count: 31 },
-  apparel: { label: 'Sports & apparel', count: 13 },
+  apparel: { label: 'Sports & apparel', count: 12 },
   'kids-shoes': { label: "Designer kids' shoes", count: 10 },
   collectibles: { label: 'Collectibles & cards', count: 11 },
   care: { label: 'Personal care', count: 4 },
