@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile, stat } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import sharp from 'sharp';
 
 const root = resolve(import.meta.dirname, '..');
 
@@ -15,7 +16,7 @@ test('homepage search stays separated from the benefits row at every breakpoint'
   }
 });
 
-test('campaign carousel promotes one real product per slide', async () => {
+test('campaign carousel promotes current products and the Pokemon collection', async () => {
   const html = await readFile(resolve(root, 'index.html'), 'utf8');
   const slides = html.match(/<article class="campaign-slide[\s\S]*?<\/article>/g) ?? [];
 
@@ -23,17 +24,40 @@ test('campaign carousel promotes one real product per slide', async () => {
   for (const [index, slide] of slides.entries()) {
     assert.equal((slide.match(/class="campaign-visual"/g) ?? []).length, 1);
     assert.equal((slide.match(/<img /g) ?? []).length, 1);
-    assert.match(slide, index < 3 ? /href="products\/[^"]+\.html"/ : /href="journal\/is-alani-nu-lime-slush-discontinued\.html"/);
+    const destination = index === 2
+      ? /href="out-now\.html\?category=collectibles"/
+      : index === 3
+        ? /href="journal\/is-alani-nu-lime-slush-discontinued\.html"/
+        : /href="products\/[^"]+\.html"/;
+    assert.match(slide, destination);
     assert.match(slide, /src="assets\/images\/campaign\/scenes\/[^"]+-desktop\.webp\?v=\d+"/);
     assert.match(slide, /srcset="assets\/images\/campaign\/scenes\/[^"]+-mobile\.webp\?v=\d+"/);
     assert.ok(slide.includes('aria-label="' + (index + 1) + ' of 4"'));
   }
 
   assert.equal((html.match(/<strong>Out now<\/strong>/gi) ?? []).length, 1);
-  assert.match(html, /Destined Rivals four-pack/);
-  assert.match(html, /Two lots currently listed/);
+  assert.match(slides[2], /Pokemon booster bundles/);
+  assert.match(slides[2], /Ascended Heroes and Destined Rivals are here/);
+  assert.match(slides[2], /Journey Together, single packs, and more/);
+  assert.doesNotMatch(slides[2], /four-pack|Two lots|booster boxes/i);
   assert.doesNotMatch(html, /class="campaign-price"/);
   assert.doesNotMatch(slides.join(''), /Blueberry|407203102419|redbull-(desktop|mobile)/);
+});
+
+test('refreshed campaigns use native-resolution artwork and dedicated mobile compositions', async () => {
+  const html = await readFile(resolve(root, 'index.html'), 'utf8');
+  for (const campaign of ['liquid-carnage', 'pokemon-arrivals']) {
+    for (const size of ['desktop', 'mobile']) {
+      const file = 'assets/images/campaign/scenes/' + campaign + '-' + size + '.webp';
+      const metadata = await sharp(resolve(root, file)).metadata();
+      assert.ok(html.includes(file + '?v=1'));
+      assert.ok(metadata.width >= (size === 'desktop' ? 1900 : 1536));
+      assert.ok(metadata.height >= (size === 'desktop' ? 780 : 1024));
+      if (size === 'desktop') assert.ok(html.includes('width="' + metadata.width + '" height="' + metadata.height + '"'));
+      else assert.ok(html.includes('media="(max-width: 1000px)" srcset="' + file + '?v=1"'));
+    }
+  }
+  assert.doesNotMatch(html, /scenes\/(?:liquid|pokemon)-(?:desktop|mobile)\.webp/);
 });
 
 test('Lime Slush teaser stays last, indexable, and unavailable for purchase', async () => {
