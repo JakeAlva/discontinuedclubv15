@@ -66,6 +66,8 @@ packaging and campaign lighting/colors. No added headline or price.
 - Both Pokemon links open the collectibles category with boxes grouped first.
 - At 701-1000px, use the mobile composition beside the copy with contain sizing.
 - At 700px and below, copy and a 3:2 image stack vertically.
+- Above 1661px, contain the desktop artwork against the slide's base color so
+  the fixed-height carousel cannot crop the tops or bottoms of the products.
 - Dedicated image dimensions reserve space; the first image has high fetch
   priority and later slides remain lazy-loaded.
 - Canonical homepage and existing sitemap location remain unchanged.

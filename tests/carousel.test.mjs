@@ -58,6 +58,8 @@ test('refreshed campaigns use native-resolution artwork and dedicated mobile com
     }
   }
   assert.doesNotMatch(html, /scenes\/(?:liquid|pokemon)-(?:desktop|mobile)\.webp/);
+  const css = await readFile(resolve(root, 'assets/style.css'), 'utf8');
+  assert.match(css, /@media \(min-width: 1662px\)[\s\S]*?\.campaign-slide-pokemon \.campaign-media \{ object-fit: contain; object-position: right center; \}/);
 });
 
 test('Lime Slush teaser stays last, indexable, and unavailable for purchase', async () => {
