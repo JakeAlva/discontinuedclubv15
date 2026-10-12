@@ -15,6 +15,33 @@ const root = resolve(import.meta.dirname, '..');
 const read = (path) => readFile(resolve(root, path), 'utf8');
 const additions = [['407283282883', 1, 8202, 3], ['407281698826', 2, 5789, 4]];
 
+test('collectibles show bundles together, then single packs and the loose lot, with Funko last', async () => {
+  const orderedIds = ['407283282883', '407281698826', '407264808538', '407260159541', '407086892969', '407269224750', '407269188492', '407264848037', '407212006333', '407134944288', '406760868081'];
+  assert.deepEqual(catalog.filter((item) => item.category === 'collectibles').map((item) => item.id), orderedIds);
+  assert.deepEqual(catalog.slice(0, 10).map((item) => item.id), orderedIds.slice(0, 10));
+  assert.equal(catalog.at(-1).id, orderedIds.at(-1));
+  const html = await read('dist/out-now.html');
+  const positions = orderedIds.map((id) => html.indexOf(`assets/images/listings/branded/${id}.webp`));
+  assert.ok(positions.every((position, index) => position >= 0 && (!index || position > positions[index - 1])));
+});
+
+test('new bundle storefront images retain the DC footer and use fresh image URLs', async () => {
+  const footer = { left: 440, top: 1070, width: 340, height: 90 };
+  const reference = await sharp(resolve(root, 'assets/images/listings/branded/407260159541.webp'))
+    .extract(footer).greyscale().raw().toBuffer();
+  for (const [id] of additions) {
+    const brandedPath = `assets/images/listings/branded/${id}.webp`;
+    const branded = await readFile(resolve(root, brandedPath));
+    const merchant = await readFile(resolve(root, `assets/images/listings/merchant/${id}.webp`));
+    assert.notDeepEqual(branded, merchant, 'Storefront branding must not be replaced with the merchant image');
+    const actual = await sharp(branded).extract(footer).greyscale().raw().toBuffer();
+    const difference = actual.reduce((sum, value, index) => sum + Math.abs(value - reference[index]), 0) / actual.length;
+    assert.ok(difference < 3, `DC footer must match the established placement: ${difference}`);
+    assert.equal(findCatalogItem(id).imageVersion, '20261012-logo');
+    assert.ok((await read('dist/out-now.html')).includes(`${brandedPath}?v=20261012-logo`));
+  }
+});
+
 test('October 12 bundles have matching inventory, galleries, prices and indexable pages', async () => {
   assert.equal(catalog.length, 70);
   assert.equal(categories.collectibles.count, 11);

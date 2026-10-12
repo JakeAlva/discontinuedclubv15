@@ -1,13 +1,21 @@
 const DC_CATALOG = [
-  { id: '407283282883', category: 'collectibles', name: 'Pokemon Mega Evolution Ascended Heroes Booster Bundle', detail: 'One factory-sealed English booster bundle containing 6 booster packs. See all three product photos', condition: 'New/Factory Sealed', price: '$84.99', image: '407283282883.webp', maxQuantity: 1, brand: 'The Pokemon Company International', gallery: [
+  { id: '407283282883', category: 'collectibles', name: 'Pokemon Mega Evolution Ascended Heroes Booster Bundle', detail: 'One factory-sealed English booster bundle containing 6 booster packs. See all three product photos', condition: 'New/Factory Sealed', price: '$84.99', image: '407283282883.webp', imageVersion: '20261012-logo', maxQuantity: 1, brand: 'The Pokemon Company International', gallery: [
     { src: 'assets/images/listings/gallery/407283282883-2.webp', label: 'back of bundle' },
     { src: 'assets/images/listings/gallery/407283282883-3.webp', label: 'booster pack artwork reference' }
   ] },
-  { id: '407281698826', category: 'collectibles', name: 'Pokemon Destined Rivals Booster Bundle', detail: 'One factory-sealed English Scarlet & Violet booster bundle containing 6 booster packs. This is a sealed bundle, not the separate 4-pack lot', condition: 'New/Factory Sealed', price: '$59.99', image: '407281698826.webp', maxQuantity: 2, brand: 'The Pokemon Company International', gallery: [
+  { id: '407281698826', category: 'collectibles', name: 'Pokemon Destined Rivals Booster Bundle', detail: 'One factory-sealed English Scarlet & Violet booster bundle containing 6 booster packs. This is a sealed bundle, not the separate 4-pack lot', condition: 'New/Factory Sealed', price: '$59.99', image: '407281698826.webp', imageVersion: '20261012-logo', maxQuantity: 2, brand: 'The Pokemon Company International', gallery: [
     { src: 'assets/images/listings/gallery/407281698826-2.webp', label: 'back of bundle' },
     { src: 'assets/images/listings/gallery/407281698826-3.webp', label: 'booster pack artwork reference' },
     { src: 'assets/images/listings/gallery/407281698826-4.webp', label: 'bundle size reference' }
   ] },
+  { id: '407264808538', category: 'collectibles', name: 'Pokemon Mega Evolution Pitch Black Booster Bundle', detail: 'Factory-sealed English box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407264808538.webp', maxQuantity: 1 },
+  { id: '407260159541', category: 'collectibles', name: 'Pokemon Journey Together Booster Bundle', detail: 'Factory-sealed English Scarlet & Violet box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407260159541.webp', maxQuantity: 2 },
+  { id: '407086892969', category: 'collectibles', name: 'Pokemon Perfect Order Booster Bundle', detail: 'English box with 6 booster packs', price: '$38.99', image: '1c6ab9f4d119bded.webp', maxQuantity: 2 },
+  { id: '407269224750', category: 'collectibles', name: 'Pokemon Mega Evolution Chaos Rising Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407269224750.webp', maxQuantity: 3 },
+  { id: '407269188492', category: 'collectibles', name: 'Pokemon Surging Sparks Booster Pack', detail: 'Factory-sealed English Scarlet & Violet single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$6.99', image: '407269188492.webp', maxQuantity: 2 },
+  { id: '407264848037', category: 'collectibles', name: 'Pokemon Mega Evolution Perfect Order Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407264848037.webp', maxQuantity: 1 },
+  { id: '407212006333', category: 'collectibles', name: 'Pokemon TCG Mega Evolution Booster Pack', detail: 'Factory-sealed English single pack with 10 game cards', price: '$6.49', image: '407212006333.webp', maxQuantity: 3 },
+  { id: '407134944288', category: 'collectibles', name: 'Pokemon Destined Rivals 4-Pack Lot', detail: 'Four Scarlet & Violet booster packs, 40 cards total', price: '$32.99', image: '407134944288.webp', maxQuantity: 2 },
   { id: '407279351355', category: 'kids-shoes', name: 'adidas Yeezy Slide Pure Beige Infant Sandals - US 7K / EU 24', detail: "One pair of beige children's slides with heel straps. Pre-owned - Good; review all five condition photos. Original box not included", condition: 'Pre-owned - Good', price: '$24.99', image: '407279351355.webp', maxQuantity: 1, brand: 'adidas', productType: 'Apparel & Accessories > Shoes > Kids Sandals', size: '24', sizeSystem: 'EU', sizeLabel: 'US 7K / EU 24 (eBay listing)', color: 'Beige', gender: 'unisex', ageGroup: 'toddler', mpn: 'FW6348', googleProductCategory: '187', gallery: [
     { src: 'assets/images/listings/gallery/407279351355-2.webp', label: 'condition photo 2' },
     { src: 'assets/images/listings/gallery/407279351355-3.webp', label: 'condition photo 3' },
@@ -75,11 +83,6 @@ const DC_CATALOG = [
     { src: 'assets/images/listings/gallery/407274649287-5.webp', label: 'sole condition' },
     { src: 'assets/images/listings/gallery/407274649287-6.webp', label: 'size and product label' }
   ], imageVersion: '20261008-2' },
-  { id: '407269224750', category: 'collectibles', name: 'Pokemon Mega Evolution Chaos Rising Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407269224750.webp', maxQuantity: 3 },
-  { id: '407269188492', category: 'collectibles', name: 'Pokemon Surging Sparks Booster Pack', detail: 'Factory-sealed English Scarlet & Violet single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$6.99', image: '407269188492.webp', maxQuantity: 2 },
-  { id: '407264848037', category: 'collectibles', name: 'Pokemon Mega Evolution Perfect Order Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407264848037.webp', maxQuantity: 1 },
-  { id: '407264808538', category: 'collectibles', name: 'Pokemon Mega Evolution Pitch Black Booster Bundle', detail: 'Factory-sealed English box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407264808538.webp', maxQuantity: 1 },
-  { id: '407260159541', category: 'collectibles', name: 'Pokemon Journey Together Booster Bundle', detail: 'Factory-sealed English Scarlet & Violet box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407260159541.webp', maxQuantity: 2 },
   { id: '407207373104', category: 'drinks', name: 'Red Bull Red Edition Sugar Free Watermelon (4-Pack)', detail: 'Four discontinued 12 fl oz watermelon energy drink cans', price: '$59.99', image: '407207373104.webp', featured: true },
   { id: '407205665076', category: 'drinks', name: 'Monster Juice Strawberry Lemonade', detail: 'Limited discontinued energy and juice drink, full 16 fl oz can', price: '$12.99', image: '407205665076.webp', featured: true },
   { id: '407205596661', category: 'drinks', name: "Monster Reserve Peaches N' Creme (2-Pack)", detail: 'Two discontinued 16 fl oz energy drink cans', price: '$15.99', image: '407205596661.webp' },
@@ -127,15 +130,11 @@ const DC_CATALOG = [
   { id: '407064096234', category: 'apparel', name: "St. Louis Blues Ryan O'Reilly Jersey", detail: 'NWT adidas NHL jersey, blue, size 46', price: '$69.99', image: 'mockups/407064096234.webp' },
   { id: '407086613910', category: 'apparel', name: 'Los Angeles Kings Anze Kopitar Jersey', detail: 'NWT adidas captain NHL jersey, size 46', price: '$149.99', image: 'mockups/407086613910.webp' },
 
-  { id: '406760868081', category: 'collectibles', name: 'Funko Pop! Wayne Gretzky #45', detail: 'Los Angeles Kings NHL vinyl figure', price: '$12.99', image: '8da5a3eda84b0bca.webp' },
-  { id: '407086892969', category: 'collectibles', name: 'Pokemon Perfect Order Booster Bundle', detail: 'English box with 6 booster packs', price: '$38.99', image: '1c6ab9f4d119bded.webp', maxQuantity: 2 },
-  { id: '407134944288', category: 'collectibles', name: 'Pokemon Destined Rivals 4-Pack Lot', detail: 'Four Scarlet & Violet booster packs, 40 cards total', price: '$32.99', image: '407134944288.webp', maxQuantity: 2 },
-  { id: '407212006333', category: 'collectibles', name: 'Pokemon TCG Mega Evolution Booster Pack', detail: 'Factory-sealed English single pack with 10 game cards', price: '$6.49', image: '407212006333.webp', maxQuantity: 3 },
-
   { id: '406763784733', category: 'care', name: 'Caress Shea Butter & Brown Sugar Body Wash', detail: 'Exfoliating and hydrating, 20 fl oz', price: '$9.99', image: '933162e9baba7be6.webp', maxQuantity: 2 },
   { id: '406763456229', category: 'care', name: 'Softsoap Holiday Body Wash', detail: 'Peppermint candy and sugar cookie, 20 fl oz', price: '$29.99', image: '5b78e750ba88fb29.webp' },
   { id: '406763511763', category: 'care', name: 'Suave Coconut Oil Damage Repair Shampoo', detail: 'Suave Professionals, 12.6 fl oz', price: '$9.99', image: '773e3d2aa2065cf1.webp', maxQuantity: 3 },
-  { id: '406761145645', category: 'care', name: 'Dial Cocoa Butter Body Wash', detail: 'Exfoliate & Restore with orange extract, 16 fl oz', price: '$7.99', image: '861b2cb7c330d553.webp' }
+  { id: '406761145645', category: 'care', name: 'Dial Cocoa Butter Body Wash', detail: 'Exfoliate & Restore with orange extract, 16 fl oz', price: '$7.99', image: '861b2cb7c330d553.webp' },
+  { id: '406760868081', category: 'collectibles', name: 'Funko Pop! Wayne Gretzky #45', detail: 'Los Angeles Kings NHL vinyl figure', price: '$12.99', image: '8da5a3eda84b0bca.webp' }
 ];
 
 // Conservative packaged weights keep direct shipping from being undercharged.
