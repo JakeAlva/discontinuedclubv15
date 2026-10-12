@@ -15,12 +15,12 @@ const read = (file) => readFile(resolve(root, file), 'utf8');
 const id = '407260159541';
 const href = `products/pokemon-journey-together-booster-bundle-${id}.html`;
 
-test('Journey Together restock uses the new eBay listing, price and one-box stock', async () => {
+test('Journey Together restock uses the current eBay listing, price and two-box stock', async () => {
   const item = findCatalogItem(id);
   assert.ok(catalog.length >= 56);
   assert.equal(item.price, '$39.99');
   assert.equal(directPriceCents(item), 3859);
-  assert.equal(maxQuantity(item), 1);
+  assert.equal(maxQuantity(item), 2);
   assert.match(item.detail, /Factory-sealed English.*6 booster packs/);
   assert.equal(item.shippingWeightOz, 24);
   assert.equal(storeConfig.freeShippingThresholdCents, 20000);
@@ -42,7 +42,7 @@ test('Journey Together restock uses the new eBay listing, price and one-box stoc
   }
 });
 
-test('two boxes cannot be submitted to checkout when only one is available', async () => {
+test('three boxes cannot be submitted to checkout when only two are available', async () => {
   const keys = ['STRIPE_CHECKOUT_ENABLED', 'STRIPE_SECRET_KEY'];
   const previous = keys.map((key) => process.env[key]);
   process.env.STRIPE_CHECKOUT_ENABLED = 'true';
@@ -50,7 +50,7 @@ test('two boxes cannot be submitted to checkout when only one is available', asy
   try {
     const response = await createCheckout(new Request('https://discontinuedclub.com/.netlify/functions/create-checkout', {
       method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'https://discontinuedclub.com' },
-      body: JSON.stringify({ items: [{ id, quantity: 2 }] })
+      body: JSON.stringify({ items: [{ id, quantity: 3 }] })
     }));
     assert.equal(response.status, 400);
   } finally {

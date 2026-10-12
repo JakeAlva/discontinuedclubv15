@@ -38,7 +38,8 @@ test('roundups are searchable under each covered brand and the new launch status
     }
   }
   assert.ok(selectReports(index, { ...base, q: 'pineapple coconut' }).items.some((item) => item.slug === 'core-power-banana-powerade-watermelon-new-drink-flavors'));
-  assert.equal(selectReports(index, { ...base, brand: 'Monster Energy' }).total, 0);
+  const monsterLaunches = selectReports(index, { ...base, brand: 'Monster Energy' });
+  assert.ok(monsterLaunches.items.every((item) => !launchReports.some((report) => report.slug === item.slug)));
 });
 
 test('new articles have crawlable discovery, accurate schema, and no sales or discontinued boilerplate', async () => {

@@ -31,6 +31,8 @@ import { smoodCandyDatesReport } from './smood-candy-dates-report.mjs';
 import { sevenUpShirleyTempleReport } from './seven-up-shirley-temple-report.mjs';
 import { bauduccoSkippyReport } from './bauducco-skippy-report.mjs';
 import { utzChickenDippingSauceReport } from './utz-chicken-dipping-sauce-report.mjs';
+import { alaniLimeSlushReturnReport } from './alani-lime-slush-return-report.mjs';
+import { javaMonsterDubaiChocolateReport } from './java-monster-dubai-chocolate-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -423,43 +425,51 @@ export const reports = [
   },
   {
     slug: 'is-alani-nu-lime-slush-discontinued',
-    modifiedDate: '2026-09-16',
-    brand: 'Alani Nu', product: 'Alani Nu Lime Slush', theme: 'green', statusKey: 'discontinued', statusLabel: 'Discontinued in U.S.', lane: 'U.S. limited-release status report', readTime: 8,
+    modifiedDate: '2026-10-12',
+    brand: 'Alani Nu', product: 'Alani Nu Lime Slush', theme: 'green', statusKey: 'discontinued', statusLabel: 'Limited run ended; return rumored', lane: 'U.S. limited-release status report', readTime: 5,
     title: 'Is Alani Nu Lime Slush discontinued?', seoTitle: 'Is Alani Nu Lime Slush Discontinued? 2026 U.S. Status',
-    description: 'Yes. Alani Nu Lime Slush was a limited U.S. release whose run has ended in 2026. See the evidence, remaining-stock signals, and what a return would look like.',
-    deck: 'Yes, under a U.S. availability definition. Lime Slush was a limited release and is no longer part of the normally replenished Alani Nu range, although late inventory and requests for a comeback remain visible.',
-    answerHeading: 'Yes. Alani Nu Lime Slush’s limited U.S. run has ended.',
-    answer: 'Lime Slush launched as a limited product rather than a permanent U.S. flavor. Its SmartLabel record and 2026 retail reviews establish that it was a real current release earlier in the year; later sell-through, disappearance from the regular range, and an organized fan campaign to bring it back establish that the limited run ended. A future seasonal return remains possible.',
-    sidebar: 'The 2026 limited release ended; a future comeback is possible but not currently announced.', evidenceGrade: 'Moderate', evidenceNote: 'Official product record plus retail chronology and community comeback activity; no public permanent-discontinuation notice.',
+    description: 'Lime Slush was a limited 2026 U.S. release. Its initial run ended, but a return is now rumored. See the October update and why permanent cancellation is not confirmed.',
+    deck: 'The original limited release has run its course, but that does not establish permanent cancellation. New comeback claims are circulating, with no verified return date in the sources reviewed.',
+    answerHeading: 'The original limited run ended. A return is now rumored.',
+    answer: 'Lime Slush launched as a limited U.S. flavor in early 2026. Its original release window has passed, but we have not verified an exact last-production date or a permanent-cancellation notice. As of October 12, public posts claim a future return; we have not independently confirmed their dates or permanent-lineup claims.',
+    sidebar: 'Original limited run ended; comeback timing remains unconfirmed.', evidenceGrade: 'Documented limited release; unverified return', evidenceNote: 'Launch reporting establishes limited status, not a permanent cancellation or confirmed comeback.',
     image: 'assets/images/journal/alani-lime-slush.webp', imageAlt: 'One bright green Alani Nu Lime Slush 12 ounce can', caption: 'Alani Nu Lime Slush. Currently unavailable from Discontinued Club; one four-pack is reserved for a future release with no announced date.',
-    cardCopy: 'The bright green limited release ended after its 2026 U.S. run; remaining packs are sell-through inventory.',
+    cardCopy: 'The original limited run ended. Our October update separates the new comeback rumors from verified release history.',
+    relatedSlugs: ['is-alani-lime-slush-coming-back-return-rumor', 'alani-voodoo-vanilla-sold-out-discontinued'],
     sections: [
-      { id: 'limited-release', heading: 'Why a limited release counts as discontinued now', toc: 'Limited-run status', paragraphs: [
-        'A limited release has an intended end even when the brand does not issue a dramatic cancellation statement. Once normal production and replenishment stop, the flavor is discontinued for the current U.S. market. It can still return later as a seasonal or fan-favorite relaunch.',
-        'That definition answers the shopper’s practical question: should they expect ordinary stores to keep restocking it? For Lime Slush, the evidence now points to sell-through rather than ongoing placement.'
+      { id: 'october-update', heading: 'October update: a comeback is being discussed', toc: 'The return rumor', paragraphs: [
+        '<strong>October 12, 2026:</strong> Public community posts mention a November 2026 return and a permanent 2027 comeback. We have not authenticated either as an official Alani Nu schedule. Read our <a href="journal/is-alani-lime-slush-coming-back-return-rumor.html">Lime Slush return-rumor report</a> for the dated claims and source checks.',
+        'We have revised this guide to avoid equating the end of a limited launch with permanent cancellation. Earlier wording was too definite about ongoing replenishment; the public sources do not establish the exact final production or distribution date.'
+      ]},
+      { id: 'limited-release', heading: 'What the limited-release label establishes', toc: 'Limited-run status', paragraphs: [
+        '<a href="https://www.foodbev.com/news/alani-nu-unveils-limited-edition-lime-slush-energy-drink-for-spring" target="_blank" rel="noopener noreferrer">February launch coverage</a> described Lime Slush as a limited edition. That supports treating the original spring launch as a limited run rather than assuming it was promised permanent shelf space.',
+        'Limited does not mean never again. A later seasonal launch, renewed distribution or permanent addition would be a separate development that needs its own evidence.'
       ]},
       { id: 'timeline', heading: 'What the 2026 timeline shows', toc: '2026 timeline', paragraphs: [
         'PepsiCo’s official SmartLabel database carried a Lime Slush product record updated in February 2026, and major-retailer reviews continued into the summer. Those sources establish that the flavor was genuinely circulating in the United States during 2026 rather than being an old rumor or mockup.',
-        'Later in the year, fans organized requests for Alani Nu to bring Lime Slush back. A comeback campaign does not prove an exact last-production date, but it is consistent with a limited item that stopped receiving normal replenishment after its launch window.'
+        'Later in the year, fans organized requests for Alani Nu to bring Lime Slush back. A campaign establishes consumer interest, not an exact production cutoff. Likewise, a missing product page alone cannot establish a permanent cancellation.'
       ]},
       { id: 'remaining-packs', heading: 'Why four-packs can still be available', toc: 'Remaining packs', paragraphs: [
         '<strong>Store availability update, September 16, 2026:</strong> Discontinued Club has sold the last Lime Slush four-pack offered for sale on eBay and now has zero packs available to purchase. The <a href="sold/alani-nu-lime-slush-4-pack-407205693415.html">sold-out listing archive</a> remains available for reference.',
         '<strong>A future Discontinued Club drop:</strong> We are holding one separate four-pack for a future release. It is not available to buy or preorder, and no release date has been announced. This is existing inventory reserved by our store, not an announcement of new production or a manufacturer relaunch.',
-        'Retail and specialty inventory can outlast a limited run. Stores may sell through cases at different speeds, while marketplace sellers can hold packs specifically because the flavor became scarce. Availability after the run is expected and does not make the item permanent.',
+        'Retail and specialty inventory can outlast a limited run. A listing alone does not tell us its production date or prove a manufacturer relaunch. Stores and marketplace sellers can hold inventory for different lengths of time.',
         'Check the seller’s photos, pack quantity, can condition, and date markings. Lime Slush was sold in several retail configurations, so a single can, a four-pack, and a case should not be treated as interchangeable listings.'
       ]},
       { id: 'return', heading: 'Could Lime Slush come back?', toc: 'Possible return', paragraphs: [
-        'Yes. Alani Nu rotates seasonal and limited flavors, and fan demand can influence future calendars. A new announcement, refreshed product page, and renewed broad U.S. retail distribution would change this report from discontinued to returning or current.',
-        'Until that happens, social requests and isolated packs are not a relaunch. This page will preserve the distinction between “people want it back” and “Alani Nu has confirmed it is back.”'
+        'Yes, but possibility is not confirmation. A dated Alani Nu announcement specifying the U.S. market and a release window would provide stronger evidence than a reposted schedule claim.',
+        'The new rumor report tracks the comeback claims separately from this historical guide. A future store drop from Discontinued Club would also be separate from any manufacturer relaunch.'
       ]}
     ],
     faq: [
-      { question: 'Is Alani Nu Lime Slush discontinued?', answer: 'Yes. Its limited U.S. run ended in 2026 and it is no longer in normal replenishment.' },
+      { question: 'Is Alani Nu Lime Slush discontinued?', answer: 'Its original limited 2026 U.S. run ended, but permanent cancellation is not verified. A return is rumored as of October 12, with no independently confirmed date.' },
       { question: 'Was Lime Slush a permanent flavor?', answer: 'No. The evidence points to a limited release rather than a permanent addition.' },
       { question: 'Can Lime Slush return?', answer: 'Yes. A limited flavor can return in a later seasonal or promotional window.' },
-      { question: 'Why are four-packs still online?', answer: 'Retailers and specialty sellers can continue selling inventory after production and routine replenishment end.' }
+      { question: 'Why are four-packs still online?', answer: 'Remaining stock can outlast a limited run. A product listing alone does not establish when the cans were made or whether production has restarted.' }
     ],
+    statusParagraphs: ['This page describes the original limited U.S. release. It does not establish permanent cancellation; the new return claims remain unconfirmed as of October 12, 2026.'],
     sources: [
+      { label: 'FoodBev: original limited-edition Lime Slush launch', url: 'https://www.foodbev.com/news/alani-nu-unveils-limited-edition-lime-slush-energy-drink-for-spring', note: 'February 26, 2026; original limited-release status' },
+      { label: 'Alani Nu community: new comeback claim', url: 'https://www.reddit.com/r/AlaniNu/comments/1wvi7sm/lime_slush_comeback_alert/', note: 'October 2, 2026; unverified return rumor, checked October 12' },
       { label: 'PepsiCo SmartLabel: Alani Nu Lime Slush', url: 'https://smartlabel.pepsico.info/810175041650-0001-en-US/index.html', note: 'official product record updated February 7, 2026' },
       { label: 'Target: Alani Nu Lime Slush customer timeline', url: 'https://www.target.com/p/-/A-95062908', note: 'retail reviews checked September 11, 2026' },
       { label: 'Alani Nu community: Lime Slush comeback campaign', url: 'https://www.reddit.com/r/AlaniNu/comments/1vp5z2m/update_we_hit_100_signatures_to_bring_back_alani/', note: 'community signal, not manufacturer confirmation' }
@@ -729,5 +739,7 @@ export const reports = [
   smoodCandyDatesReport,
   sevenUpShirleyTempleReport,
   bauduccoSkippyReport,
-  utzChickenDippingSauceReport
+  utzChickenDippingSauceReport,
+  alaniLimeSlushReturnReport,
+  javaMonsterDubaiChocolateReport
 ];

@@ -64,7 +64,7 @@ test('journal separates U.S. discontinuations, current formats, and unconfirmed 
   const ultraRed = reports.find((report) => report.slug === 'is-monster-ultra-red-discontinued');
   const liveWire = reports.find((report) => report.slug === 'is-mountain-dew-livewire-discontinued');
   const fujiApple = reports.find((report) => report.slug === 'is-red-bull-fuji-apple-ginger-discontinued');
-  const rumors = reports.filter((report) => report.statusKey === 'rumor');
+  const rumors = reports.filter((report) => report.statusKey === 'rumor' && /Monster/.test(report.product));
 
   assert.equal(blueberry.statusKey, 'discontinued');
   assert.equal(ultraRed.statusKey, 'discontinued');

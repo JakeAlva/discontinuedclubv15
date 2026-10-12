@@ -1,4 +1,13 @@
 const DC_CATALOG = [
+  { id: '407283282883', category: 'collectibles', name: 'Pokemon Mega Evolution Ascended Heroes Booster Bundle', detail: 'One factory-sealed English booster bundle containing 6 booster packs. See all three product photos', condition: 'New/Factory Sealed', price: '$84.99', image: '407283282883.webp', maxQuantity: 1, brand: 'The Pokemon Company International', gallery: [
+    { src: 'assets/images/listings/gallery/407283282883-2.webp', label: 'back of bundle' },
+    { src: 'assets/images/listings/gallery/407283282883-3.webp', label: 'booster pack artwork reference' }
+  ] },
+  { id: '407281698826', category: 'collectibles', name: 'Pokemon Destined Rivals Booster Bundle', detail: 'One factory-sealed English Scarlet & Violet booster bundle containing 6 booster packs. This is a sealed bundle, not the separate 4-pack lot', condition: 'New/Factory Sealed', price: '$59.99', image: '407281698826.webp', maxQuantity: 2, brand: 'The Pokemon Company International', gallery: [
+    { src: 'assets/images/listings/gallery/407281698826-2.webp', label: 'back of bundle' },
+    { src: 'assets/images/listings/gallery/407281698826-3.webp', label: 'booster pack artwork reference' },
+    { src: 'assets/images/listings/gallery/407281698826-4.webp', label: 'bundle size reference' }
+  ] },
   { id: '407279351355', category: 'kids-shoes', name: 'adidas Yeezy Slide Pure Beige Infant Sandals - US 7K / EU 24', detail: "One pair of beige children's slides with heel straps. Pre-owned - Good; review all five condition photos. Original box not included", condition: 'Pre-owned - Good', price: '$24.99', image: '407279351355.webp', maxQuantity: 1, brand: 'adidas', productType: 'Apparel & Accessories > Shoes > Kids Sandals', size: '24', sizeSystem: 'EU', sizeLabel: 'US 7K / EU 24 (eBay listing)', color: 'Beige', gender: 'unisex', ageGroup: 'toddler', mpn: 'FW6348', googleProductCategory: '187', gallery: [
     { src: 'assets/images/listings/gallery/407279351355-2.webp', label: 'condition photo 2' },
     { src: 'assets/images/listings/gallery/407279351355-3.webp', label: 'condition photo 3' },
@@ -70,7 +79,7 @@ const DC_CATALOG = [
   { id: '407269188492', category: 'collectibles', name: 'Pokemon Surging Sparks Booster Pack', detail: 'Factory-sealed English Scarlet & Violet single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$6.99', image: '407269188492.webp', maxQuantity: 2 },
   { id: '407264848037', category: 'collectibles', name: 'Pokemon Mega Evolution Perfect Order Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407264848037.webp', maxQuantity: 1 },
   { id: '407264808538', category: 'collectibles', name: 'Pokemon Mega Evolution Pitch Black Booster Bundle', detail: 'Factory-sealed English box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407264808538.webp', maxQuantity: 1 },
-  { id: '407260159541', category: 'collectibles', name: 'Pokemon Journey Together Booster Bundle', detail: 'Factory-sealed English Scarlet & Violet box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407260159541.webp', maxQuantity: 1 },
+  { id: '407260159541', category: 'collectibles', name: 'Pokemon Journey Together Booster Bundle', detail: 'Factory-sealed English Scarlet & Violet box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407260159541.webp', maxQuantity: 2 },
   { id: '407207373104', category: 'drinks', name: 'Red Bull Red Edition Sugar Free Watermelon (4-Pack)', detail: 'Four discontinued 12 fl oz watermelon energy drink cans', price: '$59.99', image: '407207373104.webp', featured: true },
   { id: '407205665076', category: 'drinks', name: 'Monster Juice Strawberry Lemonade', detail: 'Limited discontinued energy and juice drink, full 16 fl oz can', price: '$12.99', image: '407205665076.webp', featured: true },
   { id: '407205596661', category: 'drinks', name: "Monster Reserve Peaches N' Creme (2-Pack)", detail: 'Two discontinued 16 fl oz energy drink cans', price: '$15.99', image: '407205596661.webp' },
@@ -131,6 +140,8 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407283282883': 24,
+  '407281698826': 24,
   '407279351355': 12,
   '407279322970': 12,
   '407277346224': 64,
@@ -223,11 +234,11 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 68 },
+  all: { label: 'All items', count: 70 },
   drinks: { label: 'Rare drinks', count: 31 },
   apparel: { label: 'Sports & apparel', count: 13 },
   'kids-shoes': { label: "Designer kids' shoes", count: 10 },
-  collectibles: { label: 'Collectibles & cards', count: 9 },
+  collectibles: { label: 'Collectibles & cards', count: 11 },
   care: { label: 'Personal care', count: 4 },
   home: { label: 'Home & hobby', count: 1 }
 };
