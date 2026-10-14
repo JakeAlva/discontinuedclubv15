@@ -7,7 +7,8 @@ export async function generateJournalLibrary(root, reports) {
     slug: report.slug, title: report.title, product: report.product, brand: report.brand,
     ...(report.brands ? { brands: report.brands } : {}),
     statusKey: report.statusKey, statusLabel: report.statusLabel, image: report.image,
-    cardCopy: report.cardCopy, readTime: report.readTime, date: report.checkedDate || '2026-09-11'
+    cardCopy: report.cardCopy, readTime: report.readTime, date: report.checkedDate || '2026-09-11',
+    ...(report.editionDate ? { editionDate: report.editionDate } : {})
   }));
   const brands = [...new Set(index.flatMap((report) => report.brands || [report.brand]))].sort();
   const pages = Math.ceil(index.length / PAGE_SIZE);

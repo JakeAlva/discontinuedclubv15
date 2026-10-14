@@ -85,6 +85,7 @@ function relatedReports(report) {
 function articleMarkup(report) {
   const checkedDate = reportCheckedDate(report);
   const checkedLabel = checkedLabelFor(report);
+  const editionLabel = report.editionDate ? new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${report.editionDate}T00:00:00Z`)) : null;
   const updatedLabel = report.modifiedDate ? new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${report.modifiedDate}T00:00:00Z`)) : null;
   const hubLink = report.brand === 'Monster Energy'
     ? '<div class="article-hub-link"><strong>The complete research hub</strong><a href="discontinued-monster-energy-flavors.html">Discontinued Monster flavors: U.S. archive and timeline &rarr;</a></div>'
@@ -134,12 +135,12 @@ function articleMarkup(report) {
       <header class="article-hero article-hero-${report.theme}">
         <div class="container article-hero-grid">
           <div class="article-hero-copy">
-            <div class="article-status-row"><span class="journal-status status-${report.statusKey}">${report.statusLabel}</span><span>${report.lane}</span></div>
+            <div class="article-status-row"><span class="journal-status status-${report.statusKey}">${report.statusLabel}</span><span>${report.lane}</span></div>${editionLabel ? `\n            <p class="article-edition"><time datetime="${report.editionDate}">${editionLabel} edition</time></p>` : ''}
             <h1>${report.title}</h1>
             <p class="article-deck">${report.deck}</p>
             <div class="article-byline"><span>By Discontinued Club Research</span><time datetime="${checkedDate}">Published ${checkedLabel}</time>${updatedLabel ? `<time datetime="${report.modifiedDate}">Updated ${updatedLabel}</time>` : ''}<span>${report.readTime} minute read</span></div>
           </div>
-          <figure class="article-hero-media${report.imageWidth > report.imageHeight ? ' article-hero-media-wide' : ''}"><img src="${report.image}" alt="${report.imageAlt}" width="${report.imageWidth || 1200}" height="${report.imageHeight || 1200}" style="aspect-ratio: ${report.imageWidth && report.imageHeight ? `${report.imageWidth} / ${report.imageHeight}` : '1 / 1'}" fetchpriority="high"><figcaption>${report.caption}${imageCredit}</figcaption></figure>
+          <figure class="article-hero-media${report.imageWidth > report.imageHeight ? ' article-hero-media-wide' : ''}"><img src="${report.image}" alt="${report.imageAlt}" width="${report.imageWidth || 1200}" height="${report.imageHeight || 1200}" style="aspect-ratio: ${report.imageWidth >= report.imageHeight ? `${report.imageWidth} / ${report.imageHeight}` : '1 / 1'}" fetchpriority="high"><figcaption>${report.caption}${imageCredit}</figcaption></figure>
         </div>
       </header>
       <div class="container article-layout">

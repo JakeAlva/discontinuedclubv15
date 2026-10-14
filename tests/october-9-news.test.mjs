@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { XMLParser } from 'fast-xml-parser';
@@ -17,12 +17,14 @@ const body = (report) => report.sections.flatMap((section) => section.paragraphs
 
 test('October 9 articles are discoverable, indexable and use credited full-size product images', async () => {
   const sitemap = new XMLParser().parse(await read('dist/sitemap-journal.xml')).urlset.url.map((item) => item.loc);
+  const pages = (await readdir(resolve(root, 'dist'))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const library = (await Promise.all(pages.map((file) => read(`dist/${file}`)))).join('');
   for (const report of additions) {
     assert.ok(reports.includes(report));
     const href = `journal/${report.slug}.html`;
     const canonical = `https://discontinuedclub.com/${href}`;
     assert.equal(sitemap.filter((url) => url === canonical).length, 1);
-    for (const file of ['dist/index.html', 'dist/blog.html']) assert.ok((await read(file)).includes(`href="${href}"`), file);
+    assert.ok(library.includes(`href="${href}"`), 'Older articles remain linked through journal pagination');
     const html = await read(`dist/${href}`);
     assert.ok(html.includes(`rel="canonical" href="${canonical}"`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);

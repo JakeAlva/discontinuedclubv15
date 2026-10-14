@@ -32,7 +32,7 @@ export function selectReports(reports, state) {
     return words.every((word) => text.includes(word));
   }).sort((a, b) => state.sort === 'az'
     ? a.product.localeCompare(b.product, 'en') || a.slug.localeCompare(b.slug)
-    : b.date.localeCompare(a.date) || a.product.localeCompare(b.product, 'en') || a.slug.localeCompare(b.slug));
+    : (b.editionDate || b.date).localeCompare(a.editionDate || a.date) || a.product.localeCompare(b.product, 'en') || a.slug.localeCompare(b.slug));
   const pages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
   const page = Math.min(pages, Math.max(1, Number.isSafeInteger(state.page) ? state.page : 1));
   return { total: filtered.length, pages, page, items: filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE) };
@@ -58,8 +58,9 @@ export function stateHref(state, page = state.page) {
 export function cardMarkup(report) {
   const e = escapeHtml;
   const href = `journal/${e(report.slug)}.html`;
-  const date = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${report.date}T00:00:00Z`));
-  return `<article class="journal-entry"><a class="journal-entry-image" href="${href}" tabindex="-1" aria-hidden="true"><img src="${e(report.image)}" alt="" width="100" height="160" loading="lazy"></a><div class="journal-entry-copy"><div class="journal-entry-meta"><span class="journal-status status-${e(report.statusKey)}">${e(report.statusLabel)}</span></div><h2><a href="${href}">${e(report.title)}</a></h2><p>${e(report.cardCopy)}</p><div class="journal-entry-date"><time datetime="${e(report.date)}">${date}</time><span>${e(report.readTime)} min read</span></div></div></article>`;
+  const displayDate = report.editionDate || report.date;
+  const date = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${displayDate}T00:00:00Z`));
+  return `<article class="journal-entry"><a class="journal-entry-image" href="${href}" tabindex="-1" aria-hidden="true"><img src="${e(report.image)}" alt="" width="100" height="160" loading="lazy"></a><div class="journal-entry-copy"><div class="journal-entry-meta"><span class="journal-status status-${e(report.statusKey)}">${e(report.statusLabel)}</span></div><h2><a href="${href}">${e(report.title)}</a></h2><p>${e(report.cardCopy)}</p><div class="journal-entry-date"><time datetime="${e(displayDate)}">${date}${report.editionDate ? ' edition' : ''}</time><span>${e(report.readTime)} min read</span></div></div></article>`;
 }
 
 export function paginationMarkup(result, state) {
