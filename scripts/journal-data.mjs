@@ -37,6 +37,10 @@ import { prodaProteinSodaReport } from './proda-protein-soda-report.mjs';
 import { littleDebbieHoliday2026Report } from './little-debbie-holiday-2026-report.mjs';
 import { olipopPomegranateSparkleReport } from './olipop-pomegranate-sparkle-report.mjs';
 import { dunkinBerryBattieReport } from './dunkin-berry-battie-report.mjs';
+import { hintTreatYourselfReport } from './hint-treat-yourself-report.mjs';
+import { wingstopWickedPunchReport } from './wingstop-wicked-punch-report.mjs';
+import { poppiSourAppleReport } from './poppi-sour-apple-report.mjs';
+import { dotsChipotleHoneyReport } from './dots-chipotle-honey-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -749,5 +753,9 @@ export const reports = [
   prodaProteinSodaReport,
   littleDebbieHoliday2026Report,
   olipopPomegranateSparkleReport,
-  dunkinBerryBattieReport
+  dunkinBerryBattieReport,
+  hintTreatYourselfReport,
+  wingstopWickedPunchReport,
+  poppiSourAppleReport,
+  dotsChipotleHoneyReport
 ];
