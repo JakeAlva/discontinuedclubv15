@@ -40,6 +40,9 @@ import { dunkinBerryBattieReport } from './dunkin-berry-battie-report.mjs';
 import { hintTreatYourselfReport } from './hint-treat-yourself-report.mjs';
 import { wingstopWickedPunchReport } from './wingstop-wicked-punch-report.mjs';
 import { poppiSourAppleReport } from './poppi-sour-apple-report.mjs';
+import { pepsiBlueStatusReport } from './pepsi-blue-status-report.mjs';
+import { bublyFallMocktailsReport } from './bubly-fall-mocktails-report.mjs';
+import { kidfreshMiniMuffinsReport } from './kidfresh-mini-muffins-report.mjs';
 import { dotsChipotleHoneyReport } from './dots-chipotle-honey-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
@@ -757,5 +760,8 @@ export const reports = [
   hintTreatYourselfReport,
   wingstopWickedPunchReport,
   poppiSourAppleReport,
-  dotsChipotleHoneyReport
+  dotsChipotleHoneyReport,
+  pepsiBlueStatusReport,
+  bublyFallMocktailsReport,
+  kidfreshMiniMuffinsReport
 ];

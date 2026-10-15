@@ -83,6 +83,7 @@ const DC_CATALOG = [
     { src: 'assets/images/listings/gallery/407274649287-5.webp', label: 'sole condition' },
     { src: 'assets/images/listings/gallery/407274649287-6.webp', label: 'size and product label' }
   ], imageVersion: '20261008-2' },
+  { id: '407290859464', category: 'drinks', name: 'Pepsi Blue Berry Cola - 2021 Bottle', detail: 'One full, unopened 16.9 fl oz (500 mL) bottle from the 2021 U.S. release. Older collectible stock, not a new production run', condition: 'New', price: '$12.99', image: '407290859464.webp', maxQuantity: 1, brand: 'Pepsi', purchaseNote: 'Sold as an older collectible bottle from 2021. An unopened seal is not a guarantee of freshness or suitability for drinking. No expiration date has been verified; contact us for label details before purchasing.' },
   { id: '407207373104', category: 'drinks', name: 'Red Bull Red Edition Sugar Free Watermelon (4-Pack)', detail: 'Four discontinued 12 fl oz watermelon energy drink cans', price: '$59.99', image: '407207373104.webp', featured: true },
   { id: '407205665076', category: 'drinks', name: 'Monster Juice Strawberry Lemonade', detail: 'Limited discontinued energy and juice drink, full 16 fl oz can', price: '$12.99', image: '407205665076.webp', featured: true },
   { id: '407205596661', category: 'drinks', name: "Monster Reserve Peaches N' Creme (2-Pack)", detail: 'Two discontinued 16 fl oz energy drink cans', price: '$15.99', image: '407205596661.webp' },
@@ -137,6 +138,7 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407290859464': 32,
   '407283282883': 24,
   '407281698826': 24,
   '407279351355': 12,
@@ -229,8 +231,8 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 68 },
-  drinks: { label: 'Rare drinks', count: 30 },
+  all: { label: 'All items', count: 69 },
+  drinks: { label: 'Rare drinks', count: 31 },
   apparel: { label: 'Sports & apparel', count: 12 },
   'kids-shoes': { label: "Designer kids' shoes", count: 10 },
   collectibles: { label: 'Collectibles & cards', count: 11 },

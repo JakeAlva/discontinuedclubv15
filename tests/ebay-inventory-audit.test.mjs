@@ -6,10 +6,12 @@ import { catalog, categories, directPriceCents, maxQuantity } from '../lib/store
 
 const read = (file) => readFile(new URL(`../${file}`, import.meta.url), 'utf8');
 const audit = JSON.parse(await read('data/ebay-inventory-audit-2026-10-12.json'));
+const pepsiBlue = JSON.parse(await read('data/ebay-listing-407290859464-2026-10-15.json'));
+const active = [...audit.active, [pepsiBlue.id, pepsiBlue.quantity, pepsiBlue.price]];
 
-test('every active listing matches the complete October 12 eBay quantity and price audit', () => {
-  const expected = new Map(audit.active.map(([id, quantity, price]) => [id, { quantity, price }]));
-  assert.equal(expected.size, audit.active.length, 'Audit must not contain duplicate listing IDs');
+test('active listings match the October 12 audit plus the verified October 15 Pepsi Blue addition', () => {
+  const expected = new Map(active.map(([id, quantity, price]) => [id, { quantity, price }]));
+  assert.equal(expected.size, active.length, 'Audit must not contain duplicate listing IDs');
   assert.deepEqual(catalog.map((item) => item.id).sort(), [...expected.keys()].sort());
   for (const item of catalog) {
     assert.equal(maxQuantity(item), expected.get(item.id).quantity, `${item.id} ${item.name}: available listing units`);
@@ -23,7 +25,7 @@ test('every active listing matches the complete October 12 eBay quantity and pri
 
 test('published catalog, purchase limits and feed use the audited inventory', async () => {
   const feed = new XMLParser({ parseTagValue: false }).parse(await read('google-merchant-feed.xml')).rss.channel.item;
-  assert.deepEqual(feed.map((item) => item['g:id']).sort(), audit.active.map(([id]) => `dc-${id}`).sort());
+  assert.deepEqual(feed.map((item) => item['g:id']).sort(), active.map(([id]) => `dc-${id}`).sort());
   const publicCatalog = await read('dist/assets/catalog.js');
   assert.equal(publicCatalog, await read('assets/catalog.js'));
   for (const item of catalog) {
@@ -41,6 +43,6 @@ test('published catalog, purchase limits and feed use the audited inventory', as
     assert.ok(!(await read('dist/out-now.html')).includes(id), `${id} must not appear in static shop listings`);
   }
   for (const file of ['dist/index.html', 'dist/out-now.html']) {
-    assert.ok((await read(file)).includes('data-listing-count="all">68</span>'), file);
+    assert.ok((await read(file)).includes(`data-listing-count="all">${active.length}</span>`), file);
   }
 });

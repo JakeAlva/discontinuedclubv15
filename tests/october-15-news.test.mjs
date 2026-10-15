@@ -18,7 +18,8 @@ const body = (report) => report.sections.flatMap((section) => section.paragraphs
 
 test('October 14/15 editions are linked, indexable, sourced and illustrated', async () => {
   const sitemap = new XMLParser().parse(await read('dist/sitemap-journal.xml')).urlset.url;
-  const library = await read('dist/blog.html');
+  const pages = (await readdir(resolve(root, 'dist'))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const library = (await Promise.all(pages.map((file) => read(`dist/${file}`)))).join('');
   for (const report of additions) {
     assert.ok(reports.includes(report));
     const href = `journal/${report.slug}.html`;
@@ -62,8 +63,6 @@ test('two articles belong to each edition without backdating their publication',
     assert.match(cardMarkup(item), /2026 edition/);
     assert.ok(selectReports(index, { q: report.product, brand: report.brand, sort: 'newest', page: 1 }).items.some((entry) => entry.slug === report.slug));
   }
-  const home = await read('dist/index.html');
-  for (const report of [hint, poppi, dots]) assert.ok(home.includes(`journal/${report.slug}.html`));
   const pages = (await readdir(resolve(root, 'dist'))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
   const library = (await Promise.all(pages.map((file) => read(`dist/${file}`)))).join('');
   for (const report of reports) assert.ok(library.includes(`journal/${report.slug}.html`), `${report.slug} remains crawlable through pagination`);

@@ -43,7 +43,7 @@ test('new bundle storefront images retain the DC footer and use fresh image URLs
 });
 
 test('October 12 bundles have matching inventory, galleries, prices and indexable pages', async () => {
-  assert.equal(catalog.length, 68);
+  assert.equal(catalog.length, categories.all.count);
   assert.equal(categories.collectibles.count, 11);
   const feed = new XMLParser({ parseTagValue: false }).parse(await read('google-merchant-feed.xml')).rss.channel.item;
   for (const [id, quantity, cents, photos] of additions) {
