@@ -1,5 +1,6 @@
 import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
+import { createHash } from 'node:crypto';
 import { catalog } from '../lib/store-catalog.mjs';
 import { renderListingCounts } from '../lib/catalog-file.mjs';
 import { renderStaticCatalogs } from './static-catalog.mjs';
@@ -16,7 +17,12 @@ const excludedPages = new Set([
 ]);
 const rootFiles = await readdir(root, { withFileTypes: true });
 const faviconMarkup = '  <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png">\n  <link rel="apple-touch-icon" href="/assets/images/logo-mark-clean.png">';
-const assetVersion = '100';
+// New catalog or journal data must not reuse yesterday's browser-cached assets.
+const versionHash = createHash('sha256');
+for (const asset of ['style.css', 'catalog.js', 'sold-catalog.js', 'app.js', 'journal-library.mjs', 'journal-index.json']) {
+  versionHash.update(asset).update('\0').update(await readFile(resolve(root, 'assets', asset)));
+}
+const assetVersion = versionHash.digest('hex').slice(0, 12);
 
 async function canonicalUrl(file) {
   const html = await readFile(file, 'utf8');
