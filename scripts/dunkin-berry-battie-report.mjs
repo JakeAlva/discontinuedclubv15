@@ -1,9 +1,10 @@
 const announcement = 'https://news.dunkindonuts.com/news/dunkin-halloween-menu-2';
+const sleeveAnnouncement = 'https://news.dunkindonuts.com/blog/bat-cup-sleeve-giveaway-2026';
 
 export const dunkinBerryBattieReport = {
   slug: 'dunkin-berry-battie-refresher-bat-cup-sleeve-2026',
   brand: "Dunkin'", product: 'Dunkin Berry Battie Daydream Refresher', theme: 'berry',
-  checkedDate: '2026-10-14', editionDate: '2026-10-14', readTime: 3,
+  checkedDate: '2026-10-14', editionDate: '2026-10-14', modifiedDate: '2026-10-16', readTime: 3,
   statusKey: 'launch', statusLabel: 'Confirmed limited-time menu', lane: 'Drink + collectible news',
   title: 'Dunkin Berry Battie is here. The bat cup sleeve arrives separately.',
   seoTitle: 'Dunkin Berry Battie Refresher: Release & Bat Sleeve Dates 2026',
@@ -14,9 +15,9 @@ export const dunkinBerryBattieReport = {
   sidebar: 'A confirmed menu launch and a separate, stock-limited promotion. Neither guarantees a collectible at your local store.',
   evidenceGrade: 'Official dated announcement',
   evidenceNote: 'Dunkin supplies the launch date and offer terms. We have not checked local participation or remaining sleeves.',
-  image: 'assets/images/journal/dunkin-berry-battie-official.webp', imageWidth: 450, imageHeight: 600,
-  imageAlt: 'One purple Dunkin Berry Battie Daydream Refresher topped with purple foam and candy eyes',
-  caption: 'Official Berry Battie drink photo. The pictured cup is not wearing the separate promotional sleeve.', imageCredit: 'Dunkin',
+  image: 'assets/images/journal/dunkin-bat-cup-sleeve-official.webp', imageWidth: 1200, imageHeight: 1200,
+  imageAlt: 'Dunkin bat cup sleeve with shiny purple wings extended, beside a second cup with its wings wrapped around the sleeve',
+  caption: `The actual promotional bat cup sleeve, shown with its purple wings open and wrapped around a cup. Official photo from <a href="${sleeveAnnouncement}" target="_blank" rel="noopener noreferrer">Dunkin's sleeve announcement</a>.`, imageCredit: 'Dunkin',
   cardCopy: 'Two dates to keep straight before going for the new purple drink and its promotional collectible.',
   relatedSlugs: ['dunkin-halloween-2026-green-apple-zero', 'dunkin-avengers-doomsday-menu-doctor-doom-tin-2026', 'fanta-ghost-face-punch-halloween-2026'],
   sections: [
@@ -25,6 +26,7 @@ export const dunkinBerryBattieReport = {
       'We have not taste-tested it. Its appearance explains the Halloween styling, but a photograph cannot tell you how sweet it is or whether the flavor will be your favorite. This report is intended to make the ordering details clear, not to substitute promotional wording for a review.'
     ]},
     { id: 'sleeve', heading: 'How does the bat cup sleeve offer work?', toc: 'The sleeve promotion', paragraphs: [
+      `The official photo above shows the sleeve itself, not just the drink: a dark cup wrap with purple trim and shiny purple bat wings. <a href="${sleeveAnnouncement}" target="_blank" rel="noopener noreferrer">Dunkin's dedicated sleeve announcement</a> shows the wings both extended and wrapped around the cup.`,
       `The <a href="${announcement}" target="_blank" rel="noopener noreferrer">published terms</a> specify October 16: order a Berry Battie Daydream Refresher in any size for one free limited-edition bat sleeve, while supplies last at participating U.S. locations.`,
       'The practical next step is to ask that location whether it is participating and still has sleeves before paying. A drink appearing in the app does not, by itself, confirm accessory inventory. Do not assume another beverage qualifies, or that a sleeve is reserved merely because the drink can be ordered.',
       'Treat the drink and the free item as separate decisions. Would you still want the drink if that store has run out of sleeves? If not, checking first avoids a disappointing purchase. If ordering several drinks for a group, ask how the one-sleeve-per-order limit applies before placing the order.'
@@ -48,6 +50,7 @@ export const dunkinBerryBattieReport = {
   ],
   disclosure: 'Independent reporting, not sponsored by Dunkin. No tasting, local inventory verification or guarantee of a promotional item is implied.',
   sources: [
-    { label: 'Dunkin: Berry Battie and Halloween announcement', url: announcement, note: 'October 14, 2026; drink description, launch date, separate October 16 promotion and terms' }
+    { label: 'Dunkin: Berry Battie and Halloween announcement', url: announcement, note: 'October 14, 2026; drink description, launch date, separate October 16 promotion and terms' },
+    { label: 'Dunkin: Bat Cup Sleeve giveaway', url: sleeveAnnouncement, note: 'Official sleeve photography and October 16 offer terms; checked October 16, 2026' }
   ]
 };

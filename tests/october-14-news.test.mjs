@@ -41,7 +41,7 @@ test('four October 13/14 edition stories are indexable, sourced, illustrated and
     assert.match(report.buyerParagraphs.join(' '), /does not currently sell/);
     const graph = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1])['@graph'];
     assert.equal(graph[0].datePublished, '2026-10-14');
-    assert.equal(graph[0].dateModified, '2026-10-14');
+    assert.equal(graph[0].dateModified, report.modifiedDate || '2026-10-14');
     assert.equal(graph[0].headline, report.title);
     assert.equal(graph[0].mainEntityOfPage, canonical);
     assert.equal(graph[1].mainEntity.length, report.faq.length);
@@ -49,6 +49,22 @@ test('four October 13/14 edition stories are indexable, sourced, illustrated and
     assert.doesNotMatch(html, /Published October 13, 2026/);
     assert.ok(html.includes(`datetime="${report.editionDate}"`));
   }
+});
+
+test('Dunkin sleeve update uses the official photo throughout the article and journal', async () => {
+  assert.equal(dunkin.image, 'assets/images/journal/dunkin-bat-cup-sleeve-official.webp');
+  assert.equal(dunkin.modifiedDate, '2026-10-16');
+  assert.match(dunkin.imageAlt, /purple wings/);
+  assert.match(dunkin.caption, /actual promotional bat cup sleeve/);
+  const html = await read(`dist/journal/${dunkin.slug}.html`);
+  assert.ok(html.includes(`src="${dunkin.image}"`));
+  assert.ok(html.includes(`property="og:image" content="https://discontinuedclub.com/${dunkin.image}"`));
+  assert.match(html, /Updated October 16, 2026/);
+  assert.doesNotMatch(html, /pictured cup is not wearing/);
+  const index = JSON.parse(await read('dist/assets/journal-index.json'));
+  assert.equal(index.find((item) => item.slug === dunkin.slug).image, dunkin.image);
+  const sitemap = new XMLParser().parse(await read('dist/sitemap-journal.xml')).urlset.url;
+  assert.equal(sitemap.find((row) => row.loc.endsWith(`${dunkin.slug}.html`)).lastmod, '2026-10-16');
 });
 
 test('editions provide a two-day schedule without backdating publication metadata', async () => {
