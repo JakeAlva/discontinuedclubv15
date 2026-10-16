@@ -26,14 +26,14 @@ test('Pepsi Blue matches the verified one-bottle eBay listing and direct discoun
   assert.equal(item.shippingWeightOz, 32);
   assert.match(item.detail, /One full, unopened 16.9 fl oz.*2021/);
   assert.match(item.purchaseNote, /older collectible.*No expiration date has been verified/);
-  assert.equal(categories.all.count, 69);
-  assert.equal(categories.drinks.count, 31);
+  assert.equal(categories.all.count, catalog.length);
+  assert.equal(categories.drinks.count, catalog.filter((row) => row.category === 'drinks').length);
   const html = await read(`dist/${productPath}`);
   assert.match(html, /class="product-quantity-single"/);
   assert.match(html, /12\.54/);
   assert.ok(html.includes(item.purchaseNote));
   for (const path of ['index.html', 'rare-drinks.html']) {
-    assert.ok((await read(`dist/${path}`)).includes('data-listing-count="drinks">31</span>'));
+    assert.ok((await read(`dist/${path}`)).includes(`data-listing-count="drinks">${categories.drinks.count}</span>`));
   }
   for (const variant of ['branded', 'merchant']) {
     const meta = await sharp(resolve(root, `dist/assets/images/listings/${variant}/${item.id}.webp`)).metadata();

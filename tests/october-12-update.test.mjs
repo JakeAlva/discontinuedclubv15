@@ -69,7 +69,7 @@ test('October 12 bundles have matching inventory, galleries, prices and indexabl
   assert.equal(maxQuantity(findCatalogItem('407260159541')), 2);
   assert.equal(directPriceCents(findCatalogItem('407260159541')), 3859);
   assert.equal(maxQuantity(findCatalogItem('407134944288')), 2, 'Separate four-pack lots stay unchanged');
-  assert.equal(findCatalogItem('407205693415'), undefined, 'Reserved Lime Slush is not for sale');
+  assert.equal(findCatalogItem('407205693415'), undefined, 'The original sold-out Lime Slush listing stays archived');
 });
 
 test('new bundles and Journey Together reject orders above verified stock', async () => {
@@ -106,7 +106,7 @@ test('October 12 reports are discoverable in static links, search, sitemap and a
     assert.doesNotMatch(html, /article-shop-callout|data-add-to-cart|For older full cans/);
     const graph = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1])['@graph'];
     assert.equal(graph[0].datePublished, '2026-10-12');
-    assert.equal(graph[0].dateModified, '2026-10-12');
+    assert.equal(graph[0].dateModified, report.modifiedDate || '2026-10-12');
     assert.equal(graph[0].headline, report.title);
     for (const source of report.sources) assert.ok(html.includes(source.url));
     const image = await sharp(resolve(root, report.image)).metadata();
@@ -124,8 +124,8 @@ test('Lime Slush history is corrected without inventing a confirmed return or ch
   const old = await read('journal/is-alani-nu-lime-slush-discontinued.html');
   const graph = JSON.parse(old.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1])['@graph'];
   assert.equal(graph[0].datePublished, '2026-09-11');
-  assert.equal(graph[0].dateModified, '2026-10-12');
+  assert.equal(graph[0].dateModified, '2026-10-15');
   assert.ok(old.includes(`journal/${lime.slug}.html`));
-  assert.match(old, /zero packs available to purchase/);
+  assert.match(old, /current Lime Slush listing/);
   assert.match(old, /Earlier wording was too definite/);
 });

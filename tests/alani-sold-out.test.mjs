@@ -38,7 +38,7 @@ test('Alani archive stays indexable and has no purchase action', async () => {
   assert.ok((await read('sitemap-sold.xml')).includes(`/sold/${slug}`));
   assert.ok((await read('_redirects')).includes(`/products/${slug}  /sold/${slug}  301`));
   const article = await read('journal/is-alani-nu-lime-slush-discontinued.html');
-  assert.match(article, /zero packs available/);
+  assert.match(article, /current Lime Slush listing/);
   assert.doesNotMatch(article, /article-shop-callout|currently lists a four-pack/);
   assert.ok((await readFile(resolve(root, `assets/images/sold/branded/${id}.webp`))).length > 1000);
 });

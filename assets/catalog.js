@@ -83,6 +83,15 @@ const DC_CATALOG = [
     { src: 'assets/images/listings/gallery/407274649287-5.webp', label: 'sole condition' },
     { src: 'assets/images/listings/gallery/407274649287-6.webp', label: 'size and product label' }
   ], imageVersion: '20261008-2' },
+  { id: '407293775090', category: 'drinks', name: 'Mountain Dew Purple Thunder - Old-Logo 20 oz Bottle', detail: 'One unopened 20 fl oz (591 mL) berry-plum bottle with the older label design. Printed date: August 29, 2022. Collection and display only, not for consumption', condition: 'New', price: '$7.99', image: '407293775090.webp', maxQuantity: 1, brand: 'Mountain Dew', purchaseNote: 'Past its printed date of August 29, 2022. For collection and display only, not for consumption. Bottles may show denting, inward collapse, paneling or cosmetic wear from age and storage. The studio photo represents the label design; the actual bottle may have visible deformation not shown. Do not expect mint condition. Freshness, flavor and carbonation are not guaranteed. This listing is for the older packaging, not a claim that the Purple Thunder flavor has been discontinued.' },
+  { id: '407293697579', category: 'drinks', name: 'Mountain Dew Citrus Cherry - 2019 20 oz Bottle', detail: 'One full, unopened 20 fl oz (591 mL) bottle with the older PepCoin label. Each quantity is one bottle, not a multipack. Printed date: February 24, 2020. Collection and display only', condition: 'New', price: '$19.99', image: '407293697579.webp', maxQuantity: 4, brand: 'Mountain Dew', purchaseNote: 'Older collectible stock with a printed date of February 24, 2020. For collection and display only, not consumption. Bottles may be dented, collapsed inward or otherwise deformed with age. Shape and cosmetic condition vary and may not match the perfectly shaped studio photo. Do not expect mint condition. Freshness, flavor and carbonation are not guaranteed.' },
+  { id: '407293550787', category: 'drinks', name: "Alani Nu Witch's Brew - 12 oz 4-Pack", detail: "Four full, unopened 12 fl oz (355 mL) Witch's Brew energy drink cans. One quantity is one four-pack; these are the full-size cans, not the Mini cans", condition: 'New', price: '$24.99', image: '407293550787.webp', maxQuantity: 1, brand: 'Alani Nu' },
+  { id: '407293533835', category: 'drinks', name: 'Alani Nu Lime Slush - 12 oz 4-Pack', detail: 'Four full, unopened 12 fl oz (355 mL) sugar-free Lime Slush energy drink cans. One quantity is one four-pack of existing inventory', condition: 'New', price: '$34.98', image: '407293533835.webp', maxQuantity: 1, brand: 'Alani Nu', purchaseNote: 'This is existing store inventory, not a preorder or evidence of a manufacturer relaunch. Contact us for can-date details before purchase.', gallery: [
+    { src: 'assets/images/listings/gallery/407293533835-2.webp', label: 'side and caffeine information' },
+    { src: 'assets/images/listings/gallery/407293533835-3.webp', label: 'nutrition and ingredient labels' },
+    { src: 'assets/images/listings/gallery/407293533835-4.webp', label: 'four-pack condition photo' }
+  ] },
+  { id: '407293531323', category: 'drinks', name: "Alani Nu Witch's Brew Mini - 8.4 oz 4-Pack", detail: "Four full, unopened 8.4 fl oz (248 mL) Witch's Brew Mini energy drink cans. One quantity is one four-pack; these are smaller than the separate 12 oz cans", condition: 'New', price: '$19.99', image: '407293531323.webp', maxQuantity: 3, brand: 'Alani Nu' },
   { id: '407290859464', category: 'drinks', name: 'Pepsi Blue Berry Cola - 2021 Bottle', detail: 'One full, unopened 16.9 fl oz (500 mL) bottle from the 2021 U.S. release. Older collectible stock, not a new production run', condition: 'New', price: '$12.99', image: '407290859464.webp', maxQuantity: 1, brand: 'Pepsi', purchaseNote: 'Sold as an older collectible bottle from 2021. An unopened seal is not a guarantee of freshness or suitability for drinking. No expiration date has been verified; contact us for label details before purchasing.' },
   { id: '407207373104', category: 'drinks', name: 'Red Bull Red Edition Sugar Free Watermelon (4-Pack)', detail: 'Four discontinued 12 fl oz watermelon energy drink cans', price: '$59.99', image: '407207373104.webp', featured: true },
   { id: '407205665076', category: 'drinks', name: 'Monster Juice Strawberry Lemonade', detail: 'Limited discontinued energy and juice drink, full 16 fl oz can', price: '$12.99', image: '407205665076.webp', featured: true },
@@ -138,6 +147,11 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407293775090': 32,
+  '407293697579': 32,
+  '407293550787': 80,
+  '407293533835': 80,
+  '407293531323': 64,
   '407290859464': 32,
   '407283282883': 24,
   '407281698826': 24,
@@ -231,8 +245,8 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 69 },
-  drinks: { label: 'Rare drinks', count: 31 },
+  all: { label: 'All items', count: 74 },
+  drinks: { label: 'Rare drinks', count: 36 },
   apparel: { label: 'Sports & apparel', count: 12 },
   'kids-shoes': { label: "Designer kids' shoes", count: 10 },
   collectibles: { label: 'Collectibles & cards', count: 11 },

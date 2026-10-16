@@ -1,0 +1,13 @@
+{
+  "checkedDate": "2026-10-15",
+  "source": "Signed-in eBay active listings, public item descriptions, and read-only revise forms; no eBay changes submitted",
+  "activeListingCount": 74,
+  "notes": "Five new listings added to the existing 69-item storefront. Quantities below count sellable units: bottles or four-packs, not individual cans inside packs. Shipping weights match the eBay listing fields, including estimated weights where shown.",
+  "listings": [
+    { "id": "407293775090", "title": "Mountain Dew Purple Thunder Soda Soft Drink 20oz Bottle Old Logo (Discontinued)", "quantity": 1, "priceCents": 799, "shippingWeightOz": 32, "unit": "One 20 fl oz bottle", "printedDate": "AUG 29 22", "imageUrl": "https://i.ebayimg.com/images/g/X0sAAeSwJlJq0aDf/s-l960.webp", "conditionNotes": "Collection/display only, not consumption. May be deformed; studio image represents label design, not guaranteed bottle condition." },
+    { "id": "407293697579", "title": "Mountain Dew Citrus Cherry Soft Drink 20 fl oz 591mL Bottle FULL/UNOPENED (2019)", "quantity": 4, "priceCents": 1999, "shippingWeightOz": 32, "unit": "One 20 fl oz bottle, not a four-pack", "printedDate": "Feb 24, 2020", "imageUrl": "https://i.ebayimg.com/images/g/7PMAAeSwhttq0ZY2/s-l960.webp", "conditionNotes": "Collection/display only, not consumption. Older bottles may be deformed and vary from the studio photo." },
+    { "id": "407293550787", "title": "Alani Nu Witches Brew Energy Drink 4-Pack 12oz (355mL) Cans FULL/UNOPENED", "quantity": 1, "priceCents": 2499, "shippingWeightOz": 80, "unit": "Four 12 fl oz cans", "imageUrl": "https://i.ebayimg.com/images/g/5I0AAeSwAhlq0YNC/s-l960.webp" },
+    { "id": "407293533835", "title": "Alani Nu Lime Slush Sugar Free Energy Drink 4-Pack 12oz Cans DISCONTINUED", "quantity": 1, "priceCents": 3498, "shippingWeightOz": 80, "unit": "Four 12 fl oz cans", "imageUrl": "https://i.ebayimg.com/images/g/sLMAAeSwv8Bqog~-/s-l960.webp", "galleryUrls": ["https://i.ebayimg.com/images/g/0x8AAeSwlotqog~x/s-l1600.webp", "https://i.ebayimg.com/images/g/zHUAAeSwywhqog~y/s-l1600.webp", "https://i.ebayimg.com/images/g/z9YAAeSwuiJqog~y/s-l1600.webp"] },
+    { "id": "407293531323", "title": "Alani Nu Witch's Brew Mini Energy Drink 4-Pack 8.4 fl oz (248 mL) FULL/UNOPENED", "quantity": 3, "priceCents": 1999, "shippingWeightOz": 64, "unit": "Four 8.4 fl oz cans", "imageUrl": "https://i.ebayimg.com/images/g/5NsAAeSw91Fq0YCs/s-l960.webp" }
+  ]
+}

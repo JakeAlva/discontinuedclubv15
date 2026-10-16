@@ -7,9 +7,10 @@ import { catalog, categories, directPriceCents, maxQuantity } from '../lib/store
 const read = (file) => readFile(new URL(`../${file}`, import.meta.url), 'utf8');
 const audit = JSON.parse(await read('data/ebay-inventory-audit-2026-10-12.json'));
 const pepsiBlue = JSON.parse(await read('data/ebay-listing-407290859464-2026-10-15.json'));
-const active = [...audit.active, [pepsiBlue.id, pepsiBlue.quantity, pepsiBlue.price]];
+const newDrinks = JSON.parse(await read('data/ebay-new-drinks-2026-10-15.json'));
+const active = [...audit.active, [pepsiBlue.id, pepsiBlue.quantity, pepsiBlue.price], ...newDrinks.listings.map((item) => [item.id, item.quantity, `$${(item.priceCents / 100).toFixed(2)}`])];
 
-test('active listings match the October 12 audit plus the verified October 15 Pepsi Blue addition', () => {
+test('active listings match the audit and verified October 15 additions', () => {
   const expected = new Map(active.map(([id, quantity, price]) => [id, { quantity, price }]));
   assert.equal(expected.size, active.length, 'Audit must not contain duplicate listing IDs');
   assert.deepEqual(catalog.map((item) => item.id).sort(), [...expected.keys()].sort());

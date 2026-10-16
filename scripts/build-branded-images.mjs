@@ -19,6 +19,11 @@ const selectedCatalog = catalog.filter((item) => !onlyId || item.id === onlyId);
 // Storefront assets are branded. Merchant assets stay free of retailer overlays for Google Shopping.
 
 const bottomBrandedSources = new Set([
+  '407293775090.webp',
+  '407293697579.webp',
+  '407293550787.webp',
+  '407293533835.webp',
+  '407293531323.webp',
   '407290859464.webp',
   '407279351355.webp',
   '407279322970.webp',
@@ -63,6 +68,7 @@ const bottomBrandedSources = new Set([
   '407134856526.webp'
 ]);
 const topBrandedSources = new Set(['8167a13655984166.webp']);
+const packLabelSources = new Set(['407293550787.webp', '407293533835.webp', '407293531323.webp']);
 const jerseyPhotoSources = new Map([
   ['407064120905', 'fa4d28756c19b882.webp'],
   ['407063808795', 'fa358a9a591b7571.webp'],
@@ -110,6 +116,10 @@ async function buildBrandedImage(source, destination) {
   if (bottomBrandedSources.has(fileName)) height = Math.max(1, Math.round(height * (fileName === '407253023756.webp' ? 0.90 : 0.865)));
   if (topBrandedSources.has(fileName)) {
     top = Math.round(height * 0.12);
+    height -= top;
+  }
+  if (packLabelSources.has(fileName)) {
+    top = Math.round(metadata.height * 0.20);
     height -= top;
   }
 
@@ -161,6 +171,10 @@ async function buildMerchantImage(source, destination) {
   }
   if (topBrandedSources.has(fileName)) {
     top = Math.round(height * 0.12);
+    height -= top;
+  }
+  if (packLabelSources.has(fileName)) {
+    top = Math.round(metadata.height * 0.20);
     height -= top;
   }
 
