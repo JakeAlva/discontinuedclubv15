@@ -659,6 +659,9 @@ body.finder-open { overflow: hidden; }
 .article-body ul, .article-body ol { margin: 0 0 24px; padding-left: 24px; }
 .article-body li { margin-top: 10px; padding-left: 4px; }
 .article-body a:not(.btn) { color: #184da9; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.article-inline-media { width: min(360px, 100%); margin: 30px auto; }
+.article-inline-media img { display: block; width: 100%; height: auto; object-fit: contain; }
+.article-inline-media figcaption { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); color: var(--muted); font-family: Inter, Arial, sans-serif; font-size: 12px; line-height: 1.6; }
 .article-answer { padding: 34px 0 34px 30px; border-top: 1px solid var(--line-dark); border-bottom: 1px solid var(--line-dark); border-left: 5px solid var(--acid-dark); }
 .article-answer .section-kicker, .article-shop-callout .section-kicker, .article-faq .section-kicker, .article-sources .section-kicker { margin-bottom: 15px; font-family: Inter, Arial, sans-serif; }
 .article-answer h2 { font-size: 39px; }

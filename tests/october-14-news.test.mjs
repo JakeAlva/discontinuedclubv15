@@ -67,6 +67,21 @@ test('Dunkin sleeve update uses the official photo throughout the article and jo
   assert.equal(sitemap.find((row) => row.loc.endsWith(`${dunkin.slug}.html`)).lastmod, '2026-10-16');
 });
 
+test('Dunkin keeps the original drink photo inside the drink section alongside the sleeve hero', async () => {
+  const media = dunkin.sections.find((section) => section.id === 'drink').image;
+  assert.equal(media.src, 'assets/images/journal/dunkin-berry-battie-official.webp');
+  const html = await read(`dist/journal/${dunkin.slug}.html`);
+  const drinkSection = html.match(/<section id="drink">[\s\S]*?<\/section>/)[0];
+  assert.ok(drinkSection.includes(`<figure class="article-inline-media"><img src="${media.src}"`));
+  assert.match(drinkSection, /width="450" height="600" loading="lazy" decoding="async"/);
+  assert.ok(drinkSection.includes(`<figcaption>${media.caption}</figcaption>`));
+  const meta = await sharp(resolve(root, 'dist', media.src)).metadata();
+  assert.equal(meta.width, media.width);
+  assert.equal(meta.height, media.height);
+  assert.equal((html.match(/class="article-inline-media"/g) || []).length, 1);
+  assert.ok(html.includes(`src="${dunkin.image}"`));
+});
+
 test('editions provide a two-day schedule without backdating publication metadata', async () => {
   const index = JSON.parse(await read('dist/assets/journal-index.json'));
   assert.deepEqual(additions.map((r) => r.editionDate).sort(), ['2026-10-13', '2026-10-13', '2026-10-14', '2026-10-14']);

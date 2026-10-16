@@ -94,7 +94,11 @@ function articleMarkup(report) {
   const shop = report.shop && currentProductHrefs.has(report.shop.href)
     ? `<section class="article-shop-callout"><div><div class="section-kicker">Collector inventory</div><h2>${report.shop.heading}</h2><p>${report.shop.copy}</p></div><a class="btn btn-dark" href="${report.shop.href}">${report.shop.cta}</a></section>`
     : '<!-- No matching current store listing at publication. -->';
-  const sections = report.sections.map((section) => `<section id="${section.id}"><h2>${section.heading}</h2>${section.paragraphs.map((paragraph) => `<p>${paragraph}</p>`).join('')}</section>`).join('\n          ');
+  const sections = report.sections.map((section) => {
+    const media = section.image;
+    const figure = media ? `<figure class="article-inline-media"><img src="${media.src}" alt="${media.alt}" width="${media.width}" height="${media.height}" loading="lazy" decoding="async"><figcaption>${media.caption}</figcaption></figure>` : '';
+    return `<section id="${section.id}"><h2>${section.heading}</h2>${section.paragraphs.map((paragraph) => `<p>${paragraph}</p>`).join('')}${figure}</section>`;
+  }).join('\n          ');
   const imageCredit = report.imageCredit ? ` Image source: ${report.imageCredit}.` : '';
   const sectionHref = (id) => `journal/${report.slug}.html#${id}`;
   const toc = report.sections.map((section) => `<a href="${sectionHref(section.id)}">${section.toc || section.heading}</a>`).join('');

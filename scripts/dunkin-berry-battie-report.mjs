@@ -21,12 +21,16 @@ export const dunkinBerryBattieReport = {
   cardCopy: 'Two dates to keep straight before going for the new purple drink and its promotional collectible.',
   relatedSlugs: ['dunkin-halloween-2026-green-apple-zero', 'dunkin-avengers-doomsday-menu-doctor-doom-tin-2026', 'fanta-ghost-face-punch-halloween-2026'],
   sections: [
-    { id: 'drink', heading: 'What is the Berry Battie Daydream Refresher?', toc: 'The new purple drink', paragraphs: [
+    { id: 'drink', heading: 'What is the Berry Battie Daydream Refresher?', toc: 'The new purple drink', image: {
+      src: 'assets/images/journal/dunkin-berry-battie-official.webp', width: 450, height: 600,
+      alt: 'Purple Dunkin Berry Battie Daydream Refresher topped with purple cold foam and candy eyes, without the bat sleeve',
+      caption: `The Berry Battie Daydream Refresher without the separate promotional sleeve. Photo: <a href="${announcement}" target="_blank" rel="noopener noreferrer">Dunkin</a>.`
+    }, paragraphs: [
       `According to <a href="${announcement}" target="_blank" rel="noopener noreferrer">Dunkin's October 14 announcement</a>, it combines berry-clementine and blueberry flavors with oatmilk, purple marshmallow cold foam and candy eyes. This is a prepared menu drink, not a canned soda.`,
       'We have not taste-tested it. Its appearance explains the Halloween styling, but a photograph cannot tell you how sweet it is or whether the flavor will be your favorite. This report is intended to make the ordering details clear, not to substitute promotional wording for a review.'
     ]},
     { id: 'sleeve', heading: 'How does the bat cup sleeve offer work?', toc: 'The sleeve promotion', paragraphs: [
-      `The official photo above shows the sleeve itself, not just the drink: a dark cup wrap with purple trim and shiny purple bat wings. <a href="${sleeveAnnouncement}" target="_blank" rel="noopener noreferrer">Dunkin's dedicated sleeve announcement</a> shows the wings both extended and wrapped around the cup.`,
+      `The opening photo at the top of this article shows the sleeve itself, not just the drink: a dark cup wrap with purple trim and shiny purple bat wings. <a href="${sleeveAnnouncement}" target="_blank" rel="noopener noreferrer">Dunkin's dedicated sleeve announcement</a> shows the wings both extended and wrapped around the cup.`,
       `The <a href="${announcement}" target="_blank" rel="noopener noreferrer">published terms</a> specify October 16: order a Berry Battie Daydream Refresher in any size for one free limited-edition bat sleeve, while supplies last at participating U.S. locations.`,
       'The practical next step is to ask that location whether it is participating and still has sleeves before paying. A drink appearing in the app does not, by itself, confirm accessory inventory. Do not assume another beverage qualifies, or that a sleeve is reserved merely because the drink can be ordered.',
       'Treat the drink and the free item as separate decisions. Would you still want the drink if that store has run out of sleeves? If not, checking first avoids a disappointing purchase. If ordering several drinks for a group, ask how the one-sleeve-per-order limit applies before placing the order.'
