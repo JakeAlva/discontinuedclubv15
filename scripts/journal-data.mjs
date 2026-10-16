@@ -44,6 +44,9 @@ import { pepsiBlueStatusReport } from './pepsi-blue-status-report.mjs';
 import { bublyFallMocktailsReport } from './bubly-fall-mocktails-report.mjs';
 import { kidfreshMiniMuffinsReport } from './kidfresh-mini-muffins-report.mjs';
 import { dotsChipotleHoneyReport } from './dots-chipotle-honey-report.mjs';
+import { sweetLightningKfcReport } from './sweet-lightning-kfc-report.mjs';
+import { corePowerBananaReturnReport } from './core-power-banana-return-report.mjs';
+import { milkBarEmpanadaReport } from './milk-bar-empanada-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -763,5 +766,8 @@ export const reports = [
   dotsChipotleHoneyReport,
   pepsiBlueStatusReport,
   bublyFallMocktailsReport,
-  kidfreshMiniMuffinsReport
+  kidfreshMiniMuffinsReport,
+  sweetLightningKfcReport,
+  corePowerBananaReturnReport,
+  milkBarEmpanadaReport
 ];

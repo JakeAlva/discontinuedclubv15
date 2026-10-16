@@ -6,14 +6,14 @@ export const drinkFlavorWatchReport = {
   brands: ['Core Power', 'Powerade', 'Sprite', 'Topo Chico', 'vitaminwater'],
   product: 'Core Power Banana and more',
   theme: 'blue', statusKey: 'launch', statusLabel: 'Launch watch / mixed evidence',
-  lane: 'U.S. drink news', checkedDate: '2026-09-23', readTime: 6,
+  lane: 'U.S. drink news', checkedDate: '2026-09-23', modifiedDate: '2026-10-16', readTime: 6,
   title: 'Core Power Banana and more: checking five drink-flavor claims',
   seoTitle: 'Core Power Banana, Powerade Watermelon and More: Flavor Watch',
   description: 'A fact check of Core Power Banana, Powerade Watermelon, Sprite Chill Strawberry Kiwi, Topo Chico Pineapple Coconut and a vitaminwater Zero Sugar Grape image.',
   deck: 'Banana protein shakes, a watermelon sports drink and pineapple-coconut sparkling water appear in a shared reel. Here is what the images show, what already exists, and what still needs confirmation.',
   answerHeading: 'Not every flavor in a new post is a new product.',
-  answer: 'Our September 23, 2026 review found that Sprite Chill Strawberry Kiwi already has a documented U.S. release history. We have not verified new U.S. launch announcements for the exact Core Power Banana, standard Powerade Watermelon, Topo Chico Sabores Pineapple Coconut or vitaminwater Zero Sugar Grape versions shown in the submitted frames. Existing products with similar names are not confirmation of those claims.',
-  sidebar: 'Sprite Strawberry Kiwi is documented, not a first-time reveal. Four other exact pictured versions remain unverified in this review.',
+  answer: 'October 16 update: Core Power Banana now has official confirmation; see the linked follow-up below. Our September 23, 2026 review found that Sprite Chill Strawberry Kiwi already has a documented U.S. release history. The other entries below preserve their September evidence checks and have not been re-reviewed as part of this Banana update.',
+  sidebar: 'Core Power Banana has a confirmed return announcement. The remaining entries retain their dated September assessments, not a new October verdict.',
   evidenceGrade: 'Social images + catalog and reporting checks',
   evidenceNote: 'The frames show the handle snachwithzach; two display 9/23/26. The full reel, audio and underlying launch documents were not available for this review.',
   image: `${imageRoot}drink-launch-watch-editorial-v2.png`,
@@ -21,9 +21,9 @@ export const drinkFlavorWatchReport = {
   caption: 'AI-assisted editorial reconstruction based on the submitted frames bearing the snachwithzach handle. Not official photography or authenticated packaging; pictured label details are not independently verified product specifications.',
   imageCredit: 'Discontinued Club editorial illustration',
   cardCopy: 'Core Power Banana, Powerade Watermelon, Sprite Strawberry Kiwi, Topo Chico Pineapple Coconut and vitaminwater Grape: new claims versus existing products.',
-  relatedSlugs: ['new-soda-rumors-coca-cola-pepsi-mr-pibb', 'is-red-bull-fuji-apple-ginger-discontinued'],
+  relatedSlugs: ['core-power-banana-return-2027-strawberry-banana-replacement', 'new-soda-rumors-coca-cola-pepsi-mr-pibb', 'is-red-bull-fuji-apple-ginger-discontinued'],
   statusParagraphs: [
-    '<strong>Mixed evidence</strong> means the five entries do not share one conclusion. Strawberry Kiwi has a documented release history; the other four exact pictured versions remain unverified. That is why this roundup belongs in launch watch, not a list of five officially announced new drinks.',
+    '<strong>Mixed evidence</strong> means the five entries do not share one conclusion. Banana has since received official confirmation. The other entries retain their September review dates; this update does not authenticate the whole reel or turn it into a single five-product launch announcement.',
     'A catalog describes what a brand currently presents publicly, not everything it may be developing. A missing product is not proof that a future release is fake. Equally, a familiar flavor word in a catalog does not authenticate a different formula, package or product line shown in a reel.'
   ],
   buyerHeading: 'What to check before looking for these drinks',
@@ -31,12 +31,13 @@ export const drinkFlavorWatchReport = {
     'Search the exact product line and flavor together, then check the actual label. Banana is not automatically Strawberry Banana; Powerade is not automatically Power Water; and a pictured zero-sugar bottle is not evidence that a regular-sugar version is also planned.',
     'We have not verified a shared release date, retailer-exclusive agreement or preorder offer for this group. Discontinued Club is not offering these five pictured items for sale. A news article does not represent store inventory, and there is no reason to pay a scarcity premium on the strength of these frames alone.'
   ],
-  disclosure: 'Discontinued Club is an independent retailer and is not affiliated with or endorsed by the brands discussed. This U.S.-focused article reviews reader-submitted images and linked public sources. We have not obtained direct manufacturer confirmation of the proposed launches.',
+  disclosure: 'Discontinued Club is an independent retailer and is not affiliated with or endorsed by the brands discussed. This U.S.-focused article reviews reader-submitted images and linked public sources. The October update is limited to Core Power Banana; the other product assessments remain dated September 23.',
   sections: [
-    { id: 'core-power-banana', heading: 'Core Power Banana: two bottles shown, no verified launch details', toc: 'Core Power Banana', paragraphs: [
-      'The first frame shows yellow and dark-gray Core Power bottles labeled <strong>Banana</strong>, with 26g and 42g protein figures respectively. Those are details visible in the image. Without an authenticated new-product page or nutrition panel, we should not turn them into confirmed specifications, serving sizes or launch promises.',
+    { id: 'core-power-banana', heading: 'Core Power Banana: official confirmation added October 16', toc: 'Core Power Banana update', paragraphs: [
+      '<strong>Update, October 16:</strong> fairlife has now announced the return. Read our <a href="journal/core-power-banana-return-2027-strawberry-banana-replacement.html">Core Power Banana return and Strawberry Banana replacement report</a> for the current conclusion and official bottle photograph. The following paragraphs record what we could establish from the September images, not the present release status.',
+      'The first frame showed yellow and dark-gray Core Power bottles labeled <strong>Banana</strong>, with 26g and 42g protein figures respectively. At the September review, those were image details rather than authenticated specifications or a verified launch promise.',
       '<a href="https://fairlife.com/frequently-asked-questions/" target="_blank" rel="noopener noreferrer">Fairlife\'s official FAQ</a>, checked for this report, lists Vanilla, Chocolate and <strong>Strawberry Banana</strong> for Core Power 26g, and Vanilla, Chocolate and Strawberry for Core Power Elite 42g. Its <a href="https://fairlife.com/core-power/" target="_blank" rel="noopener noreferrer">Core Power page</a> also identifies Strawberry Banana. That combined flavor is not evidence of a new banana-only pair.',
-      'We have not verified a U.S. release window or whether the pictured concepts would replace anything. A yellow banana graphic does not establish a reformulation of Strawberry Banana, and the fact that two protein amounts appear together does not prove they will launch together.'
+      'At the September review, we had not verified a U.S. release window or a replacement plan. That historical uncertainty is superseded for Banana by the official announcement linked in the October follow-up. The distinction remains useful: a concept image alone was not enough to establish those facts.'
     ]},
     { id: 'powerade-watermelon', heading: 'Powerade Watermelon: distinguish the sports drink from Power Water', toc: 'Powerade Watermelon', paragraphs: [
       'The second frame shows a red drink in a standard-style Powerade sports bottle with a bright green Watermelon label. It does not display the Power Water name. We have not authenticated this particular bottle as an announced new U.S. product.',
@@ -66,13 +67,14 @@ export const drinkFlavorWatchReport = {
   ],
   faqHeading: 'New drink flavor questions',
   faq: [
-    { question: 'Is banana-only Core Power confirmed in both 26g and 42g?', answer: 'Not in our September 23, 2026 review. Both figures appear in the shared image, but we have not authenticated the proposed products or their launch timing.' },
+    { question: 'Is banana-only Core Power confirmed in both 26g and 42g?', answer: 'Yes. An official announcement published after our September review confirms both options. See our October 16 follow-up for the current details.' },
     { question: 'Is Powerade Watermelon the same as Power Water Watermelon?', answer: 'Not necessarily. Power Water Watermelon is officially listed, while the submitted frame depicts a different, standard-style sports-drink bottle.' },
     { question: 'Is Sprite Chill Strawberry Kiwi a brand-new flavor?', answer: 'No. It was reviewed in March 2025, and a limited 2026 return was subsequently reported. A newly shared image does not establish another launch.' },
     { question: 'Is Topo Chico Sabores Pineapple Coconut confirmed?', answer: 'We have not verified an official U.S. announcement for the exact pictured flavor. It was not among the names on the U.S. Sabores page checked for this report.' },
     { question: 'Is vitaminwater Zero Sugar Grape available now?', answer: 'We have not verified current U.S. retail availability for the exact bottle in the image. Similar colors or an existing flavor do not establish that it is the same product.' }
   ],
   sources: [
+    { label: 'fairlife: Core Power Banana return announcement', url: 'https://fairlife.com/news/core-power-banana-returns/', note: 'October 5, 2026; confirmation added October 16 and explained in the linked follow-up' },
     { label: 'Fairlife: official product FAQ', url: 'https://fairlife.com/frequently-asked-questions/', note: 'Core Power flavor lists, checked September 23, 2026' },
     { label: 'Fairlife: Core Power range', url: 'https://fairlife.com/core-power/', note: 'current product identity, not confirmation of banana-only additions' },
     { label: 'Powerade: Power Water', url: 'https://www.powerade.com/products/powerade-power-water', note: 'official Watermelon listing in a separate product line' },
