@@ -20,8 +20,8 @@ test('five new drinks match verified eBay unit counts, prices and packaged weigh
     assert.equal(item.shippingWeightOz, record.shippingWeightOz);
     assert.equal(item.taxCode, 'txcd_41040002');
   }
-  assert.equal(categories.all.count, 74);
-  assert.equal(categories.drinks.count, 36);
+  assert.equal(categories.all.count, catalog.length);
+  assert.equal(categories.drinks.count, catalog.filter((item) => item.category === 'drinks').length);
   assert.equal(storeConfig.freeShippingThresholdCents, 20000);
 });
 

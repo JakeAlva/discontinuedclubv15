@@ -83,6 +83,9 @@ const DC_CATALOG = [
     { src: 'assets/images/listings/gallery/407274649287-5.webp', label: 'sole condition' },
     { src: 'assets/images/listings/gallery/407274649287-6.webp', label: 'size and product label' }
   ], imageVersion: '20261008-2' },
+  { id: '407300260883', category: 'drinks', name: 'Alani Nu Winter Wonderland - 12 oz Single Can', detail: 'One full, unopened 12 fl oz (355 mL) sugar-free energy drink can with 2026 holiday packaging. Each quantity is one can, not a multipack', condition: 'New', price: '$12.99', image: '407300260883.webp', maxQuantity: 7, brand: 'Alani Nu', purchaseNote: 'Cans may have small dents, scuffs or scratches from handling and storage. Cosmetic condition varies; contact us before purchasing if you need a can in perfect display condition.' },
+  { id: '407298051046', category: 'drinks', name: 'Mountain Dew Star Spangled Splash - 2024 20 oz Bottle', detail: 'One full, unopened 20 fl oz (591 mL) Red Berry soda bottle from the 2024 limited-edition release. Older collectible stock', condition: 'New', price: '$7.99', image: '407298051046.webp', maxQuantity: 1, brand: 'Mountain Dew', purchaseNote: 'Bottles may have indentations, warping or other deformation, and labels may show scuffs or scratches. The listing image shows the product design, not a guarantee of mint condition. An unopened bottle does not guarantee original freshness or carbonation. Contact us for current condition and label details before purchasing.' },
+  { id: '407297979026', category: 'drinks', name: 'Red Bull Festive Edition Arctic Berry - 8.4 oz Single Can', detail: 'One full, unopened 250 mL (8.4 fl oz) Arctic Berry energy drink can with 2026 Festive Edition branding. Each quantity is one can, not a multipack or a complete Advent Calendar', condition: 'New', price: '$21.99', image: '407297979026.webp', maxQuantity: 4, brand: 'Red Bull', purchaseNote: 'The eBay listing records the printed best-by date as 06-03-27. Contact us for label details if you need the date format confirmed.' },
   { id: '407293775090', category: 'drinks', name: 'Mountain Dew Purple Thunder - Old-Logo 20 oz Bottle', detail: 'One unopened 20 fl oz (591 mL) berry-plum bottle with the older label design. Printed date: August 29, 2022. Collection and display only, not for consumption', condition: 'New', price: '$7.99', image: '407293775090.webp', maxQuantity: 1, brand: 'Mountain Dew', purchaseNote: 'Past its printed date of August 29, 2022. For collection and display only, not for consumption. Bottles may show denting, inward collapse, paneling or cosmetic wear from age and storage. The studio photo represents the label design; the actual bottle may have visible deformation not shown. Do not expect mint condition. Freshness, flavor and carbonation are not guaranteed. This listing is for the older packaging, not a claim that the Purple Thunder flavor has been discontinued.' },
   { id: '407293697579', category: 'drinks', name: 'Mountain Dew Citrus Cherry - 2019 20 oz Bottle', detail: 'One full, unopened 20 fl oz (591 mL) bottle with the older PepCoin label. Each quantity is one bottle, not a multipack. Printed date: February 24, 2020. Collection and display only', condition: 'New', price: '$19.99', image: '407293697579.webp', maxQuantity: 4, brand: 'Mountain Dew', purchaseNote: 'Older collectible stock with a printed date of February 24, 2020. For collection and display only, not consumption. Bottles may be dented, collapsed inward or otherwise deformed with age. Shape and cosmetic condition vary and may not match the perfectly shaped studio photo. Do not expect mint condition. Freshness, flavor and carbonation are not guaranteed.' },
   { id: '407293550787', category: 'drinks', name: "Alani Nu Witch's Brew - 12 oz 4-Pack", detail: "Four full, unopened 12 fl oz (355 mL) Witch's Brew energy drink cans. One quantity is one four-pack; these are the full-size cans, not the Mini cans", condition: 'New', price: '$24.99', image: '407293550787.webp', maxQuantity: 1, brand: 'Alani Nu' },
@@ -108,7 +111,6 @@ const DC_CATALOG = [
   { id: '406711385310', category: 'drinks', name: 'Mountain Dew Baja Laguna Lemonade', detail: 'Mango lemonade, 12-pack of 12 oz cans, 2024', price: '$44.99', image: 'a69e24602a28c9e7.webp' },
   { id: '406705689212', category: 'drinks', name: 'Pepsi Soda Shop Cream Soda', detail: '50th Anniversary, full unopened 20 oz bottle, 2021', price: '$9.99', image: '2921ba8f2b1f6017.webp', featured: true },
   { id: '406738017949', category: 'drinks', name: 'Mountain Dew Baja Gold', detail: 'Pineapple, full unopened 20 oz bottle, 2021', price: '$10.99', image: '19902e5673ce650f.webp' },
-  { id: '406794914124', category: 'drinks', name: 'Mountain Dew Zero Sugar Frost Bite', detail: 'Black tab, full unopened 12 oz can, 2021', price: '$8.99', image: '4b55cca74675b8ca.webp' },
   { id: '406730391892', category: 'drinks', name: 'Mountain Dew Baja Point Break Punch', detail: 'Tropical punch, full 20 oz bottle, 2024', price: '$11.99', image: '9b5398669bcaea4d.webp' },
   { id: '406738141008', category: 'drinks', name: 'Mountain Dew Baja Laguna Lemonade', detail: 'Mango lemonade, full 12 oz can, 2024', price: '$7.99', image: 'ed8766fc4d8c8e54.webp' },
   { id: '406738058280', category: 'drinks', name: 'Pepsi x Peeps Marshmallow Cola', detail: 'Limited edition, full 20 oz bottle, 2023', price: '$8.99', image: 'a259117f32742e2a.webp' },
@@ -142,11 +144,22 @@ const DC_CATALOG = [
   { id: '406763456229', category: 'care', name: 'Softsoap Holiday Body Wash', detail: 'Peppermint candy and sugar cookie, 20 fl oz', price: '$29.99', image: '5b78e750ba88fb29.webp' },
   { id: '406763511763', category: 'care', name: 'Suave Coconut Oil Damage Repair Shampoo', detail: 'Suave Professionals, 12.6 fl oz', price: '$9.99', image: '773e3d2aa2065cf1.webp', maxQuantity: 3 },
   { id: '406761145645', category: 'care', name: 'Dial Cocoa Butter Body Wash', detail: 'Exfoliate & Restore with orange extract, 16 fl oz', price: '$7.99', image: '861b2cb7c330d553.webp' },
+  { id: '407298156099', category: 'home', name: 'Nice Cream Cone Squishy Fidget Toy - Mint Green & Yellow', detail: 'One mint green and yellow ice cream cone-shaped squishy toy in its original box. New with box; see all six packaging photos', condition: 'New with box', price: '$11.96', image: '407298156099.webp', maxQuantity: 1, brand: 'Unbranded', productType: 'Toys & Games > Toys > Fidget Toys', purchaseNote: 'Toy, not food. Packaging is marked 8+ and warns of a choking hazard from small parts; not for children under 8 years.', gallery: [
+    { src: 'assets/images/listings/gallery/407298156099-2.webp', label: 'back of box' },
+    { src: 'assets/images/listings/gallery/407298156099-3.webp', label: 'side of box' },
+    { src: 'assets/images/listings/gallery/407298156099-4.webp', label: 'alternate packaging view' },
+    { src: 'assets/images/listings/gallery/407298156099-5.webp', label: 'top of box' },
+    { src: 'assets/images/listings/gallery/407298156099-6.webp', label: 'packaging label and warnings' }
+  ] },
   { id: '406760868081', category: 'collectibles', name: 'Funko Pop! Wayne Gretzky #45', detail: 'Los Angeles Kings NHL vinyl figure', price: '$12.99', image: '8da5a3eda84b0bca.webp' }
 ];
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407300260883': 32,
+  '407298156099': 8,
+  '407298051046': 32,
+  '407297979026': 16,
   '407293775090': 32,
   '407293697579': 32,
   '407293550787': 80,
@@ -185,7 +198,6 @@ const DC_SHIPPING_WEIGHTS_OZ = {
   '406711385310': 192,
   '406705689212': 32,
   '406738017949': 32,
-  '406794914124': 16,
   '406730391892': 32,
   '406738141008': 16,
   '406738058280': 32,
@@ -245,13 +257,13 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 74 },
-  drinks: { label: 'Rare drinks', count: 36 },
+  all: { label: 'All items', count: 77 },
+  drinks: { label: 'Rare drinks', count: 38 },
   apparel: { label: 'Sports & apparel', count: 12 },
   'kids-shoes': { label: "Designer kids' shoes", count: 10 },
   collectibles: { label: 'Collectibles & cards', count: 11 },
   care: { label: 'Personal care', count: 4 },
-  home: { label: 'Home & hobby', count: 1 }
+  home: { label: 'Home & hobby', count: 2 }
 };
 
 const DC_STORE_CONFIG = {

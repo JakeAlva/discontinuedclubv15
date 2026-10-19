@@ -19,6 +19,10 @@ const selectedCatalog = catalog.filter((item) => !onlyId || item.id === onlyId);
 // Storefront assets are branded. Merchant assets stay free of retailer overlays for Google Shopping.
 
 const bottomBrandedSources = new Set([
+  '407300260883.webp',
+  '407298156099.webp',
+  '407298051046.webp',
+  '407297979026.webp',
   '407293775090.webp',
   '407293697579.webp',
   '407293550787.webp',

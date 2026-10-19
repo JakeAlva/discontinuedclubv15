@@ -1,5 +1,17 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "406794914124",
+    "category": "drinks",
+    "name": "Mountain Dew Zero Sugar Frost Bite",
+    "price": "$8.99",
+    "priceLabel": "Last listed price",
+    "brand": "Mountain Dew",
+    "soldOut": true,
+    "image": "406794914124.webp",
+    "slug": "mountain-dew-zero-sugar-frost-bite-406794914124",
+    "availableAgain": false
+  },
+  {
     "id": "406794860747",
     "category": "drinks",
     "name": "Mountain Dew Gingerbread Snap'd",

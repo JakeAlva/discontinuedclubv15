@@ -6,11 +6,10 @@ import { catalog, categories, directPriceCents, maxQuantity } from '../lib/store
 
 const read = (file) => readFile(new URL(`../${file}`, import.meta.url), 'utf8');
 const audit = JSON.parse(await read('data/ebay-inventory-audit-2026-10-12.json'));
-const pepsiBlue = JSON.parse(await read('data/ebay-listing-407290859464-2026-10-15.json'));
-const newDrinks = JSON.parse(await read('data/ebay-new-drinks-2026-10-15.json'));
-const active = [...audit.active, [pepsiBlue.id, pepsiBlue.quantity, pepsiBlue.price], ...newDrinks.listings.map((item) => [item.id, item.quantity, `$${(item.priceCents / 100).toFixed(2)}`])];
+const latest = JSON.parse(await read('data/ebay-inventory-update-2026-10-19.json'));
+const active = latest.activeSnapshot.map(([id, priceCents, quantity]) => [id, quantity, `$${(priceCents / 100).toFixed(2)}`]);
 
-test('active listings match the audit and verified October 15 additions', () => {
+test('active listings match the verified October 19 inventory audit', () => {
   const expected = new Map(active.map(([id, quantity, price]) => [id, { quantity, price }]));
   assert.equal(expected.size, active.length, 'Audit must not contain duplicate listing IDs');
   assert.deepEqual(catalog.map((item) => item.id).sort(), [...expected.keys()].sort());
@@ -39,7 +38,7 @@ test('published catalog, purchase limits and feed use the audited inventory', as
     assert.equal(record['g:availability'], 'in_stock');
     assert.equal(record['g:price'], `${(directPriceCents(item) / 100).toFixed(2)} USD`);
   }
-  for (const id of audit.endedListingIds) {
+  for (const id of [...audit.endedListingIds, ...latest.soldOut.map((item) => item.id)]) {
     assert.ok(!publicCatalog.includes(id), `${id} must not be purchasable`);
     assert.ok(!(await read('dist/out-now.html')).includes(id), `${id} must not appear in static shop listings`);
   }

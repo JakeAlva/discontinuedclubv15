@@ -1,0 +1,31 @@
+{
+  "checkedDate": "2026-10-19",
+  "source": "Signed-in eBay active listings (all 77 on one page), public descriptions and read-only revise forms. No eBay changes submitted.",
+  "activeListingCount": 77,
+  "notes": "Quantities are sellable units. Single cans are not multipacks. Winter Wonderland already had one sale; seven remain. Package weights match eBay, including estimated weights on the Alani, Mountain Dew and toy listings.",
+  "additions": [
+    { "id": "407300260883", "category": "drinks", "quantity": 7, "priceCents": 1299, "directPriceCents": 1254, "shippingWeightOz": 32, "imageUrl": "https://i.ebayimg.com/images/g/YhgAAeSwAnJq1EI4/s-l960.webp" },
+    { "id": "407298051046", "category": "drinks", "quantity": 1, "priceCents": 799, "directPriceCents": 771, "shippingWeightOz": 32, "imageUrl": "https://i.ebayimg.com/images/g/Kt4AAeSwkx5q1Dqp/s-l1600.webp" },
+    { "id": "407297979026", "category": "drinks", "quantity": 4, "priceCents": 2199, "directPriceCents": 2122, "shippingWeightOz": 16, "imageUrl": "https://i.ebayimg.com/images/g/neUAAeSwt1Zq1C8q/s-l1600.webp", "printedBestBy": "06-03-27" },
+    { "id": "407298156099", "category": "home", "quantity": 1, "priceCents": 1196, "directPriceCents": 1154, "shippingWeightOz": 8, "imageUrl": "https://i.ebayimg.com/images/g/3a0AAeSw0VBq1Ep2/s-l1600.webp", "galleryUrls": [
+      "https://i.ebayimg.com/images/g/tJYAAeSwwvBq1Ep4/s-l1600.webp",
+      "https://i.ebayimg.com/images/g/tDwAAeSwS09q1Ep4/s-l1600.webp",
+      "https://i.ebayimg.com/images/g/2QAAAeSwOaxq1Ep4/s-l1600.webp",
+      "https://i.ebayimg.com/images/g/uOYAAeSwbutq1Ep5/s-l1600.webp",
+      "https://i.ebayimg.com/images/g/zoEAAeSwq~dq1Ep5/s-l1600.webp"
+    ] }
+  ],
+  "soldOut": [{ "id": "406794914124", "name": "Mountain Dew Zero Sugar Frost Bite", "priceCents": 899, "evidence": "Signed-in eBay item page shows Sold and payment received; no longer in active inventory." }],
+  "activeSnapshot": [
+    ["407300260883",1299,7], ["407298156099",1196,1], ["407298051046",799,1], ["407297979026",2199,4],
+    ["407293775090",799,1], ["407293697579",1999,4], ["407293550787",2499,1], ["407293533835",3498,1], ["407293531323",1999,3], ["407290859464",1299,1],
+    ["407283282883",8499,1], ["407281698826",5999,2], ["407279351355",2499,1], ["407279322970",2499,1],
+    ["407277346224",7499,1], ["407277320481",6999,1], ["407277242488",7499,1], ["407277210158",6499,1], ["407277156219",7999,1], ["407277122050",11999,1], ["407276996786",9999,1], ["407274649287",17499,1],
+    ["407269224750",599,4], ["407269188492",699,2], ["407264848037",599,1], ["407264808538",3999,1], ["407260159541",3999,2], ["407212006333",649,3],
+    ["407207373104",5999,1], ["407205665076",1299,1], ["407205596661",1599,1], ["407205565491",1999,1], ["407205333909",1399,1], ["407203191955",4999,1], ["407203141723",4999,1], ["407203121847",4999,2], ["407202995940",1499,1],
+    ["407176877843",8999,1], ["407151646374",5499,1], ["407134944288",3299,2], ["407120051396",4999,1], ["407086892969",3899,2], ["407086613910",14999,1], ["407085080884",3499,1],
+    ["407064120905",4999,1], ["407064096234",6999,1], ["407063808795",6999,1], ["407063633707",4999,1], ["407063539708",4999,1], ["407063463950",4999,1], ["407039382525",1399,2],
+    ["406927100578",4999,1], ["406876226806",17999,1], ["406834655819",9999,1], ["406795510403",499,3], ["406795016704",1499,1], ["406763784733",999,2], ["406763511763",999,3], ["406763456229",2999,1], ["406761145645",799,1], ["406760868081",1299,1],
+    ["406741032490",899,4], ["406738141008",799,1], ["406738070393",499,1], ["406738058280",899,1], ["406738017949",1099,1], ["406735072767",2999,1], ["406730413999",1299,5], ["406730391892",1199,1], ["406728820274",1099,1], ["406717975092",899,10], ["406713894369",4499,1], ["406711385310",4499,1], ["406711373393",4999,1], ["406706330853",999,1], ["406705689212",999,1], ["406701613482",4999,1]
+  ]
+}
