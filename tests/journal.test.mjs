@@ -44,7 +44,15 @@ test('journal publishes every researched report as a substantial, indexable arti
       assert.equal(Number(ratio[1]) / Number(ratio[2]), 1, 'square packshots should keep a square display area');
     }
     assert.ok(html.includes(`status-${report.statusKey}`), `${file} should expose its evidence status`);
-    assert.ok(readableWordCount(html) >= 900, `${file} should contain at least 900 readable words`);
+    // Short launch announcements should not need long-form archive padding.
+    const minimumWords = report.format === 'news-brief' ? 650 : 900;
+    assert.ok(readableWordCount(html) >= minimumWords, `${file} should contain at least ${minimumWords} readable words`);
+    if (report.format === 'news-brief') {
+      const body = [report.answer, ...report.sections.flatMap((section) => section.paragraphs)].join(' ');
+      assert.ok(readableWordCount(body) >= 300, `${file} should contain substantive reporting beyond the shared template`);
+      assert.ok(report.sources.length > 0);
+      assert.ok(report.statusParagraphs && report.buyerParagraphs, 'briefs must replace the archive boilerplate');
+    }
     assert.doesNotMatch(html, /assets\/images\/listings\/branded\//);
     assert.doesNotMatch(html, /(?:href|src)="\.\.\/assets\//);
     const toc = html.match(/<nav class="article-toc"[\s\S]*?<\/nav>/)?.[0];
