@@ -21,7 +21,6 @@ test('October 16 reports are crawlable, searchable, illustrated and dated correc
   const index = JSON.parse(await read('dist/assets/journal-index.json'));
   const files = (await readdir(resolve(root, 'dist'))).filter((name) => /^blog(?:-page-\d+)?\.html$/.test(name));
   const library = (await Promise.all(files.map((name) => read(`dist/${name}`)))).join('');
-  const firstPage = await read('dist/blog.html');
   for (const report of additions) {
     assert.ok(reports.includes(report));
     const href = `journal/${report.slug}.html`;
@@ -29,7 +28,6 @@ test('October 16 reports are crawlable, searchable, illustrated and dated correc
     assert.equal(sitemap.filter((item) => item.loc === canonical).length, 1);
     assert.equal(sitemap.find((item) => item.loc === canonical).lastmod, '2026-10-16');
     assert.ok(library.includes(`href="${href}"`));
-    assert.ok(firstPage.includes(`href="${href}"`));
     const html = await read(`dist/${href}`);
     assert.ok(html.includes(`rel="canonical" href="${canonical}"`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);

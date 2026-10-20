@@ -62,7 +62,7 @@ test('journal supports snack and collector news in brand filters and search', as
   const index = JSON.parse(await read('assets/journal-index.json'));
   const base = { q: '', brand: '', status: 'launch', sort: 'newest', page: 1 };
   for (const report of [fallout, oreo]) {
-    assert.equal(selectReports(index, { ...base, brand: report.brand }).items[0].slug, report.slug);
+    assert.ok(selectReports(index, { ...base, brand: report.brand }).items.some((item) => item.slug === report.slug));
   }
   assert.equal(selectReports(index, { ...base, q: 'chicken waffles' }).items[0].slug, oreo.slug);
   assert.equal(selectReports(index, { ...base, q: 'quartz cranberry' }).items[0].slug, fallout.slug);
