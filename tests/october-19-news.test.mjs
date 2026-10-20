@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { XMLParser } from 'fast-xml-parser';
@@ -17,13 +17,14 @@ const body = (report) => report.sections.flatMap((section) => section.paragraphs
 test('October 19 news is dated, indexed, searchable and illustrated with intact source assets', async () => {
   const index = JSON.parse(await read('assets/journal-index.json'));
   const sitemap = new XMLParser().parse(await read('sitemap-journal.xml')).urlset.url;
-  const firstPage = await read('blog.html');
+  const libraryFiles = (await readdir(resolve(root, 'dist'))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const library = (await Promise.all(libraryFiles.map(read))).join('\n');
   for (const report of [pepsi, doritos, arctic]) {
     assert.ok(reports.includes(report));
     assert.equal(report.format, 'news-brief');
     const href = `journal/${report.slug}.html`;
     const canonical = `https://discontinuedclub.com/${href}`;
-    assert.ok(firstPage.includes(`href="${href}"`));
+    assert.ok(library.includes(`href="${href}"`));
     assert.equal(sitemap.filter((entry) => entry.loc === canonical).length, 1);
     assert.equal(sitemap.find((entry) => entry.loc === canonical).lastmod, '2026-10-19');
     const html = await read(href);
