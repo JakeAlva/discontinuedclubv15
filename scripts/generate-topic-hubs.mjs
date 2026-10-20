@@ -3,6 +3,7 @@ import { resolve } from 'node:path';
 import { reports } from './journal-data.mjs';
 import { catalog } from '../lib/store-catalog.mjs';
 import { monsterArchive, monsterArchiveReviewed, monsterTimelineMarkup } from './monster-archive.mjs';
+import { redBullArchive, redBullArchiveReviewed, redBullTimelineMarkup } from './red-bull-archive.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const publicRoot = 'https://discontinuedclub.com';
@@ -40,9 +41,9 @@ const hubs = [
     slug: 'discontinued-red-bull-flavors',
     theme: 'redbull',
     eyebrow: 'Red Bull editions desk',
-    title: 'Discontinued Red Bull flavors in the U.S.',
-    seoTitle: 'Discontinued Red Bull Flavors: 2026 U.S. Editions List',
-    description: 'See which Red Bull flavors and Sugarfree formats left the United States, plus the 2026 Fuji Apple return and why its Sugarfree version did not come back.',
+    title: 'Red Bull flavor history in the U.S.',
+    seoTitle: 'Red Bull Flavor History: U.S. Timeline & Discontinued Editions',
+    description: 'Explore U.S. Red Bull flavor history with real can photos, launch years, approximate discontinuation windows, seasonal Editions and permanent returns from 1997 to 2026.',
     lede: 'The 2026 U.S. Red Bull changes, explained edition by edition so international cans, seasonal stock, and regular-sugar versions do not muddy the answer.',
     filter: (report) => report.brand === 'Red Bull',
     introHeading: 'Four 2026 cuts, plus a permanent return without its U.S. Sugarfree format.',
@@ -101,7 +102,9 @@ function reportGroup(title, copy, group) {
 
 function hubMarkup(hub) {
   const selected = reports.filter(hub.filter).filter((report) => report.statusKey !== 'launch');
-  const checkedDate = selected.reduce((latest, report) => (report.modifiedDate || report.checkedDate || '') > latest ? (report.modifiedDate || report.checkedDate) : latest, hub.theme === 'monster' ? monsterArchiveReviewed : '2026-09-12');
+  const timeline = hub.theme === 'monster' ? monsterArchive : hub.theme === 'redbull' ? redBullArchive : null;
+  const timelinePrefix = hub.theme === 'monster' ? 'monster' : 'red-bull';
+  const checkedDate = selected.reduce((latest, report) => (report.modifiedDate || report.checkedDate || '') > latest ? (report.modifiedDate || report.checkedDate) : latest, hub.theme === 'monster' ? monsterArchiveReviewed : hub.theme === 'redbull' ? redBullArchiveReviewed : '2026-09-12');
   const checkedLabel = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${checkedDate}T00:00:00Z`));
   const confirmed = selected.filter((report) => report.statusKey === 'discontinued');
   const watch = selected.filter((report) => report.statusKey === 'rumor');
@@ -117,9 +120,9 @@ function hubMarkup(hub) {
     dateModified: checkedDate,
     mainEntity: {
       '@type': 'ItemList',
-      numberOfItems: hub.theme === 'monster' ? monsterArchive.length : selected.length,
-      itemListElement: hub.theme === 'monster'
-        ? monsterArchive.map((item, index) => ({ '@type': 'ListItem', position: index + 1, url: `${url}#monster-${item.id}`, name: item.name }))
+      numberOfItems: timeline ? timeline.length : selected.length,
+      itemListElement: timeline
+        ? timeline.map((item, index) => ({ '@type': 'ListItem', position: index + 1, url: `${url}#${timelinePrefix}-${item.id}`, name: item.name }))
         : selected.map((report, index) => ({ '@type': 'ListItem', position: index + 1, url: `${publicRoot}/journal/${report.slug}.html`, name: report.title }))
     }
   };
@@ -147,16 +150,17 @@ function hubMarkup(hub) {
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css?v=44">
+  <link rel="stylesheet" href="assets/style.css?v=44">${hub.theme === 'redbull' ? '\n  <link rel="stylesheet" href="assets/red-bull-archive.css?v=1">' : ''}
   <script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>
-${hub.theme === 'monster' ? '' : `  <script type="application/ld+json">${JSON.stringify(faqSchema).replace(/</g, '\\u003c')}</script>`}
+${timeline ? '' : `  <script type="application/ld+json">${JSON.stringify(faqSchema).replace(/</g, '\\u003c')}</script>`}
 </head>
 <body data-page="blog">
   <div id="site-header"></div>
   <main>
     <nav class="breadcrumbs container" aria-label="Breadcrumb"><a href="index.html">Home</a><span>/</span><a href="blog.html">Journal</a><span>/</span><span>${escapeHtml(hub.title)}</span></nav>
 ${hub.theme === 'monster' ? `<header class="monster-history-header" id="monster-history-top"><div class="container"><p class="monster-history-kicker">The U.S. Monster archive</p><h1>Monster Energy:<br>A flavor history.</h1><p class="monster-history-deck">From the first release in 2002 to the flavors that disappeared from U.S. shelves. The cans, the changes, and what happened next.</p></div></header>
-${monsterTimelineMarkup(escapeHtml)}` : `
+${monsterTimelineMarkup(escapeHtml)}` : hub.theme === 'redbull' ? `<header class="monster-history-header red-bull-history-header" id="red-bull-history-top"><div class="container"><p class="monster-history-kicker">The United States · 1997 to today</p><h1>Red Bull:<br>A U.S. flavor history.</h1><p class="monster-history-deck">The first cans. The flavors that left. The ones that came back.<br>Follow the U.S. story, with launch dates and retirement windows beside every flavor.</p></div></header>
+${redBullTimelineMarkup(escapeHtml)}` : `
     <section class="topic-hero topic-hero-${hub.theme}"><div class="container topic-hero-grid"><div class="topic-hero-copy"><div class="eyebrow">${hub.eyebrow}</div><h1>${hub.title}</h1><p>${hub.lede}</p><div class="hero-actions"><a class="btn btn-dark" href="#reports">Browse the status reports</a><a class="text-link" href="rare-drinks.html">Shop rare drinks &rarr;</a></div></div><div class="topic-hero-art" aria-hidden="true">${artwork}<span>${selected.length} researched reports</span></div></div></section>
     <section class="journal-desk-band"><div class="container journal-desk-grid"><div><span>Market covered</span><strong>United States</strong></div><div><span>Reports indexed</span><strong>${selected.length} articles</strong></div><div><span>Index reviewed</span><strong>${checkedLabel}</strong></div><div><span>Rule</span><strong>Rumors stay separate</strong></div></div></section>
     <section class="section topic-intro" id="reports"><div class="container topic-intro-grid"><div><div class="section-kicker">Current answer</div><h2>${hub.introHeading}</h2></div><div class="topic-intro-copy">${hub.intro.map((paragraph) => `<p>${paragraph}</p>`).join('')}</div></div></section>
@@ -170,7 +174,7 @@ ${reportGroup('Rumored next, not confirmed', 'These claims are specific enough t
   <div id="site-footer"></div>
   <script src="assets/catalog.js?v=44"></script>
   <script src="assets/app.js?v=44"></script>
-${hub.theme === 'monster' ? '<script src="assets/monster-archive.js?v=91" defer></script>' : ''}
+${hub.theme === 'monster' ? '<script src="assets/monster-archive.js?v=91" defer></script>' : hub.theme === 'redbull' ? '<script src="assets/red-bull-archive.js?v=1" defer></script>' : ''}
 </body>
 </html>
 `;

@@ -4,6 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { reports } from '../scripts/journal-data.mjs';
 import { monsterArchive } from '../scripts/monster-archive.mjs';
+import { redBullArchive } from '../scripts/red-bull-archive.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const statusReports = reports.filter((report) => report.statusKey !== 'launch');
@@ -24,8 +25,10 @@ test('topic hubs are indexable, structured, and connected to the journal', async
     assert.match(html, /"@type":"CollectionPage"/);
     assert.match(html, /"@type":"ItemList"/);
     const isMonster = file === 'discontinued-monster-energy-flavors.html';
-    assert.ok(html.includes(`"numberOfItems":${isMonster ? monsterArchive.length : count}`));
-    assert.equal([...html.matchAll(isMonster ? /data-archive-entry/g : /class="topic-report-card"/g)].length, isMonster ? monsterArchive.length : count);
+    const isRedBull = file === 'discontinued-red-bull-flavors.html';
+    const expected = isMonster ? monsterArchive.length : isRedBull ? redBullArchive.length : count;
+    assert.ok(html.includes(`"numberOfItems":${expected}`));
+    assert.equal([...html.matchAll(isMonster || isRedBull ? /data-archive-entry/g : /class="topic-report-card"/g)].length, expected);
     assert.match(html, /journal\/is-[^"<]+\.html/);
     assert.ok(sitemap.includes(`https://discontinuedclub.com/${file}`));
     assert.ok(blog.includes(file));
