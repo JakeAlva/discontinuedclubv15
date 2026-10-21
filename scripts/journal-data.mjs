@@ -54,6 +54,9 @@ import { laysHolidayFlavorsReport } from './lays-holiday-flavors-report.mjs';
 import { oreoBananaPuddingReturnReport } from './oreo-banana-pudding-return-report.mjs';
 import { sunnydSpookydReport } from './sunnyd-spookyd-report.mjs';
 import { redBullCarnavalEditionReport } from './red-bull-carnaval-edition-report.mjs';
+import { monsterVanillaShotReport } from './monster-vanilla-shot-report.mjs';
+import { oceanSprayCranberryCiderReport } from './ocean-spray-cranberry-cider-report.mjs';
+import { waffleHouseSalsaReport } from './waffle-house-salsa-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -783,5 +786,8 @@ export const reports = [
   laysHolidayFlavorsReport,
   oreoBananaPuddingReturnReport,
   sunnydSpookydReport,
-  redBullCarnavalEditionReport
+  redBullCarnavalEditionReport,
+  monsterVanillaShotReport,
+  oceanSprayCranberryCiderReport,
+  waffleHouseSalsaReport
 ];

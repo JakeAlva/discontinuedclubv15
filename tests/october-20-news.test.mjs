@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { XMLParser } from 'fast-xml-parser';
@@ -19,7 +19,8 @@ const articleData = (html) => JSON.parse(html.match(/<script type="application\/
 test('October 20 stories have crawlable links, publication dates, search entries and high-resolution images', async () => {
   const index = JSON.parse(await read('assets/journal-index.json'));
   const sitemap = new XMLParser().parse(await read('sitemap-journal.xml')).urlset.url;
-  const blog = await read('blog.html');
+  const libraryPages = (await readdir(resolve(root, 'dist'))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const blog = (await Promise.all(libraryPages.map(read))).join('\n');
   for (const report of [lays, oreo, sunnyd]) {
     assert.ok(reports.includes(report));
     const href = `journal/${report.slug}.html`;
