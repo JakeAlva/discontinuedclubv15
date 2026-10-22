@@ -14,7 +14,6 @@ const DC_CATALOG = [
   { id: '407269224750', category: 'collectibles', name: 'Pokemon Mega Evolution Chaos Rising Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407269224750.webp', maxQuantity: 4 },
   { id: '407269188492', category: 'collectibles', name: 'Pokemon Surging Sparks Booster Pack', detail: 'Factory-sealed English Scarlet & Violet single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$6.99', image: '407269188492.webp', maxQuantity: 2 },
   { id: '407264848037', category: 'collectibles', name: 'Pokemon Mega Evolution Perfect Order Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407264848037.webp', maxQuantity: 1 },
-  { id: '407212006333', category: 'collectibles', name: 'Pokemon TCG Mega Evolution Booster Pack', detail: 'Factory-sealed English single pack with 10 game cards', price: '$6.49', image: '407212006333.webp', maxQuantity: 3 },
   { id: '407134944288', category: 'collectibles', name: 'Pokemon Destined Rivals 4-Pack Lot', detail: 'Four Scarlet & Violet booster packs, 40 cards total', price: '$32.99', image: '407134944288.webp', maxQuantity: 2 },
   { id: '407279351355', category: 'kids-shoes', name: 'adidas Yeezy Slide Pure Beige Infant Sandals - US 7K / EU 24', detail: "One pair of beige children's slides with heel straps. Pre-owned - Good; review all five condition photos. Original box not included", condition: 'Pre-owned - Good', price: '$24.99', image: '407279351355.webp', maxQuantity: 1, brand: 'adidas', productType: 'Apparel & Accessories > Shoes > Kids Sandals', size: '24', sizeSystem: 'EU', sizeLabel: 'US 7K / EU 24 (eBay listing)', color: 'Beige', gender: 'unisex', ageGroup: 'toddler', mpn: 'FW6348', googleProductCategory: '187', gallery: [
     { src: 'assets/images/listings/gallery/407279351355-2.webp', label: 'condition photo 2' },
@@ -102,7 +101,6 @@ const DC_CATALOG = [
   { id: '407205565491', category: 'drinks', name: 'Monster Reserve Watermelon (2-Pack)', detail: 'Two discontinued 16 fl oz energy drink cans', price: '$19.99', image: '407205565491.webp' },
   { id: '407205333909', category: 'drinks', name: 'Monster Energy Ultra Red (2-Pack)', detail: 'Two discontinued U.S. zero-sugar 16 fl oz energy drink cans', price: '$13.99', image: '407205333909.webp' },
   { id: '407203191955', category: 'drinks', name: 'Red Bull Spring Edition Cherry Sakura (4-Pack)', detail: 'Four discontinued 12 fl oz cherry sakura energy drink cans', price: '$49.99', image: '407203191955.webp', featured: true },
-  { id: '407203141723', category: 'drinks', name: 'Red Bull Amber Edition Sugar Free (4-Pack)', detail: 'Four rare 12 fl oz strawberry apricot energy drink cans', price: '$49.99', image: '407203141723.webp' },
   { id: '407203121847', category: 'drinks', name: 'Red Bull Green Edition Curuba Elderflower (4-Pack)', detail: 'Four discontinued 12 fl oz energy drink cans', price: '$49.99', image: '407203121847.webp', featured: true, maxQuantity: 2 },
   { id: '407202995940', category: 'home', name: 'Penn-Plax SWF1 Filtration Unit (2-Pack)', detail: 'Two crystal-clear filtration units for 1-gallon tanks', price: '$14.99', image: '407202995940.webp' },
   { id: '407039382525', category: 'drinks', name: 'Liquid Death x Pop-Tarts Carnage', detail: 'Strawberry sparkling water, limited 6-pack, 12 fl oz cans', price: '$13.99', image: '475e0f8d3f1d0a4e.webp', featured: true, maxQuantity: 2 },
@@ -189,7 +187,6 @@ const DC_SHIPPING_WEIGHTS_OZ = {
   '407205565491': 48,
   '407205333909': 48,
   '407203191955': 64,
-  '407203141723': 64,
   '407203121847': 64,
   '407202995940': 8,
   '407039382525': 96,
@@ -228,7 +225,6 @@ const DC_SHIPPING_WEIGHTS_OZ = {
   '406760868081': 24,
   '407086892969': 24,
   '407134944288': 16,
-  '407212006333': 8,
   '406763784733': 32,
   '406763456229': 32,
   '406763511763': 32,
@@ -257,11 +253,11 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 77 },
-  drinks: { label: 'Rare drinks', count: 38 },
+  all: { label: 'All items', count: 75 },
+  drinks: { label: 'Rare drinks', count: 37 },
   apparel: { label: 'Sports & apparel', count: 12 },
   'kids-shoes': { label: "Designer kids' shoes", count: 10 },
-  collectibles: { label: 'Collectibles & cards', count: 11 },
+  collectibles: { label: 'Collectibles & cards', count: 10 },
   care: { label: 'Personal care', count: 4 },
   home: { label: 'Home & hobby', count: 2 }
 };

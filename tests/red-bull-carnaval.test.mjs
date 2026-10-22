@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { XMLParser } from 'fast-xml-parser';
@@ -22,7 +22,9 @@ test('Carnaval article is discoverable, dated correctly and uses the sourced can
   assert.equal(schema.mainEntityOfPage, canonical);
   assert.match(html, /index, follow, max-image-preview:large/);
   assert.match(html, /Published October 20, 2026/);
-  assert.ok((await read('blog.html')).includes(`href="${href}"`));
+  const libraryPages = (await readdir(resolve(root, 'dist'))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const library = (await Promise.all(libraryPages.map(read))).join('\n');
+  assert.ok(library.includes(`href="${href}"`));
   const sitemap = new XMLParser().parse(await read('sitemap-journal.xml')).urlset.url;
   assert.equal(sitemap.filter((entry) => entry.loc === canonical).length, 1);
   assert.equal(sitemap.find((entry) => entry.loc === canonical).lastmod, '2026-10-20');

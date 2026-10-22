@@ -1,0 +1,25 @@
+{
+  "checkedDate": "2026-10-22",
+  "scope": "Confirmed sold-out listings only; not a full price or inventory audit.",
+  "source": "Signed-in eBay Orders and refreshed Active listings for discontinuedclub",
+  "soldOut": [
+    {
+      "id": "407212006333",
+      "name": "Pokemon TCG Mega Evolution Booster Pack",
+      "quantitySold": 3,
+      "soldDateShown": "2026-10-21",
+      "paymentStatus": "Buyer paid",
+      "remainingQuantity": 0,
+      "absentFromActive": true
+    },
+    {
+      "id": "407203141723",
+      "name": "Red Bull Amber Edition Sugar Free (4-Pack)",
+      "quantitySold": 1,
+      "soldDateShown": "2026-10-20",
+      "paymentStatus": "Buyer paid",
+      "remainingQuantity": 0,
+      "absentFromActive": true
+    }
+  ]
+}

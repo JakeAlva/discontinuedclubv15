@@ -57,6 +57,7 @@ import { redBullCarnavalEditionReport } from './red-bull-carnaval-edition-report
 import { monsterVanillaShotReport } from './monster-vanilla-shot-report.mjs';
 import { oceanSprayCranberryCiderReport } from './ocean-spray-cranberry-cider-report.mjs';
 import { waffleHouseSalsaReport } from './waffle-house-salsa-report.mjs';
+import { pokemonDeltaReignReport } from './pokemon-delta-reign-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -367,6 +368,7 @@ export const reports = [
   },
   {
     slug: 'is-red-bull-sugarfree-strawberry-apricot-discontinued',
+    modifiedDate: '2026-10-22',
     brand: 'Red Bull', product: 'Red Bull Sugarfree Amber Edition Strawberry Apricot', theme: 'orange', statusKey: 'discontinued', statusLabel: 'Discontinued in U.S.', lane: 'U.S. flavor status report', readTime: 8,
     title: 'Is Sugarfree Red Bull Strawberry Apricot discontinued?', seoTitle: 'Is Sugarfree Red Bull Strawberry Apricot Discontinued? 2026 Status',
     description: 'Yes. Red Bull Sugarfree Amber Edition Strawberry Apricot was discontinued in the U.S. in 2026; the regular Amber Edition is a separate product.',
@@ -374,10 +376,11 @@ export const reports = [
     answerHeading: 'Yes. Sugarfree Amber Edition Strawberry Apricot is discontinued in the U.S.',
     answer: 'Red Bull’s reported 2026 cuts included the sugarfree Strawberry Apricot variant. Red Bull continues to show the standard Amber Edition in its U.S. range, but that does not preserve the sugarfree SKU. This report tracks the exact formulation printed on the can.',
     sidebar: 'Sugarfree Strawberry Apricot ended; the regular Amber Edition continues separately.', evidenceGrade: 'High', evidenceNote: 'Named 2026 cut and a matching omission from the current sugarfree range.',
-    image: 'assets/images/journal/red-bull-sugarfree-strawberry-apricot.webp', imageAlt: 'One Red Bull Sugarfree Amber Edition Strawberry Apricot 12 ounce can', caption: 'One Sugarfree Amber Edition Strawberry Apricot can from Discontinued Club inventory.',
+    image: 'assets/images/journal/red-bull-sugarfree-strawberry-apricot.webp', imageAlt: 'One Red Bull Sugarfree Amber Edition Strawberry Apricot 12 ounce can', caption: 'One Sugarfree Amber Edition Strawberry Apricot can previously sold by Discontinued Club. Our four-pack is sold out.',
     cardCopy: 'The sugarfree Amber Edition was cut in 2026 even though regular Strawberry Apricot remains in Red Bull’s U.S. range.',
     sections: [
       { id: 'exact-product', heading: 'Which Strawberry Apricot product was discontinued?', toc: 'Exact product', paragraphs: [
+        '<strong>Store availability update, October 22, 2026:</strong> our last Sugarfree Amber Edition four-pack sold on October 20. The <a href="sold/red-bull-amber-edition-sugar-free-4-pack-407203141723.html">sold-out listing archive</a> remains available for reference. No restock date is confirmed.',
         'The affected can is Sugarfree Amber Edition Strawberry Apricot. Red Bull also markets a standard Amber Edition with the same named flavor, so broad searches can collapse two distinct products into one answer. The reported discontinuation applies to the sugarfree formulation.',
         'Red Bull’s current U.S. Editions page still names Amber Edition Strawberry Apricot among regular products. Its current sugarfree lineup is different and no longer includes the Amber Edition. That is consistent with a formulation-specific cut rather than the disappearance of every Strawberry Apricot drink.'
       ]},
@@ -394,7 +397,6 @@ export const reports = [
         'Those leftovers are part of the normal wind-down. A credible relaunch would involve new production and sustained U.S. replenishment, not simply a few listings that never disappeared from search.'
       ]}
     ],
-    shop: { heading: 'The discontinued sugarfree Amber Edition', copy: 'Discontinued Club currently lists a four-pack of full 12-fluid-ounce Strawberry Apricot Sugarfree cans.', href: 'products/red-bull-amber-edition-sugar-free-4-pack-407203141723.html', cta: 'View the Strawberry Apricot pack' },
     faq: [
       { question: 'Is Sugarfree Red Bull Strawberry Apricot discontinued?', answer: 'Yes. The Sugarfree Amber Edition was removed from the U.S. range in 2026.' },
       { question: 'Is regular Strawberry Apricot discontinued?', answer: 'No. The regular Amber Edition remains a different current U.S. product.' },
@@ -789,5 +791,6 @@ export const reports = [
   redBullCarnavalEditionReport,
   monsterVanillaShotReport,
   oceanSprayCranberryCiderReport,
-  waffleHouseSalsaReport
+  waffleHouseSalsaReport,
+  pokemonDeltaReignReport
 ];

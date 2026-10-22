@@ -1,5 +1,29 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "407212006333",
+    "category": "collectibles",
+    "name": "Pokemon TCG Mega Evolution Booster Pack",
+    "price": "$6.49",
+    "priceLabel": "Last listed price",
+    "brand": "The Pokemon Company International",
+    "soldOut": true,
+    "image": "407212006333.webp",
+    "slug": "pokemon-tcg-mega-evolution-booster-pack-407212006333",
+    "availableAgain": false
+  },
+  {
+    "id": "407203141723",
+    "category": "drinks",
+    "name": "Red Bull Amber Edition Sugar Free (4-Pack)",
+    "price": "$49.99",
+    "priceLabel": "Last listed price",
+    "brand": "Red Bull",
+    "soldOut": true,
+    "image": "407203141723.webp",
+    "slug": "red-bull-amber-edition-sugar-free-4-pack-407203141723",
+    "availableAgain": false
+  },
+  {
     "id": "406794914124",
     "category": "drinks",
     "name": "Mountain Dew Zero Sugar Frost Bite",

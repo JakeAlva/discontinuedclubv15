@@ -57,12 +57,12 @@ test('same-color cans and returning flavors stay separate', () => {
   assert.ok(!redBullArchive.some((item) => /carnaval/i.test(item.name)));
 });
 
-test('Red Bull timeline metadata and sitemap use the review date and matching item count', async () => {
+test('Red Bull timeline metadata and sitemap agree and are no older than its review date', async () => {
   const schema = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)]
     .map((match) => JSON.parse(match[1])).find((item) => item['@type'] === 'CollectionPage');
-  assert.equal(schema.dateModified, redBullArchiveReviewed);
+  assert.ok(schema.dateModified >= redBullArchiveReviewed);
   assert.equal(schema.mainEntity.numberOfItems, redBullArchive.length);
   assert.equal(schema.mainEntity.itemListElement.length, redBullArchive.length);
   const sitemap = await readFile(resolve(root, 'sitemap-pages.xml'), 'utf8');
-  assert.ok(sitemap.includes(`discontinued-red-bull-flavors.html</loc><lastmod>${redBullArchiveReviewed}</lastmod>`));
+  assert.ok(sitemap.includes(`discontinued-red-bull-flavors.html</loc><lastmod>${schema.dateModified}</lastmod>`));
 });
