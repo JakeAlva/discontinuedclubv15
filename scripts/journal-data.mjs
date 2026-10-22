@@ -58,6 +58,7 @@ import { monsterVanillaShotReport } from './monster-vanilla-shot-report.mjs';
 import { oceanSprayCranberryCiderReport } from './ocean-spray-cranberry-cider-report.mjs';
 import { waffleHouseSalsaReport } from './waffle-house-salsa-report.mjs';
 import { pokemonDeltaReignReport } from './pokemon-delta-reign-report.mjs';
+import { chipsAhoyMinisDrizzledReport } from './chips-ahoy-minis-drizzled-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -792,5 +793,6 @@ export const reports = [
   monsterVanillaShotReport,
   oceanSprayCranberryCiderReport,
   waffleHouseSalsaReport,
-  pokemonDeltaReignReport
+  pokemonDeltaReignReport,
+  chipsAhoyMinisDrizzledReport
 ];
