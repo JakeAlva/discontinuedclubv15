@@ -159,8 +159,8 @@ button { color: inherit; }
 .campaign-slide-shoes { --campaign-accent: #72c9bf; background: #101315; color: #fff; }
 .campaign-slide-pokemon { --campaign-accent: #ffca2c; background: #101315; color: #fff; }
 .campaign-slide-energy { --campaign-accent: #bce51f; background: #03143f; color: #fff; }
-.campaign-slide-lime { --campaign-accent: #c3ff21; background: #081810; color: #fff; }
-.campaign-slide-lime .campaign-media { object-position: right center; }
+.campaign-slide-witch { --campaign-accent: #c3ff21; background: #101413; color: #fff; }
+.campaign-slide-witch .campaign-media { object-position: right center; }
 .campaign-slide-inner { position: static; height: 100%; display: flex; align-items: center; padding-top: 42px; padding-bottom: 42px; pointer-events: none; }
 .campaign-copy { position: relative; z-index: 2; width: min(500px, 40%); min-width: 0; pointer-events: auto; }
 .campaign-kicker { display: flex; align-items: center; gap: 12px; color: rgba(255,255,255,.72); font-size: 10px; font-weight: 850; text-transform: uppercase; }
@@ -194,11 +194,11 @@ button { color: inherit; }
 .campaign-dots button.active { width: 24px; border-radius: 4px; background: var(--ink); }
 .campaign-all { font-size: 11px; font-weight: 850; }
 @media (min-width: 701px) and (max-width: 1000px) {
-  .campaign-slide-lime .campaign-visual,
+  .campaign-slide-witch .campaign-visual,
   .campaign-slide-liquid .campaign-visual,
   .campaign-slide-shoes .campaign-visual,
   .campaign-slide-pokemon .campaign-visual { left: 46%; width: 54%; }
-  .campaign-slide-lime .campaign-media,
+  .campaign-slide-witch .campaign-media,
   .campaign-slide-liquid .campaign-media,
   .campaign-slide-shoes .campaign-media,
   .campaign-slide-pokemon .campaign-media { object-fit: contain; }

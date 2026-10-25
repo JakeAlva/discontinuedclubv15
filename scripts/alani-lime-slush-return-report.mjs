@@ -8,7 +8,7 @@ export const alaniLimeSlushReturnReport = {
   brand: 'Alani Nu', product: 'Alani Nu Lime Slush', theme: 'green',
   statusKey: 'rumor', statusLabel: 'Return rumor: unconfirmed', lane: 'U.S. comeback watch',
   checkedDate: '2026-10-12', readTime: 4,
-  modifiedDate: '2026-10-15',
+  modifiedDate: '2026-10-25',
   title: 'Is Alani Lime Slush coming back? The return rumors, checked.',
   seoTitle: 'Is Alani Lime Slush Coming Back? 2026 & 2027 Return Rumors',
   description: 'Alani Lime Slush return rumors mention November 2026 and a permanent 2027 comeback. Here is what the sources say and what remains unconfirmed as of October 12.',
@@ -41,7 +41,7 @@ export const alaniLimeSlushReturnReport = {
     ]},
     { id: 'buying-now', heading: 'Can you buy Lime Slush right now?', toc: 'Shopping before confirmation', paragraphs: [
       'Availability needs to be checked seller by seller. A retailer page can remain online without local stock, and an available marketplace pack does not disclose when it was produced. Ask for the actual can photos, date markings, quantity and delivered price rather than assuming a listing means a relaunch.',
-      '<strong>Store update, October 15, 2026:</strong> Discontinued Club released its reserved four-pack of existing 12 oz cans. The <a href="products/alani-nu-lime-slush-12-oz-4-pack-407293533835.html">new Lime Slush listing</a> started with one four-pack; check that page for current availability. Our <a href="sold/alani-nu-lime-slush-4-pack-407205693415.html">previous sold-out listing</a> remains an archive. Neither is a preorder for new production.',
+      '<strong>Store update, October 25, 2026:</strong> Our reserved four-pack has sold out, and we have no Lime Slush packs available to purchase. Its <a href="sold/alani-nu-lime-slush-12-oz-4-pack-407293533835.html">sold-out reserve archive</a> and our <a href="sold/alani-nu-lime-slush-4-pack-407205693415.html">previous sold-out listing</a> remain online for reference. Neither is a preorder for new production; no store restock date has been announced.',
       'A manufacturer comeback and a small independent shop restock are separate events. We will not use news of one to imply that the other has happened.'
     ]}
   ],
@@ -53,9 +53,9 @@ export const alaniLimeSlushReturnReport = {
     { question: 'Is Alani Lime Slush coming back on November 1, 2026?', answer: 'November 1 appears in a community claim. We have not independently verified it as an official release date.' },
     { question: 'Will Lime Slush become permanent in 2027?', answer: 'That claim is circulating, but we have not located a verified Alani Nu announcement confirming permanent 2027 status.' },
     { question: 'Does an online listing prove new Lime Slush is being made?', answer: 'No. A listing may represent remaining inventory or an older catalog record. New production requires separate evidence.' },
-    { question: 'Is Discontinued Club taking Lime Slush preorders?', answer: 'No. We released one reserved four-pack of existing stock on October 15. Check the current product listing for availability; this is not a preorder for a manufacturer relaunch.' }
+    { question: 'Is Discontinued Club taking Lime Slush preorders?', answer: 'No. Our reserved four-pack has sold out as of the October 25 store update. We have no Lime Slush packs available and no announced restock date.' }
   ],
-  disclosure: 'Independent reporting, not sponsored by Alani Nu or PepsiCo. Discontinued Club sells remaining Lime Slush inventory and released its reserved four-pack on October 15. That store inventory is separate from the unconfirmed brand-return claims. News sources were checked October 12; this later update concerns our own inventory only.',
+  disclosure: 'Independent reporting, not sponsored by Alani Nu or PepsiCo. Discontinued Club previously sold Lime Slush; the reserve four-pack released October 15 is now sold out. Store inventory is separate from the unconfirmed brand-return claims. News sources were checked October 12; the October 25 update concerns our own inventory only.',
   sources: [
     { label: 'Alani Nu: original Lime Slush launch post', url: originalLaunch, note: 'Official original-release context, not a comeback announcement' },
     { label: 'FoodBev: limited-edition Lime Slush launch', url: limitedLaunch, note: 'February 26, 2026; original limited-run status' },

@@ -7,9 +7,13 @@ import { soldItems } from '../scripts/sold-data.mjs';
 import createCheckout from '../netlify/functions/create-checkout.mjs';
 
 const root = resolve(import.meta.dirname, '..');
-const id = '407205693415';
-const slug = `alani-nu-lime-slush-4-pack-${id}.html`;
 const read = (file) => readFile(resolve(root, file), 'utf8');
+const soldPacks = [
+  { id: '407205693415', slug: 'alani-nu-lime-slush-4-pack-407205693415.html' },
+  { id: '407293533835', slug: 'alani-nu-lime-slush-12-oz-4-pack-407293533835.html' }
+];
+
+for (const { id, slug } of soldPacks) {
 
 test('sold-out Alani is removed from all active inventory and shopping feeds', async () => {
   assert.equal(findCatalogItem(id), undefined);
@@ -38,12 +42,13 @@ test('Alani archive stays indexable and has no purchase action', async () => {
   assert.ok((await read('sitemap-sold.xml')).includes(`/sold/${slug}`));
   assert.ok((await read('_redirects')).includes(`/products/${slug}  /sold/${slug}  301`));
   const article = await read('journal/is-alani-nu-lime-slush-discontinued.html');
-  assert.match(article, /current Lime Slush listing/);
+  assert.match(article, /sold-out reserve four-pack archive/);
+  assert.match(article, /no Lime Slush packs available to purchase/);
   assert.doesNotMatch(article, /article-shop-callout|currently lists a four-pack/);
   assert.ok((await readFile(resolve(root, `assets/images/sold/branded/${id}.webp`))).length > 1000);
 });
 
-test('a stale cart cannot create a checkout for the sold-out Alani listing', async () => {
+test(`a stale cart cannot create a checkout for sold-out Alani ${id}`, async () => {
   const previous = { enabled: process.env.STRIPE_CHECKOUT_ENABLED, key: process.env.STRIPE_SECRET_KEY };
   process.env.STRIPE_CHECKOUT_ENABLED = 'true';
   process.env.STRIPE_SECRET_KEY = 'sk_test_no_network_should_be_used';
@@ -62,3 +67,4 @@ test('a stale cart cannot create a checkout for the sold-out Alani listing', asy
     }
   }
 });
+}

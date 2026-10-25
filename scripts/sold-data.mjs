@@ -1,4 +1,5 @@
 export const soldItems = [
+  { id: '407293533835', category: 'drinks', name: 'Alani Nu Lime Slush - 12 oz 4-Pack', brand: 'Alani Nu', price: '$34.98', priceLabel: 'Last listed price', soldOut: true, imageUrl: 'https://discontinuedclub.com/assets/images/listings/merchant/407293533835.webp' },
   { id: '407212006333', category: 'collectibles', name: 'Pokemon TCG Mega Evolution Booster Pack', brand: 'The Pokemon Company International', price: '$6.49', priceLabel: 'Last listed price', soldOut: true, imageUrl: 'https://discontinuedclub.com/assets/images/listings/merchant/407212006333.webp' },
   { id: '407203141723', category: 'drinks', name: 'Red Bull Amber Edition Sugar Free (4-Pack)', brand: 'Red Bull', price: '$49.99', priceLabel: 'Last listed price', soldOut: true, imageUrl: 'https://discontinuedclub.com/assets/images/listings/merchant/407203141723.webp' },
   { id: '406794914124', category: 'drinks', name: 'Mountain Dew Zero Sugar Frost Bite', brand: 'Mountain Dew', price: '$8.99', priceLabel: 'Last listed price', soldOut: true, imageUrl: 'https://discontinuedclub.com/assets/images/listings/merchant/406794914124.webp' },

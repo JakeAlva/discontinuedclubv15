@@ -1,5 +1,17 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "407293533835",
+    "category": "drinks",
+    "name": "Alani Nu Lime Slush - 12 oz 4-Pack",
+    "price": "$34.98",
+    "priceLabel": "Last listed price",
+    "brand": "Alani Nu",
+    "soldOut": true,
+    "image": "407293533835.webp",
+    "slug": "alani-nu-lime-slush-12-oz-4-pack-407293533835",
+    "availableAgain": false
+  },
+  {
     "id": "407212006333",
     "category": "collectibles",
     "name": "Pokemon TCG Mega Evolution Booster Pack",

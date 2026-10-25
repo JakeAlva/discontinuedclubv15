@@ -28,7 +28,7 @@ test('campaign carousel promotes current products and curated collections', asyn
       /href="out-now\.html\?category=collectibles"/,
       /href="products\/liquid-death-x-pop-tarts-carnage-407039382525\.html"/,
       /href="out-now\.html\?category=kids-shoes"/,
-      /href="products\/alani-nu-lime-slush-12-oz-4-pack-407293533835\.html"/
+      /href="products\/alani-nu-witch-s-brew-12-oz-4-pack-407293550787\.html"/
     ];
     assert.match(slide, destinations[index]);
     assert.match(slide, /src="assets\/images\/campaign\/scenes\/[^"]+-desktop\.webp\?v=\d+"/);
@@ -56,7 +56,7 @@ test('campaign carousel promotes current products and curated collections', asyn
 
 test('refreshed campaigns use native-resolution artwork and dedicated mobile compositions', async () => {
   const html = await readFile(resolve(root, 'index.html'), 'utf8');
-  for (const campaign of ['liquid-carnage', 'pokemon-arrivals', 'designer-kids-shoes']) {
+  for (const campaign of ['liquid-carnage', 'pokemon-arrivals', 'designer-kids-shoes', 'witchs-brew']) {
     for (const size of ['desktop', 'mobile']) {
       const file = 'assets/images/campaign/scenes/' + campaign + '-' + size + '.webp';
       const metadata = await sharp(resolve(root, file)).metadata();
@@ -91,21 +91,22 @@ test('designer kids shoes replace the jersey campaign without changing the jerse
   assert.ok(catalog.some((item) => item.id === '407176877843'));
 });
 
-test('Lime Slush stays last and points to the released reserve four-pack', async () => {
+test('Witch\'s Brew replaces the sold Lime Slush reserve campaign', async () => {
   const html = await readFile(resolve(root, 'index.html'), 'utf8');
   const slides = html.match(/<article class="campaign-slide[\s\S]*?<\/article>/g) ?? [];
   const teaser = slides.at(-1);
-  assert.match(teaser, /campaign-slide-lime/);
-  assert.match(teaser, /Back in our shop/);
-  assert.match(teaser, /reserved four-pack is now available/);
-  assert.match(teaser, /products\/alani-nu-lime-slush-12-oz-4-pack-407293533835\.html/);
+  assert.match(teaser, /campaign-slide-witch/);
+  assert.match(teaser, /Halloween pick/);
+  assert.match(teaser, /four full-size 12 oz cans/);
+  assert.match(teaser, /products\/alani-nu-witch-s-brew-12-oz-4-pack-407293550787\.html/);
+  assert.doesNotMatch(slides.join(''), /Lime Slush|407293533835|campaign-slide-lime/);
   assert.doesNotMatch(teaser, /Currently unavailable|Date to be announced|preorder|next year|2027|\$/i);
   assert.equal((html.match(/data-campaign-dot="\d+"/g) ?? []).length, slides.length);
   for (const size of ['desktop', 'mobile']) {
-    assert.ok((await stat(resolve(root, 'assets/images/campaign/scenes/lime-' + size + '.webp'))).size > 10000);
+    assert.ok((await stat(resolve(root, 'assets/images/campaign/scenes/witchs-brew-' + size + '.webp'))).size > 10000);
   }
   const journal = await readFile(resolve(root, 'journal/is-alani-nu-lime-slush-discontinued.html'), 'utf8');
-  assert.match(journal, /It is not a preorder/);
+  assert.match(journal, /Neither archive is a preorder/);
   assert.match(journal, /not an announcement of new production or a manufacturer relaunch/);
   assert.ok((await readFile(resolve(root, 'sitemap-journal.xml'), 'utf8')).includes('is-alani-nu-lime-slush-discontinued.html'));
   assert.doesNotMatch(html, /<meta name="robots" content="noindex/);

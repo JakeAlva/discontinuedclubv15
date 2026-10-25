@@ -59,6 +59,8 @@ import { oceanSprayCranberryCiderReport } from './ocean-spray-cranberry-cider-re
 import { waffleHouseSalsaReport } from './waffle-house-salsa-report.mjs';
 import { pokemonDeltaReignReport } from './pokemon-delta-reign-report.mjs';
 import { chipsAhoyMinisDrizzledReport } from './chips-ahoy-minis-drizzled-report.mjs';
+import { alaniWitchsBrewSizesReport } from './alani-witchs-brew-sizes-report.mjs';
+import { hiddenValleySpookyRanchReport } from './hidden-valley-spooky-ranch-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -452,7 +454,7 @@ export const reports = [
   },
   {
     slug: 'is-alani-nu-lime-slush-discontinued',
-    modifiedDate: '2026-10-15',
+    modifiedDate: '2026-10-25',
     brand: 'Alani Nu', product: 'Alani Nu Lime Slush', theme: 'green', statusKey: 'discontinued', statusLabel: 'Limited run ended; return rumored', lane: 'U.S. limited-release status report', readTime: 5,
     title: 'Is Alani Nu Lime Slush discontinued?', seoTitle: 'Is Alani Nu Lime Slush Discontinued? 2026 U.S. Status',
     description: 'Lime Slush was a limited 2026 U.S. release. Its initial run ended, but a return is now rumored. See the October update and why permanent cancellation is not confirmed.',
@@ -460,7 +462,7 @@ export const reports = [
     answerHeading: 'The original limited run ended. A return is now rumored.',
     answer: 'Lime Slush launched as a limited U.S. flavor in early 2026. Its original release window has passed, but we have not verified an exact last-production date or a permanent-cancellation notice. As of October 12, public posts claim a future return; we have not independently confirmed their dates or permanent-lineup claims.',
     sidebar: 'Original limited run ended; comeback timing remains unconfirmed.', evidenceGrade: 'Documented limited release; unverified return', evidenceNote: 'Launch reporting establishes limited status, not a permanent cancellation or confirmed comeback.',
-    image: 'assets/images/journal/alani-lime-slush.webp', imageAlt: 'One bright green Alani Nu Lime Slush 12 ounce can', caption: 'Original Alani Nu Lime Slush packaging. Discontinued Club released its reserved four-pack on October 15; check the current listing for availability. This is existing stock, not a manufacturer relaunch.',
+    image: 'assets/images/journal/alani-lime-slush.webp', imageAlt: 'One bright green Alani Nu Lime Slush 12 ounce can', caption: 'Original Alani Nu Lime Slush packaging. Store update October 25: our reserved four-pack has sold out. Its archive documents existing stock, not a manufacturer relaunch.',
     cardCopy: 'The original limited run ended. Our October update separates the new comeback rumors from verified release history.',
     relatedSlugs: ['is-alani-lime-slush-coming-back-return-rumor', 'alani-voodoo-vanilla-sold-out-discontinued'],
     sections: [
@@ -477,8 +479,8 @@ export const reports = [
         'Later in the year, fans organized requests for Alani Nu to bring Lime Slush back. A campaign establishes consumer interest, not an exact production cutoff. Likewise, a missing product page alone cannot establish a permanent cancellation.'
       ]},
       { id: 'remaining-packs', heading: 'Why four-packs can still be available', toc: 'Remaining packs', paragraphs: [
-        '<strong>Store availability update, October 15, 2026:</strong> We have released the separate four-pack previously held in our reserve. The <a href="products/alani-nu-lime-slush-12-oz-4-pack-407293533835.html">current Lime Slush listing</a> started with one four-pack of 12 oz cans. Check that page for live availability before ordering.',
-        'The previous batch sold out on September 16; its <a href="sold/alani-nu-lime-slush-4-pack-407205693415.html">original listing archive</a> remains online. This new store listing is existing inventory, not an announcement of new production or a manufacturer relaunch. It is not a preorder.',
+        '<strong>Store availability update, October 25, 2026:</strong> Our reserved four-pack has sold out. We have no Lime Slush packs available to purchase. The <a href="sold/alani-nu-lime-slush-12-oz-4-pack-407293533835.html">sold-out reserve four-pack archive</a> preserves the listing for reference; no restock date has been announced.',
+        'The previous batch sold out on September 16; its <a href="sold/alani-nu-lime-slush-4-pack-407205693415.html">original listing archive</a> remains online. The reserve released October 15 was existing inventory, not an announcement of new production or a manufacturer relaunch. Neither archive is a preorder.',
         'Retail and specialty inventory can outlast a limited run. A listing alone does not tell us its production date or prove a manufacturer relaunch. Stores and marketplace sellers can hold inventory for different lengths of time.',
         'Check the seller’s photos, pack quantity, can condition, and date markings. Lime Slush was sold in several retail configurations, so a single can, a four-pack, and a case should not be treated as interchangeable listings.'
       ]},
@@ -794,5 +796,7 @@ export const reports = [
   oceanSprayCranberryCiderReport,
   waffleHouseSalsaReport,
   pokemonDeltaReignReport,
-  chipsAhoyMinisDrizzledReport
+  chipsAhoyMinisDrizzledReport,
+  alaniWitchsBrewSizesReport,
+  hiddenValleySpookyRanchReport
 ];

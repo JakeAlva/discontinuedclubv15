@@ -124,8 +124,8 @@ test('Lime Slush history is corrected without inventing a confirmed return or ch
   const old = await read('journal/is-alani-nu-lime-slush-discontinued.html');
   const graph = JSON.parse(old.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1])['@graph'];
   assert.equal(graph[0].datePublished, '2026-09-11');
-  assert.equal(graph[0].dateModified, '2026-10-15');
+  assert.equal(graph[0].dateModified, '2026-10-25');
   assert.ok(old.includes(`journal/${lime.slug}.html`));
-  assert.match(old, /current Lime Slush listing/);
+  assert.match(old, /sold-out reserve four-pack archive/);
   assert.match(old, /Earlier wording was too definite/);
 });

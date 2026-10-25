@@ -9,9 +9,11 @@ import createCheckout from '../netlify/functions/create-checkout.mjs';
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 const audit = JSON.parse(await read('data/ebay-new-drinks-2026-10-15.json'));
 const expectedPrices = [771, 1929, 2412, 3376, 1929];
+const soldIds = new Set(['407293533835']);
 
-test('five new drinks match verified eBay unit counts, prices and packaged weights', () => {
+test('remaining October 15 drinks match verified eBay unit counts, prices and packaged weights', () => {
   for (const [index, record] of audit.listings.entries()) {
+    if (soldIds.has(record.id)) continue;
     const item = catalog.find((row) => row.id === record.id);
     assert.equal(catalog.filter((row) => row.id === record.id).length, 1);
     assert.equal(item.category, 'drinks');
@@ -30,6 +32,7 @@ test('new drink pages, clean merchant images and sitemaps match the catalog', as
   const shop = await read('dist/out-now.html');
   const sitemap = await read('dist/sitemap-products.xml');
   for (const record of audit.listings) {
+    if (soldIds.has(record.id)) continue;
     const item = catalog.find((row) => row.id === record.id);
     const entry = feed.find((row) => row['g:id'] === `dc-${record.id}`);
     const href = entry['g:link'].replace('https://discontinuedclub.com/', '');
@@ -65,9 +68,7 @@ test('older bottles retain collection-only condition warnings and distinct units
   const cherry = catalog.find((row) => row.id === '407293697579');
   assert.match(cherry.detail, /one bottle, not a multipack/);
   assert.match(cherry.purchaseNote, /February 24, 2020/);
-  const lime = catalog.find((row) => row.id === '407293533835');
-  assert.equal(lime.gallery.length, 3);
-  assert.equal(maxQuantity(lime), 1);
+  assert.equal(catalog.find((row) => row.id === '407293533835'), undefined);
   assert.equal(catalog.find((row) => row.id === '407205693415'), undefined);
 });
 
@@ -83,7 +84,7 @@ test('all new drinks reject over-stock quantities before any Stripe request', as
         body: JSON.stringify({ items: [{ id, quantity: quantity + 1 }] })
       }));
       assert.equal(result.status, 400);
-      assert.match((await result.json()).error, /available quantity changed/);
+      assert.match((await result.json()).error, soldIds.has(id) ? /no longer available/ : /available quantity changed/);
     }
   } finally {
     keys.forEach((key, index) => { if (old[index] === undefined) delete process.env[key]; else process.env[key] = old[index]; });

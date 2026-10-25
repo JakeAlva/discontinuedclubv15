@@ -9,7 +9,8 @@ import createCheckout from '../netlify/functions/create-checkout.mjs';
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 const audit = JSON.parse(await read('data/ebay-inventory-update-2026-10-19.json'));
 const sales = JSON.parse(await read('data/ebay-sales-update-2026-10-22.json'));
-const soldIds = new Set(sales.soldOut.map((item) => item.id));
+const latestSales = JSON.parse(await read('data/store-sales-update-2026-10-25.json'));
+const soldIds = new Set([...sales.soldOut, ...latestSales.soldOut].map((item) => item.id));
 const active = audit.activeSnapshot.filter(([id]) => !soldIds.has(id));
 const slug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
 
@@ -21,8 +22,8 @@ test('remaining listings preserve the October 19 snapshot after confirmed sales'
     assert.equal(parsePriceCents(item.price), price, `${id} eBay price`);
     assert.equal(maxQuantity(item), quantity, `${id} quantity`);
   }
-  assert.equal(categories.all.count, 75);
-  assert.equal(categories.drinks.count, 37);
+  assert.equal(categories.all.count, 74);
+  assert.equal(categories.drinks.count, 36);
   assert.equal(categories.home.count, 2);
   assert.equal(categories['kids-shoes'].count, 10);
   assert.equal(catalog.at(-1).id, '406760868081');
