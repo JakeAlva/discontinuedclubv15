@@ -25,7 +25,7 @@ test('confirmed sold-out listings leave active inventory, feeds and product reco
   }
   assert.equal(findCatalogItem('407269224750').maxQuantity, 4, 'Chaos Rising remains available');
   assert.equal(findCatalogItem('407269188492').maxQuantity, 2, 'Surging Sparks remains available');
-  assert.equal(findCatalogItem('407281698826').maxQuantity, 2, 'Destined Rivals bundles remain available');
+  assert.equal(findCatalogItem('407281698826'), undefined, 'Both Destined Rivals bundles sold on October 26');
 });
 
 test('sold-out pages preserve images, OutOfStock schema and both old URL redirects', async () => {

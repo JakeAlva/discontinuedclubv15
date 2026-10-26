@@ -13,12 +13,13 @@ import createCheckout from '../netlify/functions/create-checkout.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const read = (path) => readFile(resolve(root, path), 'utf8');
-const additions = [['407283282883', 1, 8202, 3], ['407281698826', 2, 5789, 4]];
+// Ascended Heroes was repriced and both Destined Rivals bundles sold on October 26.
+const additions = [['407283282883', 1, 6851, 3]];
 
 test('collectibles show bundles together, then single packs and the loose lot, with Funko last', async () => {
-  const orderedIds = ['407283282883', '407281698826', '407264808538', '407260159541', '407086892969', '407269224750', '407269188492', '407264848037', '407134944288', '406760868081'];
+  const orderedIds = ['407283282883', '407264808538', '407260159541', '407086892969', '407269224750', '407269188492', '407264848037', '407134944288', '406760868081'];
   assert.deepEqual(catalog.filter((item) => item.category === 'collectibles').map((item) => item.id), orderedIds);
-  assert.deepEqual(catalog.slice(0, 9).map((item) => item.id), orderedIds.slice(0, 9));
+  assert.deepEqual(catalog.slice(0, -1).filter((item) => item.category === 'collectibles').map((item) => item.id), orderedIds.slice(0, -1));
   assert.equal(catalog.at(-1).id, orderedIds.at(-1));
   const html = await read('dist/out-now.html');
   const positions = orderedIds.map((id) => html.indexOf(`assets/images/listings/branded/${id}.webp`));
@@ -42,9 +43,9 @@ test('new bundle storefront images retain the DC footer and use fresh image URLs
   }
 });
 
-test('October 12 bundles have matching inventory, galleries, prices and indexable pages', async () => {
+test('remaining October 12 bundle has matching inventory, galleries, price and indexable page', async () => {
   assert.equal(catalog.length, categories.all.count);
-  assert.equal(categories.collectibles.count, 10);
+  assert.equal(categories.collectibles.count, 9);
   const feed = new XMLParser({ parseTagValue: false }).parse(await read('google-merchant-feed.xml')).rss.channel.item;
   for (const [id, quantity, cents, photos] of additions) {
     const item = findCatalogItem(id);

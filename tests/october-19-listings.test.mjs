@@ -10,20 +10,23 @@ const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 const audit = JSON.parse(await read('data/ebay-inventory-update-2026-10-19.json'));
 const sales = JSON.parse(await read('data/ebay-sales-update-2026-10-22.json'));
 const latestSales = JSON.parse(await read('data/store-sales-update-2026-10-25.json'));
-const soldIds = new Set([...sales.soldOut, ...latestSales.soldOut].map((item) => item.id));
+const todaySales = JSON.parse(await read('data/store-sales-update-2026-10-26.json'));
+const latestAudit = JSON.parse(await read('data/ebay-inventory-update-2026-10-26.json'));
+const current = new Map(latestAudit.activeSnapshot.map(([id, price, quantity]) => [id, { price, quantity }]));
+const soldIds = new Set([...sales.soldOut, ...latestSales.soldOut, ...todaySales.soldOut].map((item) => item.id));
 const active = audit.activeSnapshot.filter(([id]) => !soldIds.has(id));
 const slug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
 
-test('remaining listings preserve the October 19 snapshot after confirmed sales', () => {
-  assert.equal(catalog.length, audit.activeListingCount - soldIds.size);
-  assert.deepEqual(catalog.map((item) => item.id).sort(), active.map(([id]) => id).sort());
+test('October 19 listings remain present after confirmed sales and the October 26 audit', () => {
+  assert.equal(catalog.length, latestAudit.activeListingCount - todaySales.soldOut.length);
+  assert.deepEqual(catalog.map((item) => item.id).sort(), [...active.map(([id]) => id), ...latestAudit.additions.map((item) => item.id)].sort());
   for (const [id, price, quantity] of active) {
     const item = catalog.find((row) => row.id === id);
-    assert.equal(parsePriceCents(item.price), price, `${id} eBay price`);
-    assert.equal(maxQuantity(item), quantity, `${id} quantity`);
+    assert.equal(parsePriceCents(item.price), current.get(id)?.price ?? price, `${id} eBay price`);
+    assert.equal(maxQuantity(item), current.get(id)?.quantity ?? quantity, `${id} quantity`);
   }
   assert.equal(categories.all.count, 74);
-  assert.equal(categories.drinks.count, 36);
+  assert.equal(categories.drinks.count, 37);
   assert.equal(categories.home.count, 2);
   assert.equal(categories['kids-shoes'].count, 10);
   assert.equal(catalog.at(-1).id, '406760868081');
@@ -36,8 +39,9 @@ test('new listings have matching prices, weights, schema, feed entries and clear
   const sitemap = await read('dist/sitemap-products.xml');
   for (const record of audit.additions) {
     const item = catalog.find((row) => row.id === record.id);
+    const currentDirectCents = Math.round(current.get(record.id).price * 0.965);
     assert.equal(item.category, record.category);
-    assert.equal(directPriceCents(item), record.directPriceCents);
+    assert.equal(directPriceCents(item), currentDirectCents);
     assert.equal(item.shippingWeightOz, record.shippingWeightOz);
     const href = `products/${slug(item)}`;
     const url = `https://discontinuedclub.com/${href}`;
@@ -49,9 +53,9 @@ test('new listings have matching prices, weights, schema, feed entries and clear
     assert.match(html, /content="index, follow, max-image-preview:large"/);
     const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
     assert.equal(schema.offers.availability, 'https://schema.org/InStock');
-    assert.equal(schema.offers.price, (record.directPriceCents / 100).toFixed(2));
+    assert.equal(schema.offers.price, (currentDirectCents / 100).toFixed(2));
     const entry = feed.find((row) => row['g:id'] === `dc-${record.id}`);
-    assert.equal(entry['g:price'], `${(record.directPriceCents / 100).toFixed(2)} USD`);
+    assert.equal(entry['g:price'], `${(currentDirectCents / 100).toFixed(2)} USD`);
     assert.equal(entry['g:image_link'], `https://discontinuedclub.com/assets/images/listings/merchant/${record.id}.webp`);
     for (const variant of ['merchant', 'branded']) {
       const image = new URL(`../assets/images/listings/${variant}/${record.id}.webp`, import.meta.url);

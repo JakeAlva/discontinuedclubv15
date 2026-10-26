@@ -1,5 +1,17 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "407281698826",
+    "category": "collectibles",
+    "name": "Pokemon Destined Rivals Booster Bundle",
+    "price": "$59.99",
+    "priceLabel": "Last listed price",
+    "brand": "The Pokemon Company International",
+    "soldOut": true,
+    "image": "407281698826.webp",
+    "slug": "pokemon-destined-rivals-booster-bundle-407281698826",
+    "availableAgain": false
+  },
+  {
     "id": "407293533835",
     "category": "drinks",
     "name": "Alani Nu Lime Slush - 12 oz 4-Pack",

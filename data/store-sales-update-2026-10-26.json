@@ -1,0 +1,10 @@
+{
+  "reportedAt": "2026-10-26",
+  "source": "Store owner confirmed both Destined Rivals booster bundles sold, clarifying bundles rather than booster boxes. Sale price, payment provider and exact transaction time were not provided.",
+  "soldOut": [
+    { "id": "407281698826", "name": "Pokemon Destined Rivals Booster Bundle", "soldQuantity": 2, "remainingQuantity": 0 }
+  ],
+  "unchanged": [
+    { "id": "407134944288", "name": "Pokemon Destined Rivals 4-Pack Lot", "remainingQuantity": 2 }
+  ]
+}

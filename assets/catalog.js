@@ -1,12 +1,7 @@
 const DC_CATALOG = [
-  { id: '407283282883', category: 'collectibles', name: 'Pokemon Mega Evolution Ascended Heroes Booster Bundle', detail: 'One factory-sealed English booster bundle containing 6 booster packs. See all three product photos', condition: 'New/Factory Sealed', price: '$84.99', image: '407283282883.webp', imageVersion: '20261012-logo', maxQuantity: 1, brand: 'The Pokemon Company International', gallery: [
+  { id: '407283282883', category: 'collectibles', name: 'Pokemon Mega Evolution Ascended Heroes Booster Bundle', detail: 'One factory-sealed English booster bundle containing 6 booster packs. See all three product photos', condition: 'New/Factory Sealed', price: '$70.99', image: '407283282883.webp', imageVersion: '20261012-logo', maxQuantity: 1, brand: 'The Pokemon Company International', gallery: [
     { src: 'assets/images/listings/gallery/407283282883-2.webp', label: 'back of bundle' },
     { src: 'assets/images/listings/gallery/407283282883-3.webp', label: 'booster pack artwork reference' }
-  ] },
-  { id: '407281698826', category: 'collectibles', name: 'Pokemon Destined Rivals Booster Bundle', detail: 'One factory-sealed English Scarlet & Violet booster bundle containing 6 booster packs. This is a sealed bundle, not the separate 4-pack lot', condition: 'New/Factory Sealed', price: '$59.99', image: '407281698826.webp', imageVersion: '20261012-logo', maxQuantity: 2, brand: 'The Pokemon Company International', gallery: [
-    { src: 'assets/images/listings/gallery/407281698826-2.webp', label: 'back of bundle' },
-    { src: 'assets/images/listings/gallery/407281698826-3.webp', label: 'booster pack artwork reference' },
-    { src: 'assets/images/listings/gallery/407281698826-4.webp', label: 'bundle size reference' }
   ] },
   { id: '407264808538', category: 'collectibles', name: 'Pokemon Mega Evolution Pitch Black Booster Bundle', detail: 'Factory-sealed English box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407264808538.webp', maxQuantity: 1 },
   { id: '407260159541', category: 'collectibles', name: 'Pokemon Journey Together Booster Bundle', detail: 'Factory-sealed English Scarlet & Violet box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407260159541.webp', maxQuantity: 2 },
@@ -82,9 +77,10 @@ const DC_CATALOG = [
     { src: 'assets/images/listings/gallery/407274649287-5.webp', label: 'sole condition' },
     { src: 'assets/images/listings/gallery/407274649287-6.webp', label: 'size and product label' }
   ], imageVersion: '20261008-2' },
-  { id: '407300260883', category: 'drinks', name: 'Alani Nu Winter Wonderland - 12 oz Single Can', detail: 'One full, unopened 12 fl oz (355 mL) sugar-free energy drink can with 2026 holiday packaging. Each quantity is one can, not a multipack', condition: 'New', price: '$12.99', image: '407300260883.webp', maxQuantity: 7, brand: 'Alani Nu', purchaseNote: 'Cans may have small dents, scuffs or scratches from handling and storage. Cosmetic condition varies; contact us before purchasing if you need a can in perfect display condition.' },
+  { id: '407301997130', category: 'drinks', name: 'Red Bull Winter Edition Pistachio & Berries - 8.4 oz Single Can', detail: 'One full, unopened 250 mL (8.4 fl oz) Pistachio & Berries Winter Edition energy drink can. Regular version containing sugar, not Sugarfree. Each quantity is one can, not a multipack', condition: 'New', price: '$9.99', image: '407301997130.webp', maxQuantity: 3, brand: 'Red Bull', purchaseNote: 'Printed best-by date: 06-02-27, confirmed by the seller. Date format is reproduced as printed. Minor dents, scuffs or scratches may be present; mint cosmetic condition is not guaranteed. Contact us for the full ingredient and allergen label before purchasing if this matters to you.' },
+  { id: '407300260883', category: 'drinks', name: 'Alani Nu Winter Wonderland - 12 oz Single Can', detail: 'One full, unopened 12 fl oz (355 mL) sugar-free energy drink can with 2026 holiday packaging. Each quantity is one can, not a multipack', condition: 'New', price: '$9.99', image: '407300260883.webp', maxQuantity: 6, brand: 'Alani Nu', purchaseNote: 'Cans may have small dents, scuffs or scratches from handling and storage. Cosmetic condition varies; contact us before purchasing if you need a can in perfect display condition.' },
   { id: '407298051046', category: 'drinks', name: 'Mountain Dew Star Spangled Splash - 2024 20 oz Bottle', detail: 'One full, unopened 20 fl oz (591 mL) Red Berry soda bottle from the 2024 limited-edition release. Older collectible stock', condition: 'New', price: '$7.99', image: '407298051046.webp', maxQuantity: 1, brand: 'Mountain Dew', purchaseNote: 'Bottles may have indentations, warping or other deformation, and labels may show scuffs or scratches. The listing image shows the product design, not a guarantee of mint condition. An unopened bottle does not guarantee original freshness or carbonation. Contact us for current condition and label details before purchasing.' },
-  { id: '407297979026', category: 'drinks', name: 'Red Bull Festive Edition Arctic Berry - 8.4 oz Single Can', detail: 'One full, unopened 250 mL (8.4 fl oz) Arctic Berry energy drink can with 2026 Festive Edition branding. Each quantity is one can, not a multipack or a complete Advent Calendar', condition: 'New', price: '$21.99', image: '407297979026.webp', maxQuantity: 4, brand: 'Red Bull', purchaseNote: 'The eBay listing records the printed best-by date as 06-03-27. Contact us for label details if you need the date format confirmed.' },
+  { id: '407297979026', category: 'drinks', name: 'Red Bull Festive Edition Arctic Berry - 8.4 oz Single Can', detail: 'One full, unopened 250 mL (8.4 fl oz) Arctic Berry energy drink can with 2026 Festive Edition branding. Each quantity is one can, not a multipack or a complete Advent Calendar', condition: 'New', price: '$21.99', image: '407297979026.webp', maxQuantity: 3, brand: 'Red Bull', purchaseNote: 'The eBay listing records the printed best-by date as 06-03-27. Contact us for label details if you need the date format confirmed.' },
   { id: '407293775090', category: 'drinks', name: 'Mountain Dew Purple Thunder - Old-Logo 20 oz Bottle', detail: 'One unopened 20 fl oz (591 mL) berry-plum bottle with the older label design. Printed date: August 29, 2022. Collection and display only, not for consumption', condition: 'New', price: '$7.99', image: '407293775090.webp', maxQuantity: 1, brand: 'Mountain Dew', purchaseNote: 'Past its printed date of August 29, 2022. For collection and display only, not for consumption. Bottles may show denting, inward collapse, paneling or cosmetic wear from age and storage. The studio photo represents the label design; the actual bottle may have visible deformation not shown. Do not expect mint condition. Freshness, flavor and carbonation are not guaranteed. This listing is for the older packaging, not a claim that the Purple Thunder flavor has been discontinued.' },
   { id: '407293697579', category: 'drinks', name: 'Mountain Dew Citrus Cherry - 2019 20 oz Bottle', detail: 'One full, unopened 20 fl oz (591 mL) bottle with the older PepCoin label. Each quantity is one bottle, not a multipack. Printed date: February 24, 2020. Collection and display only', condition: 'New', price: '$19.99', image: '407293697579.webp', maxQuantity: 4, brand: 'Mountain Dew', purchaseNote: 'Older collectible stock with a printed date of February 24, 2020. For collection and display only, not consumption. Bottles may be dented, collapsed inward or otherwise deformed with age. Shape and cosmetic condition vary and may not match the perfectly shaped studio photo. Do not expect mint condition. Freshness, flavor and carbonation are not guaranteed.' },
   { id: '407293550787', category: 'drinks', name: "Alani Nu Witch's Brew - 12 oz 4-Pack", detail: "Four full, unopened 12 fl oz (355 mL) Witch's Brew energy drink cans. One quantity is one four-pack; these are the full-size cans, not the Mini cans", condition: 'New', price: '$24.99', image: '407293550787.webp', maxQuantity: 1, brand: 'Alani Nu' },
@@ -113,7 +109,7 @@ const DC_CATALOG = [
   { id: '406717975092', category: 'drinks', name: 'Sprite Lymonade Legacy', detail: 'Celebrating 50 Years of Hip-Hop, full 12 oz can', price: '$8.99', image: '0ac898f36113b476.webp', maxQuantity: 10 },
   { id: '406701613482', category: 'drinks', name: 'Mountain Dew Citrus Cherry', detail: 'USA no-promo design, full unopened 12 oz can, 2019', price: '$49.99', image: 'd2c033419f0b6d8f.webp' },
   { id: '406706330853', category: 'drinks', name: 'Mountain Dew Voo Dew 4 Zero Sugar', detail: 'Full unopened 20 oz bottle, 2022', price: '$9.99', image: '66f1771dc1fa4c18.webp' },
-  { id: '406927100578', category: 'drinks', name: 'Mountain Dew Diet Code Red & Diet Caffeine Free', detail: 'Full unopened 12 oz can', price: '$49.99', image: '876985b6f0569440.webp' },
+  { id: '406927100578', category: 'drinks', name: 'Mountain Dew Diet Code Red & Diet Caffeine Free', detail: 'Full unopened 12 oz can', price: '$34.99', image: '876985b6f0569440.webp' },
   { id: '406711373393', category: 'drinks', name: 'Mountain Dew Baja Passionfruit Punch', detail: '12-pack of 12 oz cans, 2023', price: '$49.99', image: 'b5dc2b4baaeea74a.webp' },
   { id: '406728820274', category: 'drinks', name: 'Coca-Cola Vanilla Sugar Free', detail: 'China release, full 500 ml bottle, 2025', price: '$10.99', image: '3193597bb70e8693.webp' },
   { id: '406795510403', category: 'drinks', name: 'Starry Zero Sugar Cranberry Blizz', detail: 'Lemon lime, full unopened 12 oz can, 2025', price: '$4.99', image: 'a97889647408e17c.webp', maxQuantity: 3 },
@@ -149,6 +145,7 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407301997130': 16,
   '407300260883': 32,
   '407298156099': 8,
   '407298051046': 32,
@@ -159,7 +156,6 @@ const DC_SHIPPING_WEIGHTS_OZ = {
   '407293531323': 64,
   '407290859464': 32,
   '407283282883': 24,
-  '407281698826': 24,
   '407279351355': 12,
   '407279322970': 12,
   '407277346224': 64,
@@ -248,10 +244,10 @@ DC_CATALOG.forEach((item) => {
 
 const DC_CATEGORIES = {
   all: { label: 'All items', count: 74 },
-  drinks: { label: 'Rare drinks', count: 36 },
+  drinks: { label: 'Rare drinks', count: 37 },
   apparel: { label: 'Sports & apparel', count: 12 },
   'kids-shoes': { label: "Designer kids' shoes", count: 10 },
-  collectibles: { label: 'Collectibles & cards', count: 10 },
+  collectibles: { label: 'Collectibles & cards', count: 9 },
   care: { label: 'Personal care', count: 4 },
   home: { label: 'Home & hobby', count: 2 }
 };
