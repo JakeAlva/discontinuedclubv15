@@ -14,7 +14,7 @@ const read = (file) => readFile(resolve(root, file), 'utf8');
 test('both Destined Rivals bundles are removed from purchase surfaces, not the four-pack lot', async () => {
   assert.equal(findCatalogItem(id), undefined);
   assert.equal(categories.all.count, catalog.length);
-  assert.equal(categories.collectibles.count, 9);
+  assert.equal(categories.collectibles.count, 8);
   const lot = findCatalogItem('407134944288');
   assert.equal(maxQuantity(lot), 2);
   assert.equal(directPriceCents(lot), 3184);

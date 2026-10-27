@@ -1,5 +1,17 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "407260159541",
+    "category": "collectibles",
+    "name": "Pokemon Journey Together Booster Bundle",
+    "price": "$39.99",
+    "priceLabel": "Last listed price",
+    "brand": "The Pokemon Company International",
+    "soldOut": true,
+    "image": "407260159541.webp",
+    "slug": "pokemon-journey-together-booster-bundle-407260159541",
+    "availableAgain": false
+  },
+  {
     "id": "407281698826",
     "category": "collectibles",
     "name": "Pokemon Destined Rivals Booster Bundle",

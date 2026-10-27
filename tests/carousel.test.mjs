@@ -20,12 +20,11 @@ test('campaign carousel promotes current products and curated collections', asyn
   const html = await readFile(resolve(root, 'index.html'), 'utf8');
   const slides = html.match(/<article class="campaign-slide[\s\S]*?<\/article>/g) ?? [];
 
-  assert.equal(slides.length, 4);
+  assert.equal(slides.length, 3);
   for (const [index, slide] of slides.entries()) {
     assert.equal((slide.match(/class="campaign-visual"/g) ?? []).length, 1);
     assert.equal((slide.match(/<img /g) ?? []).length, 1);
     const destinations = [
-      /href="out-now\.html\?category=collectibles"/,
       /href="products\/liquid-death-x-pop-tarts-carnage-407039382525\.html"/,
       /href="out-now\.html\?category=kids-shoes"/,
       /href="products\/alani-nu-witch-s-brew-12-oz-4-pack-407293550787\.html"/
@@ -33,13 +32,12 @@ test('campaign carousel promotes current products and curated collections', asyn
     assert.match(slide, destinations[index]);
     assert.match(slide, /src="assets\/images\/campaign\/scenes\/[^"]+-desktop\.webp\?v=\d+"/);
     assert.match(slide, /srcset="assets\/images\/campaign\/scenes\/[^"]+-mobile\.webp\?v=\d+"/);
-    assert.ok(slide.includes('aria-label="' + (index + 1) + ' of 4"'));
+    assert.ok(slide.includes('aria-label="' + (index + 1) + ' of 3"'));
   }
 
   assert.equal((html.match(/<strong>Out now<\/strong>/gi) ?? []).length, 1);
-  assert.match(slides[0], /<h1>Pokemon booster bundles<\/h1>/);
-  assert.match(slides[0], /Ascended Heroes and Destined Rivals are here/);
-  assert.match(slides[0], /Journey Together, single packs, and more/);
+  assert.match(slides[0], /<h1>Liquid Death x Pop-Tarts<\/h1>/);
+  assert.doesNotMatch(slides.join(''), /Journey Together|Destined Rivals|pokemon-arrivals/);
   assert.doesNotMatch(slides[0], /four-pack|Two lots|booster boxes/i);
   assert.match(slides[0], /fetchpriority="high"/);
   assert.doesNotMatch(slides[0], /loading="lazy"/);
@@ -47,16 +45,16 @@ test('campaign carousel promotes current products and curated collections', asyn
   assert.equal((html.match(/fetchpriority="high"/g) ?? []).length, 1);
   for (const slide of slides.slice(1)) assert.match(slide, /loading="lazy"/);
   const dots = [...html.matchAll(/<button[^>]+data-campaign-dot="\d+"[^>]*>/g)].map(([tag]) => tag);
-  assert.match(dots[0], /aria-label="Show promotion 1: Pokemon arrivals".*aria-current="true"/);
-  assert.match(dots[1], /Liquid Death x Pop-Tarts/);
-  assert.match(dots[2], /Designer kids' shoes/);
+  assert.match(dots[0], /aria-label="Show promotion 1: Liquid Death x Pop-Tarts".*aria-current="true"/);
+  assert.match(dots[1], /Designer kids' shoes/);
+  assert.match(dots[2], /Alani Nu Witch's Brew/);
   assert.doesNotMatch(html, /class="campaign-price"/);
   assert.doesNotMatch(slides.join(''), /Blueberry|407203102419|redbull-(desktop|mobile)/);
 });
 
 test('refreshed campaigns use native-resolution artwork and dedicated mobile compositions', async () => {
   const html = await readFile(resolve(root, 'index.html'), 'utf8');
-  for (const campaign of ['liquid-carnage', 'pokemon-arrivals', 'designer-kids-shoes', 'witchs-brew']) {
+  for (const campaign of ['liquid-carnage', 'designer-kids-shoes', 'witchs-brew']) {
     for (const size of ['desktop', 'mobile']) {
       const file = 'assets/images/campaign/scenes/' + campaign + '-' + size + '.webp';
       const metadata = await sharp(resolve(root, file)).metadata();
@@ -75,7 +73,7 @@ test('refreshed campaigns use native-resolution artwork and dedicated mobile com
 test('designer kids shoes replace the jersey campaign without changing the jersey listing', async () => {
   const html = await readFile(resolve(root, 'index.html'), 'utf8');
   const slides = html.match(/<article class="campaign-slide[\s\S]*?<\/article>/g) ?? [];
-  const shoes = slides[2];
+  const shoes = slides[1];
   assert.match(shoes, /campaign-slide-shoes/);
   assert.match(shoes, /<h2>Designer kids' shoes<\/h2>/);
   assert.match(shoes, /pre-owned pairs/);

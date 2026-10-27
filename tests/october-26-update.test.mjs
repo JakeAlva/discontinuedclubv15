@@ -13,7 +13,8 @@ const root = resolve(import.meta.dirname, '..');
 const read = (file) => readFile(resolve(root, file), 'utf8');
 const audit = JSON.parse(await read('data/ebay-inventory-update-2026-10-26.json'));
 const sales = JSON.parse(await read('data/store-sales-update-2026-10-26.json'));
-const soldIds = new Set(sales.soldOut.map((item) => item.id));
+const latestSales = JSON.parse(await read('data/store-sales-update-2026-10-27.json'));
+const soldIds = new Set([...sales.soldOut, ...latestSales.soldOut].map((item) => item.id));
 const remaining = audit.activeSnapshot.filter(([id]) => !soldIds.has(id));
 
 test('website listings match the 75-listing October 26 snapshot less confirmed sales', () => {

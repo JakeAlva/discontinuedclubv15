@@ -63,6 +63,8 @@ import { alaniWitchsBrewSizesReport } from './alani-witchs-brew-sizes-report.mjs
 import { hiddenValleySpookyRanchReport } from './hidden-valley-spooky-ranch-report.mjs';
 import { redBullPistachioBerriesReport } from './red-bull-pistachio-berries-report.mjs';
 import { starryCranberryBlizzReport } from './starry-cranberry-blizz-report.mjs';
+import { ritzGlutenFreeReport } from './ritz-gluten-free-report.mjs';
+import { dupeLoopsReport } from './dupe-loops-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -802,5 +804,7 @@ export const reports = [
   alaniWitchsBrewSizesReport,
   hiddenValleySpookyRanchReport,
   redBullPistachioBerriesReport,
-  starryCranberryBlizzReport
+  starryCranberryBlizzReport,
+  ritzGlutenFreeReport,
+  dupeLoopsReport
 ];

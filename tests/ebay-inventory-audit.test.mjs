@@ -11,7 +11,8 @@ const current = JSON.parse(await read('data/ebay-inventory-update-2026-10-26.jso
 const sales = JSON.parse(await read('data/ebay-sales-update-2026-10-22.json'));
 const latestSales = JSON.parse(await read('data/store-sales-update-2026-10-25.json'));
 const todaySales = JSON.parse(await read('data/store-sales-update-2026-10-26.json'));
-const soldIds = new Set([...sales.soldOut, ...latestSales.soldOut, ...todaySales.soldOut].map((item) => item.id));
+const october27Sales = JSON.parse(await read('data/store-sales-update-2026-10-27.json'));
+const soldIds = new Set([...sales.soldOut, ...latestSales.soldOut, ...todaySales.soldOut, ...october27Sales.soldOut].map((item) => item.id));
 const active = current.activeSnapshot.filter(([id]) => !soldIds.has(id)).map(([id, priceCents, quantity]) => [id, quantity, `$${(priceCents / 100).toFixed(2)}`]);
 
 test('active listings match the October 26 audit less subsequently confirmed sales', () => {

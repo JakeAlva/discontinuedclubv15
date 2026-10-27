@@ -15,26 +15,23 @@ const read = (file) => readFile(resolve(root, file), 'utf8');
 const id = '407260159541';
 const href = `products/pokemon-journey-together-booster-bundle-${id}.html`;
 
-test('Journey Together restock uses the current eBay listing, price and two-box stock', async () => {
-  const item = findCatalogItem(id);
+test('Journey Together restock is now archived after its October 27 sellout', async () => {
+  const item = soldItems.find((row) => row.id === id);
   assert.ok(catalog.length >= 56);
   assert.equal(item.price, '$39.99');
-  assert.equal(directPriceCents(item), 3859);
-  assert.equal(maxQuantity(item), 2);
-  assert.match(item.detail, /Factory-sealed English.*6 booster packs/);
-  assert.equal(item.shippingWeightOz, 24);
+  assert.equal(item.soldOut, true);
+  assert.equal(findCatalogItem(id), undefined);
   assert.equal(storeConfig.freeShippingThresholdCents, 20000);
   assert.equal(findCatalogItem('407195902675'), undefined);
   assert.equal(soldItems.find((item) => item.id === '407195902675').soldOut, true);
-  const html = await read(href);
+  const html = await read(href.replace('products/', 'sold/'));
   const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
-  assert.equal(schema.offers.price, '38.59');
-  assert.equal(schema.offers.availability, 'https://schema.org/InStock');
-  assert.equal(schema.itemCondition, 'https://schema.org/NewCondition');
-  assert.ok(html.includes(`data-add-to-cart="${id}"`));
-  assert.ok((await read('sitemap-products.xml')).includes(href));
-  assert.ok((await read('google-merchant-feed.xml')).includes(`<g:id>dc-${id}</g:id>`));
-  assert.ok(!(await read('_redirects')).includes(`/${href} `));
+  assert.equal(schema.offers.price, '39.99');
+  assert.equal(schema.offers.availability, 'https://schema.org/OutOfStock');
+  assert.ok(!html.includes(`data-add-to-cart="${id}"`));
+  assert.ok(!(await read('sitemap-products.xml')).includes(href));
+  assert.ok(!(await read('google-merchant-feed.xml')).includes(`<g:id>dc-${id}</g:id>`));
+  assert.ok((await read('_redirects')).includes(`/${href} `));
   for (const type of ['branded', 'merchant']) {
     const metadata = await sharp(resolve(root, `assets/images/listings/${type}/${id}.webp`)).metadata();
     assert.equal(metadata.width, 1200);
@@ -42,7 +39,7 @@ test('Journey Together restock uses the current eBay listing, price and two-box 
   }
 });
 
-test('three boxes cannot be submitted to checkout when only two are available', async () => {
+test('the former three-box request remains rejected after sellout', async () => {
   const keys = ['STRIPE_CHECKOUT_ENABLED', 'STRIPE_SECRET_KEY'];
   const previous = keys.map((key) => process.env[key]);
   process.env.STRIPE_CHECKOUT_ENABLED = 'true';

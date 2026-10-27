@@ -28,7 +28,8 @@ test('September 29 inventory matches the eBay reconciliation and preserves shipp
   const home = await read('index.html');
   assert.ok(home.includes(`Shop all <span data-listing-count="all">${catalog.length}</span> listings`));
   assert.ok((await read('out-now.html')).includes(`<span data-listing-count="all">${catalog.length}</span> current listings`));
-  assert.match(home, /Pokemon booster bundles/);
+  assert.match(home, /Liquid Death x Pop-Tarts/);
+  assert.doesNotMatch(home, /Journey Together|Destined Rivals/);
   assert.doesNotMatch(home, /Five lots available|Claim a \$31\.84/);
   const feed = await read('google-merchant-feed.xml');
   for (const id of soldIds) {

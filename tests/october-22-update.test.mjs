@@ -68,7 +68,10 @@ test('October 22 Pokemon article is discoverable, sourced and uses the official 
   const href = `journal/${report.slug}.html`;
   const html = await read(`dist/${href}`);
   assert.ok(reports.includes(report));
-  assert.ok((await read('dist/blog.html')).includes(`href="${href}"`));
+  const pages = (await readdir(resolve(root, 'dist'))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  let library = '';
+  for (const page of pages) library += await read(`dist/${page}`);
+  assert.ok(library.includes(`href="${href}"`));
   assert.ok((await read('dist/sitemap-journal.xml')).includes(href));
   assert.ok(JSON.parse(await read('dist/assets/journal-index.json')).some((item) => item.slug === report.slug));
   assert.match(html, /"datePublished":"2026-10-22"/);

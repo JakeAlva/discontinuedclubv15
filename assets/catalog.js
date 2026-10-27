@@ -4,7 +4,6 @@ const DC_CATALOG = [
     { src: 'assets/images/listings/gallery/407283282883-3.webp', label: 'booster pack artwork reference' }
   ] },
   { id: '407264808538', category: 'collectibles', name: 'Pokemon Mega Evolution Pitch Black Booster Bundle', detail: 'Factory-sealed English box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407264808538.webp', maxQuantity: 1 },
-  { id: '407260159541', category: 'collectibles', name: 'Pokemon Journey Together Booster Bundle', detail: 'Factory-sealed English Scarlet & Violet box with 6 booster packs', condition: 'New/Factory Sealed', price: '$39.99', image: '407260159541.webp', maxQuantity: 2 },
   { id: '407086892969', category: 'collectibles', name: 'Pokemon Perfect Order Booster Bundle', detail: 'English box with 6 booster packs', price: '$38.99', image: '1c6ab9f4d119bded.webp', maxQuantity: 2 },
   { id: '407269224750', category: 'collectibles', name: 'Pokemon Mega Evolution Chaos Rising Booster Pack', detail: 'Factory-sealed English single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$5.99', image: '407269224750.webp', maxQuantity: 4 },
   { id: '407269188492', category: 'collectibles', name: 'Pokemon Surging Sparks Booster Pack', detail: 'Factory-sealed English Scarlet & Violet single booster pack with 10 game cards', condition: 'New/Factory Sealed', price: '$6.99', image: '407269188492.webp', maxQuantity: 2 },
@@ -170,7 +169,6 @@ const DC_SHIPPING_WEIGHTS_OZ = {
   '407269188492': 8,
   '407264848037': 8,
   '407264808538': 24,
-  '407260159541': 24,
   '407207373104': 64,
   '407205665076': 20,
   '407205596661': 48,
@@ -243,11 +241,11 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 74 },
+  all: { label: 'All items', count: 73 },
   drinks: { label: 'Rare drinks', count: 37 },
   apparel: { label: 'Sports & apparel', count: 12 },
   'kids-shoes': { label: "Designer kids' shoes", count: 10 },
-  collectibles: { label: 'Collectibles & cards', count: 9 },
+  collectibles: { label: 'Collectibles & cards', count: 8 },
   care: { label: 'Personal care', count: 4 },
   home: { label: 'Home & hobby', count: 2 }
 };
