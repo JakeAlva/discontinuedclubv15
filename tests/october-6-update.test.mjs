@@ -29,7 +29,7 @@ test('October 6 listings have reconciled stock, direct prices and feed entries',
   assert.equal(findCatalogItem('407253023756'), undefined);
   assert.equal(storeConfig.freeShippingThresholdCents, 20000);
   const feed = new XMLParser({ parseTagValue: false }).parse(await read('google-merchant-feed.xml')).rss.channel.item;
-  assert.equal(feed.length, catalog.length);
+  assert.equal(feed.length, catalog.filter((item) => item.directCheckoutEnabled !== false).length);
   assert.ok(!feed.some((item) => item['g:id'] === 'dc-407253023756'));
   for (const [id, quantity, price, weight] of additions) {
     const item = findCatalogItem(id);

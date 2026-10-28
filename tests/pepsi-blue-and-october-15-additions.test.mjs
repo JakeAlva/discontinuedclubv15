@@ -59,7 +59,7 @@ test('three new reports are search-ready, illustrated and crawlable without clie
     assert.ok(reports.includes(report));
     const href = `journal/${report.slug}.html`;
     const url = `https://discontinuedclub.com/${href}`;
-    assert.ok(home.includes(href));
+    assert.ok(home.includes('href="blog.html"'), 'Older posts remain reachable through the journal library');
     assert.ok(library.includes(`href="${href}"`));
     assert.equal(sitemap.filter((row) => row.loc === url).length, 1);
     const html = await read(`dist/${href}`);

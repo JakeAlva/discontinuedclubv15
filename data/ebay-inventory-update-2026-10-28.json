@@ -1,0 +1,34 @@
+{
+  "checkedDate": "2026-10-28",
+  "seller": "discontinuedclub",
+  "source": "Signed-in eBay Seller Hub active listings: all 76 rows across pages 1-50 and 51-76. Prices are item prices in USD cents; quantities are the displayed available quantities.",
+  "activeListingCount": 76,
+  "activeUnitCount": 125,
+  "activeSnapshot": [
+    ["407176877843",8999,1],["406728820274",1099,1],["407039382525",1399,2],["406730391892",1199,1],["406730413999",1299,5],["406735072767",2999,1],
+    ["407264808538",3999,1],["407264848037",599,1],["407120051396",4999,1],["406738017949",1099,1],["406738058280",899,1],["406738070393",499,1],
+    ["406738141008",799,1],["407269188492",699,2],["406741032490",899,4],["407269224750",599,4],["406834655819",9999,1],["407274649287",17499,1],
+    ["407276996786",9999,1],["407277122050",11999,1],["407277156219",7999,1],["407277210158",6499,1],["407277242488",7499,1],["407277320481",6999,1],
+    ["407202995940",1499,1],["407277346224",7499,1],["407203121847",4999,2],["407203191955",4999,1],["407205333909",1399,1],["407279322970",2499,1],
+    ["407279351355",2499,1],["407205565491",1999,1],["407205596661",1599,1],["407205665076",1299,1],["407063463950",4999,1],["407063539708",4999,1],
+    ["407207373104",5999,1],["407063633707",4999,1],["407063808795",6999,1],["407064096234",6999,1],["407064120905",4999,1],["407134944288",3299,2],
+    ["407283282883",7099,1],["406760868081",1299,1],["406761145645",799,1],["406763456229",2999,1],["406763511763",999,3],["406763784733",999,2],
+    ["406927100578",3499,1],["407290859464",1299,1],["407293531323",1999,3],["407293550787",2499,1],["407293697579",1999,4],["407293775090",799,1],
+    ["406701613482",4999,1],["407151646374",5499,1],["407297979026",2199,3],["407298051046",799,1],["407298156099",1196,1],["406705689212",999,1],
+    ["406706330853",999,1],["407300260883",999,6],["407301997130",999,3],["407085080884",3499,1],["407086613910",14999,1],["407086892969",3899,2],
+    ["406711373393",4999,1],["406711385310",4499,1],["406876226806",17999,1],["406713894369",4499,1],["406795016704",1499,1],["406795510403",499,3],
+    ["406717975092",899,10],["407320758064",999,4],["407320767912",999,4],["407321244836",2299,1]
+  ],
+  "additions": [
+    {"id":"407320758064","name":"Red Bull Winter Edition Pistachio & Berries Sugarfree - 12 oz Single Can","shippingWeightOz":32,"packageDimensionsIn":[10,8,4],"imageSource":"https://i.ebayimg.com/images/g/up8AAeSwLHlq4SH5/s-l1600.webp"},
+    {"id":"407320767912","name":"Red Bull Winter Edition Pistachio & Berries - 12 oz Single Can","shippingWeightOz":32,"packageDimensionsIn":[10,8,4],"imageSource":"https://i.ebayimg.com/images/g/sskAAeSwSMRq4SLK/s-l1600.webp"},
+    {"id":"407321244836","name":"Mainstays Black 24 x 36 Poster Frame","shippingWeightOz":64,"packageDimensionsIn":[36,24,4],"imageSource":"https://i.ebayimg.com/images/g/dkMAAeSw7qVq4Wcr/s-l960.webp","checkout":"eBay only: oversized package requires dimensional shipping rates"}
+  ],
+  "notes": [
+    "The 73 existing website listings match current eBay item prices and quantities. Three additions bring the website to 76 listings.",
+    "Journey Together and Destined Rivals booster bundles are absent from the complete active listing set and remain archived. Destined Rivals four-pack lots remain active.",
+    "Red Bull variant names follow the listing titles and visible can labels. Sugarfree description contains copied regular-version wording; regular listing has a copied Sugarfree Product Name field. These conflicting eBay fields were not copied to the website or changed on eBay.",
+    "No best-by date or ingredient/allergen label was verified for either new 12 oz can. The date confirmed for the existing 8.4 oz listing does not apply automatically.",
+    "New products use eBay checkout until direct checkout is explicitly configured and verified. Existing direct checkout listings remain unchanged."
+  ]
+}

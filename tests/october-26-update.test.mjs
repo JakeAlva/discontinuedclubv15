@@ -16,11 +16,12 @@ const sales = JSON.parse(await read('data/store-sales-update-2026-10-26.json'));
 const latestSales = JSON.parse(await read('data/store-sales-update-2026-10-27.json'));
 const soldIds = new Set([...sales.soldOut, ...latestSales.soldOut].map((item) => item.id));
 const remaining = audit.activeSnapshot.filter(([id]) => !soldIds.has(id));
+const october28 = JSON.parse(await read('data/ebay-inventory-update-2026-10-28.json'));
 
 test('website listings match the 75-listing October 26 snapshot less confirmed sales', () => {
   assert.equal(audit.activeSnapshot.length, 75);
   assert.equal(new Set(audit.activeSnapshot.map(([id]) => id)).size, 75);
-  assert.deepEqual(catalog.map((item) => item.id).sort(), remaining.map(([id]) => id).sort());
+  assert.deepEqual(catalog.map((item) => item.id).sort(), [...remaining.map(([id]) => id), ...october28.additions.map((item) => item.id)].sort());
   for (const [id, price, quantity] of remaining) {
     const item = catalog.find((row) => row.id === id);
     assert.equal(parsePriceCents(item.price), price, `${id}: eBay reference price`);

@@ -1,4 +1,7 @@
 const DC_CATALOG = [
+  { id: '407320758064', category: 'drinks', name: 'Red Bull Winter Edition Pistachio & Berries Sugarfree - 12 oz Single Can', detail: 'One full, unopened 355 mL (12 fl oz) Sugarfree energy drink can. Blue Sugarfree band on the label. Each quantity is one can, not a multipack', condition: 'New', price: '$9.99', image: '407320758064.webp', maxQuantity: 4, brand: 'Red Bull', directCheckoutEnabled: false, purchaseNote: 'Available through the linked eBay listing. Minor dents, scuffs or scratches may be present; mint cosmetic condition is not guaranteed. The photo represents the product design. No printed best-by date or full ingredient/allergen label has been verified for this 12 oz listing; contact us for those details before purchasing.' },
+  { id: '407320767912', category: 'drinks', name: 'Red Bull Winter Edition Pistachio & Berries - 12 oz Single Can', detail: 'One full, unopened 355 mL (12 fl oz) regular energy drink can containing sugar, not Sugarfree. Each quantity is one can, not a multipack', condition: 'New', price: '$9.99', image: '407320767912.webp', maxQuantity: 4, brand: 'Red Bull', directCheckoutEnabled: false, purchaseNote: 'Available through the linked eBay listing. Minor dents, scuffs or scratches may be present; mint cosmetic condition is not guaranteed. The photo represents the product design. No printed best-by date or full ingredient/allergen label has been verified for this 12 oz listing; contact us for those details before purchasing.' },
+  { id: '407321244836', category: 'home', name: 'Mainstays Black 24 x 36 Poster Frame', detail: 'One black plastic wall-mount poster frame for a 24 x 36 inch image, with a smooth finish and clear front. Rear-loading design; hang vertically or horizontally', condition: 'New', price: '$22.99', image: '407321244836.webp', maxQuantity: 1, brand: 'Mainstays', directCheckoutEnabled: false, purchaseNote: 'Purchase through eBay, where shipping is calculated for this oversized package and your destination. Website flat-rate shipping does not apply. Review the listing photos before purchasing.' },
   { id: '407283282883', category: 'collectibles', name: 'Pokemon Mega Evolution Ascended Heroes Booster Bundle', detail: 'One factory-sealed English booster bundle containing 6 booster packs. See all three product photos', condition: 'New/Factory Sealed', price: '$70.99', image: '407283282883.webp', imageVersion: '20261012-logo', maxQuantity: 1, brand: 'The Pokemon Company International', gallery: [
     { src: 'assets/images/listings/gallery/407283282883-2.webp', label: 'back of bundle' },
     { src: 'assets/images/listings/gallery/407283282883-3.webp', label: 'booster pack artwork reference' }
@@ -144,6 +147,9 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407320758064': 32,
+  '407320767912': 32,
+  '407321244836': 64,
   '407301997130': 16,
   '407300260883': 32,
   '407298156099': 8,
@@ -241,13 +247,13 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 73 },
-  drinks: { label: 'Rare drinks', count: 37 },
+  all: { label: 'All items', count: 76 },
+  drinks: { label: 'Rare drinks', count: 39 },
   apparel: { label: 'Sports & apparel', count: 12 },
   'kids-shoes': { label: "Designer kids' shoes", count: 10 },
   collectibles: { label: 'Collectibles & cards', count: 8 },
   care: { label: 'Personal care', count: 4 },
-  home: { label: 'Home & hobby', count: 2 }
+  home: { label: 'Home & hobby', count: 3 }
 };
 
 const DC_STORE_CONFIG = {

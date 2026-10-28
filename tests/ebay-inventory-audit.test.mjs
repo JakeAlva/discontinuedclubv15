@@ -7,7 +7,7 @@ import { catalog, categories, directPriceCents, maxQuantity } from '../lib/store
 const read = (file) => readFile(new URL(`../${file}`, import.meta.url), 'utf8');
 const audit = JSON.parse(await read('data/ebay-inventory-audit-2026-10-12.json'));
 const latest = JSON.parse(await read('data/ebay-inventory-update-2026-10-19.json'));
-const current = JSON.parse(await read('data/ebay-inventory-update-2026-10-26.json'));
+const current = JSON.parse(await read('data/ebay-inventory-update-2026-10-28.json'));
 const sales = JSON.parse(await read('data/ebay-sales-update-2026-10-22.json'));
 const latestSales = JSON.parse(await read('data/store-sales-update-2026-10-25.json'));
 const todaySales = JSON.parse(await read('data/store-sales-update-2026-10-26.json'));
@@ -15,7 +15,7 @@ const october27Sales = JSON.parse(await read('data/store-sales-update-2026-10-27
 const soldIds = new Set([...sales.soldOut, ...latestSales.soldOut, ...todaySales.soldOut, ...october27Sales.soldOut].map((item) => item.id));
 const active = current.activeSnapshot.filter(([id]) => !soldIds.has(id)).map(([id, priceCents, quantity]) => [id, quantity, `$${(priceCents / 100).toFixed(2)}`]);
 
-test('active listings match the October 26 audit less subsequently confirmed sales', () => {
+test('active listings match the complete October 28 eBay audit', () => {
   const expected = new Map(active.map(([id, quantity, price]) => [id, { quantity, price }]));
   assert.equal(expected.size, active.length, 'Audit must not contain duplicate listing IDs');
   assert.deepEqual(catalog.map((item) => item.id).sort(), [...expected.keys()].sort());
@@ -31,12 +31,18 @@ test('active listings match the October 26 audit less subsequently confirmed sal
 
 test('published catalog, purchase limits and feed use the audited inventory', async () => {
   const feed = new XMLParser({ parseTagValue: false }).parse(await read('google-merchant-feed.xml')).rss.channel.item;
-  assert.deepEqual(feed.map((item) => item['g:id']).sort(), active.map(([id]) => `dc-${id}`).sort());
+  assert.deepEqual(feed.map((item) => item['g:id']).sort(), catalog.filter((item) => item.directCheckoutEnabled !== false).map((item) => `dc-${item.id}`).sort());
   const publicCatalog = await read('dist/assets/catalog.js');
   assert.equal(publicCatalog, await read('assets/catalog.js'));
   for (const item of catalog) {
     const slug = `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}`;
     const html = await read(`dist/products/${slug}.html`);
+    if (item.directCheckoutEnabled === false) {
+      assert.ok(html.includes(`https://www.ebay.com/itm/${item.id}`));
+      assert.doesNotMatch(html, /data-add-to-cart|data-product-quantity/);
+      assert.ok(!feed.some((row) => row['g:id'] === `dc-${item.id}`));
+      continue;
+    }
     const quantity = maxQuantity(item);
     if (quantity > 1) assert.ok(html.includes(`data-max="${quantity}"`), `${item.id}: product quantity control`);
     else assert.match(html, /class="product-quantity-single"/);

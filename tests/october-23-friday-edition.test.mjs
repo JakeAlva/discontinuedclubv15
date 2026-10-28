@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { access, readFile } from 'node:fs/promises';
+import { access, readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { reports } from '../scripts/journal-data.mjs';
@@ -18,7 +18,9 @@ for (const report of [witch, ranch]) {
     assert.match(html, /October 23, 2026 edition/);
     assert.match(html, /Published October 25, 2026/);
     assert.match(html, /"datePublished":"2026-10-25"/);
-    assert.ok((await read('blog.html')).includes(href));
+    const libraryPages = (await readdir(resolve(root, 'dist'))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+    const library = (await Promise.all(libraryPages.map(read))).join('');
+    assert.ok(library.includes(href));
     assert.ok((await read('sitemap-journal.xml')).includes(href));
     assert.ok(JSON.parse(await read('assets/journal-index.json')).some((item) => item.slug === report.slug));
     for (const slug of report.relatedSlugs) assert.ok(reports.some((item) => item.slug === slug));

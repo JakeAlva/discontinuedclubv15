@@ -65,6 +65,8 @@ import { redBullPistachioBerriesReport } from './red-bull-pistachio-berries-repo
 import { starryCranberryBlizzReport } from './starry-cranberry-blizz-report.mjs';
 import { ritzGlutenFreeReport } from './ritz-gluten-free-report.mjs';
 import { dupeLoopsReport } from './dupe-loops-report.mjs';
+import { trubarDrizzleReport } from './trubar-drizzle-report.mjs';
+import { matzoHanukkahReport } from './matzo-hanukkah-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -806,5 +808,7 @@ export const reports = [
   redBullPistachioBerriesReport,
   starryCranberryBlizzReport,
   ritzGlutenFreeReport,
-  dupeLoopsReport
+  dupeLoopsReport,
+  trubarDrizzleReport,
+  matzoHanukkahReport
 ];
