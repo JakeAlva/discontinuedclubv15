@@ -67,6 +67,8 @@ import { ritzGlutenFreeReport } from './ritz-gluten-free-report.mjs';
 import { dupeLoopsReport } from './dupe-loops-report.mjs';
 import { trubarDrizzleReport } from './trubar-drizzle-report.mjs';
 import { matzoHanukkahReport } from './matzo-hanukkah-report.mjs';
+import { alaniFallArrivalsReport } from './alani-fall-arrivals-report.mjs';
+import { alaniAppleComparisonReport } from './alani-apple-comparison-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -810,5 +812,7 @@ export const reports = [
   ritzGlutenFreeReport,
   dupeLoopsReport,
   trubarDrizzleReport,
-  matzoHanukkahReport
+  matzoHanukkahReport,
+  alaniFallArrivalsReport,
+  alaniAppleComparisonReport
 ];

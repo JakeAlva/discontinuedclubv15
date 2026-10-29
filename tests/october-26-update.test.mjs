@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { access, readFile } from 'node:fs/promises';
+import { access, readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { catalog, directPriceCents, maxQuantity, parsePriceCents } from '../lib/store-catalog.mjs';
@@ -74,7 +74,9 @@ for (const report of [redBull, starry]) {
     const href = `journal/${report.slug}.html`;
     const html = await read(`dist/${href}`);
     assert.match(html, /"datePublished":"2026-10-26"/);
-    assert.ok((await read('dist/blog.html')).includes(href));
+    const libraryFiles = (await readdir(resolve(root, 'dist'))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+    const library = (await Promise.all(libraryFiles.map((file) => read(`dist/${file}`)))).join('\n');
+    assert.ok(library.includes(href));
     assert.ok((await read('dist/sitemap-journal.xml')).includes(href));
     assert.ok(JSON.parse(await read('dist/assets/journal-index.json')).some((row) => row.slug === report.slug));
     for (const slug of report.relatedSlugs) assert.ok(reports.some((row) => row.slug === slug), slug);

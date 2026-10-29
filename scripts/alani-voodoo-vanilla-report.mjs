@@ -3,6 +3,7 @@ export const alaniVoodooVanillaReport = {
   brand: 'Alani Nu', product: 'Alani Nu Voodoo Vanilla', theme: 'berry',
   statusKey: 'launch', statusLabel: 'Sold out online / no retirement confirmed',
   lane: 'Energy drink availability', checkedDate: '2026-09-28', readTime: 4,
+  modifiedDate: '2026-10-29',
   title: 'Alani Voodoo Vanilla is sold out online. Is it discontinued?',
   seoTitle: 'Alani Voodoo Vanilla: Sold Out or Discontinued? 2026 Check',
   description: 'Alani Nu Voodoo Vanilla is unavailable on the brand site, but no discontinuation is confirmed. Check the mini can, caffeine, flavor and Potion Pack difference.',
@@ -24,10 +25,10 @@ export const alaniVoodooVanillaReport = {
   buyerHeading: 'A better way to check a listing',
   buyerParagraphs: [
     'Match the front label, can size and number of cans before comparing prices. Search results can mix single cans, cases and multi-product bundles. A photo of several seasonal Alani flavors is not a substitute for the seller\'s written contents.',
-    'Discontinued Club is not offering Voodoo Vanilla in this report. This is an availability guide, not a restock announcement for our shop. We have not taste-tested the drink, and marketplace listings should not be read as evidence of a manufacturer\'s long-term plans.'
+    '<strong>October 29 store update:</strong> Discontinued Club is now expecting Voodoo Vanilla, Ruby Apple and Witch\'s Brew. Read our separate <a href="journal/alani-voodoo-vanilla-ruby-apple-witchs-brew-coming-soon.html">incoming-stock announcement</a>. This historical availability guide does not open preorders or confirm that the shipment has arrived. We have not taste-tested the drink, and our own stock does not establish the manufacturer\'s long-term plans.'
   ],
   disclosure: 'Independent U.S.-focused availability reporting. Discontinued Club is not affiliated with Alani Nu. Stock observations are dated, not live inventory guarantees; flavor descriptions come from the brand rather than our own taste test.',
-  relatedSlugs: ['is-alani-nu-lime-slush-discontinued', 'c4-all-hopped-up-beer-flavor-energy-drink'],
+  relatedSlugs: ['alani-voodoo-vanilla-ruby-apple-witchs-brew-coming-soon', 'alani-ruby-apple-vs-witchs-brew-flavor-guide', 'is-alani-nu-lime-slush-discontinued'],
   sections: [
     { id: 'stock-status', heading: 'What the official store actually shows', toc: 'The online stock check', paragraphs: [
       'The <a href="https://www.alaninu.com/products/mini-energy-voodoo-vanilla-elixir" target="_blank" rel="noopener noreferrer">official Voodoo Vanilla page</a> remains published, with an unavailable offer and a notification signup. A page remaining online is useful for identification, but neither its presence nor its stock button tells us whether production is continuing.',
