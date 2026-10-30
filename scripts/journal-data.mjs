@@ -69,6 +69,8 @@ import { trubarDrizzleReport } from './trubar-drizzle-report.mjs';
 import { matzoHanukkahReport } from './matzo-hanukkah-report.mjs';
 import { alaniFallArrivalsReport } from './alani-fall-arrivals-report.mjs';
 import { alaniAppleComparisonReport } from './alani-apple-comparison-report.mjs';
+import { swigLiquidDeathReport } from './swig-liquid-death-report.mjs';
+import { hersheysStrawberryKissesReport } from './hersheys-strawberry-kisses-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -814,5 +816,7 @@ export const reports = [
   trubarDrizzleReport,
   matzoHanukkahReport,
   alaniFallArrivalsReport,
-  alaniAppleComparisonReport
+  alaniAppleComparisonReport,
+  swigLiquidDeathReport,
+  hersheysStrawberryKissesReport
 ];

@@ -73,7 +73,9 @@ for (const report of [ritz, loops]) {
     const html = await read(`dist/${href}`);
     assert.match(html, /"datePublished":"2026-10-27"/);
     assert.match(html, /content="index, follow, max-image-preview:large"/);
-    assert.ok((await read('dist/blog.html')).includes(href));
+    const libraryPages = (await readdir(resolve(root, 'dist'))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+    const library = (await Promise.all(libraryPages.map((file) => read(`dist/${file}`)))).join('\n');
+    assert.ok(library.includes(href));
     assert.ok((await read('dist/sitemap-journal.xml')).includes(href));
     assert.ok(JSON.parse(await read('dist/assets/journal-index.json')).some((row) => row.slug === report.slug));
     for (const related of report.relatedSlugs) assert.ok(reports.some((row) => row.slug === related), related);
