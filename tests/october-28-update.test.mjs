@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { access, readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
-import { catalog, findCatalogItem, maxQuantity, parsePriceCents } from '../lib/store-catalog.mjs';
+import { catalog, directPriceCents, findCatalogItem, maxQuantity, parsePriceCents } from '../lib/store-catalog.mjs';
 import { reports } from '../scripts/journal-data.mjs';
 import { trubarDrizzleReport } from '../scripts/trubar-drizzle-report.mjs';
 import { matzoHanukkahReport } from '../scripts/matzo-hanukkah-report.mjs';
@@ -21,18 +21,20 @@ test('October 28 audit preserves 76 listings and 125 units as historical evidenc
   for (const id of ['407260159541', '407281698826']) assert.equal(findCatalogItem(id), undefined);
 });
 
-test('new variants have photos, accurate prices and eBay-only purchase surfaces', async () => {
+test('new drinks support direct checkout while the oversized frame remains eBay-only', async () => {
   for (const record of audit.additions) {
     const item = findCatalogItem(record.id);
-    assert.equal(item.directCheckoutEnabled, false);
+    const direct = item.category === 'drinks';
+    assert.equal(item.directCheckoutEnabled !== false, direct);
     assert.equal(item.shippingWeightOz, record.shippingWeightOz);
     const html = await read(`dist/products/${slug(item)}`);
     assert.ok(html.includes(`https://www.ebay.com/itm/${item.id}`));
-    assert.doesNotMatch(html, /data-add-to-cart|data-product-quantity/);
+    if (direct) assert.ok(html.includes(`data-add-to-cart="${item.id}"`));
+    else assert.doesNotMatch(html, /data-add-to-cart|data-product-quantity/);
     const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
-    assert.equal(schema.offers.price, (parsePriceCents(item.price) / 100).toFixed(2));
+    assert.equal(schema.offers.price, ((direct ? directPriceCents(item) : parsePriceCents(item.price)) / 100).toFixed(2));
     assert.ok((await read('dist/out-now.html')).includes(`products/${slug(item)}`));
-    assert.ok(!(await read('dist/google-merchant-feed.xml')).includes(`dc-${item.id}`));
+    assert.equal((await read('dist/google-merchant-feed.xml')).includes(`dc-${item.id}`), direct);
     for (const variant of ['branded', 'merchant']) {
       const image = await sharp(resolve(root, `dist/assets/images/listings/${variant}/${item.id}.webp`)).metadata();
       assert.ok(image.width >= 900 && image.height >= 900);
@@ -44,13 +46,14 @@ test('new variants have photos, accurate prices and eBay-only purchase surfaces'
   assert.match(findCatalogItem('407321244836').purchaseNote, /oversized.*flat-rate shipping does not apply/s);
 });
 
-test('unconfigured and oversized new listings cannot create direct checkout sessions', async () => {
+test('the oversized frame is the only active eBay-only item and cannot create direct checkout sessions', async () => {
+  assert.deepEqual(catalog.filter((item) => item.directCheckoutEnabled === false).map((item) => item.id), ['407321244836']);
   const keys = ['STRIPE_CHECKOUT_ENABLED', 'STRIPE_SECRET_KEY'];
   const previous = keys.map((key) => process.env[key]);
   process.env.STRIPE_CHECKOUT_ENABLED = 'true';
   process.env.STRIPE_SECRET_KEY = 'sk_test_no_network_should_be_used';
   try {
-    for (const { id } of audit.additions) {
+    for (const { id } of audit.additions.filter(({ id }) => findCatalogItem(id).directCheckoutEnabled === false)) {
       const response = await createCheckout(new Request('https://discontinuedclub.com/.netlify/functions/create-checkout', {
         method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'https://discontinuedclub.com' },
         body: JSON.stringify({ items: [{ id, quantity: 1 }] })

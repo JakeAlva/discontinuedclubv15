@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { access, readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
-import { catalog, findCatalogItem, maxQuantity, parsePriceCents } from '../lib/store-catalog.mjs';
+import { catalog, directPriceCents, findCatalogItem, maxQuantity, parsePriceCents } from '../lib/store-catalog.mjs';
 import { reports } from '../scripts/journal-data.mjs';
 import { alaniNowAvailableReport as alani } from '../scripts/alani-now-available-report.mjs';
 import { dutchBrosHolidayReport as dutch } from '../scripts/dutch-bros-holiday-report.mjs';
@@ -22,19 +22,21 @@ test('November 2 catalog exactly matches all 78 listings and 132 available listi
   for (const record of audit.quantityChanges) assert.equal(maxQuantity(findCatalogItem(record.id)), record.current);
 });
 
-test('new Alani pages use accurate single-can sizes, verified prices and working eBay offers', async () => {
+test('new Alani pages support direct checkout and retain accurate single-can and eBay offers', async () => {
   for (const record of audit.additions) {
     const item = findCatalogItem(record.id);
     assert.equal(item.price, '$12.99');
-    assert.equal(item.directCheckoutEnabled, false);
+    assert.notEqual(item.directCheckoutEnabled, false);
+    assert.equal(directPriceCents(item), 1254);
     assert.equal(item.shippingWeightOz, record.shippingWeightOz);
     const href = `products/${slug(item)}`;
     const html = await read(`dist/${href}`);
-    assert.match(html, /"price":"12.99"/);
+    assert.match(html, /"price":"12.54"/);
     assert.ok(html.includes(`https://www.ebay.com/itm/${item.id}`));
-    assert.doesNotMatch(html, /data-add-to-cart|data-product-quantity/);
+    assert.ok(html.includes(`data-add-to-cart="${item.id}"`));
+    assert.match(html, /data-product-quantity/);
     for (const file of ['index.html', 'out-now.html', 'sitemap-products.xml']) assert.ok((await read(`dist/${file}`)).includes(href));
-    assert.ok(!(await read('dist/google-merchant-feed.xml')).includes(`dc-${item.id}`));
+    assert.ok((await read('dist/google-merchant-feed.xml')).includes(`dc-${item.id}`));
     for (const variant of ['', 'branded/', 'merchant/']) {
       const image = await sharp(resolve(root, `assets/images/listings/${variant}${item.id}.webp`)).metadata();
       assert.ok(image.width >= 900 && image.height >= 900);
@@ -44,13 +46,13 @@ test('new Alani pages use accurate single-can sizes, verified prices and working
   assert.match(findCatalogItem('407332173468').detail, /12 fl oz/);
 });
 
-test('new eBay-only products and excess stock are rejected locally without contacting Stripe', async () => {
+test('new Alani listings and updated inventory reject excess stock without contacting Stripe', async () => {
   const keys = ['STRIPE_CHECKOUT_ENABLED', 'STRIPE_SECRET_KEY'];
   const previous = keys.map((key) => process.env[key]);
   process.env.STRIPE_CHECKOUT_ENABLED = 'true';
   process.env.STRIPE_SECRET_KEY = 'sk_test_no_network_should_be_used';
   try {
-    const requests = [...audit.additions.map(({ id }) => ({ id, quantity: 1, error: /eBay listing only/ })), ...audit.quantityChanges.map(({ id, current }) => ({ id, quantity: current + 1, error: /available quantity changed/ }))];
+    const requests = [...audit.additions.map(({ id }) => ({ id, quantity: maxQuantity(findCatalogItem(id)) + 1, error: /available quantity changed/ })), ...audit.quantityChanges.map(({ id, current }) => ({ id, quantity: current + 1, error: /available quantity changed/ }))];
     for (const { id, quantity, error } of requests) {
       const response = await createCheckout(new Request('https://discontinuedclub.com/.netlify/functions/create-checkout', {
         method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'https://discontinuedclub.com' }, body: JSON.stringify({ items: [{ id, quantity }] })

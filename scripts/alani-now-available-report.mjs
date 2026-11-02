@@ -11,7 +11,7 @@ export const alaniNowAvailableReport = {
   description: 'Alani Voodoo Vanilla 8.4 oz and Ruby Apple 12 oz single cans are now listed at Discontinued Club. Find the right flavor and check the current offer.',
   deck: 'From a fleeting Story to a real listing: two of the Alani flavors you asked about are ready to shop.',
   answerHeading: 'No longer just coming soon.',
-  answer: 'As of November 2, Discontinued Club has live listings for Voodoo Vanilla Energy Elixir in an 8.4 oz single can and Ruby Apple in a 12 oz single can. These are separate unopened-can offers, not a two-flavor bundle. Open the product you want for the current price, availability and eBay checkout link.',
+  answer: 'As of November 2, Discontinued Club has live listings for Voodoo Vanilla Energy Elixir in an 8.4 oz single can and Ruby Apple in a 12 oz single can. These are separate unopened-can offers, not a two-flavor bundle. Open the product you want for the current price, availability and Add to cart button. The matching eBay listing remains another checkout option.',
   sidebar: 'Two flavors, two separate listings. Availability can change after this dated update.',
   evidenceGrade: 'Verified store listings',
   evidenceNote: 'Both offers were checked against our signed-in eBay active inventory on November 2, 2026. Flavor descriptions below are attributed to Alani Nu.',
@@ -33,7 +33,7 @@ export const alaniNowAvailableReport = {
       'There is no need to buy both just because they share a banner. Choose the flavor that interests you, check the delivered total, and decide whether the offer works for you.'
     ]},
     { id: 'how-to-order', heading: 'The product page has the current offer', toc: 'Ordering details', paragraphs: [
-      'These two new listings currently use eBay checkout. Follow the matching eBay link from the product page to confirm availability, shipping and the final total. This post is not a preorder, reservation or an automatic restock signup.',
+      'Both flavors can be added to the website cart for secure direct checkout. Choose your quantity on the product page, then review shipping and the final total at checkout. The matching eBay listing remains available as a separate option. This post is not a preorder, reservation or an automatic restock signup.',
       'We have not verified the printed best-by date or full ingredient and allergen panel for either listing. If those details affect your choice, <a href="contact.html">ask us for the actual label</a> before purchasing. Follow the directions and warnings on the can you receive.',
       'Still looking for the other apple flavor? Our <a href="out-now.html?q=Witch%27s%20Brew">Witch\'s Brew listings</a> are separate offers with their own sizes and pack contents. Do not assume the new single-can format applies to those packs.'
     ]}
@@ -43,7 +43,7 @@ export const alaniNowAvailableReport = {
   buyerParagraphs: ['Match the flavor, can size and pack contents to what you meant to buy. Campaign props and adjacent products are not included.'],
   faq: [
     { question: 'Does one order include both flavors?', answer: 'No. Voodoo Vanilla and Ruby Apple are separate single-can listings. Select the specific offer you want.' },
-    { question: 'Can I buy these through the website cart?', answer: 'These two new offers currently link to eBay checkout from their website product pages.' },
+    { question: 'Can I buy these through the website cart?', answer: 'Yes. Use Add to cart on either product page for direct checkout, or choose its matching eBay listing.' },
     { question: 'Does this mean Alani has permanently brought them back?', answer: 'No. Our store availability does not establish the manufacturer\'s future production or distribution plans.' }
   ],
   disclosure: 'First-party store update. Discontinued Club is an independent retailer, not affiliated with Alani Nu. We have not taste-tested these cans for this article. Stock and checkout terms may change.',
