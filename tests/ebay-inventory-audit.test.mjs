@@ -7,7 +7,7 @@ import { catalog, categories, directPriceCents, maxQuantity } from '../lib/store
 const read = (file) => readFile(new URL(`../${file}`, import.meta.url), 'utf8');
 const audit = JSON.parse(await read('data/ebay-inventory-audit-2026-10-12.json'));
 const latest = JSON.parse(await read('data/ebay-inventory-update-2026-10-19.json'));
-const current = JSON.parse(await read('data/ebay-inventory-update-2026-10-28.json'));
+const current = JSON.parse(await read('data/ebay-inventory-update-2026-11-02.json'));
 const sales = JSON.parse(await read('data/ebay-sales-update-2026-10-22.json'));
 const latestSales = JSON.parse(await read('data/store-sales-update-2026-10-25.json'));
 const todaySales = JSON.parse(await read('data/store-sales-update-2026-10-26.json'));
@@ -15,7 +15,7 @@ const october27Sales = JSON.parse(await read('data/store-sales-update-2026-10-27
 const soldIds = new Set([...sales.soldOut, ...latestSales.soldOut, ...todaySales.soldOut, ...october27Sales.soldOut].map((item) => item.id));
 const active = current.activeSnapshot.filter(([id]) => !soldIds.has(id)).map(([id, priceCents, quantity]) => [id, quantity, `$${(priceCents / 100).toFixed(2)}`]);
 
-test('active listings match the complete October 28 eBay audit', () => {
+test('active listings match the complete November 2 eBay audit', () => {
   const expected = new Map(active.map(([id, quantity, price]) => [id, { quantity, price }]));
   assert.equal(expected.size, active.length, 'Audit must not contain duplicate listing IDs');
   assert.deepEqual(catalog.map((item) => item.id).sort(), [...expected.keys()].sort());

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, access } from 'node:fs/promises';
+import { readFile, access, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { XMLParser } from 'fast-xml-parser';
 import sharp from 'sharp';
@@ -10,7 +10,7 @@ import { alaniAppleComparisonReport as comparison } from '../scripts/alani-apple
 const root = resolve(import.meta.dirname, '..');
 const read = (path) => readFile(resolve(root, path), 'utf8');
 
-test('Alani announcements keep stock quantities private and distinguish incoming stock from live offers', () => {
+test('Alani announcements keep stock quantities private and update historical incoming stock to live offers', () => {
   for (const report of [arrivals, comparison]) {
     assert.equal(report.checkedDate, '2026-10-29');
     assert.equal(report.shop, undefined);
@@ -22,19 +22,20 @@ test('Alani announcements keep stock quantities private and distinguish incoming
   assert.match(arrivals.sections[0].paragraphs.join(' '), /Jacob.*reports seeing/);
   assert.match(arrivals.sections[0].paragraphs.join(' '), /do not have an archived copy/);
   assert.match(arrivals.sections[0].paragraphs.join(' '), /not calling it an official 24-hour sale/);
-  assert.match(arrivals.answer, /Arrival timing, prices and pack options have not been announced/);
+  assert.match(arrivals.answer, /November 2.*now listed/);
   assert.match(JSON.stringify(arrivals), /cannot promise that everyone will get a can/);
 });
 
 test('October 29 articles have working media, crawlable links, canonical URLs and discovery entries', async () => {
   const sitemap = new XMLParser().parse(await read('sitemap-journal.xml')).urlset.url;
   const index = JSON.parse(await read('assets/journal-index.json'));
-  const library = await read('blog.html');
+  let library = '';
+  for (const file of (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file))) library += await read(file);
   for (const report of [arrivals, comparison]) {
     const href = `journal/${report.slug}.html`;
     const canonical = `https://discontinuedclub.com/${href}`;
     assert.equal(sitemap.filter((row) => row.loc === canonical).length, 1);
-    assert.equal(sitemap.find((row) => row.loc === canonical).lastmod, '2026-10-29');
+    assert.equal(sitemap.find((row) => row.loc === canonical).lastmod, '2026-11-02');
     assert.ok(library.includes(href));
     assert.equal(index.find((row) => row.slug === report.slug).date, '2026-10-29');
     const html = await read(`dist/${href}`);
@@ -56,10 +57,11 @@ test('October 29 articles have working media, crawlable links, canonical URLs an
   }
 });
 
-test('older Voodoo guide points to the incoming batch without rewriting its original date', async () => {
+test('older Voodoo guide points to live stock without rewriting its original date', async () => {
   const html = await read('journal/alani-voodoo-vanilla-sold-out-discontinued.html');
   assert.ok(html.includes(`journal/${arrivals.slug}.html`));
   const article = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1])['@graph'][0];
   assert.equal(article.datePublished, '2026-09-28');
-  assert.equal(article.dateModified, '2026-10-29');
+  assert.equal(article.dateModified, '2026-11-02');
+  assert.ok(html.includes('products/alani-nu-voodoo-vanilla-energy-elixir-8-4-oz-single-can-407329572793.html'));
 });

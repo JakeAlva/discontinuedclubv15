@@ -3,8 +3,8 @@ export const alaniVoodooVanillaReport = {
   brand: 'Alani Nu', product: 'Alani Nu Voodoo Vanilla', theme: 'berry',
   statusKey: 'launch', statusLabel: 'Sold out online / no retirement confirmed',
   lane: 'Energy drink availability', checkedDate: '2026-09-28', readTime: 4,
-  modifiedDate: '2026-10-29',
-  title: 'Alani Voodoo Vanilla is sold out online. Is it discontinued?',
+  modifiedDate: '2026-11-02',
+  title: 'Alani Voodoo Vanilla: sold out at the brand, but discontinued?',
   seoTitle: 'Alani Voodoo Vanilla: Sold Out or Discontinued? 2026 Check',
   description: 'Alani Nu Voodoo Vanilla is unavailable on the brand site, but no discontinuation is confirmed. Check the mini can, caffeine, flavor and Potion Pack difference.',
   deck: 'The small vanilla can has a big identification problem: it is not the same drink as Witch\'s Brew, and finding a Potion Pack does not mean you have found Voodoo Vanilla.',
@@ -25,7 +25,7 @@ export const alaniVoodooVanillaReport = {
   buyerHeading: 'A better way to check a listing',
   buyerParagraphs: [
     'Match the front label, can size and number of cans before comparing prices. Search results can mix single cans, cases and multi-product bundles. A photo of several seasonal Alani flavors is not a substitute for the seller\'s written contents.',
-    '<strong>October 29 store update:</strong> Discontinued Club is now expecting Voodoo Vanilla, Ruby Apple and Witch\'s Brew. Read our separate <a href="journal/alani-voodoo-vanilla-ruby-apple-witchs-brew-coming-soon.html">incoming-stock announcement</a>. This historical availability guide does not open preorders or confirm that the shipment has arrived. We have not taste-tested the drink, and our own stock does not establish the manufacturer\'s long-term plans.'
+    '<strong>November 2 store update:</strong> Our <a href="products/alani-nu-voodoo-vanilla-energy-elixir-8-4-oz-single-can-407329572793.html">Voodoo Vanilla 8.4 oz single-can listing</a> is live. Read the <a href="journal/alani-voodoo-vanilla-ruby-apple-now-available.html">now-available update</a> for it and Ruby Apple, following our <a href="journal/alani-voodoo-vanilla-ruby-apple-witchs-brew-coming-soon.html">October 29 announcement</a>. This is not a preorder. We have not taste-tested the drink, and our own stock does not establish the manufacturer\'s long-term plans.'
   ],
   disclosure: 'Independent U.S.-focused availability reporting. Discontinued Club is not affiliated with Alani Nu. Stock observations are dated, not live inventory guarantees; flavor descriptions come from the brand rather than our own taste test.',
   relatedSlugs: ['alani-voodoo-vanilla-ruby-apple-witchs-brew-coming-soon', 'alani-ruby-apple-vs-witchs-brew-flavor-guide', 'is-alani-nu-lime-slush-discontinued'],

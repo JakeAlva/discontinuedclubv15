@@ -4,7 +4,7 @@ const brew = 'https://www.alaninu.com/products/energy-drink-witchs-brew-2026';
 export const alaniAppleComparisonReport = {
   slug: 'alani-ruby-apple-vs-witchs-brew-flavor-guide',
   brand: 'Alani Nu', product: "Ruby Apple vs. Witch's Brew", theme: 'red',
-  format: 'news-brief', checkedDate: '2026-10-29', readTime: 3,
+  format: 'news-brief', checkedDate: '2026-10-29', modifiedDate: '2026-11-02', readTime: 3,
   statusKey: 'current', statusLabel: 'Seasonal flavor comparison', lane: 'First-try flavor guide',
   title: "Ruby Apple vs. Witch's Brew: which apple are you after?",
   seoTitle: "Alani Ruby Apple vs. Witch's Brew: What Is the Difference?",
@@ -32,8 +32,8 @@ export const alaniAppleComparisonReport = {
       'Check the flavor name, volume per can and number of cans in one purchased unit. Then compare the full delivered price, including shipping, with the amount you actually want. A larger pack is not automatically a better first purchase if your main goal is simply to find out whether you enjoy the flavor.',
       'For the separate size question, our <a href="journal/alani-witchs-brew-12-oz-vs-mini-2026.html">Witch\'s Brew full-size vs. Mini guide</a> covers the labels. Do not use packaging color or can height alone to infer serving information. Read the package you will actually receive.'
     ]},
-    { id: 'club-arrivals', heading: 'Both apple flavors are in our incoming plans', toc: 'Our store update', paragraphs: [
-      'Discontinued Club is expecting Ruby Apple and Witch\'s Brew alongside Voodoo Vanilla. Our <a href="journal/alani-voodoo-vanilla-ruby-apple-witchs-brew-coming-soon.html">coming-soon announcement</a> explains that plan separately from this flavor comparison. It does not open preorders, announce pack sizes or promise a date.',
+    { id: 'club-arrivals', heading: 'Our current store listings', toc: 'Our store update', paragraphs: [
+      'Update, November 2: our <a href="products/alani-nu-ruby-apple-12-oz-single-can-407332173468.html">Ruby Apple 12 oz single-can listing</a> is live. Witch\'s Brew has <a href="out-now.html?q=Witch%27s%20Brew">separate pack listings</a>. Our <a href="journal/alani-voodoo-vanilla-ruby-apple-now-available.html">new-arrival post</a> also covers Voodoo Vanilla. These are live offers, not preorders or a mixed-flavor bundle.',
       'When you are ready to look, use the <a href="out-now.html">current shop</a> to see what is actually listed. An article can help you decide what to try; only the live offer can tell you what is available to buy. You can also <a href="contact.html">ask us about the flavor you want</a> without treating that conversation as a reservation.'
     ]}
   ],
@@ -45,7 +45,7 @@ export const alaniAppleComparisonReport = {
     { question: 'Which one tastes better?', answer: 'That depends on your preferences. We have not conducted a side-by-side taste test and are not assigning a winner.' },
     { question: 'Does the picture mean Discontinued Club sells this exact pair?', answer: 'No. It is an official brand reference image. Check the live listing for the actual contents of an offer.' }
   ],
-  disclosure: 'Independent flavor-identification guide, not sponsored by Alani Nu. Flavor descriptions are attributed to the manufacturer. Discontinued Club expects to sell these flavors, as explained in our linked store announcement; this is not a taste test or a preorder.',
+  disclosure: 'Independent flavor-identification guide, not sponsored by Alani Nu. Flavor descriptions are attributed to the manufacturer. Discontinued Club sells these flavors through the separate offers linked above; this is not a taste test or a preorder. Current availability may change.',
   sources: [
     { label: 'Alani Nu: Potion Pack', url: potion, note: 'official flavor distinction checked October 29, 2026' },
     { label: 'Alani Nu: Witch\'s Brew', url: brew, note: 'official green-apple-and-caramel description checked October 29, 2026' }

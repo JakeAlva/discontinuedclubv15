@@ -17,15 +17,17 @@ const latestSales = JSON.parse(await read('data/store-sales-update-2026-10-27.js
 const soldIds = new Set([...sales.soldOut, ...latestSales.soldOut].map((item) => item.id));
 const remaining = audit.activeSnapshot.filter(([id]) => !soldIds.has(id));
 const october28 = JSON.parse(await read('data/ebay-inventory-update-2026-10-28.json'));
+const november2 = JSON.parse(await read('data/ebay-inventory-update-2026-11-02.json'));
+const currentQuantities = new Map(november2.activeSnapshot.map(([id, , quantity]) => [id, quantity]));
 
 test('website listings match the 75-listing October 26 snapshot less confirmed sales', () => {
   assert.equal(audit.activeSnapshot.length, 75);
   assert.equal(new Set(audit.activeSnapshot.map(([id]) => id)).size, 75);
-  assert.deepEqual(catalog.map((item) => item.id).sort(), [...remaining.map(([id]) => id), ...october28.additions.map((item) => item.id)].sort());
+  assert.deepEqual(catalog.map((item) => item.id).sort(), [...remaining.map(([id]) => id), ...october28.additions.map((item) => item.id), ...november2.additions.map((item) => item.id)].sort());
   for (const [id, price, quantity] of remaining) {
     const item = catalog.find((row) => row.id === id);
     assert.equal(parsePriceCents(item.price), price, `${id}: eBay reference price`);
-    assert.equal(maxQuantity(item), quantity, `${id}: stock`);
+    assert.equal(maxQuantity(item), currentQuantities.get(id) ?? quantity, `${id}: stock`);
     assert.equal(directPriceCents(item), Math.round(price * 0.965), `${id}: direct discount`);
   }
 });

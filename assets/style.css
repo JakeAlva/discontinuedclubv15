@@ -1258,3 +1258,48 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .topic-report-card { grid-template-columns: 1fr; }
   .topic-report-media { min-height: 245px; border-right: 0; border-bottom: 1px solid var(--line); }
 }
+
+.campaign-slide-alani { background: #f9c9e0; color: #242022; }
+.campaign-slide-alani .campaign-copy { width: min(520px, 43%); }
+.campaign-slide-alani .campaign-kicker { color: #624252; flex-wrap: wrap; }
+.campaign-slide-alani .campaign-kicker strong { color: #7c163c; }
+.campaign-slide-alani .campaign-copy h1 { font-size: 48px; line-height: 1.04; letter-spacing: 0; }
+.campaign-slide-alani .campaign-copy p { max-width: 425px; color: #503945; }
+.campaign-flavor-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.campaign-slide-alani .campaign-copy .btn { margin-top: 0; min-height: 48px; padding-inline: 18px; }
+.campaign-slide-alani .campaign-copy .btn-light { background: #fff8fc; border-color: #c18a9e; }
+@media (min-width: 701px) and (max-width: 1100px) {
+  .campaign-slide-alani { height: 470px; }
+  .campaign-slide-alani .campaign-copy { width: 44%; }
+  .campaign-slide-alani .campaign-copy h1 { font-size: 36px; }
+  .campaign-slide-alani .campaign-copy p { font-size: 14px; }
+  .campaign-slide-alani .campaign-media { object-position: 76% center; }
+  .campaign-slide-alani .campaign-copy .btn { font-size: 12px; padding-inline: 13px; }
+}
+@media (max-width: 700px) {
+  .campaign-slide-alani { height: auto; min-height: 570px; display: block; align-self: stretch; }
+  .campaign-slide-alani .campaign-slide-inner { position: absolute; inset: 0; height: 100%; align-items: flex-start; padding-top: 24px; padding-bottom: 0; }
+  .campaign-slide-alani .campaign-copy { width: 100%; max-width: 430px; margin-inline: auto; }
+  .campaign-slide-alani .campaign-copy h1 { font-size: 34px; line-height: 1.02; margin-top: 14px; }
+  .campaign-slide-alani .campaign-copy p { font-size: 13px; line-height: 1.45; margin-top: 12px; max-width: 360px; }
+  .campaign-slide-alani .campaign-visual { position: absolute; inset: 0; aspect-ratio: auto; }
+  .campaign-slide-alani .campaign-media { object-fit: cover; object-position: center bottom; }
+  .campaign-flavor-actions { gap: 8px; margin-top: 16px; flex-wrap: nowrap; }
+  .campaign-slide-alani .campaign-copy .btn { min-height: 44px; padding-inline: 10px; font-size: 11px; }
+}
+@media (min-width: 501px) and (max-width: 700px) {
+  .campaign-slide-alani .campaign-media { object-fit: contain; }
+}
+@media (max-width: 350px) {
+  .campaign-slide-alani { min-height: 500px; }
+  .campaign-slide-alani .campaign-media { object-fit: contain; }
+  .campaign-slide-alani .campaign-copy h1 { font-size: 30px; }
+  .campaign-slide-alani .campaign-kicker { font-size: 9px; gap: 8px; }
+  .campaign-slide-alani .campaign-copy .btn { font-size: 10px; padding-inline: 8px; }
+}
+@media (max-width: 500px) and (max-height: 760px) {
+  .campaign-slide-alani { min-height: 500px; }
+  .campaign-slide-alani .campaign-media { object-fit: contain; }
+  .campaign-slide-alani .campaign-copy h1 { font-size: 30px; }
+  .campaign-slide-alani .campaign-copy p { font-size: 12px; }
+}

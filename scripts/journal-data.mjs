@@ -1,3 +1,5 @@
+import { alaniNowAvailableReport } from './alani-now-available-report.mjs';
+import { dutchBrosHolidayReport } from './dutch-bros-holiday-report.mjs';
 import { whitePineappleReport } from './white-pineapple-report.mjs';
 import { aussieLemonadeReport } from './aussie-lemonade-report.mjs';
 import { rehabStrawberryLemonadeReport } from './rehab-strawberry-lemonade-report.mjs';
@@ -818,5 +820,7 @@ export const reports = [
   alaniFallArrivalsReport,
   alaniAppleComparisonReport,
   swigLiquidDeathReport,
-  hersheysStrawberryKissesReport
+  hersheysStrawberryKissesReport,
+  alaniNowAvailableReport,
+  dutchBrosHolidayReport
 ];

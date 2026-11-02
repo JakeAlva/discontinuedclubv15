@@ -10,6 +10,8 @@ const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 const audit = JSON.parse(await read('data/ebay-new-drinks-2026-10-15.json'));
 const expectedPrices = [771, 1929, 2412, 3376, 1929];
 const soldIds = new Set(['407293533835']);
+const latestAudit = JSON.parse(await read('data/ebay-inventory-update-2026-11-02.json'));
+const currentQuantities = new Map(latestAudit.activeSnapshot.map(([id, , quantity]) => [id, quantity]));
 
 test('remaining October 15 drinks match verified eBay unit counts, prices and packaged weights', () => {
   for (const [index, record] of audit.listings.entries()) {
@@ -17,7 +19,7 @@ test('remaining October 15 drinks match verified eBay unit counts, prices and pa
     const item = catalog.find((row) => row.id === record.id);
     assert.equal(catalog.filter((row) => row.id === record.id).length, 1);
     assert.equal(item.category, 'drinks');
-    assert.equal(maxQuantity(item), record.quantity);
+    assert.equal(maxQuantity(item), currentQuantities.get(record.id));
     assert.equal(directPriceCents(item), expectedPrices[index]);
     assert.equal(item.shippingWeightOz, record.shippingWeightOz);
     assert.equal(item.taxCode, 'txcd_41040002');
@@ -42,7 +44,7 @@ test('new drink pages, clean merchant images and sitemaps match the catalog', as
     assert.ok(html.includes(`rel="canonical" href="${entry['g:link']}"`));
     assert.match(html, /content="index, follow, max-image-preview:large"/);
     assert.ok(html.includes(`data-add-to-cart="${record.id}"`));
-    if (record.quantity > 1) assert.ok(html.includes(`data-max="${record.quantity}"`));
+    if (maxQuantity(item) > 1) assert.ok(html.includes(`data-max="${maxQuantity(item)}"`));
     else assert.match(html, /class="product-quantity-single"/);
     const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
     assert.equal(schema.offers.price, (directPriceCents(item) / 100).toFixed(2));

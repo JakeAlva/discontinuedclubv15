@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { access, readFile } from 'node:fs/promises';
+import { access, readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { catalog, findCatalogItem, maxQuantity, parsePriceCents } from '../lib/store-catalog.mjs';
@@ -14,11 +14,10 @@ const read = (file) => readFile(resolve(root, file), 'utf8');
 const audit = JSON.parse(await read('data/ebay-inventory-update-2026-10-28.json'));
 const slug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
 
-test('all 76 current listings and 125 available units match the complete signed-in eBay check', () => {
+test('October 28 audit preserves 76 listings and 125 units as historical evidence', () => {
   assert.equal(audit.activeSnapshot.length, 76);
   assert.equal(new Set(audit.activeSnapshot.map(([id]) => id)).size, 76);
-  assert.equal(catalog.reduce((sum, item) => sum + maxQuantity(item), 0), 125);
-  assert.deepEqual(catalog.map((item) => [item.id, parsePriceCents(item.price), maxQuantity(item)]).sort(), [...audit.activeSnapshot].sort());
+  assert.equal(audit.activeSnapshot.reduce((sum, [, , quantity]) => sum + quantity, 0), 125);
   for (const id of ['407260159541', '407281698826']) assert.equal(findCatalogItem(id), undefined);
 });
 
@@ -71,7 +70,11 @@ for (const report of [trubarDrizzleReport, matzoHanukkahReport]) {
     const html = await read(`dist/${href}`);
     assert.match(html, /"datePublished":"2026-10-28"/);
     assert.match(html, /content="index, follow, max-image-preview:large"/);
-    for (const file of ['index.html', 'blog.html', 'sitemap-journal.xml']) assert.ok((await read(`dist/${file}`)).includes(href));
+    const libraryPages = (await readdir(resolve(root, 'dist'))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+    let library = '';
+    for (const file of libraryPages) library += await read(`dist/${file}`);
+    assert.ok(library.includes(href));
+    assert.ok((await read('dist/sitemap-journal.xml')).includes(href));
     assert.ok(JSON.parse(await read('dist/assets/journal-index.json')).some((row) => row.slug === report.slug));
     for (const related of report.relatedSlugs) assert.ok(reports.some((row) => row.slug === related), related);
     for (const [, target] of html.matchAll(/href="([^"#]+\.html)(?:#[^"]*)?"/g)) {
