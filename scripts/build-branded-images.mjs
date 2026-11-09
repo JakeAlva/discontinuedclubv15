@@ -21,6 +21,7 @@ const selectedCatalog = catalog.filter((item) => !onlyId || item.id === onlyId);
 const bottomBrandedSources = new Set([
   '407301997130.webp',
   '407300260883.webp',
+  '407343435479.webp',
   '407298156099.webp',
   '407298051046.webp',
   '407297979026.webp',

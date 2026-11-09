@@ -5,6 +5,7 @@ import sharp from 'sharp';
 import { XMLParser } from 'fast-xml-parser';
 import { catalog, categories, directPriceCents, maxQuantity, parsePriceCents, storeConfig } from '../lib/store-catalog.mjs';
 import createCheckout from '../netlify/functions/create-checkout.mjs';
+import { currentSnapshot, currentListingId } from './helpers/current-inventory.mjs';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 const audit = JSON.parse(await read('data/ebay-inventory-update-2026-10-19.json'));
@@ -13,7 +14,7 @@ const latestSales = JSON.parse(await read('data/store-sales-update-2026-10-25.js
 const todaySales = JSON.parse(await read('data/store-sales-update-2026-10-26.json'));
 const october27Sales = JSON.parse(await read('data/store-sales-update-2026-10-27.json'));
 const latestAudit = JSON.parse(await read('data/ebay-inventory-update-2026-11-02.json'));
-const current = new Map(latestAudit.activeSnapshot.map(([id, price, quantity]) => [id, { price, quantity }]));
+const current = new Map(currentSnapshot.map(([id, price, quantity]) => [id, { price, quantity }]));
 const soldIds = new Set([...sales.soldOut, ...latestSales.soldOut, ...todaySales.soldOut, ...october27Sales.soldOut].map((item) => item.id));
 const active = audit.activeSnapshot.filter(([id]) => !soldIds.has(id));
 const slug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
@@ -21,7 +22,8 @@ const slug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').re
 test('October 19 listings remain present after confirmed sales and the November 2 audit', () => {
   assert.equal(catalog.length, latestAudit.activeListingCount);
   assert.deepEqual(catalog.map((item) => item.id).sort(), [...current.keys()].sort());
-  for (const [id, price, quantity] of active) {
+  for (const [previousId, price, quantity] of active) {
+    const id = currentListingId(previousId);
     const item = catalog.find((row) => row.id === id);
     assert.equal(parsePriceCents(item.price), current.get(id)?.price ?? price, `${id} eBay price`);
     assert.equal(maxQuantity(item), current.get(id)?.quantity ?? quantity, `${id} quantity`);
@@ -38,7 +40,8 @@ test('new listings have matching prices, weights, schema, feed entries and clear
   const feed = new XMLParser({ parseTagValue: false }).parse(await read('dist/google-merchant-feed.xml')).rss.channel.item;
   const shop = await read('dist/out-now.html');
   const sitemap = await read('dist/sitemap-products.xml');
-  for (const record of audit.additions) {
+  for (const original of audit.additions) {
+    const record = { ...original, id: currentListingId(original.id) };
     const item = catalog.find((row) => row.id === record.id);
     const currentDirectCents = Math.round(current.get(record.id).price * 0.965);
     assert.equal(item.category, record.category);
