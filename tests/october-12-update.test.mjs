@@ -10,6 +10,7 @@ import { alaniLimeSlushReturnReport as lime } from '../scripts/alani-lime-slush-
 import { javaMonsterDubaiChocolateReport as java } from '../scripts/java-monster-dubai-chocolate-report.mjs';
 import { selectReports } from '../assets/journal-library.mjs';
 import createCheckout from '../netlify/functions/create-checkout.mjs';
+import { soldItems, slugify } from '../scripts/sold-data.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const read = (path) => readFile(resolve(root, path), 'utf8');
@@ -17,7 +18,7 @@ const read = (path) => readFile(resolve(root, path), 'utf8');
 const additions = [['407283282883', 1, 6851, 3]];
 
 test('collectibles show bundles together, then single packs and the loose lot, with Funko last', async () => {
-  const orderedIds = ['407283282883', '407264808538', '407086892969', '407269224750', '407269188492', '407264848037', '407134944288', '406760868081'];
+  const orderedIds = ['407264808538', '407086892969', '407269224750', '407269188492', '407264848037', '407134944288', '406760868081'];
   assert.deepEqual(catalog.filter((item) => item.category === 'collectibles').map((item) => item.id), orderedIds);
   assert.deepEqual(catalog.slice(0, -1).filter((item) => item.category === 'collectibles').map((item) => item.id), orderedIds.slice(0, -1));
   assert.equal(catalog.at(-1).id, orderedIds.at(-1));
@@ -26,7 +27,7 @@ test('collectibles show bundles together, then single packs and the loose lot, w
   assert.ok(positions.every((position, index) => position >= 0 && (!index || position > positions[index - 1])));
 });
 
-test('new bundle storefront images retain the DC footer and use fresh image URLs', async () => {
+test('sold bundle archive images retain the DC footer', async () => {
   const footer = { left: 440, top: 1070, width: 340, height: 90 };
   const reference = await sharp(resolve(root, 'assets/images/listings/branded/407260159541.webp'))
     .extract(footer).greyscale().raw().toBuffer();
@@ -38,34 +39,28 @@ test('new bundle storefront images retain the DC footer and use fresh image URLs
     const actual = await sharp(branded).extract(footer).greyscale().raw().toBuffer();
     const difference = actual.reduce((sum, value, index) => sum + Math.abs(value - reference[index]), 0) / actual.length;
     assert.ok(difference < 3, `DC footer must match the established placement: ${difference}`);
-    assert.equal(findCatalogItem(id).imageVersion, '20261012-logo');
-    assert.ok((await read('dist/out-now.html')).includes(`${brandedPath}?v=20261012-logo`));
+    assert.equal(findCatalogItem(id), undefined);
+    assert.deepEqual(await readFile(resolve(root, `assets/images/sold/branded/${id}.webp`)), branded);
   }
 });
 
-test('remaining October 12 bundle has matching inventory, galleries, price and indexable page', async () => {
+test('October 12 bundle is archived after sellout without a purchasable offer', async () => {
   assert.equal(catalog.length, categories.all.count);
-  assert.equal(categories.collectibles.count, 8);
+  assert.equal(categories.collectibles.count, 7);
   const feed = new XMLParser({ parseTagValue: false }).parse(await read('google-merchant-feed.xml')).rss.channel.item;
   for (const [id, quantity, cents, photos] of additions) {
-    const item = findCatalogItem(id);
+    const item = soldItems.find((row) => row.id === id);
     assert.equal(item.category, 'collectibles');
-    assert.equal(maxQuantity(item), quantity);
-    assert.equal(directPriceCents(item), cents);
-    assert.equal(item.shippingWeightOz, 24);
-    assert.equal(item.gallery.length + 1, photos);
-    for (const photo of item.gallery) assert.ok((await readFile(resolve(root, photo.src))).length > 1000);
+    assert.equal(item.soldOut, true);
     const record = feed.find((row) => row['g:id'] === `dc-${id}`);
-    assert.equal(record['g:price'], `${(cents / 100).toFixed(2)} USD`);
-    assert.equal(record['g:availability'], 'in_stock');
-    const href = record['g:link'].replace('https://discontinuedclub.com/', '');
-    assert.ok((await read('sitemap-products.xml')).includes(href));
+    assert.equal(record, undefined);
+    const href = `sold/${slugify(item.name)}-${id}.html`;
+    assert.ok((await read('sitemap-sold.xml')).includes(href));
     const html = await read(`dist/${href}`);
-    assert.ok(html.includes(`rel="canonical" href="${record['g:link']}"`));
-    assert.ok(html.includes(`data-add-to-cart="${id}"`));
+    assert.ok(html.includes(`rel="canonical" href="https://discontinuedclub.com/${href}"`));
+    assert.ok(!html.includes(`data-add-to-cart="${id}"`));
     const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
-    assert.equal(schema.offers.price, (cents / 100).toFixed(2));
-    assert.equal(schema.offers.availability, 'https://schema.org/InStock');
+    assert.equal(schema.offers.availability, 'https://schema.org/OutOfStock');
   }
   assert.equal(findCatalogItem('407260159541'), undefined, 'Journey Together sold out on October 27');
   assert.equal(maxQuantity(findCatalogItem('407134944288')), 2, 'Separate four-pack lots stay unchanged');

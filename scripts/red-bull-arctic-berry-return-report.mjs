@@ -22,7 +22,7 @@ export const redBullArcticBerryReturnReport = {
   cardCopy: 'The official return, the calendar restriction and why single cans can still appear for sale.',
   relatedSlugs: ['is-red-bull-fuji-apple-ginger-discontinued', 'is-red-bull-blue-edition-blueberry-discontinued', 'is-red-bull-green-edition-curuba-elderflower-discontinued'],
   shop: {
-    href: 'products/red-bull-festive-edition-arctic-berry-8-4-oz-single-can-407297979026.html',
+    href: 'products/red-bull-festive-edition-arctic-berry-8-4-oz-single-can-407345586271.html',
     heading: 'Our separate single-can listing',
     copy: 'We sell this flavor and have a commercial interest to disclose. Check the listing for current price, quantity and condition; it is not the full calendar.',
     cta: 'View the single-can listing'

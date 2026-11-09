@@ -1,5 +1,41 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "407063633707",
+    "category": "apparel",
+    "name": "Nashville Predators P.K. Subban Jersey",
+    "price": "$49.99",
+    "priceLabel": "Last listed price",
+    "brand": "Fanatics",
+    "soldOut": true,
+    "image": "407063633707.webp",
+    "slug": "nashville-predators-p-k-subban-jersey-407063633707",
+    "availableAgain": false
+  },
+  {
+    "id": "407063463950",
+    "category": "apparel",
+    "name": "Columbus Blue Jackets Sergei Bobrovsky Jersey",
+    "price": "$49.99",
+    "priceLabel": "Last listed price",
+    "brand": "Fanatics",
+    "soldOut": true,
+    "image": "407063463950.webp",
+    "slug": "columbus-blue-jackets-sergei-bobrovsky-jersey-407063463950",
+    "availableAgain": false
+  },
+  {
+    "id": "407283282883",
+    "category": "collectibles",
+    "name": "Pokemon Mega Evolution Ascended Heroes Booster Bundle",
+    "price": "$70.99",
+    "priceLabel": "Last listed price",
+    "brand": "The Pokemon Company International",
+    "soldOut": true,
+    "image": "407283282883.webp",
+    "slug": "pokemon-mega-evolution-ascended-heroes-booster-bundle-407283282883",
+    "availableAgain": false
+  },
+  {
     "id": "407260159541",
     "category": "collectibles",
     "name": "Pokemon Journey Together Booster Bundle",

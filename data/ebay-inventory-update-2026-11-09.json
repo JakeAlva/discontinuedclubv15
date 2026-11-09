@@ -1,0 +1,11 @@
+{
+  "verifiedAt": "2026-11-09T22:12:29.207Z",
+  "source": "Signed-in eBay Seller Hub active listings, both pages, and sold listing details",
+  "activeListingCount": 76,
+  "sellableUnits": 127,
+  "directDiscountPercent": 3.5,
+  "removedIds": ["407283282883", "407063633707", "407063463950"],
+  "relistings": {"407297979026": "407345586271"},
+  "quantityChanges": {"407329572793": 4, "407332173468": 4, "406795510403": 2, "407345586271": 1},
+  "additions": [["407347352383", 2899, 1]]
+}

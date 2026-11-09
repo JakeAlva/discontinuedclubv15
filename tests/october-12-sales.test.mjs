@@ -14,9 +14,10 @@ const gingerbreadId = '406794860747';
 const oldJerseySlug = `nashville-predators-p-k-subban-jersey-${whiteJerseyId}.html`;
 const soldJerseySlug = `nashville-predators-p-k-subban-jersey-white-size-m-${whiteJerseyId}.html`;
 
-test('Gingerbread Snapd is sold out and the gold Subban jersey stays available', async () => {
+test('Gingerbread Snapd and both Subban jerseys remain archived after their sales', async () => {
   assert.equal(findCatalogItem(gingerbreadId), undefined);
-  assert.match(findCatalogItem('407063633707').detail, /gold/);
+  assert.equal(findCatalogItem('407063633707'), undefined);
+  assert.equal(soldItems.find((item) => item.id === '407063633707').soldOut, true);
   const slug = `mountain-dew-gingerbread-snap-d-${gingerbreadId}.html`;
   const html = await read(`sold/${slug}`);
   assert.match(html, /class="sold-status">Sold out/);

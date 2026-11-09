@@ -8,7 +8,7 @@ import { reports } from '../scripts/journal-data.mjs';
 import { redBullPistachioBerriesReport as redBull } from '../scripts/red-bull-pistachio-berries-report.mjs';
 import { starryCranberryBlizzReport as starry } from '../scripts/starry-cranberry-blizz-report.mjs';
 import createCheckout from '../netlify/functions/create-checkout.mjs';
-import { currentSnapshot, currentListingId } from './helpers/current-inventory.mjs';
+import { currentSnapshot, currentListingId, novemberUpdate } from './helpers/current-inventory.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const read = (file) => readFile(resolve(root, file), 'utf8');
@@ -16,7 +16,7 @@ const audit = JSON.parse(await read('data/ebay-inventory-update-2026-10-26.json'
 const sales = JSON.parse(await read('data/store-sales-update-2026-10-26.json'));
 const latestSales = JSON.parse(await read('data/store-sales-update-2026-10-27.json'));
 const soldIds = new Set([...sales.soldOut, ...latestSales.soldOut].map((item) => item.id));
-const remaining = audit.activeSnapshot.filter(([id]) => !soldIds.has(id));
+const remaining = audit.activeSnapshot.filter(([id]) => !soldIds.has(id) && !novemberUpdate.removedIds.includes(id));
 const october28 = JSON.parse(await read('data/ebay-inventory-update-2026-10-28.json'));
 const november2 = JSON.parse(await read('data/ebay-inventory-update-2026-11-02.json'));
 const currentQuantities = new Map(currentSnapshot.map(([id, , quantity]) => [id, quantity]));
@@ -24,7 +24,7 @@ const currentQuantities = new Map(currentSnapshot.map(([id, , quantity]) => [id,
 test('website listings match the 75-listing October 26 snapshot less confirmed sales', () => {
   assert.equal(audit.activeSnapshot.length, 75);
   assert.equal(new Set(audit.activeSnapshot.map(([id]) => id)).size, 75);
-  assert.deepEqual(catalog.map((item) => item.id).sort(), [...remaining.map(([id]) => currentListingId(id)), ...october28.additions.map((item) => item.id), ...november2.additions.map((item) => item.id)].sort());
+  assert.deepEqual(catalog.map((item) => item.id).sort(), [...remaining.map(([id]) => currentListingId(id)), ...october28.additions.map((item) => item.id), ...november2.additions.map((item) => item.id), ...novemberUpdate.additions.map(([id]) => id)].sort());
   for (const [previousId, price, quantity] of remaining) {
     const id = currentListingId(previousId);
     const item = catalog.find((row) => row.id === id);
@@ -59,7 +59,7 @@ test('checkout rejects quantities beyond the newly verified limits before contac
   process.env.STRIPE_CHECKOUT_ENABLED = 'true';
   process.env.STRIPE_SECRET_KEY = 'sk_test_no_network_should_be_used';
   try {
-    for (const [id, quantity] of [['407301997130', 4], [currentListingId('407300260883'), 7], ['407297979026', 4]]) {
+    for (const [id, quantity] of [['407301997130', 4], [currentListingId('407300260883'), 7], [currentListingId('407297979026'), 2]]) {
       const response = await createCheckout(new Request('https://discontinuedclub.com/.netlify/functions/create-checkout', {
         method: 'POST', headers: { 'Content-Type': 'application/json', Origin: 'https://discontinuedclub.com' },
         body: JSON.stringify({ items: [{ id, quantity }] })
