@@ -15,6 +15,7 @@ const productCard = runInNewContext(productCardCode + '\nproductCard', {
   parsePriceCents,
   formatMoney,
   getMaxQuantity: maxQuantity,
+  stockLabel: (item) => maxQuantity(item) === 1 ? 'Last one' : maxQuantity(item) + ' in stock',
   escapeHtml: (value) => String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'),
   categoryLabels: { 'kids-shoes': "Designer kids' shoes", drinks: 'Rare drinks' }
 });
@@ -26,8 +27,8 @@ test('shoe cards omit scarcity badges while other departments keep their stock l
     assert.ok(html.includes(item.name));
     assert.ok(html.includes(formatMoney(directPriceCents(item))));
   }
-  assert.match(productCard({ ...shoes[0], category: 'drinks' }), /condition-badge">Last one/);
-  assert.match(productCard({ ...shoes[0], category: 'drinks', maxQuantity: 2 }), /condition-badge">2 in stock/);
+  assert.match(productCard({ ...shoes[0], category: 'drinks' }), /data-stock-id="\d+">Last one/);
+  assert.match(productCard({ ...shoes[0], category: 'drinks', maxQuantity: 2 }), /data-stock-id="\d+">2 in stock/);
 });
 
 test('shoe product pages show factual pair quantities without an urgency badge', async () => {
@@ -35,8 +36,8 @@ test('shoe product pages show factual pair quantities without an urgency badge',
     const slug = `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}`;
     const html = await readFile(new URL(`../products/${slug}.html`, import.meta.url), 'utf8');
     assert.doesNotMatch(html, /Last one|sold-status available/i);
-    assert.match(html, /1 pair currently listed/);
-    assert.match(html, /One available/);
+    assert.ok(html.includes(`data-stock-id="${item.id}">Checking stock`));
+    assert.doesNotMatch(html, /1 pair currently listed|One available/);
     assert.match(html, /"availability":"https:\/\/schema.org\/InStock"/);
     assert.equal(maxQuantity(item), 1);
   }
@@ -59,6 +60,7 @@ test('single-pair buttons use neutral cart feedback, enforce the limit and re-en
   const sync = runInNewContext(code + '\nsyncAddButtons', {
     catalog: [item],
     getMaxQuantity: maxQuantity,
+    hasLiveStock: () => true,
     cartQuantityFor: () => quantity,
     document: { querySelectorAll: (selector) => selector === '[data-add-to-cart]' ? [button] : [feedback] }
   });

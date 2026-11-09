@@ -16,6 +16,7 @@ const port = Number(process.env.PORT || 4173);
 process.env.PUBLIC_SITE_URL = process.env.LOCAL_SITE_URL || `http://${host}:${port}`;
 
 const functions = new Map([
+  ['/.netlify/functions/inventory', '../netlify/functions/inventory.mjs'],
   ['/.netlify/functions/create-checkout', '../netlify/functions/create-checkout.mjs'],
   ['/.netlify/functions/checkout-status', '../netlify/functions/checkout-status.mjs'],
   ['/.netlify/functions/stripe-webhook', '../netlify/functions/stripe-webhook.mjs']

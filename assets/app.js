@@ -12,6 +12,10 @@
     ? 'Direct checkout coming soon'
     : 'Direct checkout expected ' + directCheckoutDateLabel;
   const CART_KEY = 'dc_direct_cart_v1';
+  let liveInventory = new Map();
+  let inventoryState = 'loading';
+  let inventoryRequest = null;
+  let inventoryCheckedAt = 0;
   const categoryLabels = {
     drinks: 'Rare drinks',
     apparel: 'Sports & apparel',
@@ -270,9 +274,7 @@
     const directCents = getDirectPriceCents(item);
     const ebayCents = parsePriceCents(item.price);
     const savings = Math.max(0, ebayCents - directCents);
-    const stock = getMaxQuantity(item);
-    const stockLabel = stock > 1 ? stock + ' in stock' : 'Last one';
-    const stockBadge = item.category === 'kids-shoes' ? '' : '<span class="condition-badge">' + stockLabel + '</span>';
+    const stockBadge = item.category === 'kids-shoes' ? '' : '<span class="condition-badge" data-stock-id="' + item.id + '">' + stockLabel(item) + '</span>';
     const imageAlt = escapeHtml(item.name + ' - current Discontinued Club inventory');
     const pricing = directCheckoutEnabled
       ? '<div class="product-pricing"><span><small>Direct price</small><strong>' + formatMoney(directCents) + '</strong></span><span class="market-price"><small>eBay price</small><s>' + item.price + '</s></span></div><div class="product-savings">Save ' + formatMoney(savings) + ' on the item price</div>'
@@ -339,7 +341,95 @@
   }
 
   function getMaxQuantity(item) {
+    const live = liveInventory.get(item.id);
+    if (Number.isInteger(live) && live >= 0) return live;
     return Math.max(1, Number(item.maxQuantity || storeConfig.defaultMaxQuantity || 1));
+  }
+
+  function hasLiveStock(item) {
+    return inventoryState === 'ready' && Number.isInteger(liveInventory.get(item.id));
+  }
+
+  function stockLabel(item) {
+    if (!directCheckoutEnabled || item.directCheckoutEnabled === false) return 'See eBay for availability';
+    if (!hasLiveStock(item)) return inventoryState === 'loading' ? 'Checking stock' : 'Stock unavailable';
+    const stock = getMaxQuantity(item);
+    if (item.category === 'kids-shoes' && stock > 0) return stock + (stock === 1 ? ' pair in stock' : ' pairs in stock');
+    return stock === 0 ? 'Sold out' : stock === 1 ? 'Last one' : stock + ' in stock';
+  }
+
+  function syncInventoryDisplay() {
+    document.querySelectorAll('[data-stock-id]').forEach(function (host) {
+      const item = catalog.find(function (candidate) { return candidate.id === host.dataset.stockId; });
+      if (item) host.textContent = stockLabel(item);
+    });
+    document.querySelectorAll('[data-product-quantity-picker]').forEach(function (picker) {
+      picker.dispatchEvent(new Event('inventorychange'));
+    });
+    renderCart();
+  }
+
+  function reconcileCartInventory() {
+    let changed = false;
+    cart = cart.map(function (line) {
+      const stock = liveInventory.get(line.id);
+      if (!Number.isInteger(stock)) return line;
+      const quantity = Math.min(stock, line.quantity);
+      if (quantity !== line.quantity) changed = true;
+      return quantity > 0 ? { id: line.id, quantity: quantity } : null;
+    }).filter(Boolean);
+    if (changed) {
+      try { localStorage.setItem(CART_KEY, JSON.stringify(cart)); } catch (error) { /* Storage can be disabled. */ }
+      const message = document.querySelector('[data-checkout-message]');
+      if (message) message.textContent = 'Stock changed. Your cart has been updated; please review it before checkout.';
+    }
+    return changed;
+  }
+
+  async function refreshInventory() {
+    if (!directCheckoutEnabled) return false;
+    if (inventoryRequest) return inventoryRequest;
+    inventoryRequest = (async function () {
+      try {
+        const response = await fetch('/.netlify/functions/inventory', { cache: 'no-store', signal: AbortSignal.timeout(20000) });
+        const data = await response.json();
+        if (!response.ok || !Array.isArray(data.inventory)) throw new Error('Stock unavailable');
+        const next = new Map();
+        data.inventory.forEach(function (entry) {
+          if (typeof entry.id === 'string' && (entry.quantity === null || Number.isInteger(entry.quantity) && entry.quantity >= 0)) {
+            next.set(entry.id, entry.quantity);
+          }
+        });
+        liveInventory = next;
+        inventoryState = 'ready';
+        inventoryCheckedAt = Date.now();
+        const changed = reconcileCartInventory();
+        syncInventoryDisplay();
+        return !changed;
+      } catch (error) {
+        inventoryState = 'error';
+        syncInventoryDisplay();
+        return false;
+      } finally {
+        inventoryRequest = null;
+      }
+    }());
+    return inventoryRequest;
+  }
+
+  function setupLiveInventory() {
+    if (!directCheckoutEnabled) return;
+    refreshInventory();
+    window.setInterval(function () {
+      if (!document.hidden) refreshInventory();
+    }, 30000);
+    window.addEventListener('pageshow', function (event) { if (event.persisted) refreshInventory(); });
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden) refreshInventory();
+    });
+    window.addEventListener('focus', function () {
+      if (Date.now() - inventoryCheckedAt > 15000) refreshInventory();
+    });
   }
 
   function loadCart() {
@@ -373,15 +463,19 @@
       const singlePair = item.category === 'kids-shoes' && maxQuantity === 1;
       const quantity = cartQuantityFor(id);
       const atLimit = quantity >= maxQuantity;
+      const unavailable = !hasLiveStock(item);
+      const soldOut = !unavailable && maxQuantity === 0;
       const label = button.querySelector('[data-add-label]');
       const arrow = button.querySelector('.purchase-arrow');
       let buttonLabel = 'Add to cart';
 
       if (atLimit) buttonLabel = singlePair ? 'In your cart' : (maxQuantity === 1 ? 'Last one in cart' : 'All stock in cart');
       else if (quantity > 0) buttonLabel = 'Add another';
+      if (soldOut) buttonLabel = 'Sold out';
+      if (unavailable) buttonLabel = inventoryState === 'loading' ? 'Checking stock' : 'Stock unavailable';
 
       const limitMessage = singlePair ? 'This pair is already in your cart' : (maxQuantity === 1 ? 'The last available one is already in your cart' : 'All available units are already in your cart');
-      button.disabled = atLimit;
+      button.disabled = atLimit || unavailable;
       button.classList.toggle('is-cart-full', atLimit);
       button.title = atLimit
         ? limitMessage
@@ -391,6 +485,11 @@
         : buttonLabel + ': ' + item.name);
       if (label) label.textContent = buttonLabel;
       if (arrow) arrow.textContent = atLimit ? '\u2713' : (quantity > 0 ? '+' : '\u2192');
+      if (soldOut || unavailable) {
+        button.title = buttonLabel;
+        button.setAttribute('aria-label', item.name + ': ' + buttonLabel.toLowerCase());
+        if (arrow) arrow.textContent = '';
+      }
     });
 
     document.querySelectorAll('[data-product-action-feedback]').forEach(function (host) {
@@ -400,9 +499,11 @@
       if (!item) return;
       const maxQuantity = getMaxQuantity(item);
       const quantity = cartQuantityFor(id);
-      if (!quantity) host.textContent = 'In-stock items are reserved when checkout is completed.';
+      if (!hasLiveStock(item)) host.textContent = inventoryState === 'loading' ? 'Checking current availability.' : 'Unable to confirm stock. Please try again shortly.';
+      else if (maxQuantity === 0) host.textContent = 'This item is sold out.';
+      else if (!quantity) host.textContent = 'Availability is confirmed at checkout. Items in your cart are not reserved.';
       else if (item.category === 'kids-shoes') host.textContent = 'In your cart. Availability is confirmed at checkout.';
-      else if (quantity >= maxQuantity && maxQuantity === 1) host.textContent = 'The last available one is held in your cart.';
+      else if (quantity >= maxQuantity && maxQuantity === 1) host.textContent = 'The last available one is in your cart, but is not reserved.';
       else if (quantity >= maxQuantity) host.textContent = 'All ' + maxQuantity + ' available units are in your cart.';
       else host.textContent = quantity + ' of ' + maxQuantity + ' available units ' + (quantity === 1 ? 'is' : 'are') + ' in your cart.';
     });
@@ -514,7 +615,7 @@
       const item = line.item;
       const maxQuantity = getMaxQuantity(item);
       const quantityControl = maxQuantity > 1
-        ? '<div class="cart-quantity"><button type="button" data-cart-decrease="' + item.id + '" aria-label="Decrease quantity">&minus;</button><span>' + line.quantity + '</span><button type="button" data-cart-increase="' + item.id + '" aria-label="Increase quantity"' + (line.quantity >= maxQuantity ? ' disabled' : '') + '>+</button></div><span class="cart-stock">' + maxQuantity + ' available</span>'
+        ? '<div class="cart-quantity"><button type="button" data-cart-decrease="' + item.id + '" aria-label="Decrease quantity">&minus;</button><span>' + line.quantity + '</span><button type="button" data-cart-increase="' + item.id + '" aria-label="Increase quantity"' + (line.quantity >= maxQuantity || !hasLiveStock(item) ? ' disabled' : '') + '>+</button></div><span class="cart-stock">' + stockLabel(item) + '</span>'
         : '<span class="cart-one-only">Quantity 1</span>';
       return [
         '<div class="cart-line">',
@@ -537,6 +638,7 @@
     drawer.classList.add('show');
     cartOverlay.classList.add('show');
     drawer.setAttribute('aria-hidden', 'false');
+    refreshInventory();
   }
 
   function closeCart() {
@@ -619,6 +721,7 @@
   function addToCart(id, requestedQuantity) {
     const item = catalog.find(function (candidate) { return candidate.id === id; });
     if (!item || item.directCheckoutEnabled === false) return null;
+    if (!hasLiveStock(item) || getMaxQuantity(item) === 0) return null;
     const max = getMaxQuantity(item);
     const quantity = Math.max(1, Math.min(max, Number(requestedQuantity) || 1));
     const line = cart.find(function (candidate) { return candidate.id === id; });
@@ -634,6 +737,7 @@
     const line = cart.find(function (candidate) { return candidate.id === id; });
     const item = catalog.find(function (candidate) { return candidate.id === id; });
     if (!line || !item) return;
+    if (amount > 0 && !hasLiveStock(item)) return;
     line.quantity = Math.max(0, Math.min(getMaxQuantity(item), line.quantity + amount));
     if (!line.quantity) cart = cart.filter(function (candidate) { return candidate.id !== id; });
     saveCart();
@@ -648,6 +752,11 @@
     button.innerHTML = '<span>Opening secure checkout...</span>';
     if (message) message.textContent = '';
     try {
+      const unchanged = await refreshInventory();
+      if (inventoryState !== 'ready' || cart.some(function (line) { return !hasLiveStock(catalog.find(function (item) { return item.id === line.id; })); })) {
+        throw new Error('Unable to confirm current stock. Please try again shortly.');
+      }
+      if (!unchanged || !cart.length) throw new Error('Stock changed. Please review your updated cart before checkout.');
       const response = await fetch('/.netlify/functions/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -669,15 +778,16 @@
       const output = picker.querySelector('[data-product-quantity]');
       const decrease = picker.querySelector('[data-product-quantity-decrease]');
       const increase = picker.querySelector('[data-product-quantity-increase]');
-      const max = Math.max(1, Number(picker.dataset.max) || 1);
+      const item = catalog.find(function (candidate) { return candidate.id === picker.dataset.productId; });
       const price = Math.max(1, Number(picker.dataset.price) || 1);
       const threshold = Math.max(1, Number(picker.dataset.freeShippingThreshold) || freeShippingThresholdCents);
 
       function update(value) {
+        const max = item && hasLiveStock(item) ? getMaxQuantity(item) : 0;
         const quantity = Math.max(1, Math.min(max, Number(value) || 1));
         output.value = quantity;
         output.textContent = quantity;
-        decrease.disabled = quantity <= 1;
+        decrease.disabled = quantity <= 1 || max === 0;
         increase.disabled = quantity >= max;
         const note = document.querySelector('[data-product-order-note="' + picker.dataset.productId + '"]');
         if (note) {
@@ -688,6 +798,7 @@
 
       decrease.addEventListener('click', function () { update(Number(output.value) - 1); });
       increase.addEventListener('click', function () { update(Number(output.value) + 1); });
+      picker.addEventListener('inventorychange', function () { update(Number(output.value)); });
       update(1);
     });
   }
@@ -1224,4 +1335,5 @@
   setupCampaignCarousel();
   setupProductGallery();
   replaceOldProductPages();
+  setupLiveInventory();
 }());

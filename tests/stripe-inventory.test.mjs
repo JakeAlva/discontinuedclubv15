@@ -21,6 +21,8 @@ test('available quantity never falls back when Stripe says sold out', () => {
   assert.equal(availableStripeQuantity(2, product(4)), 2);
   assert.equal(availableStripeQuantity(6, product(0)), 0);
   assert.equal(availableStripeQuantity(6, { id: 'prod_test', metadata: {} }), null);
+  assert.equal(availableStripeQuantity(0, product(4)), 0);
+  assert.equal(availableStripeQuantity(6, { ...product(4), active: false }), 0);
 });
 
 test('paid checkout inventory is decremented without going negative', () => {

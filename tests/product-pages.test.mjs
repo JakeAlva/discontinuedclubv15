@@ -33,7 +33,8 @@ test('every current listing has a dedicated indexable product page', async () =>
     if (storeConfig.directCheckoutEnabled && item.directCheckoutEnabled !== false) {
       assert.ok(html.includes(`data-add-to-cart="${item.id}"`));
       assert.ok(html.includes('class="mobile-product-bar"'));
-      assert.ok(html.includes('data-add-label>Add to cart'));
+      assert.ok(html.includes('data-add-label>Checking stock'));
+      assert.ok(html.includes(`data-stock-id="${item.id}"`));
       if ((item.maxQuantity || storeConfig.defaultMaxQuantity || 1) > 1) assert.ok(html.includes(`data-product-id="${item.id}"`));
     }
     else assert.ok(!html.includes('data-add-to-cart='));

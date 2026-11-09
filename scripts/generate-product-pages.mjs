@@ -79,7 +79,8 @@ function pageMarkup(item, images) {
   const ebayPrice = parsePriceCents(item.price);
   const savings = Math.max(0, ebayPrice - directPrice);
   const quantity = maxQuantity(item);
-  const stockBadge = item.category === 'kids-shoes' ? '' : `<div class="sold-status available">${quantity > 1 ? `${quantity} available` : 'Last one'}</div>`;
+  const stockText = directCheckoutEnabled ? 'Checking stock' : 'See eBay for availability';
+  const stockBadge = item.category === 'kids-shoes' ? '' : `<div class="sold-status available" data-stock-id="${item.id}">${stockText}</div>`;
   const freeShippingThreshold = Math.max(1, Number(storeConfig.freeShippingThresholdCents) || 20000);
   const condition = productCondition(item);
   const shipping = shippingQuote(directPrice, [{ item, quantity: 1 }]);
@@ -91,13 +92,13 @@ function pageMarkup(item, images) {
           <div class="product-savings">Save ${formatMoney(savings)} on the item price when buying direct</div>`
     : `<div class="current-price-panel"><span><small>Available on eBay</small><strong>${escapeHtml(item.price)}</strong></span></div>`;
   const actions = directCheckoutEnabled
-    ? `<button class="btn btn-acid purchase-button" type="button" data-add-to-cart="${item.id}" data-add-quantity-source="${item.id}"><span data-add-label>Add to cart</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button><a class="btn btn-light" href="https://www.ebay.com/itm/${item.id}" target="_blank" rel="noopener">Buy on eBay</a>`
+    ? `<button class="btn btn-acid purchase-button" type="button" data-add-to-cart="${item.id}" data-add-quantity-source="${item.id}" disabled><span data-add-label>Checking stock</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button><a class="btn btn-light" href="https://www.ebay.com/itm/${item.id}" target="_blank" rel="noopener">Buy on eBay</a>`
     : `<a class="btn btn-dark" href="https://www.ebay.com/itm/${item.id}" target="_blank" rel="noopener">Buy on eBay</a><a class="btn btn-light" href="out-now.html">Keep shopping</a>`;
   const quantityControl = !directCheckoutEnabled
-    ? `<div class="product-quantity-single"><span>Available</span><strong>${quantity}</strong><small>Choose quantity on eBay</small></div>`
+    ? '<div class="product-quantity-single"><span>Quantity</span><small>Choose quantity on eBay</small></div>'
     : quantity > 1
-    ? `<div class="product-quantity-picker" data-product-quantity-picker data-product-id="${item.id}" data-max="${quantity}" data-price="${directPrice}" data-free-shipping-threshold="${freeShippingThreshold}"><span>Quantity</span><div class="product-quantity-control"><button type="button" data-product-quantity-decrease aria-label="Decrease quantity" disabled>&minus;</button><output data-product-quantity aria-live="polite">1</output><button type="button" data-product-quantity-increase aria-label="Increase quantity">+</button></div><small>${quantity} available</small></div>`
-    : '<div class="product-quantity-single"><span>Quantity</span><strong>1</strong><small>One available</small></div>';
+    ? `<div class="product-quantity-picker" data-product-quantity-picker data-product-id="${item.id}" data-max="${quantity}" data-price="${directPrice}" data-free-shipping-threshold="${freeShippingThreshold}"><span>Quantity</span><div class="product-quantity-control"><button type="button" data-product-quantity-decrease aria-label="Decrease quantity" disabled>&minus;</button><output data-product-quantity aria-live="polite">1</output><button type="button" data-product-quantity-increase aria-label="Increase quantity" disabled>+</button></div><small data-stock-id="${item.id}">${stockText}</small></div>`
+    : `<div class="product-quantity-single"><span>Quantity</span><strong>1</strong><small data-stock-id="${item.id}">${stockText}</small></div>`;
   const shippingNudge = directPrice >= freeShippingThreshold
     ? 'This item qualifies for free standard shipping.'
     : `${formatMoney(freeShippingThreshold - directPrice)} away from free standard shipping.`;
@@ -191,13 +192,13 @@ function pageMarkup(item, images) {
               ${quantityControl}
               <div class="current-product-actions">${actions}</div>
             </div>
-            ${directCheckoutEnabled ? `<p class="product-action-feedback" data-product-action-feedback="${item.id}" role="status" aria-live="polite">In-stock items are reserved when checkout is completed.</p>` : ''}
+            ${directCheckoutEnabled ? `<p class="product-action-feedback" data-product-action-feedback="${item.id}" role="status" aria-live="polite">Checking current availability.</p>` : ''}
           </div>
           <div class="current-product-notes">
             <div class="current-product-note"><strong>Condition</strong><span>${escapeHtml(item.condition || productConditionLabel(item))}</span></div>
             ${item.sizeLabel ? `<div class="current-product-note"><strong>Size</strong><span>${escapeHtml(item.sizeLabel)}</span></div>` : ''}
             ${item.color ? `<div class="current-product-note"><strong>Color</strong><span>${escapeHtml(item.color)}</span></div>` : ''}
-            <div class="current-product-note"><strong>Available</strong><span>${quantity} ${item.category === 'kids-shoes' ? (quantity === 1 ? 'pair' : 'pairs') : (quantity === 1 ? 'unit' : 'units')} currently listed</span></div>
+            <div class="current-product-note"><strong>Availability</strong><span data-stock-id="${item.id}">${stockText}</span></div>
             <div class="current-product-note"><strong>Returns</strong><span>${directCheckoutEnabled ? '<a href="shipping-returns.html#returns">30-day window on eligible items</a>' : 'See the eBay listing'}</span></div>
           </div>
           ${item.purchaseNote ? `<p class="current-product-lead product-purchase-disclosure">${escapeHtml(item.purchaseNote)}</p>` : ''}
@@ -209,7 +210,7 @@ function pageMarkup(item, images) {
     ${relatedProductsMarkup(item)}
   </main>
   <div id="site-footer"></div>
-  ${directCheckoutEnabled ? `<div class="mobile-product-bar" aria-label="Quick purchase"><div><small>Direct price</small><strong>${formatMoney(directPrice)}</strong></div><button class="btn btn-acid purchase-button" type="button" data-add-to-cart="${item.id}" data-add-quantity-source="${item.id}"><span data-add-label>Add to cart</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button></div>` : ''}
+  ${directCheckoutEnabled ? `<div class="mobile-product-bar" aria-label="Quick purchase"><div><small>Direct price</small><strong>${formatMoney(directPrice)}</strong></div><button class="btn btn-acid purchase-button" type="button" data-add-to-cart="${item.id}" data-add-quantity-source="${item.id}" disabled><span data-add-label>Checking stock</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button></div>` : ''}
   <script src="assets/catalog.js?v=45"></script>
   <script src="assets/app.js?v=45"></script>
 </body>

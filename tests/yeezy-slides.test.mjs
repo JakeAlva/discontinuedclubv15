@@ -22,7 +22,7 @@ for (const [id, color, mpn] of [['407279322970', 'Black', 'ID5106'], ['407279351
     assert.equal((html.match(/data-product-gallery-src=/g) || []).length, 5);
     assert.match(html, /data-product-zoom/);
     assert.match(html, /Original box not included/);
-    assert.match(html, /1 pair currently listed/);
+    assert.ok(html.includes(`data-stock-id="${item.id}">Checking stock`));
     assert.match(html, /index, follow/);
     assert.doesNotMatch(html, /Last one|eBay authentication/);
     const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
