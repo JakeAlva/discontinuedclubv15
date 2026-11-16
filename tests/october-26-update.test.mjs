@@ -8,7 +8,7 @@ import { reports } from '../scripts/journal-data.mjs';
 import { redBullPistachioBerriesReport as redBull } from '../scripts/red-bull-pistachio-berries-report.mjs';
 import { starryCranberryBlizzReport as starry } from '../scripts/starry-cranberry-blizz-report.mjs';
 import createCheckout from '../netlify/functions/create-checkout.mjs';
-import { currentSnapshot, currentListingId, novemberUpdate } from './helpers/current-inventory.mjs';
+import { currentSnapshot, currentListingId, novemberUpdate, november16Update } from './helpers/current-inventory.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const read = (file) => readFile(resolve(root, file), 'utf8');
@@ -16,7 +16,7 @@ const audit = JSON.parse(await read('data/ebay-inventory-update-2026-10-26.json'
 const sales = JSON.parse(await read('data/store-sales-update-2026-10-26.json'));
 const latestSales = JSON.parse(await read('data/store-sales-update-2026-10-27.json'));
 const soldIds = new Set([...sales.soldOut, ...latestSales.soldOut].map((item) => item.id));
-const remaining = audit.activeSnapshot.filter(([id]) => !soldIds.has(id) && !novemberUpdate.removedIds.includes(id));
+const remaining = audit.activeSnapshot.filter(([id]) => !soldIds.has(id) && !novemberUpdate.removedIds.includes(id) && !november16Update.removedIds.includes(id));
 const october28 = JSON.parse(await read('data/ebay-inventory-update-2026-10-28.json'));
 const november2 = JSON.parse(await read('data/ebay-inventory-update-2026-11-02.json'));
 const currentQuantities = new Map(currentSnapshot.map(([id, , quantity]) => [id, quantity]));
@@ -24,13 +24,14 @@ const currentQuantities = new Map(currentSnapshot.map(([id, , quantity]) => [id,
 test('website listings match the 75-listing October 26 snapshot less confirmed sales', () => {
   assert.equal(audit.activeSnapshot.length, 75);
   assert.equal(new Set(audit.activeSnapshot.map(([id]) => id)).size, 75);
-  assert.deepEqual(catalog.map((item) => item.id).sort(), [...remaining.map(([id]) => currentListingId(id)), ...october28.additions.map((item) => item.id), ...november2.additions.map((item) => item.id), ...novemberUpdate.additions.map(([id]) => id)].sort());
+  assert.deepEqual(catalog.map((item) => item.id).sort(), [...remaining.map(([id]) => currentListingId(id)), ...october28.additions.map((item) => item.id), ...november2.additions.map((item) => item.id), ...novemberUpdate.additions.map(([id]) => id), ...november16Update.additions.map(([id]) => id)].sort());
   for (const [previousId, price, quantity] of remaining) {
     const id = currentListingId(previousId);
     const item = catalog.find((row) => row.id === id);
-    assert.equal(parsePriceCents(item.price), price, `${id}: eBay reference price`);
+    const currentPrice = november16Update.priceChanges[id] ?? price;
+    assert.equal(parsePriceCents(item.price), currentPrice, `${id}: eBay reference price`);
     assert.equal(maxQuantity(item), currentQuantities.get(id) ?? quantity, `${id}: stock`);
-    assert.equal(directPriceCents(item), Math.round(price * 0.965), `${id}: direct discount`);
+    assert.equal(directPriceCents(item), Math.round(currentPrice * 0.965), `${id}: direct discount`);
   }
 });
 

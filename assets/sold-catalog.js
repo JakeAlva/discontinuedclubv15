@@ -1,5 +1,29 @@
 window.DC_SOLD_CATALOG = [
   {
+    "id": "406713894369",
+    "category": "drinks",
+    "name": "Mountain Dew Baja Point Break Punch",
+    "price": "$44.99",
+    "priceLabel": "Last listed price",
+    "brand": "Mountain Dew",
+    "soldOut": true,
+    "image": "406713894369.webp",
+    "slug": "mountain-dew-baja-point-break-punch-406713894369",
+    "availableAgain": false
+  },
+  {
+    "id": "406711385310",
+    "category": "drinks",
+    "name": "Mountain Dew Baja Laguna Lemonade",
+    "price": "$44.99",
+    "priceLabel": "Last listed price",
+    "brand": "Mountain Dew",
+    "soldOut": true,
+    "image": "406711385310.webp",
+    "slug": "mountain-dew-baja-laguna-lemonade-406711385310",
+    "availableAgain": false
+  },
+  {
     "id": "407063633707",
     "category": "apparel",
     "name": "Nashville Predators P.K. Subban Jersey",

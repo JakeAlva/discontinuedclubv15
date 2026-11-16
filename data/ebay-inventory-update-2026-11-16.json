@@ -1,0 +1,25 @@
+{
+  "verifiedAt": "2026-11-16T21:36:22Z",
+  "source": "Signed-in My eBay Active: all 79 listings on the 100-item page; individual listing descriptions and sold notices verified",
+  "activeListingCount": 79,
+  "sellableUnits": 130,
+  "directDiscountPercent": 3.5,
+  "removedIds": ["406713894369", "406711385310"],
+  "quantityChanges": {"407343435479": 3, "407332173468": 3},
+  "priceChanges": {"407203191955": 2299},
+  "additions": [["407365349094",1499,1],["407365323849",999,1],["407365194694",99,5],["407365004609",799,1],["407363501696",6499,1]],
+  "ebayOnlyIds": ["407321244836"],
+  "fulfillmentNotes": {"407365194694": "User confirmed website purchases ship physical coins; code-only purchases use eBay"},
+  "photos": {
+    "407365349094": "https://i.ebayimg.com/images/g/c1cAAeSwCFlq-hbs/s-l960.webp",
+    "407365323849": "https://i.ebayimg.com/images/g/QokAAeSwegtq-hI~/s-l960.webp",
+    "407365194694": "https://i.ebayimg.com/images/g/QH8AAeSwLrpq-fa0/s-l1600.webp",
+    "407365004609": "https://i.ebayimg.com/images/g/x7EAAeSwtJ9q-dde/s-l960.webp",
+    "407363501696": "https://i.ebayimg.com/images/g/2hkAAeSwhclq-PBx/s-l1600.webp"
+  },
+  "gallery": {
+    "407365004609-2": "https://i.ebayimg.com/images/g/3MwAAeSwjQtq-diU/s-l500.webp",
+    "407363501696-2": "https://i.ebayimg.com/images/g/yyIAAeSwzZlq-O-0/s-l1600.webp",
+    "407363501696-3": "https://i.ebayimg.com/images/g/4-EAAeSwH~1q-O-0/s-l500.webp"
+  }
+}

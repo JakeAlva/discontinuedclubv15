@@ -75,6 +75,8 @@ import { swigLiquidDeathReport } from './swig-liquid-death-report.mjs';
 import { hersheysStrawberryKissesReport } from './hersheys-strawberry-kisses-report.mjs';
 import { crystalPepsiHistoryReport } from './crystal-pepsi-history-report.mjs';
 import { surgeHistoryReport } from './surge-history-report.mjs';
+import { gameFuelCitrusCherryHistoryReport } from './game-fuel-citrus-cherry-history-report.mjs';
+import { cocaColaOrangeCreamMiniReport } from './coca-cola-orange-cream-mini-report.mjs';
 
 const redBullUsEditions = 'https://www.redbull.com/us-en/energydrink/questions/red-bull-editions';
 const redBullCuts = 'https://sporked.com/article/4-discontinued-red-bull-flavors-2026/';
@@ -826,5 +828,7 @@ export const reports = [
   alaniNowAvailableReport,
   dutchBrosHolidayReport,
   crystalPepsiHistoryReport,
-  surgeHistoryReport
+  surgeHistoryReport,
+  gameFuelCitrusCherryHistoryReport,
+  cocaColaOrangeCreamMiniReport
 ];

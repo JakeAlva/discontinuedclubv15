@@ -18,7 +18,7 @@ const read = (path) => readFile(resolve(root, path), 'utf8');
 const additions = [['407283282883', 1, 6851, 3]];
 
 test('collectibles show bundles together, then single packs and the loose lot, with Funko last', async () => {
-  const orderedIds = ['407264808538', '407086892969', '407269224750', '407269188492', '407264848037', '407134944288', '406760868081'];
+  const orderedIds = ['407365004609', '407365194694', '407264808538', '407086892969', '407269224750', '407269188492', '407264848037', '407134944288', '406760868081'];
   assert.deepEqual(catalog.filter((item) => item.category === 'collectibles').map((item) => item.id), orderedIds);
   assert.deepEqual(catalog.slice(0, -1).filter((item) => item.category === 'collectibles').map((item) => item.id), orderedIds.slice(0, -1));
   assert.equal(catalog.at(-1).id, orderedIds.at(-1));
@@ -46,7 +46,7 @@ test('sold bundle archive images retain the DC footer', async () => {
 
 test('October 12 bundle is archived after sellout without a purchasable offer', async () => {
   assert.equal(catalog.length, categories.all.count);
-  assert.equal(categories.collectibles.count, 7);
+  assert.equal(categories.collectibles.count, 9);
   const feed = new XMLParser({ parseTagValue: false }).parse(await read('google-merchant-feed.xml')).rss.channel.item;
   for (const [id, quantity, cents, photos] of additions) {
     const item = soldItems.find((row) => row.id === id);

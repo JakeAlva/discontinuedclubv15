@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile, access } from 'node:fs/promises';
+import { readFile, access, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { XMLParser } from 'fast-xml-parser';
 import sharp from 'sharp';
@@ -31,7 +31,8 @@ test('October 30 news distinguishes promotion, package and flavor availability',
 test('October 30 articles are discoverable, correctly dated and have intact links and images', async () => {
   const sitemap = new XMLParser().parse(await read('sitemap-journal.xml')).urlset.url;
   const index = JSON.parse(await read('assets/journal-index.json'));
-  const library = await read('blog.html');
+  const libraryPages = (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const library = (await Promise.all(libraryPages.map(read))).join('\n');
   for (const report of [swig, kisses]) {
     const href = `journal/${report.slug}.html`;
     const canonical = `https://discontinuedclub.com/${href}`;
