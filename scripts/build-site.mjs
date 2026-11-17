@@ -19,7 +19,7 @@ const rootFiles = await readdir(root, { withFileTypes: true });
 const faviconMarkup = '  <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png">\n  <link rel="apple-touch-icon" href="/assets/images/logo-mark-clean.png">';
 // New catalog or journal data must not reuse yesterday's browser-cached assets.
 const versionHash = createHash('sha256');
-for (const asset of ['style.css', 'catalog.js', 'sold-catalog.js', 'app.js', 'journal-library.mjs', 'journal-index.json']) {
+for (const asset of ['style.css', 'catalog.js', 'sold-catalog.js', 'app.js', 'journal-library.mjs', 'journal-index.json', 'reviews.css', 'reviews.mjs', 'review-form.mjs', 'review-admin.mjs']) {
   versionHash.update(asset).update('\0').update(await readFile(resolve(root, 'assets', asset)));
 }
 const assetVersion = versionHash.digest('hex').slice(0, 12);
@@ -115,6 +115,7 @@ async function injectFavicon(directory) {
       .replace(/assets\/catalog\.js\?v=[^"']+/g, `assets/catalog.js?v=${assetVersion}`)
       .replace(/assets\/sold-catalog\.js\?v=[^"']+/g, `assets/sold-catalog.js?v=${assetVersion}`)
       .replace(/assets\/app\.js\?v=[^"']+/g, `assets/app.js?v=${assetVersion}`)
+      .replace(/assets\/(reviews\.css|reviews\.mjs|review-form\.mjs|review-admin\.mjs)\?v=[^"']+/g, (_, asset) => `assets/${asset}?v=${assetVersion}`)
       .replace(/assets\/journal-library\.mjs\?v=[^"']+/g, `assets/journal-library.mjs?v=${assetVersion}`)
       .replace(/assets\/journal-index\.json\?v=[^"']+/g, `assets/journal-index.json?v=${assetVersion}`);
     if (!html.includes('rel="icon"')) html = html.replace('</head>', `${faviconMarkup}\n</head>`);

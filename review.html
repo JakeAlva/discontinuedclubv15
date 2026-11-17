@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Your Review | Discontinued Club</title>
+  <link rel="stylesheet" href="/assets/style.css?v=reviews-1">
+  <link rel="stylesheet" href="/assets/reviews.css?v=1">
+</head>
+<body data-page="reviews">
+  <div id="site-header"></div>
+  <main class="review-page">
+    <div class="container review-shell">
+      <div class="review-heading">
+        <div class="eyebrow">Discontinued Club</div>
+        <h1>How was your order?</h1>
+        <p>Your honest experience matters. Thank you for shopping with us.</p>
+      </div>
+      <div class="review-preview" id="review-preview" hidden>Local test only. These sample reviews are not customer testimonials and will not appear on the live website.</div>
+      <div class="review-state" id="review-state" role="status" tabindex="-1">Checking your invitation...</div>
+      <noscript><p>JavaScript is needed to submit a review. You can also email <a href="mailto:jacob@discontinuedclub.com">jacob@discontinuedclub.com</a>.</p></noscript>
+      <form class="review-form" id="review-form" hidden>
+        <section class="review-form-section">
+          <div class="review-field"><label for="review-name">Public display name</label><input id="review-name" name="displayName" maxlength="40" autocomplete="given-name" required placeholder="First name or nickname"></div>
+          <p class="hidden-netlify" aria-hidden="true"><label>Website<input name="website" tabindex="-1" autocomplete="off"></label></p>
+        </section>
+        <div id="review-products"></div>
+        <section class="review-form-section">
+          <h2>Your experience with Discontinued Club</h2>
+          <label class="review-check review-skip"><input type="checkbox" id="skip-company">Skip company review</label>
+          <div class="review-fields" id="company-fields">
+            <div id="company-rating"></div>
+            <div class="review-field"><label for="company-body">Packaging, delivery, and service</label><textarea id="company-body" name="companyBody" minlength="5" maxlength="2000" required></textarea></div>
+          </div>
+        </section>
+        <section class="review-form-section">
+          <label class="review-check review-consent"><input type="checkbox" name="consent" required><span>I agree to have my display name, ratings, comments, and review date published on Discontinued Club. <a href="/privacy.html#reviews">Review privacy</a></span></label>
+          <p class="review-policy">Positive and critical reviews are welcome. Reviews are checked for spam, private information, abusive content, and relevance before publication. Please leave out contact details, addresses, and payment references.</p>
+          <div class="review-actions"><button class="btn btn-acid" type="submit">Submit review</button><p id="review-submit-status" role="status"></p></div>
+        </section>
+      </form>
+    </div>
+  </main>
+  <div id="site-footer"></div>
+  <script src="/assets/catalog.js?v=reviews-1"></script>
+  <script src="/assets/app.js?v=reviews-1"></script>
+  <script type="module" src="/assets/review-form.mjs?v=1"></script>
+</body>
+</html>

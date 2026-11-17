@@ -16,6 +16,7 @@
     "test": "node --test tests/*.test.mjs"
   },
   "dependencies": {
+    "@netlify/blobs": "^11.1.9",
     "fast-xml-parser": "^5.11.1",
     "sharp": "^0.35.4",
     "stripe": "^22.6.0"

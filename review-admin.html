@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Review Management | Discontinued Club</title>
+  <link rel="stylesheet" href="/assets/style.css?v=reviews-1">
+  <link rel="stylesheet" href="/assets/reviews.css?v=1">
+</head>
+<body>
+  <div id="site-header"></div>
+  <main class="review-page"><div class="container review-shell">
+    <div class="review-heading"><div class="eyebrow">Discontinued Club / Private</div><h1>Review management</h1></div>
+    <form id="admin-login" class="review-admin-login review-fields">
+      <div class="review-field"><label for="admin-key">Review administrator key</label><input type="password" id="admin-key" autocomplete="off" required></div>
+      <div><button class="btn btn-dark" type="submit">Unlock reviews</button></div>
+    </form>
+    <p id="admin-status" role="status"></p>
+    <div id="review-admin" class="review-admin" hidden>
+      <div class="review-admin-head"><a class="text-link" href="/reviews.html">Public company reviews</a><button id="admin-lock" class="btn btn-light" type="button">Lock</button></div>
+      <section class="review-admin-section">
+        <h2>Storage health</h2>
+        <button id="admin-check" class="btn btn-light" type="button">Run storage check</button>
+        <p id="admin-check-status" role="status"></p>
+      </section>
+      <section class="review-admin-section">
+        <h2>New invitation</h2>
+        <form id="admin-invite" class="review-fields">
+          <div class="review-field"><label for="payment-reference">Stripe payment reference</label><input id="payment-reference" name="paymentIntentId" placeholder="pi_..." autocomplete="off" required></div>
+          <label class="review-check"><input type="checkbox" name="renew"><span>Replace an existing invitation link</span></label>
+          <div><button class="btn btn-dark" type="submit">Create invitation link</button></div>
+        </form>
+        <div id="invite-result" hidden><div class="review-field review-admin-link"><label for="invite-link">Private invitation link</label><input id="invite-link" readonly></div><p id="invite-expiry" class="review-policy"></p></div>
+      </section>
+      <section class="review-admin-section">
+        <div class="review-admin-head"><h2>Customer submissions</h2><label>Status <select class="review-admin-filter" id="admin-filter"><option value="pending">Awaiting moderation</option><option value="approved">Published</option><option value="hidden">Hidden</option></select></label></div>
+        <p class="review-policy">Apply the same rules to positive and critical reviews. Publish genuine reviews; hide only for the listed moderation reasons. Customer wording is not edited.</p>
+        <div id="moderation-list"></div>
+        <button type="button" class="btn btn-light" id="admin-more" hidden>Load more submissions</button>
+      </section>
+    </div>
+    <noscript><p>JavaScript is required for review management.</p></noscript>
+  </div></main>
+  <div id="site-footer"></div>
+  <script src="/assets/catalog.js?v=reviews-1"></script>
+  <script src="/assets/app.js?v=reviews-1"></script>
+  <script type="module" src="/assets/review-admin.mjs?v=1"></script>
+</body>
+</html>

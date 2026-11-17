@@ -26,3 +26,18 @@
   for = "/assets/journal-library.mjs"
   [headers.values]
     Content-Type = "text/javascript; charset=utf-8"
+
+[[headers]]
+  for = "/assets/reviews.mjs"
+  [headers.values]
+    Content-Type = "text/javascript; charset=utf-8"
+
+[[headers]]
+  for = "/assets/review-form.mjs"
+  [headers.values]
+    Content-Type = "text/javascript; charset=utf-8"
+
+[[headers]]
+  for = "/assets/review-admin.mjs"
+  [headers.values]
+    Content-Type = "text/javascript; charset=utf-8"

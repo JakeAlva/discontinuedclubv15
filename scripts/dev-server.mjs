@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { loadEnvFile } from 'node:process';
 
 try {
-  loadEnvFile('.env');
+  if (process.env.REVIEW_PREVIEW !== '1') loadEnvFile('.env');
 } catch (error) {
   if (error?.code !== 'ENOENT') throw error;
 }
@@ -19,8 +19,21 @@ const functions = new Map([
   ['/.netlify/functions/inventory', '../netlify/functions/inventory.mjs'],
   ['/.netlify/functions/create-checkout', '../netlify/functions/create-checkout.mjs'],
   ['/.netlify/functions/checkout-status', '../netlify/functions/checkout-status.mjs'],
-  ['/.netlify/functions/stripe-webhook', '../netlify/functions/stripe-webhook.mjs']
+  ['/.netlify/functions/stripe-webhook', '../netlify/functions/stripe-webhook.mjs'],
+  ['/.netlify/functions/reviews', '../netlify/functions/reviews.mjs'],
+  ['/.netlify/functions/review-invitation', '../netlify/functions/review-invitation.mjs'],
+  ['/.netlify/functions/review-submit', '../netlify/functions/review-submit.mjs'],
+  ['/.netlify/functions/review-admin', '../netlify/functions/review-admin.mjs']
 ]);
+
+const reviewPreview = process.env.REVIEW_PREVIEW === '1'
+  ? await (await import('./review-preview.mjs')).startReviewPreview(process.env.PUBLIC_SITE_URL) : null;
+const previewRoutes = new Map(reviewPreview ? [
+  ['/.netlify/functions/reviews', reviewPreview.handlers.publicReviews],
+  ['/.netlify/functions/review-invitation', reviewPreview.handlers.invitation],
+  ['/.netlify/functions/review-submit', reviewPreview.handlers.submit],
+  ['/.netlify/functions/review-admin', reviewPreview.handlers.admin]
+] : []);
 
 const mimeTypes = {
   '.avif': 'image/avif',
@@ -65,7 +78,7 @@ async function runFunction(modulePath, request, response) {
       body,
       duplex: body ? 'half' : undefined
     });
-    const { default: handler } = await import(modulePath);
+    const handler = previewRoutes.get(new URL(request.url, process.env.PUBLIC_SITE_URL).pathname) || (await import(modulePath)).default;
     const result = await handler(handlerRequest);
     const headers = Object.fromEntries(result.headers.entries());
     response.writeHead(result.status, headers);
@@ -107,6 +120,13 @@ async function serveFile(pathname, response) {
 
 const server = createServer(async (request, response) => {
   const pathname = new URL(request.url, process.env.PUBLIC_SITE_URL).pathname;
+  if (reviewPreview && pathname === '/.netlify/functions/inventory') {
+    const { catalog } = await import('../lib/store-catalog.mjs');
+    return send(response, 200, JSON.stringify({ inventory: catalog.map((item) => ({ id: item.id, quantity: item.maxQuantity || 1 })) }), { 'Content-Type': 'application/json' });
+  }
+  if (reviewPreview && ['/.netlify/functions/create-checkout', '/.netlify/functions/checkout-status', '/.netlify/functions/stripe-webhook'].includes(pathname)) {
+    return send(response, 503, JSON.stringify({ error: 'Payments are disabled in review preview.' }), { 'Content-Type': 'application/json' });
+  }
   const modulePath = functions.get(pathname);
   if (modulePath) return runFunction(modulePath, request, response);
   return serveFile(pathname, response);
@@ -114,5 +134,13 @@ const server = createServer(async (request, response) => {
 
 server.listen(port, host, () => {
   console.log(`Discontinued Club storefront running at ${process.env.PUBLIC_SITE_URL}`);
-  console.log('Stripe mode: sandbox');
+  console.log(reviewPreview ? 'Review preview: isolated local storage; Stripe and email are disabled.' : 'Checkout uses the configured local environment.');
 });
+
+async function stop() {
+  server.close();
+  await reviewPreview?.stop();
+  process.exit(0);
+}
+process.on('SIGTERM', stop);
+process.on('SIGINT', stop);

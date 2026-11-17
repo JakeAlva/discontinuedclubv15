@@ -170,6 +170,7 @@ function pageMarkup(item, images) {
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css?v=45">
+  <link rel="stylesheet" href="assets/reviews.css?v=1">
   <script type="application/ld+json">${JSON.stringify(schema).replace(/</g, '\\u003c')}</script>
 </head>
 <body class="product-page" data-page="shop">
@@ -207,12 +208,14 @@ function pageMarkup(item, images) {
       </div>
     </section>
     <section class="product-detail-band"><div class="container product-detail-grid">${detailBand}</div></section>
+    <section class="reviews-band" aria-labelledby="product-reviews-title"><div class="container" data-reviews data-review-product="${item.id}"><div class="reviews-top"><h2 id="product-reviews-title">${item.category === 'drinks' ? 'Flavor reviews' : 'Product reviews'}</h2><a class="text-link" href="reviews.html">Reviews of Discontinued Club &rarr;</a></div><div class="reviews-summary" data-review-summary role="status">Loading reviews...</div><div class="reviews-list" data-review-list></div><button class="btn btn-light reviews-load" type="button" data-review-more hidden>Load more reviews</button><noscript><p>JavaScript is needed to load customer reviews.</p></noscript></div></section>
     ${relatedProductsMarkup(item)}
   </main>
   <div id="site-footer"></div>
   ${directCheckoutEnabled ? `<div class="mobile-product-bar" aria-label="Quick purchase"><div><small>Direct price</small><strong>${formatMoney(directPrice)}</strong></div><button class="btn btn-acid purchase-button" type="button" data-add-to-cart="${item.id}" data-add-quantity-source="${item.id}" disabled><span data-add-label>Checking stock</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button></div>` : ''}
   <script src="assets/catalog.js?v=45"></script>
   <script src="assets/app.js?v=45"></script>
+  <script type="module" src="assets/reviews.mjs?v=1"></script>
 </body>
 </html>
 `.replace(/\n(?:[\t ]*\n)+/g, '\n').replace(/[\t ]+$/gm, '');
