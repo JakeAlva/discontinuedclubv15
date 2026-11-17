@@ -29,8 +29,8 @@ sample data, and the sample invitation is explicitly labeled. Real payment
 references cannot create local invitations.
 
 Local tests cover persistence and the production SDK's HTTP contract with mocked
-responses. Hosted Netlify storage still needs a staging smoke test before sending
-a real invitation. The v11.1.9 local Blobs emulator returned missing read ETags and
+responses. The hosted storage check described below also passed on November 17,
+2026; rerun it after storage-related changes. The v11.1.9 local Blobs emulator returned missing read ETags and
 incomplete listings in this environment, so it is not used as a substitute for
 that hosted test. The service fails closed when a read has no version/ETag.
 
@@ -45,9 +45,11 @@ runs focused security, privacy, purchase-verification, storage, and workflow tes
 2. Set `REVIEWS_ADMIN_KEY` to a cryptographically random value (at least 32 characters)
    in Netlify, scoped to Functions and production only. Keep it in a password manager.
    Never commit it or put it in a URL. Missing configuration fails closed.
+   Redeploy after saving or changing the value so production functions receive it.
 3. Ensure `PUBLIC_SITE_URL=https://discontinuedclub.com` and live Stripe read access
    are configured. Store isolation uses Netlify's trusted `context.deploy` object.
-   Unlock `/review-admin.html` and run its storage check before issuing an invitation.
+   Unlock `/review-admin.html` with that same key, not the Netlify account password,
+   and run its storage check before issuing an invitation.
    It tests eight behaviors against hosted storage in a separate, randomly named
    `dc-reviews-check-v1-*` store. It never reads or changes customer review records
    or Stripe. Its clearly labeled synthetic record is retained hidden in that
@@ -90,7 +92,22 @@ The isolated browser test covered a buyer submission, the pending/public boundar
 publishing, separate 2-star product and 5-star company averages, persistence on
 refresh, duplicate prevention, hiding, administrator lock, and a missing invitation.
 The review form was checked at 1280px, 390px, and 320px widths without horizontal
-overflow; the product image loaded. Only explicitly labeled local sample feedback
-was used. No customer email was sent, no real invitation was issued, and nothing
-was deployed. Hosted storage and the live Stripe-verification path still need an
-authorized production/staging smoke check before the first real invitation.
+overflow; the product image loaded. The automated suite passed 303 tests.
+
+Commit `6800b9d` was deployed to production on Netlify's Node 22.23.5 runtime.
+Deployment `6afcc4feda60a6a4796a9566` applied the production-only Functions admin
+key. Unauthenticated admin requests returned 401; invalid invitations returned
+404. No key values were committed or included in a URL.
+
+The authenticated production storage check passed all eight checks: private
+invitation, duplicate protection, saved submission, pending-review privacy,
+moderation queue, separate ratings, public-data privacy, and hiding. Its synthetic
+record stayed in the separate diagnostic store. The public endpoint returned zero
+published reviews afterward.
+
+A real paid website order was verified read-only through Stripe, and its private
+invitation opened the purchased Voodoo Vanilla product, loaded the product image,
+and displayed separate flavor and company review fields. The live form had no
+horizontal overflow at 1280px. No customer review was submitted, no email was sent,
+and no payments, inventory, or fulfillment records were changed. Private invitation
+URLs and payment references are deliberately omitted from this document.
