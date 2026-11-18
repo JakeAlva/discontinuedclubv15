@@ -599,6 +599,12 @@
       host.textContent = shipping.remaining ? 'Add ' + formatMoney(shipping.remaining) + ' more' : 'Your order ships free';
     });
     document.querySelectorAll('[data-shipping-progress-bar]').forEach(function (host) { host.style.width = shipping.progress + '%'; });
+    document.querySelectorAll('[data-product-order-note]').forEach(function (host) {
+      host.hidden = itemCount === 0;
+      host.textContent = !itemCount ? '' : shipping.remaining
+        ? 'Your cart is ' + formatMoney(shipping.remaining) + ' away from free standard shipping.'
+        : 'Your cart qualifies for free standard shipping.';
+    });
     syncAddButtons();
 
     const host = document.getElementById('cart-items');
@@ -779,8 +785,6 @@
       const decrease = picker.querySelector('[data-product-quantity-decrease]');
       const increase = picker.querySelector('[data-product-quantity-increase]');
       const item = catalog.find(function (candidate) { return candidate.id === picker.dataset.productId; });
-      const price = Math.max(1, Number(picker.dataset.price) || 1);
-      const threshold = Math.max(1, Number(picker.dataset.freeShippingThreshold) || freeShippingThresholdCents);
 
       function update(value) {
         const max = item && hasLiveStock(item) ? getMaxQuantity(item) : 0;
@@ -789,11 +793,6 @@
         output.textContent = quantity;
         decrease.disabled = quantity <= 1 || max === 0;
         increase.disabled = quantity >= max;
-        const note = document.querySelector('[data-product-order-note="' + picker.dataset.productId + '"]');
-        if (note) {
-          const remaining = Math.max(0, threshold - (price * quantity));
-          note.textContent = remaining ? formatMoney(remaining) + ' away from free standard shipping.' : 'This quantity qualifies for free standard shipping.';
-        }
       }
 
       decrease.addEventListener('click', function () { update(Number(output.value) - 1); });

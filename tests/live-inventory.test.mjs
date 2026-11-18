@@ -6,6 +6,7 @@ import inventoryHandler, { readInventory } from '../netlify/functions/inventory.
 import { directPriceCents, priceLookupKey } from '../lib/store-catalog.mjs';
 
 const item = { id: '407329572793', name: 'Voodoo Vanilla', price: '$12.99', maxQuantity: 6 };
+const otherItem = { id: 'other-product', name: 'Another product', price: '$100.00', maxQuantity: 3 };
 const price = (candidate, stock, active = true) => ({
   lookup_key: priceLookupKey(candidate), currency: 'usd', unit_amount: directPriceCents(candidate),
   product: { active, metadata: { dc_stock: String(stock), dc_sale_sessions: 'private_session' } }
@@ -63,6 +64,21 @@ async function storefront(initialCart = []) {
   const arrow = {};
   const badge = { dataset: { stockId: item.id } };
   const feedback = { dataset: { productActionFeedback: item.id } };
+  const shippingNote = { hidden: true, textContent: '' };
+  const quantityOutput = {};
+  const quantityListeners = new Map();
+  const decrease = { addEventListener: (event, fn) => quantityListeners.set('decrease', fn) };
+  const increase = { addEventListener: (event, fn) => quantityListeners.set('increase', fn) };
+  const picker = {
+    dataset: { productId: item.id },
+    querySelector: (selector) => ({
+      '[data-product-quantity]': quantityOutput,
+      '[data-product-quantity-decrease]': decrease,
+      '[data-product-quantity-increase]': increase
+    }[selector]),
+    addEventListener: (event, fn) => quantityListeners.set(event, fn),
+    dispatchEvent: (event) => quantityListeners.get(event.type)?.()
+  };
   const button = {
     dataset: { addToCart: item.id }, classList: { toggle() {} },
     querySelector: (selector) => selector === '[data-add-label]' ? label : arrow,
@@ -73,14 +89,16 @@ async function storefront(initialCart = []) {
   let stored = JSON.stringify(initialCart);
   const document = {
     hidden: false, referrer: '', body: { dataset: {} },
-    getElementById: () => null, querySelector: () => null,
+    getElementById: () => null,
+    querySelector: (selector) => selector === `[data-product-order-note="${item.id}"]` ? shippingNote : null,
     querySelectorAll: (selector) => ({
-      '[data-add-to-cart]': [button], '[data-stock-id]': [badge], '[data-product-action-feedback]': [feedback]
+      '[data-add-to-cart]': [button], '[data-stock-id]': [badge], '[data-product-action-feedback]': [feedback],
+      '[data-product-order-note]': [shippingNote], '[data-product-quantity-picker]': [picker]
     }[selector] || []),
     addEventListener: (event, fn) => listeners.set(event, fn)
   };
   const window = {
-    DC_CATALOG: [item], DC_STORE_CONFIG: { directCheckoutEnabled: true },
+    DC_CATALOG: [item, otherItem], DC_STORE_CONFIG: { directCheckoutEnabled: true },
     location: { pathname: '/', search: '' },
     addEventListener: (event, fn) => listeners.set(event, fn),
     setInterval: (fn, ms) => intervals.push({ fn, ms })
@@ -89,14 +107,15 @@ async function storefront(initialCart = []) {
     localStorage: { getItem: () => stored, setItem: (key, value) => { stored = value; } },
     fetch: async () => {
       if (failed) throw new Error('offline');
-      return { ok: true, json: async () => ({ inventory: [{ id: item.id, quantity: responseStock }] }) };
+      return { ok: true, json: async () => ({ inventory: [{ id: item.id, quantity: responseStock }, { id: otherItem.id, quantity: 3 }] }) };
     }
   });
   // Expose only for the test VM; production still keeps cart state private in its closure.
-  const instrumented = source.replace(/\}\(\)\);\s*$/, 'window.testInventory = { refreshInventory, addToCart, getMaxQuantity, stockLabel, getCart: () => cart }; }());');
+  const instrumented = source.replace(/\}\(\)\);\s*$/, 'window.testInventory = { refreshInventory, addToCart, changeCartQuantity, getMaxQuantity, stockLabel, getCart: () => cart }; }());');
   vm.runInContext(instrumented, context);
   await window.testInventory.refreshInventory();
   return { ...window.testInventory, label, badge, feedback, button, listeners, intervals, document,
+    shippingNote, quantityOutput, selectAnother: () => quantityListeners.get('increase')(),
     setStock: (value) => { responseStock = value; }, setFailed: (value) => { failed = value; }
   };
 }
@@ -149,4 +168,43 @@ test('open storefronts refresh every thirty seconds and when returning to the ta
   assert.ok(site.listeners.has('visibilitychange'));
   assert.ok(site.listeners.has('pageshow'));
   assert.ok(site.listeners.has('focus'));
+});
+
+test('product shipping progress stays hidden until an item is actually added', async () => {
+  const site = await storefront();
+  assert.equal(site.shippingNote.hidden, true);
+  assert.equal(site.shippingNote.textContent, '');
+  site.selectAnother();
+  assert.equal(site.quantityOutput.value, 2);
+  assert.equal(site.shippingNote.hidden, true);
+  assert.equal(site.shippingNote.textContent, '');
+  site.addToCart(item.id, 1);
+  assert.equal(site.shippingNote.hidden, false);
+  assert.equal(site.shippingNote.textContent, 'Your cart is $187.01 away from free standard shipping.');
+  site.selectAnother();
+  assert.equal(site.shippingNote.textContent, 'Your cart is $187.01 away from free standard shipping.');
+});
+
+test('product shipping progress uses the whole saved cart and follows quantity changes', async () => {
+  const site = await storefront([{ id: item.id, quantity: 1 }, { id: otherItem.id, quantity: 1 }]);
+  assert.equal(site.shippingNote.hidden, false);
+  assert.equal(site.shippingNote.textContent, 'Your cart is $87.01 away from free standard shipping.');
+  site.changeCartQuantity(item.id, 1);
+  assert.equal(site.shippingNote.textContent, 'Your cart is $74.02 away from free standard shipping.');
+  site.changeCartQuantity(item.id, -2);
+  site.changeCartQuantity(otherItem.id, 1);
+  assert.equal(site.shippingNote.textContent, 'Your cart qualifies for free standard shipping.');
+  site.changeCartQuantity(otherItem.id, -1);
+  assert.equal(site.shippingNote.textContent, 'Your cart is $100.00 away from free standard shipping.');
+  site.changeCartQuantity(otherItem.id, -1);
+  assert.equal(site.shippingNote.hidden, true);
+  assert.equal(site.shippingNote.textContent, '');
+});
+
+test('inventory reconciliation clears shipping progress when the cart becomes empty', async () => {
+  const site = await storefront([{ id: item.id, quantity: 1 }]);
+  site.setStock(0);
+  await site.refreshInventory();
+  assert.equal(site.shippingNote.hidden, true);
+  assert.equal(site.shippingNote.textContent, '');
 });

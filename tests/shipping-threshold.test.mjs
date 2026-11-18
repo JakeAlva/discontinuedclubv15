@@ -39,6 +39,10 @@ test('public policies and generated product pages no longer promise the old thre
     const html = await read(`dist/products/${slug}-${item.id}.html`);
     assert.doesNotMatch(html, /\$100\b|data-free-shipping-threshold="10000"/);
     if (item.directCheckoutEnabled !== false) assert.match(html, /free at a \$200\.00 item subtotal/);
+    if (item.directCheckoutEnabled !== false) {
+      assert.match(html, /data-product-order-note="[^"]+" role="status" hidden><\/div>/);
+      assert.doesNotMatch(html, /away from free standard shipping|This item qualifies for free standard shipping/);
+    }
   }
   assert.doesNotMatch(app, /\$100\b|\|\| 10000/);
   const checkout = await read('netlify/functions/create-checkout.mjs');

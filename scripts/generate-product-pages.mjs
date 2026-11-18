@@ -97,11 +97,8 @@ function pageMarkup(item, images) {
   const quantityControl = !directCheckoutEnabled
     ? '<div class="product-quantity-single"><span>Quantity</span><small>Choose quantity on eBay</small></div>'
     : quantity > 1
-    ? `<div class="product-quantity-picker" data-product-quantity-picker data-product-id="${item.id}" data-max="${quantity}" data-price="${directPrice}" data-free-shipping-threshold="${freeShippingThreshold}"><span>Quantity</span><div class="product-quantity-control"><button type="button" data-product-quantity-decrease aria-label="Decrease quantity" disabled>&minus;</button><output data-product-quantity aria-live="polite">1</output><button type="button" data-product-quantity-increase aria-label="Increase quantity" disabled>+</button></div><small data-stock-id="${item.id}">${stockText}</small></div>`
+    ? `<div class="product-quantity-picker" data-product-quantity-picker data-product-id="${item.id}" data-max="${quantity}"><span>Quantity</span><div class="product-quantity-control"><button type="button" data-product-quantity-decrease aria-label="Decrease quantity" disabled>&minus;</button><output data-product-quantity aria-live="polite">1</output><button type="button" data-product-quantity-increase aria-label="Increase quantity" disabled>+</button></div><small data-stock-id="${item.id}">${stockText}</small></div>`
     : `<div class="product-quantity-single"><span>Quantity</span><strong>1</strong><small data-stock-id="${item.id}">${stockText}</small></div>`;
-  const shippingNudge = directPrice >= freeShippingThreshold
-    ? 'This item qualifies for free standard shipping.'
-    : `${formatMoney(freeShippingThreshold - directPrice)} away from free standard shipping.`;
   const detailBand = directCheckoutEnabled
     ? `<div><strong>Secure direct checkout</strong><span>Payment details stay on a secure hosted checkout.</span>${stripeBadge}</div><div><strong>Weight-based shipping</strong><span>Shipping adjusts for heavier carts and becomes free at a ${formatMoney(freeShippingThreshold)} item subtotal, before tax.</span></div><div><strong>Fast handling</strong><span>Orders before 12 PM Central are prepared for same-day carrier drop-off whenever possible.</span></div><div><strong>30-day return window</strong><span>Eligible items may be returned by mail under the posted return policy.</span></div>`
     : `<div><strong>Available on eBay</strong><span>Purchase from the matching Discontinued Club listing.</span></div><div><strong>Check the full listing</strong><span>Shipping, delivery and returns are shown on eBay before purchase.</span></div><div><strong>Listing photo</strong><span>Review the pictured product and the condition notes before ordering.</span></div>`;
@@ -188,7 +185,7 @@ function pageMarkup(item, images) {
           <div class="product-purchase-panel">
             <div class="product-purchase-heading"><span>${directCheckoutEnabled ? 'Buy direct' : 'Buy on eBay'}</span><strong>${directCheckoutEnabled ? 'Secure checkout' : 'Our matching listing'}</strong></div>
             ${pricePanel}
-            ${directCheckoutEnabled ? `<div class="product-order-note" data-product-order-note="${item.id}">${shippingNudge}</div>` : '<div class="product-order-note">Shipping and returns follow the eBay listing.</div>'}
+            ${directCheckoutEnabled ? `<div class="product-order-note" data-product-order-note="${item.id}" role="status" hidden></div>` : '<div class="product-order-note">Shipping and returns follow the eBay listing.</div>'}
             <div class="product-purchase-row">
               ${quantityControl}
               <div class="current-product-actions">${actions}</div>
