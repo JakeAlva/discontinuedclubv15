@@ -122,15 +122,15 @@ async function storefront(initialCart = []) {
 
 test('storefront refresh changes badges and cart maximum without a rebuild', async () => {
   const site = await storefront();
-  assert.equal(site.badge.textContent, '5 in stock');
+  assert.equal(site.badge.textContent, '5 available online');
   assert.equal(site.button.disabled, false);
   assert.equal(site.addToCart(item.id, 6).added, 5);
   site.setStock(4);
   await site.refreshInventory();
-  assert.equal(site.badge.textContent, '4 in stock');
+  assert.equal(site.badge.textContent, '4 available online');
   assert.equal(site.getCart()[0].quantity, 4);
-  assert.equal(site.label.textContent, 'All stock in cart');
-  assert.match(site.feedback.textContent, /4 available/);
+  assert.equal(site.label.textContent, 'Online limit reached');
+  assert.match(site.feedback.textContent, /4 units available online/);
 });
 
 test('zero stock removes stale cart quantities and disables purchase buttons', async () => {
@@ -144,6 +144,18 @@ test('zero stock removes stale cart quantities and disables purchase buttons', a
   assert.equal(site.addToCart(item.id, 1), null);
 });
 
+test('a single online unit is a purchase limit, not a claim about all physical stock', async () => {
+  const site = await storefront();
+  site.setStock(1);
+  await site.refreshInventory();
+  assert.equal(site.badge.textContent, '1 available online');
+  assert.equal(site.addToCart(item.id, 2).added, 1);
+  assert.equal(site.label.textContent, 'In your cart');
+  assert.equal(site.button.disabled, true);
+  assert.match(site.feedback.textContent, /unit available online/);
+  assert.doesNotMatch(site.feedback.textContent, /last|all stock/i);
+});
+
 test('lookup failures hide exact counts and block additions, then recover', async () => {
   const site = await storefront();
   site.setFailed(true);
@@ -154,7 +166,7 @@ test('lookup failures hide exact counts and block additions, then recover', asyn
   site.setFailed(false);
   site.setStock(1);
   await site.refreshInventory();
-  assert.equal(site.badge.textContent, 'Last one');
+  assert.equal(site.badge.textContent, '1 available online');
   assert.equal(site.button.disabled, false);
 });
 
@@ -164,7 +176,7 @@ test('open storefronts refresh every thirty seconds and when returning to the ta
   site.setStock(3);
   site.intervals[0].fn();
   await site.refreshInventory();
-  assert.equal(site.badge.textContent, '3 in stock');
+  assert.equal(site.badge.textContent, '3 available online');
   assert.ok(site.listeners.has('visibilitychange'));
   assert.ok(site.listeners.has('pageshow'));
   assert.ok(site.listeners.has('focus'));

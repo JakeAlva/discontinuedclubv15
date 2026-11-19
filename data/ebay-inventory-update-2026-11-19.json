@@ -1,0 +1,20 @@
+{
+  "verifiedAt": "2026-11-19T16:06:41.659Z",
+  "liveInventoryVerifiedAt": "2026-11-19T16:14:54.460Z",
+  "remainingQuantityMismatches": 0,
+  "source": "Signed-in My eBay Active listings, all 79 listings on one page",
+  "activeListingCount": 79,
+  "sellableUnits": 131,
+  "directDiscountPercent": 3.5,
+  "missingWebsiteListings": [],
+  "catalogQuantityChanges": {},
+  "websiteAllocationChanges": {
+    "407329572793": { "before": 3, "after": 4 },
+    "407332173468": { "before": 2, "after": 3 }
+  },
+  "stockNote": "Owner requested website quantities match advertised eBay allocations and confirmed online listings represent less than physical inventory. The two website allocations were replenished to eBay levels; sale-deduplication metadata and automatic sale deductions were preserved. This is a point-in-time reconciliation, not automatic cross-channel stock synchronization.",
+  "ebayOnlyListingIds": ["407321244836"],
+  "listingCorrections": {
+    "406738017949": "Removed unverified 2021 bottle-year claim. PepsiCo announced Baja Gold as a new flavor in June 2022; the specific bottle's printed date remains unverified."
+  }
+}

@@ -33,7 +33,7 @@ test('the add confirmation exposes the live free-shipping progress', () => {
 test('purchase buttons become durable cart-aware inventory controls', () => {
   assert.match(app, /function syncAddButtons\(onlyId\)/);
   assert.match(app, /button\.disabled = atLimit/);
-  assert.match(app, /maxQuantity === 1 \? 'Last one in cart' : 'All stock in cart'/);
+  assert.match(app, /singlePair \|\| maxQuantity === 1 \? 'In your cart' : 'Online limit reached'/);
   assert.match(app, /else if \(quantity > 0\) buttonLabel = 'Add another'/);
   assert.match(app, /syncAddButtons\(\);/);
   assert.match(app, /syncAddButtons\(id\);/);

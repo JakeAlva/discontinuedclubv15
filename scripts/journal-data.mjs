@@ -1,4 +1,6 @@
 import { pepsiPeepsHistoryReport } from './pepsi-peeps-history-report.mjs';
+import { spriteLymonadeLegacyHistoryReport } from './sprite-lymonade-legacy-history-report.mjs';
+import { mountainDewMauiBurstBajaGoldReport } from './mountain-dew-maui-burst-baja-gold-report.mjs';
 import { mountainDewFlaminHotHistoryReport } from './mountain-dew-flamin-hot-history-report.mjs';
 import { alaniNowAvailableReport } from './alani-now-available-report.mjs';
 import { dutchBrosHolidayReport } from './dutch-bros-holiday-report.mjs';
@@ -834,5 +836,7 @@ export const reports = [
   gameFuelCitrusCherryHistoryReport,
   cocaColaOrangeCreamMiniReport,
   pepsiPeepsHistoryReport,
-  mountainDewFlaminHotHistoryReport
+  mountainDewFlaminHotHistoryReport,
+  spriteLymonadeLegacyHistoryReport,
+  mountainDewMauiBurstBajaGoldReport
 ];

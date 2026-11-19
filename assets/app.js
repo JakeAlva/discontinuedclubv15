@@ -357,8 +357,8 @@
     if (!directCheckoutEnabled || item.directCheckoutEnabled === false) return 'See eBay for availability';
     if (!hasLiveStock(item)) return inventoryState === 'loading' ? 'Checking stock' : 'Stock unavailable';
     const stock = getMaxQuantity(item);
-    if (item.category === 'kids-shoes' && stock > 0) return stock + (stock === 1 ? ' pair in stock' : ' pairs in stock');
-    return stock === 0 ? 'Sold out' : stock === 1 ? 'Last one' : stock + ' in stock';
+    if (item.category === 'kids-shoes' && stock > 0) return stock + (stock === 1 ? ' pair available online' : ' pairs available online');
+    return stock === 0 ? 'Sold out' : stock + ' available online';
   }
 
   function syncInventoryDisplay() {
@@ -473,12 +473,12 @@
       const arrow = button.querySelector('.purchase-arrow');
       let buttonLabel = 'Add to cart';
 
-      if (atLimit) buttonLabel = singlePair ? 'In your cart' : (maxQuantity === 1 ? 'Last one in cart' : 'All stock in cart');
+      if (atLimit) buttonLabel = singlePair || maxQuantity === 1 ? 'In your cart' : 'Online limit reached';
       else if (quantity > 0) buttonLabel = 'Add another';
       if (soldOut) buttonLabel = 'Sold out';
       if (unavailable) buttonLabel = inventoryState === 'loading' ? 'Checking stock' : 'Stock unavailable';
 
-      const limitMessage = singlePair ? 'This pair is already in your cart' : (maxQuantity === 1 ? 'The last available one is already in your cart' : 'All available units are already in your cart');
+      const limitMessage = singlePair ? 'This pair is already in your cart' : 'The online quantity limit is already in your cart';
       button.disabled = atLimit || unavailable;
       button.classList.toggle('is-cart-full', atLimit);
       button.title = atLimit
@@ -507,9 +507,9 @@
       else if (maxQuantity === 0) host.textContent = 'This item is sold out.';
       else if (!quantity) host.textContent = 'Availability is confirmed at checkout. Items in your cart are not reserved.';
       else if (item.category === 'kids-shoes') host.textContent = 'In your cart. Availability is confirmed at checkout.';
-      else if (quantity >= maxQuantity && maxQuantity === 1) host.textContent = 'The last available one is in your cart, but is not reserved.';
-      else if (quantity >= maxQuantity) host.textContent = 'All ' + maxQuantity + ' available units are in your cart.';
-      else host.textContent = quantity + ' of ' + maxQuantity + ' available units ' + (quantity === 1 ? 'is' : 'are') + ' in your cart.';
+      else if (quantity >= maxQuantity && maxQuantity === 1) host.textContent = 'The unit available online is in your cart, but is not reserved.';
+      else if (quantity >= maxQuantity) host.textContent = 'All ' + maxQuantity + ' units available online are in your cart.';
+      else host.textContent = quantity + ' of ' + maxQuantity + ' units available online ' + (quantity === 1 ? 'is' : 'are') + ' in your cart.';
     });
   }
 

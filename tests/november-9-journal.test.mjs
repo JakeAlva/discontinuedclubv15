@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { reports } from '../scripts/journal-data.mjs';
 
@@ -44,8 +44,11 @@ test('historical returns do not become current inventory or confirmed future lau
   }
 });
 
-test('both new articles are discoverable in the first journal page, search index and sitemap', async () => {
-  const index = await readFile(resolve(root, 'blog.html'), 'utf8');
+test('November 9 articles remain discoverable through journal pagination, search index and sitemap', async () => {
+  const pageFiles = (await readdir(root)).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const pages = [];
+  for (const file of pageFiles) pages.push(await readFile(resolve(root, file), 'utf8'));
+  const index = pages.join('\n');
   const search = JSON.parse(await readFile(resolve(root, 'assets/journal-index.json'), 'utf8'));
   const sitemap = await readFile(resolve(root, 'sitemap-journal.xml'), 'utf8');
   for (const slug of slugs) {

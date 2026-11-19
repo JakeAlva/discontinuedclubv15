@@ -103,7 +103,7 @@ const DC_CATALOG = [
   { id: '407039382525', category: 'drinks', name: 'Liquid Death x Pop-Tarts Carnage', detail: 'Strawberry sparkling water, limited 6-pack, 12 fl oz cans', price: '$13.99', image: '475e0f8d3f1d0a4e.webp', featured: true, maxQuantity: 2 },
   { id: '406730413999', category: 'drinks', name: 'Mountain Dew Maui Burst', detail: 'Pineapple, full unopened 16 oz can, 2020', price: '$12.99', image: 'e2f98160460fb5d0.webp', featured: true, maxQuantity: 5 },
   { id: '406705689212', category: 'drinks', name: 'Pepsi Soda Shop Cream Soda', detail: '50th Anniversary, full unopened 20 oz bottle, 2021', price: '$9.99', image: '2921ba8f2b1f6017.webp', featured: true },
-  { id: '406738017949', category: 'drinks', name: 'Mountain Dew Baja Gold', detail: 'Pineapple, full unopened 20 oz bottle, 2021', price: '$10.99', image: '19902e5673ce650f.webp' },
+  { id: '406738017949', category: 'drinks', name: 'Mountain Dew Baja Gold', detail: 'Pineapple, full unopened 20 oz bottle; printed date unverified', price: '$10.99', image: '19902e5673ce650f.webp' },
   { id: '406730391892', category: 'drinks', name: 'Mountain Dew Baja Point Break Punch', detail: 'Tropical punch, full 20 oz bottle, 2024', price: '$11.99', image: '9b5398669bcaea4d.webp' },
   { id: '406738141008', category: 'drinks', name: 'Mountain Dew Baja Laguna Lemonade', detail: 'Mango lemonade, full 12 oz can, 2024', price: '$7.99', image: 'ed8766fc4d8c8e54.webp' },
   { id: '406738058280', category: 'drinks', name: 'Pepsi x Peeps Marshmallow Cola', detail: 'Limited edition, full 20 oz bottle, 2023', price: '$8.99', image: 'a259117f32742e2a.webp' },
