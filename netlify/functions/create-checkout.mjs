@@ -1,6 +1,8 @@
 import Stripe from 'stripe';
 import { catalog, directPriceCents, findCatalogItem, formatMoney, maxQuantity, priceLookupKey, shippingQuote, storeConfig } from '../../lib/store-catalog.mjs';
 import { availableStripeQuantity } from '../../lib/stripe-inventory.mjs';
+import { checkoutAttribution } from '../../lib/funnel.mjs';
+import { funnelService } from '../../lib/funnel-runtime.mjs';
 
 export const config = {
   rateLimit: { windowSize: 60, windowLimit: 20, aggregateBy: ['ip'] }
@@ -65,7 +67,7 @@ function checkoutOrigin(request) {
   return 'https://discontinuedclub.com';
 }
 
-export default async (request) => {
+export default async (request, context) => {
   if (request.method !== 'POST') return json({ error: 'Method not allowed.' }, 405);
   if (!isAllowedCheckoutOrigin(request.headers.get('origin'))) return json({ error: 'Checkout requests must come from Discontinued Club.' }, 403);
   if (!/^application\/json(?:\s*;|$)/i.test(request.headers.get('content-type') || '')) return json({ error: 'Checkout requests must use JSON.' }, 415);
@@ -77,7 +79,9 @@ export default async (request) => {
   try {
     const rawBody = await request.text();
     if (rawBody.length > 25000) return json({ error: 'Cart request is too large.' }, 413);
-    const lines = validatedCart(JSON.parse(rawBody));
+    const payload = JSON.parse(rawBody);
+    const lines = validatedCart(payload);
+    const attribution = checkoutAttribution(payload.analytics);
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
     const lookupKeys = lines.map(({ item }) => priceLookupKey(item));
     const priceBatches = [];
@@ -129,11 +133,16 @@ export default async (request) => {
       phone_number_collection: { enabled: true },
       allow_promotion_codes: false,
       expires_at: Math.floor(Date.now() / 1000) + (31 * 60),
-      metadata: { source: 'discontinuedclub.com', listing_ids: listingIds, shipping_tier: shippingTier },
+      metadata: { source: 'discontinuedclub.com', listing_ids: listingIds, shipping_tier: shippingTier, ...attribution },
       payment_intent_data: { metadata: { source: 'discontinuedclub.com', listing_ids: listingIds, shipping_tier: shippingTier } },
       custom_text: { shipping_address: { message: `Shipping is weight-based below a ${shippingThresholdLabel} item subtotal. ${shippingThresholdLabel}+ ships free, before tax. Change quantities in the website cart to recalculate shipping. Orders before 12 PM Central are prepared for same-day drop-off whenever possible.` } }
     });
 
+    if (attribution.dc_journey && session.livemode === true) {
+      try {
+        await funnelService(context).record({ journey: attribution.dc_journey, article: attribution.dc_article, event: 'checkout_opened' });
+      } catch { console.error('Checkout analytics unavailable'); }
+    }
     return json({ url: session.url });
   } catch (error) {
     console.error('Checkout error', error);

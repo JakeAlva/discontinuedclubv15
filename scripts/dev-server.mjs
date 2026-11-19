@@ -5,12 +5,12 @@ import { fileURLToPath } from 'node:url';
 import { loadEnvFile } from 'node:process';
 
 try {
-  if (process.env.REVIEW_PREVIEW !== '1') loadEnvFile('.env');
+  if (process.env.REVIEW_PREVIEW !== '1' && process.env.FUNNEL_PREVIEW !== '1') loadEnvFile('.env');
 } catch (error) {
   if (error?.code !== 'ENOENT') throw error;
 }
 
-const root = fileURLToPath(new URL('../', import.meta.url));
+const root = fileURLToPath(new URL(process.env.PREVIEW_BUILD === '1' ? '../dist/' : '../', import.meta.url));
 const host = '127.0.0.1';
 const port = Number(process.env.PORT || 4173);
 process.env.PUBLIC_SITE_URL = process.env.LOCAL_SITE_URL || `http://${host}:${port}`;
@@ -34,6 +34,13 @@ const previewRoutes = new Map(reviewPreview ? [
   ['/.netlify/functions/review-submit', reviewPreview.handlers.submit],
   ['/.netlify/functions/review-admin', reviewPreview.handlers.admin]
 ] : []);
+const funnelPreview = process.env.FUNNEL_PREVIEW === '1' ? await (await import('./funnel-preview.mjs')).startFunnelPreview(process.env.PUBLIC_SITE_URL) : null;
+if (funnelPreview) {
+  previewRoutes.set('/.netlify/functions/funnel-event', funnelPreview.collect);
+  previewRoutes.set('/.netlify/functions/funnel-report', funnelPreview.report);
+  functions.set('/.netlify/functions/funnel-event', '../netlify/functions/funnel-event.mjs');
+  functions.set('/.netlify/functions/funnel-report', '../netlify/functions/funnel-report.mjs');
+}
 
 const mimeTypes = {
   '.avif': 'image/avif',
@@ -120,11 +127,11 @@ async function serveFile(pathname, response) {
 
 const server = createServer(async (request, response) => {
   const pathname = new URL(request.url, process.env.PUBLIC_SITE_URL).pathname;
-  if (reviewPreview && pathname === '/.netlify/functions/inventory') {
+  if ((reviewPreview || funnelPreview) && pathname === '/.netlify/functions/inventory') {
     const { catalog } = await import('../lib/store-catalog.mjs');
     return send(response, 200, JSON.stringify({ inventory: catalog.map((item) => ({ id: item.id, quantity: item.maxQuantity || 1 })) }), { 'Content-Type': 'application/json' });
   }
-  if (reviewPreview && ['/.netlify/functions/create-checkout', '/.netlify/functions/checkout-status', '/.netlify/functions/stripe-webhook'].includes(pathname)) {
+  if ((reviewPreview || funnelPreview) && ['/.netlify/functions/create-checkout', '/.netlify/functions/checkout-status', '/.netlify/functions/stripe-webhook'].includes(pathname)) {
     return send(response, 503, JSON.stringify({ error: 'Payments are disabled in review preview.' }), { 'Content-Type': 'application/json' });
   }
   const modulePath = functions.get(pathname);

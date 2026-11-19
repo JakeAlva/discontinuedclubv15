@@ -1303,3 +1303,45 @@ footer { padding: 0 0 34px; background: var(--ink); color: #fff; }
   .campaign-slide-alani .campaign-copy h1 { font-size: 30px; }
   .campaign-slide-alani .campaign-copy p { font-size: 12px; }
 }
+/* Article shopping and private funnel reporting. */
+.article-products { padding: 32px 0; border-block: 1px solid #dce2df; background: #f5f8f6; margin: 28px 0; color: #171b19; }
+.article-products[hidden], .article-product[hidden] { display: none; }
+.article-body .article-products > .container { width: 100%; padding: 0 20px; }
+.article-products h2 { font-size: 24px; line-height: 1.2; margin: 8px 0 14px; letter-spacing: 0; }
+.article-products-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.article-product { min-width: 0; border: 1px solid #dce2df; border-radius: 6px; background: white; overflow: hidden; }
+.article-product img { display: block; width: 100%; height: auto; aspect-ratio: 1; object-fit: contain; }
+.article-product > div { padding: 14px; }
+.article-product h3 { font-size: 16px; line-height: 1.4; margin: 0 0 12px; overflow-wrap: anywhere; letter-spacing: 0; }
+.article-product p { font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px; }
+.article-products-note { font-size: 13px; line-height: 1.5; margin: 18px 0 0; color: #4b5750; }
+.analytics-choice { position: fixed; z-index: 1500; bottom: 16px; left: 16px; width: min(440px, calc(100% - 32px)); padding: 18px; background: #fff; color: #171b19; border: 1px solid #bbc7c0; border-radius: 6px; box-shadow: 0 5px 24px #0002; }
+.analytics-choice p { font-size: 14px; line-height: 1.5; margin: 0 0 14px; }
+.analytics-choice a { text-decoration: underline; }
+.analytics-choice > div { display: flex; flex-wrap: wrap; gap: 8px; }
+.analytics-choice .btn { font-size: 14px; padding: 10px 14px; }
+.funnel-header { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; padding: 16px 24px; border-bottom: 1px solid #dce2df; }
+.funnel-header > a:last-child { margin-left: auto; }
+.funnel-main { padding-block: 36px; max-width: 1100px; }
+.funnel-main h1 { font-size: 32px; letter-spacing: 0; }
+.funnel-main h2 { font-size: 22px; letter-spacing: 0; }
+.funnel-main .review-fields { max-width: 440px; }
+.funnel-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.funnel-toolbar select { padding: 10px; border: 1px solid #aebbb2; border-radius: 4px; font: inherit; }
+.funnel-note { font-size: 14px; line-height: 1.6; color: #48554d; }
+.funnel-section { padding-block: 24px; border-bottom: 1px solid #dce2df; }
+.funnel-stages { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 24px; }
+.funnel-stages > div { display: flex; justify-content: space-between; gap: 12px; padding: 14px 0; border-bottom: 1px solid #e1e7e3; font-size: 14px; }
+.funnel-stages strong { font-size: 22px; }
+.funnel-table-wrap { overflow: auto; }
+.funnel-table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.funnel-table-wrap td, .funnel-table-wrap th { padding: 12px; border-bottom: 1px solid #dce2df; text-align: left; }
+.funnel-table-wrap tbody th { min-width: 220px; font-weight: 500; }
+@media (max-width: 700px) {
+  .article-products-grid { grid-template-columns: 1fr; }
+  .article-product { display: grid; grid-template-columns: 110px minmax(0, 1fr); align-items: center; }
+  .article-product h3 { font-size: 15px; }
+  .article-product > div { padding: 12px; }
+  .funnel-stages { grid-template-columns: 1fr; }
+  .funnel-toolbar label { display: grid; gap: 6px; width: 100%; }
+}

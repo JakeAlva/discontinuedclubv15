@@ -12,6 +12,9 @@
     ? 'Direct checkout coming soon'
     : 'Direct checkout expected ' + directCheckoutDateLabel;
   const CART_KEY = 'dc_direct_cart_v1';
+  let shoppingAnalytics = null;
+  const analytics = import('/assets/funnel.mjs').then(function (module) { shoppingAnalytics = module; return module; }).catch(function () { return null; });
+  function trackShopping(event, detail) { analytics.then(function (module) { if (module) module.track(event, detail); }); }
   let liveInventory = new Map();
   let inventoryState = 'loading';
   let inventoryRequest = null;
@@ -359,6 +362,7 @@
   }
 
   function syncInventoryDisplay() {
+    syncArticleProducts();
     document.querySelectorAll('[data-stock-id]').forEach(function (host) {
       const item = catalog.find(function (candidate) { return candidate.id === host.dataset.stockId; });
       if (item) host.textContent = stockLabel(item);
@@ -736,6 +740,7 @@
     else if (cart.length < (Number(storeConfig.maxCartLines) || 20)) cart.push({ id: id, quantity: quantity });
     saveCart();
     const current = cart.find(function (candidate) { return candidate.id === id; });
+    if (current && current.quantity > before) trackShopping('add_to_cart', { product: id });
     return { item: item, added: Math.max(0, (current ? current.quantity : 0) - before), maxQuantity: max };
   }
 
@@ -752,6 +757,7 @@
   async function startCheckout(button) {
     if (!directCheckoutEnabled) return;
     if (!cart.length || button.disabled) return;
+    trackShopping('checkout_attempt');
     const message = document.querySelector('[data-checkout-message]');
     button.disabled = true;
     button.classList.add('is-loading');
@@ -766,12 +772,13 @@
       const response = await fetch('/.netlify/functions/create-checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items: cart })
+        body: JSON.stringify({ items: cart, analytics: shoppingAnalytics?.attribution() })
       });
       const data = await response.json().catch(function () { return {}; });
       if (!response.ok || !data.url) throw new Error(data.error || 'Direct checkout is not active in this preview yet.');
       window.location.assign(data.url);
     } catch (error) {
+      trackShopping('checkout_error');
       if (message) message.textContent = error.message;
       button.disabled = false;
       button.classList.remove('is-loading');
@@ -1316,6 +1323,26 @@
     if (!main) return;
     main.innerHTML = '<section class="page-hero compact"><div class="container"><div class="eyebrow">Listing status</div><h1>This item is not currently listed.</h1><p class="lead">Discontinued Club only publishes items that are ready to buy. Browse the current storefront to see all live inventory.</p><div class="hero-actions"><a class="btn btn-dark" href="out-now.html">View current listings</a><a class="btn btn-light" href="' + EBAY_STORE + '" target="_blank" rel="noopener">Open eBay store</a></div></div></section>';
   }
+
+  function syncArticleProducts() {
+    const section = document.querySelector('[data-article-products]');
+    if (!section) return;
+    let visible = 0;
+    section.querySelectorAll('[data-recommended-product]').forEach(function (host) {
+      const item = catalog.find(function (candidate) { return candidate.id === host.dataset.recommendedProduct; });
+      const available = item && hasLiveStock(item) && getMaxQuantity(item) > 0 && item.directCheckoutEnabled !== false;
+      host.hidden = !available;
+      if (available) visible++;
+    });
+    section.hidden = visible === 0;
+  }
+  document.querySelector('[data-article-products]')?.addEventListener('click', function (event) {
+    const host = event.target.closest('[data-recommended-product]');
+    if (host && event.target.closest('a, button')) trackShopping('recommendation_click', {
+      product: host.dataset.recommendedProduct,
+      article: new URL(document.querySelector('link[rel="canonical"]').href).pathname
+    });
+  });
 
   document.querySelectorAll('[data-listing-count]').forEach(function (host) {
     const category = host.dataset.listingCount;

@@ -1,6 +1,7 @@
 import Stripe from 'stripe';
 import { appendProcessedSession, inventoryAdjustment, processedSessionIds } from '../../lib/stripe-inventory.mjs';
 import { ebayAccessToken, endEbayListing, reviseEbayQuantity } from '../../lib/ebay-api.mjs';
+import { funnelService } from '../../lib/funnel-runtime.mjs';
 
 const ebayConfigured = () => ['EBAY_CLIENT_ID', 'EBAY_CLIENT_SECRET', 'EBAY_REFRESH_TOKEN']
   .every((name) => Boolean(process.env[name]));
@@ -82,7 +83,7 @@ async function updatePurchasedInventory(stripe, sessionId) {
   return { lineItems, results };
 }
 
-export default async (request) => {
+export default async (request, context) => {
   if (request.method !== 'POST') return new Response('Method not allowed', { status: 405 });
   if (!process.env.STRIPE_SECRET_KEY || !process.env.STRIPE_WEBHOOK_SECRET) {
     return new Response('Webhook is not configured', { status: 503 });
@@ -115,6 +116,14 @@ export default async (request) => {
       } catch (error) {
         console.error('Paid order inventory update failed', session.id, error.message);
         return new Response('Inventory update failed', { status: 500 });
+      }
+      if (session.livemode === true && session.payment_status === 'paid' && session.metadata.dc_journey) {
+        try { await funnelService(context).purchase(session); }
+        catch {
+          // Stripe retries; inventory already uses a per-session idempotency guard.
+          console.error('Paid order analytics unavailable');
+          return new Response('Analytics retry required', { status: 500 });
+        }
       }
     }
   }

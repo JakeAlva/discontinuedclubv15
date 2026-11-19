@@ -4,7 +4,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 
 const read = (file) => readFile(new URL(`../${file}`, import.meta.url));
-const assets = ['style.css', 'catalog.js', 'sold-catalog.js', 'app.js', 'journal-library.mjs', 'journal-index.json', 'reviews.css', 'reviews.mjs', 'review-form.mjs', 'review-admin.mjs'];
+const assets = ['style.css', 'catalog.js', 'sold-catalog.js', 'app.js', 'journal-library.mjs', 'journal-index.json', 'reviews.css', 'reviews.mjs', 'review-form.mjs', 'review-admin.mjs', 'funnel.mjs', 'funnel-admin.mjs'];
 
 test('every published HTML page uses a content-based version for shared assets', async () => {
   const hash = createHash('sha256');
@@ -14,7 +14,7 @@ test('every published HTML page uses a content-based version for shared assets',
   let checked = 0;
   for (const file of files.filter((file) => file.endsWith('.html'))) {
     const html = (await read(`dist/${file}`)).toString();
-    for (const match of html.matchAll(/assets\/(style\.css|catalog\.js|sold-catalog\.js|app\.js|journal-library\.mjs|journal-index\.json|reviews\.css|reviews\.mjs|review-form\.mjs|review-admin\.mjs)\?v=([^"']+)/g)) {
+    for (const match of html.matchAll(/assets\/(style\.css|catalog\.js|sold-catalog\.js|app\.js|journal-library\.mjs|journal-index\.json|reviews\.css|reviews\.mjs|review-form\.mjs|review-admin\.mjs|funnel-admin\.mjs)\?v=([^"']+)/g)) {
       assert.equal(match[2], expected, `${file}: ${match[1]} cannot retain a stale cache key`);
       checked++;
     }

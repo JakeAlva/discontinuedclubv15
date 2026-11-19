@@ -1,9 +1,10 @@
 import { cp, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { resolve, relative } from 'node:path';
 import { createHash } from 'node:crypto';
 import { catalog } from '../lib/store-catalog.mjs';
 import { renderListingCounts } from '../lib/catalog-file.mjs';
 import { renderStaticCatalogs } from './static-catalog.mjs';
+import { injectArticleProducts } from './blog-commerce.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const output = resolve(root, 'dist');
@@ -19,7 +20,7 @@ const rootFiles = await readdir(root, { withFileTypes: true });
 const faviconMarkup = '  <link rel="icon" type="image/png" sizes="96x96" href="/favicon.png">\n  <link rel="apple-touch-icon" href="/assets/images/logo-mark-clean.png">';
 // New catalog or journal data must not reuse yesterday's browser-cached assets.
 const versionHash = createHash('sha256');
-for (const asset of ['style.css', 'catalog.js', 'sold-catalog.js', 'app.js', 'journal-library.mjs', 'journal-index.json', 'reviews.css', 'reviews.mjs', 'review-form.mjs', 'review-admin.mjs']) {
+for (const asset of ['style.css', 'catalog.js', 'sold-catalog.js', 'app.js', 'journal-library.mjs', 'journal-index.json', 'reviews.css', 'reviews.mjs', 'review-form.mjs', 'review-admin.mjs', 'funnel.mjs', 'funnel-admin.mjs']) {
   versionHash.update(asset).update('\0').update(await readFile(resolve(root, 'assets', asset)));
 }
 const assetVersion = versionHash.digest('hex').slice(0, 12);
@@ -110,12 +111,14 @@ async function injectFavicon(directory) {
     if (!entry.isFile() || !entry.name.endsWith('.html')) return;
     let html = await readFile(file, 'utf8');
     html = await renderStaticCatalogs(html, root);
+    html = injectArticleProducts(html, '/' + relative(output, file), catalog);
     html = html
       .replace(/assets\/style\.css\?v=[^"']+/g, `assets/style.css?v=${assetVersion}`)
       .replace(/assets\/catalog\.js\?v=[^"']+/g, `assets/catalog.js?v=${assetVersion}`)
       .replace(/assets\/sold-catalog\.js\?v=[^"']+/g, `assets/sold-catalog.js?v=${assetVersion}`)
       .replace(/assets\/app\.js\?v=[^"']+/g, `assets/app.js?v=${assetVersion}`)
       .replace(/assets\/(reviews\.css|reviews\.mjs|review-form\.mjs|review-admin\.mjs)\?v=[^"']+/g, (_, asset) => `assets/${asset}?v=${assetVersion}`)
+      .replace(/assets\/(funnel-admin\.mjs)\?v=[^"']+/g, (_, asset) => `assets/${asset}?v=${assetVersion}`)
       .replace(/assets\/journal-library\.mjs\?v=[^"']+/g, `assets/journal-library.mjs?v=${assetVersion}`)
       .replace(/assets\/journal-index\.json\?v=[^"']+/g, `assets/journal-index.json?v=${assetVersion}`);
     if (!html.includes('rel="icon"')) html = html.replace('</head>', `${faviconMarkup}\n</head>`);
@@ -124,5 +127,7 @@ async function injectFavicon(directory) {
 }
 
 await injectFavicon(output);
+const appPath = resolve(output, 'assets/app.js');
+await writeFile(appPath, (await readFile(appPath, 'utf8')).replace("import('/assets/funnel.mjs')", `import('/assets/funnel.mjs?v=${assetVersion}')`));
 
 console.log(`Built static storefront in ${output}`);

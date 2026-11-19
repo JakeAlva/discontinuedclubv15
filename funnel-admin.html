@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Shopping Funnel | Discontinued Club</title>
+  <link rel="stylesheet" href="/assets/style.css?v=funnel-1">
+  <link rel="stylesheet" href="/assets/reviews.css?v=1">
+</head>
+<body>
+  <header class="funnel-header"><a href="/"><img src="/assets/images/logo-mark-clean.png" alt="Discontinued Club" width="44" height="44"></a><strong>Discontinued Club</strong><a href="/review-admin.html">Review management</a></header>
+  <main class="container funnel-main">
+    <div class="eyebrow">Private reporting</div><h1>Shopping funnel</h1>
+    <form id="funnel-login" class="review-fields"><div class="review-field"><label for="funnel-key">Administrator key</label><input id="funnel-key" type="password" autocomplete="off" required></div><div><button class="btn btn-dark">Unlock report</button></div></form>
+    <p id="funnel-status" role="status"></p>
+    <div id="funnel-report" hidden>
+      <div class="funnel-toolbar"><label>Session start date <select id="funnel-days"><option value="7">Last 7 UTC days</option><option value="1">Today (UTC)</option><option value="28">Last 28 UTC days</option></select></label><button class="btn btn-dark" id="funnel-refresh" type="button">Refresh</button><button class="btn btn-light" id="funnel-lock" type="button">Lock</button></div>
+      <p id="funnel-period"></p>
+      <p class="funnel-note">Opted-in shopping sessions only, collected from November 19, 2026. Not all visitors consent; bots and blockers can affect results. Sessions expire after 30 minutes of inactivity. A visitor can enter at any step, so rows are not a strict conversion-rate calculation. Purchases are verified by Stripe and attributed to the session's start date.</p>
+      <section class="funnel-section"><h2>Shopping activity</h2><div id="funnel-stages" class="funnel-stages"></div><p id="funnel-sales"></p></section>
+      <section class="funnel-section"><h2>Furthest step reached</h2><p class="funnel-note">Current sessions can still progress. These are observed stopping points, not proof someone abandoned an order.</p><div id="funnel-stops" class="funnel-stages"></div></section>
+      <section class="funnel-section"><h2>Article journeys</h2><p class="funnel-note">Attributed to the first article read in the session. Clicks count sessions using the new product recommendations.</p><div class="funnel-table-wrap"><table><thead><tr><th>Article</th><th>Sessions</th><th>Product clicks</th><th>Added to cart</th><th>Checkout opened</th><th>Paid orders</th></tr></thead><tbody id="funnel-articles"></tbody></table></div></section>
+      <section class="funnel-section"><h2>Product interest</h2><div class="funnel-table-wrap"><table><thead><tr><th>Product</th><th>View sessions</th><th>Cart sessions</th></tr></thead><tbody id="funnel-products"></tbody></table></div></section>
+    </div>
+  </main>
+  <script src="/assets/catalog.js?v=funnel-1"></script>
+  <script type="module" src="/assets/funnel-admin.mjs?v=1"></script>
+</body>
+</html>
