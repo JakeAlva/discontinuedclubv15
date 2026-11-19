@@ -15,11 +15,11 @@ test('Winter Wonderland uses the verified current eBay listing and live stock ke
   for (const id of update.previousIds) assert.equal(findCatalogItem(id), undefined);
   assert.equal(item.price, '$9.99');
   assert.equal(directPriceCents(item), 964);
-  assert.equal(maxQuantity(item), 3);
+  assert.equal(maxQuantity(item), 4);
   assert.equal(item.shippingWeightOz, 32);
   assert.equal(priceLookupKey(item), `dc_${update.id}_direct`);
   for (const stock of [6, 3, 2, 0]) {
-    assert.equal(availableStripeQuantity(maxQuantity(item), { active: true, metadata: { dc_stock: String(stock) } }), Math.min(stock, 3));
+    assert.equal(availableStripeQuantity(maxQuantity(item), { active: true, metadata: { dc_stock: String(stock) } }), Math.min(stock, 4));
   }
 });
 

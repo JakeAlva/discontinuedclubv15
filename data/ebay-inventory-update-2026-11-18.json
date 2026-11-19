@@ -1,0 +1,14 @@
+{
+  "verifiedAt": "2026-11-18T23:56:28Z",
+  "source": "Signed-in My eBay Active, all 79 listings on the 100-item page; current Arctic Berry detail page and live Stripe product stock verified",
+  "activeListingCount": 79,
+  "sellableUnits": 131,
+  "directDiscountPercent": 3.5,
+  "relistings": { "407345586271": "407373107823" },
+  "quantityChanges": { "407343435479": 4 },
+  "priceChanges": {},
+  "preservedWebsiteStock": { "407329572793": 3, "407332173468": 2 },
+  "stockNote": "eBay units are the source listing snapshot. Website stock remains lower where paid website purchases have already been deducted; do not reset Stripe stock to the eBay quantities.",
+  "ebayOnlyIds": ["407321244836"],
+  "photos": { "407373107823": "https://i.ebayimg.com/images/g/neUAAeSwt1Zq1C8q/s-l1600.webp" }
+}

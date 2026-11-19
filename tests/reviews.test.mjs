@@ -204,7 +204,8 @@ function stripeFixture({ payment = {}, session = {}, line = {} } = {}) {
 test('purchase verification requires a live successful payment and paid website checkout', async () => {
   const result = await verifiedReviewPurchase(stripeFixture(), 'pi_sample');
   assert.equal(result.products[0].id, '407343435479');
-  assert.equal(canonicalReviewProductId('407297979026'), '407345586271');
+  assert.equal(canonicalReviewProductId('407297979026'), '407373107823');
+  assert.equal(canonicalReviewProductId('407345586271'), '407373107823');
   for (const options of [
     { payment: { livemode: false } }, { payment: { status: 'processing' } }, { payment: { status: 'requires_payment_method' } },
     { payment: { amount_received: 0 } }, { payment: { metadata: {} } },

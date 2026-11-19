@@ -79,7 +79,9 @@ for (const report of [alani, dutch]) {
     const html = await read(`dist/${href}`);
     assert.match(html, /"datePublished":"2026-11-02"/);
     assert.match(html, /content="index, follow, max-image-preview:large"/);
-    for (const file of ['index.html', 'blog.html', 'sitemap-journal.xml']) assert.ok((await read(`dist/${file}`)).includes(href));
+    assert.ok((await read('dist/sitemap-journal.xml')).includes(href));
+    assert.ok(JSON.parse(await read('dist/assets/journal-index.json')).some((entry) => entry.slug === report.slug));
+    assert.ok((await read('dist/blog-page-2.html')).includes(href));
     const image = await sharp(resolve(root, report.image)).metadata();
     assert.equal(image.width, report.imageWidth);
     assert.equal(image.height, report.imageHeight);
