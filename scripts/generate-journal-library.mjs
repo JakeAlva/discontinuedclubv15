@@ -1,6 +1,17 @@
-import { readdir, rm, writeFile } from 'node:fs/promises';
+import { readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { PAGE_SIZE, statuses, escapeHtml, selectReports, cardMarkup, pageFile, paginationMarkup, resultLabel } from '../assets/journal-library.mjs';
+
+export function homeJournalMarkup(index) {
+  const latest = selectReports(index, { sort: 'newest', page: 1 }).items.slice(0, 3);
+  const e = escapeHtml;
+  return `<div class="home-journal-grid">${latest.map((report) => {
+    const date = report.editionDate || report.date;
+    const label = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }).format(new Date(`${date}T00:00:00Z`));
+    const href = `journal/${e(report.slug)}.html`;
+    return `<article class="home-journal-story"><a class="home-journal-image" href="${href}" tabindex="-1" aria-hidden="true"><img src="${e(report.image)}" alt="" width="600" height="400" loading="lazy" decoding="async"></a><div class="home-journal-meta"><time datetime="${e(date)}">${label}</time><span>${e(report.readTime)} min read</span></div><h3><a href="${href}">${e(report.title)}</a></h3><p>${e(report.cardCopy)}</p></article>`;
+  }).join('')}</div>`;
+}
 
 export async function generateJournalLibrary(root, reports) {
   const index = reports.map((report) => ({
@@ -14,6 +25,11 @@ export async function generateJournalLibrary(root, reports) {
   const pages = Math.ceil(index.length / PAGE_SIZE);
   const latest = index.map((report) => report.date).sort().at(-1);
   const e = escapeHtml;
+  const homepagePath = resolve(root, 'index.html');
+  const homepage = await readFile(homepagePath, 'utf8');
+  const journalSlot = /<!-- home-journal:start -->[\s\S]*?<!-- home-journal:end -->/g;
+  if ([...homepage.matchAll(journalSlot)].length !== 1) throw new Error('Homepage must have exactly one journal slot');
+  await writeFile(homepagePath, homepage.replace(journalSlot, () => `<!-- home-journal:start -->\n        ${homeJournalMarkup(index)}\n        <!-- home-journal:end -->`));
   const options = (items) => items.map(([value, label]) => `<option value="${e(value)}">${e(label)}</option>`).join('');
   for (const file of await readdir(root)) {
     if (/^blog-page-\d+\.html$/.test(file) && Number(file.match(/\d+/)[0]) > pages) await rm(resolve(root, file));

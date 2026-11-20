@@ -80,6 +80,8 @@ test('sold Baja twelve-packs stay archived and reject stale checkout carts', asy
 });
 
 test('two November 16 long-form reports have sources, correct dates and crawlable discovery', async () => {
+  const journalPages = (await readdir(new URL('../dist/', import.meta.url))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+  const journalHtml = (await Promise.all(journalPages.map((file) => read(`dist/${file}`)))).join('\n');
   for (const report of [gameFuelCitrusCherryHistoryReport, cocaColaOrangeCreamMiniReport]) {
     assert.equal(report.editionDate, '2026-11-16');
     assert.ok(report.sections.length >= 7);
@@ -89,6 +91,7 @@ test('two November 16 long-form reports have sources, correct dates and crawlabl
     assert.match(html, /index, follow/);
     assert.ok(html.includes(report.title));
     for (const source of report.sources) assert.ok(html.includes(source.url.replaceAll('&', '&amp;')) || html.includes(source.url));
-    for (const path of ['dist/blog.html', 'dist/sitemap-journal.xml']) assert.ok((await read(path)).includes(report.slug), path);
+    assert.ok(journalHtml.includes(report.slug), 'Article remains discoverable through journal pagination');
+    assert.ok((await read('dist/sitemap-journal.xml')).includes(report.slug));
   }
 });

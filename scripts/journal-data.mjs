@@ -1,4 +1,6 @@
 import { pepsiPeepsHistoryReport } from './pepsi-peeps-history-report.mjs';
+import { bloomPearScarePreorderReport } from './bloom-pear-scare-preorder-report.mjs';
+import { alaniWinterWonderland2026Report } from './alani-winter-wonderland-2026-report.mjs';
 import { spriteLymonadeLegacyHistoryReport } from './sprite-lymonade-legacy-history-report.mjs';
 import { mountainDewMauiBurstBajaGoldReport } from './mountain-dew-maui-burst-baja-gold-report.mjs';
 import { mountainDewFlaminHotHistoryReport } from './mountain-dew-flamin-hot-history-report.mjs';
@@ -838,5 +840,7 @@ export const reports = [
   pepsiPeepsHistoryReport,
   mountainDewFlaminHotHistoryReport,
   spriteLymonadeLegacyHistoryReport,
-  mountainDewMauiBurstBajaGoldReport
+  mountainDewMauiBurstBajaGoldReport,
+  bloomPearScarePreorderReport,
+  alaniWinterWonderland2026Report
 ];
