@@ -8,6 +8,8 @@ Production claims live in the site-wide Netlify Blobs store `dc-preorders-v1-pro
 
 `dc_stock=12` on the Stripe product is the batch ceiling/readiness marker, not the remaining preorder count. Do not infer remaining stock from that field or reset claims during catalog sync. Deploys share the production ledger; previews use a separate store.
 
+Returning with Stripe's back link opens `preorder-return.html`. An unguessable reservation reference in the URL fragment authorizes a same-origin POST that expires only its matching open, unpaid session before releasing stock. Paid or processing payments are never cancelled by this page. Closing the browser instead leaves the reservation until Stripe expiration and reconciliation. The return page removes the reference from the address bar and sends no customer details to the browser.
+
 A network failure with an uncertain Stripe outcome deliberately retains its claims. Before manually releasing a held claim without a session ID, locate the session using its reservation metadata and verify it is expired and unpaid (or establish that creation definitively failed). Never free a potentially payable or paid claim. Duplicate payment notifications cannot decrement twice.
 
 ## Arrival and fulfillment

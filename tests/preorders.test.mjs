@@ -5,6 +5,7 @@ import { catalog, directPriceCents, priceLookupKey } from '../lib/store-catalog.
 import { createPreorderInventory, preorderForCart, preorderOpen, openPreorderCheckout } from '../lib/preorders.mjs';
 import { readInventory } from '../netlify/functions/inventory.mjs';
 import { serializeCatalogModule } from '../lib/catalog-file.mjs';
+import cancelPreorder from '../netlify/functions/preorder-cancel.mjs';
 
 const item = catalog.find((entry) => entry.id === 'bloom-pear-scare');
 const now = () => Date.parse('2026-11-19T18:00:00Z');
@@ -130,11 +131,13 @@ test('checkout makes payment timing explicit and removes ordinary transit estima
     return session;
   };
   await openPreorderCheckout(f.stripe, f.inventory, { item, quantity: 2 }, {
+    cancel_url: 'https://discontinuedclub.com/out-now.html?checkout=cancelled',
     mode: 'payment', line_items: [{ price: 'price_example', quantity: 2 }],
     metadata: { source: 'discontinuedclub.com' }, payment_intent_data: {},
     shipping_options: [{ shipping_rate_data: { fixed_amount: { amount: 1699, currency: 'usd' }, delivery_estimate: { minimum: 2, maximum: 5 } } }]
   });
   assert.deepEqual(sent.payment_method_types, ['card']);
+  assert.match(sent.cancel_url, /^https:\/\/discontinuedclub.com\/preorder-return.html#item=bloom-pear-scare&reservation=/);
   assert.equal(sent.shipping_options[0].shipping_rate_data.delivery_estimate, undefined);
   assert.match(sent.custom_text.submit.message, /paying now.*PREORDER/);
   assert.match(sent.custom_text.shipping_address.message, /November 30, 2026/);
@@ -146,9 +149,45 @@ test('definitive Stripe rejection releases claims; uncertain failures do not', a
   for (const type of ['StripeInvalidRequestError', 'StripeConnectionError']) {
     const f = fixture();
     f.stripe.checkout.sessions.create = async () => { throw Object.assign(new Error('Failed'), { type }); };
-    await assert.rejects(openPreorderCheckout(f.stripe, f.inventory, { item, quantity: 1 }, { metadata: {}, shipping_options: [{ shipping_rate_data: {} }] }));
+    await assert.rejects(openPreorderCheckout(f.stripe, f.inventory, { item, quantity: 1 }, { cancel_url: 'https://discontinuedclub.com/out-now.html', metadata: {}, shipping_options: [{ shipping_rate_data: {} }] }));
     assert.equal(await f.inventory.available(item, f.stripe), type === 'StripeInvalidRequestError' ? 12 : 11);
   }
+});
+
+test('returning from checkout expires only the matching unpaid reservation', async () => {
+  const f = fixture();
+  const claim = await f.inventory.reserve(item, 2, f.stripe);
+  const session = sessionFor(claim);
+  f.sessions.set(session.id, session);
+  await f.inventory.attach(item, claim, session);
+  f.stripe.checkout.sessions.expire = async (id) => { assert.equal(id, session.id); session.status = 'expired'; return session; };
+  assert.deepEqual(await f.inventory.cancel(item, claim.reservation, f.stripe), { released: true, paid: false });
+  assert.equal(await f.inventory.available(item, f.stripe), 12);
+  assert.deepEqual(await f.inventory.cancel(item, claim.reservation, f.stripe), { released: true, paid: false });
+  await assert.rejects(f.inventory.cancel(item, 'another-reservation', f.stripe), /not found/);
+});
+
+test('paid, processing and raced payments cannot be released by the return page', async () => {
+  for (const state of ['paid', 'processing', 'raced']) {
+    const f = fixture();
+    const claim = await f.inventory.reserve(item, 1, f.stripe);
+    const session = sessionFor(claim, { status: state === 'raced' ? 'open' : 'complete', payment_status: state === 'paid' ? 'paid' : 'unpaid' });
+    f.sessions.set(session.id, session);
+    await f.inventory.attach(item, claim, session);
+    f.stripe.checkout.sessions.expire = async () => { throw new Error('Session has completed'); };
+    if (state === 'paid') assert.deepEqual(await f.inventory.cancel(item, claim.reservation, f.stripe), { released: false, paid: true });
+    else await assert.rejects(f.inventory.cancel(item, claim.reservation, f.stripe));
+    assert.equal(await f.inventory.available(item, f.stripe), 11);
+  }
+});
+
+test('cancellation endpoint rejects bad methods, origins and references before Stripe', async () => {
+  const url = 'https://discontinuedclub.com/.netlify/functions/preorder-cancel';
+  assert.equal((await cancelPreorder(new Request(url))).status, 405);
+  const request = (origin, payload) => new Request(url, { method: 'POST', headers: { Origin: origin, 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+  assert.equal((await cancelPreorder(request('https://another.example', {}))).status, 403);
+  assert.equal((await cancelPreorder(request('https://discontinuedclub.com', { item: item.id, reservation: 'guess' }))).status, 400);
+  assert.equal((await cancelPreorder(request('https://discontinuedclub.com', { item: catalog.find((entry) => !entry.preorder).id, reservation: '00000000-0000-4000-8000-000000000001' }))).status, 400);
 });
 
 test('public inventory uses reservations and never exposes private claim records', async () => {
