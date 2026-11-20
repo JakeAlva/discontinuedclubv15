@@ -17,7 +17,7 @@ const slug = `pokemon-journey-together-booster-bundle-${id}.html`;
 
 test('Journey Together is archived with honest verification provenance and no active purchase surfaces', async () => {
   assert.equal(findCatalogItem(id), undefined);
-  assert.equal(catalog.length, 79);
+  assert.equal(catalog.filter((item) => !item.websiteOnly).length, 79);
   assert.equal(categories.collectibles.count, 9);
   assert.equal(findCatalogItem('407283282883'), undefined, 'Ascended Heroes subsequently sold out');
   assert.equal(maxQuantity(findCatalogItem('407134944288')), 2);

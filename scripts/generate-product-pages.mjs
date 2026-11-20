@@ -85,21 +85,25 @@ function pageMarkup(item, images) {
   const condition = productCondition(item);
   const shipping = shippingQuote(directPrice, [{ item, quantity: 1 }]);
   const description = directCheckoutEnabled
-    ? `${item.name}. ${item.detail}. Buy direct from Discontinued Club or use the matching eBay listing.`
+    ? `${item.name}. ${item.detail}. ${item.websiteOnly ? 'Available directly from Discontinued Club.' : 'Buy direct from Discontinued Club or use the matching eBay listing.'}`
     : `${item.name}. ${item.detail}. Available through the matching Discontinued Club eBay listing.`;
-  const pricePanel = directCheckoutEnabled
+  const pricePanel = item.websiteOnly
+    ? `<div class="current-price-panel"><span><small>${item.preorder ? 'Preorder price / can' : 'Direct price'}</small><strong>${formatMoney(directPrice)}</strong></span></div><p>Shipping and applicable tax calculated at checkout.</p>`
+    : directCheckoutEnabled
     ? `<div class="current-price-panel"><span><small>Direct price</small><strong>${formatMoney(directPrice)}</strong></span><span><small>eBay price</small><s>${escapeHtml(item.price)}</s></span></div>
           <div class="product-savings">Save ${formatMoney(savings)} on the item price when buying direct</div>`
     : `<div class="current-price-panel"><span><small>Available on eBay</small><strong>${escapeHtml(item.price)}</strong></span></div>`;
   const actions = directCheckoutEnabled
-    ? `<button class="btn btn-acid purchase-button" type="button" data-add-to-cart="${item.id}" data-add-quantity-source="${item.id}" disabled><span data-add-label>Checking stock</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button><a class="btn btn-light" href="https://www.ebay.com/itm/${item.id}" target="_blank" rel="noopener">Buy on eBay</a>`
+    ? `<button class="btn btn-acid purchase-button" type="button" data-add-to-cart="${item.id}" data-add-quantity-source="${item.id}" disabled><span data-add-label>Checking stock</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button>${item.websiteOnly ? '' : `<a class="btn btn-light" href="https://www.ebay.com/itm/${item.id}" target="_blank" rel="noopener">Buy on eBay</a>`}`
     : `<a class="btn btn-dark" href="https://www.ebay.com/itm/${item.id}" target="_blank" rel="noopener">Buy on eBay</a><a class="btn btn-light" href="out-now.html">Keep shopping</a>`;
   const quantityControl = !directCheckoutEnabled
     ? '<div class="product-quantity-single"><span>Quantity</span><small>Choose quantity on eBay</small></div>'
     : quantity > 1
     ? `<div class="product-quantity-picker" data-product-quantity-picker data-product-id="${item.id}" data-max="${quantity}"><span>Quantity</span><div class="product-quantity-control"><button type="button" data-product-quantity-decrease aria-label="Decrease quantity" disabled>&minus;</button><output data-product-quantity aria-live="polite">1</output><button type="button" data-product-quantity-increase aria-label="Increase quantity" disabled>+</button></div><small data-stock-id="${item.id}">${stockText}</small></div>`
     : `<div class="product-quantity-single"><span>Quantity</span><strong>1</strong><small data-stock-id="${item.id}">${stockText}</small></div>`;
-  const detailBand = directCheckoutEnabled
+  const detailBand = item.preorder
+    ? `<div><strong>Paid preorder</strong><span>Payment is collected when you order.</span>${stripeBadge}</div><div><strong>Expected shipment</strong><span>${item.preorder.shipDateLabel}, subject to the incoming delivery. This is not a delivery date.</span></div><div><strong>Separate shipment</strong><span>Place in-stock products in a separate order.</span></div><div><strong>Need to cancel?</strong><span>Email jacob@discontinuedclub.com before shipment. If delayed, we will contact you with an updated date and cancellation/refund options.</span></div>`
+    : directCheckoutEnabled
     ? `<div><strong>Secure direct checkout</strong><span>Payment details stay on a secure hosted checkout.</span>${stripeBadge}</div><div><strong>Weight-based shipping</strong><span>Shipping adjusts for heavier carts and becomes free at a ${formatMoney(freeShippingThreshold)} item subtotal, before tax.</span></div><div><strong>Fast handling</strong><span>Orders before 12 PM Central are prepared for same-day carrier drop-off whenever possible.</span></div><div><strong>30-day return window</strong><span>Eligible items may be returned by mail under the posted return policy.</span></div>`
     : `<div><strong>Available on eBay</strong><span>Purchase from the matching Discontinued Club listing.</span></div><div><strong>Check the full listing</strong><span>Shipping, delivery and returns are shown on eBay before purchase.</span></div><div><strong>Listing photo</strong><span>Review the pictured product and the condition notes before ordering.</span></div>`;
   const schema = {
@@ -116,7 +120,8 @@ function pageMarkup(item, images) {
       '@type': 'Offer',
       priceCurrency: 'USD',
       price: ((directCheckoutEnabled ? directPrice : ebayPrice) / 100).toFixed(2),
-      availability: 'https://schema.org/InStock',
+      availability: item.preorder ? 'https://schema.org/PreOrder' : 'https://schema.org/InStock',
+      ...(item.preorder ? { availabilityStarts: `${item.preorder.shipDate}T00:00:00-06:00` } : {}),
       url: productUrl(item),
       seller: { '@type': 'Organization', name: 'Discontinued Club' },
       shippingDetails: {
@@ -185,6 +190,7 @@ function pageMarkup(item, images) {
           <div class="product-purchase-panel">
             <div class="product-purchase-heading"><span>${directCheckoutEnabled ? 'Buy direct' : 'Buy on eBay'}</span><strong>${directCheckoutEnabled ? 'Secure checkout' : 'Our matching listing'}</strong></div>
             ${pricePanel}
+            ${item.preorder ? `<div class="preorder-notice"><strong>PREORDER - Expected to ship ${item.preorder.shipDateLabel}</strong><p>Pay now to reserve your can. Arrival is expected by November 28; shipment depends on that delivery. Order separately from in-stock products.</p></div>` : ''}
             ${directCheckoutEnabled ? `<div class="product-order-note" data-product-order-note="${item.id}" role="status" hidden></div>` : '<div class="product-order-note">Shipping and returns follow the eBay listing.</div>'}
             <div class="product-purchase-row">
               ${quantityControl}

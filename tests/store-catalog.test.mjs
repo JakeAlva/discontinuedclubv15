@@ -35,7 +35,7 @@ test('direct prices use the approved 3.5 percent starting discount', () => {
 
 test('checkout identifiers and inventory limits remain valid after a sync', () => {
   for (const item of catalog) {
-    assert.match(priceLookupKey(item), /^dc_\d+_direct$/);
+    assert.match(priceLookupKey(item), item.websiteOnly ? /^dc_[a-z][a-z0-9-]+_direct$/ : /^dc_\d+_direct$/);
     assert.ok(Number.isInteger(maxQuantity(item)) && maxQuantity(item) > 0);
   }
 });

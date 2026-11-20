@@ -62,7 +62,7 @@
   function headerMarkup() {
     const shippingThresholdLabel = formatMoney(freeShippingThresholdCents);
     const announcement = directCheckoutEnabled
-      ? 'Lower direct prices &nbsp;|&nbsp; Free shipping on ' + shippingThresholdLabel + '+ &nbsp;|&nbsp; Same-day handling before 12 PM CT'
+      ? 'Lower direct prices &nbsp;|&nbsp; Free shipping on ' + shippingThresholdLabel + '+ &nbsp;|&nbsp; Fast handling on in-stock items'
       : directCheckoutNotice + ' &nbsp;|&nbsp; Current inventory available on eBay';
     const cartControls = directCheckoutEnabled ? [
       '      <div class="cart-status" data-cart-status>',
@@ -279,11 +279,13 @@
     const savings = Math.max(0, ebayCents - directCents);
     const stockBadge = item.category === 'kids-shoes' ? '' : '<span class="condition-badge" data-stock-id="' + item.id + '">' + stockLabel(item) + '</span>';
     const imageAlt = escapeHtml(item.name + ' - current Discontinued Club inventory');
-    const pricing = directCheckoutEnabled
+    const pricing = item.websiteOnly
+      ? '<div class="product-pricing"><span><small>' + (item.preorder ? 'Preorder price / can' : 'Direct price') + '</small><strong>' + formatMoney(directCents) + '</strong></span></div>'
+      : directCheckoutEnabled
       ? '<div class="product-pricing"><span><small>Direct price</small><strong>' + formatMoney(directCents) + '</strong></span><span class="market-price"><small>eBay price</small><s>' + item.price + '</s></span></div><div class="product-savings">Save ' + formatMoney(savings) + ' on the item price</div>'
       : '<div class="product-pricing"><span><small>Available on eBay</small><strong>' + item.price + '</strong></span></div>';
     const actions = directCheckoutEnabled
-      ? '<button class="btn btn-acid product-add purchase-button" type="button" data-add-to-cart="' + item.id + '"><span data-add-label>Add to cart</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button><a class="ebay-option" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a>'
+      ? '<button class="btn btn-acid product-add purchase-button" type="button" data-add-to-cart="' + item.id + '"><span data-add-label>' + (item.preorder ? 'Preorder' : 'Add to cart') + '</span><span class="purchase-arrow" aria-hidden="true">&rarr;</span></button>' + (item.websiteOnly ? '' : '<a class="ebay-option" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a>')
       : '<a class="btn btn-dark product-add" href="' + href + '" target="_blank" rel="noopener" aria-label="Buy ' + escapeHtml(item.name) + ' on eBay">Buy on eBay</a><a class="ebay-option" href="' + detailHref + '">View details</a>';
     return [
       '<article class="product-card" data-category="' + item.category + '" data-search="' + escapeHtml((item.name + ' ' + item.detail + ' ' + categoryLabels[item.category]).toLowerCase()) + '">',
@@ -357,6 +359,7 @@
     if (!directCheckoutEnabled || item.directCheckoutEnabled === false) return 'See eBay for availability';
     if (!hasLiveStock(item)) return inventoryState === 'loading' ? 'Checking stock' : 'Stock unavailable';
     const stock = getMaxQuantity(item);
+    if (item.preorder) return stock === 0 ? 'Preorder unavailable' : stock + ' available for preorder';
     if (item.category === 'kids-shoes' && stock > 0) return stock + (stock === 1 ? ' pair available online' : ' pairs available online');
     return stock === 0 ? 'Sold out' : stock + ' available online';
   }
@@ -471,11 +474,11 @@
       const soldOut = !unavailable && maxQuantity === 0;
       const label = button.querySelector('[data-add-label]');
       const arrow = button.querySelector('.purchase-arrow');
-      let buttonLabel = 'Add to cart';
+      let buttonLabel = item.preorder ? 'Preorder' : 'Add to cart';
 
       if (atLimit) buttonLabel = singlePair || maxQuantity === 1 ? 'In your cart' : 'Online limit reached';
       else if (quantity > 0) buttonLabel = 'Add another';
-      if (soldOut) buttonLabel = 'Sold out';
+      if (soldOut) buttonLabel = item.preorder ? 'Preorder unavailable' : 'Sold out';
       if (unavailable) buttonLabel = inventoryState === 'loading' ? 'Checking stock' : 'Stock unavailable';
 
       const limitMessage = singlePair ? 'This pair is already in your cart' : 'The online quantity limit is already in your cart';
@@ -572,6 +575,7 @@
 
   function renderCart() {
     const details = getCartDetails();
+    const preorder = details.find(function (line) { return line.item.preorder; })?.item.preorder;
     const itemCount = details.reduce(function (sum, line) { return sum + line.quantity; }, 0);
     const subtotal = details.reduce(function (sum, line) { return sum + getDirectPriceCents(line.item) * line.quantity; }, 0);
     const shipping = getShippingQuote(subtotal, details);
@@ -597,15 +601,15 @@
     });
     document.querySelectorAll('[data-cart-estimate]').forEach(function (host) { host.textContent = formatMoney(subtotal + shipping.amount); });
     document.querySelectorAll('[data-shipping-progress-copy]').forEach(function (host) {
-      host.textContent = shipping.remaining ? 'Free shipping at ' + formatMoney(shipping.threshold) : 'Free shipping unlocked';
+      host.textContent = preorder ? 'Preorder added' : shipping.remaining ? 'Free shipping at ' + formatMoney(shipping.threshold) : 'Free shipping unlocked';
     });
     document.querySelectorAll('[data-shipping-progress-amount]').forEach(function (host) {
-      host.textContent = shipping.remaining ? 'Add ' + formatMoney(shipping.remaining) + ' more' : 'Your order ships free';
+      host.textContent = preorder ? 'Expected shipment: ' + preorder.shipDateLabel : shipping.remaining ? 'Add ' + formatMoney(shipping.remaining) + ' more' : 'Your order ships free';
     });
-    document.querySelectorAll('[data-shipping-progress-bar]').forEach(function (host) { host.style.width = shipping.progress + '%'; });
+    document.querySelectorAll('[data-shipping-progress-bar]').forEach(function (host) { host.style.width = (preorder ? 0 : shipping.progress) + '%'; });
     document.querySelectorAll('[data-product-order-note]').forEach(function (host) {
-      host.hidden = itemCount === 0;
-      host.textContent = !itemCount ? '' : shipping.remaining
+      host.hidden = itemCount === 0 || Boolean(preorder);
+      host.textContent = !itemCount || preorder ? '' : shipping.remaining
         ? 'Your cart is ' + formatMoney(shipping.remaining) + ' away from free standard shipping.'
         : 'Your cart qualifies for free standard shipping.';
     });
@@ -630,7 +634,7 @@
       return [
         '<div class="cart-line">',
         '  <img src="' + listingImagePath(item, 'branded', false) + '" alt="">',
-        '  <div class="cart-line-copy"><strong>' + escapeHtml(item.name) + '</strong><span>' + escapeHtml(item.detail) + '</span><div class="cart-line-controls">' + quantityControl + '<button type="button" class="cart-remove" data-cart-remove="' + item.id + '">Remove</button></div></div>',
+        '  <div class="cart-line-copy"><strong>' + escapeHtml(item.name) + '</strong><span>' + escapeHtml(item.detail) + '</span>' + (item.preorder ? '<p class="preorder-cart-note">Pay now. Expected shipment ' + escapeHtml(item.preorder.shipDateLabel) + ', subject to incoming delivery. Separate order required; cancel by email before shipment.</p>' : '') + '<div class="cart-line-controls">' + quantityControl + '<button type="button" class="cart-remove" data-cart-remove="' + item.id + '">Remove</button></div></div>',
         '  <b>' + formatMoney(getDirectPriceCents(item) * line.quantity) + '</b>',
         '</div>'
       ].join('');
@@ -732,6 +736,12 @@
     const item = catalog.find(function (candidate) { return candidate.id === id; });
     if (!item || item.directCheckoutEnabled === false) return null;
     if (!hasLiveStock(item) || getMaxQuantity(item) === 0) return null;
+    if (cart.some(function (line) { const other = catalog.find(function (entry) { return entry.id === line.id; }); return other && Boolean(other.preorder) !== Boolean(item.preorder); })) {
+      openCart();
+      const message = document.querySelector('[data-checkout-message]');
+      if (message) message.textContent = 'Preorders and in-stock products need separate orders. Please finish or empty your current cart first.';
+      return null;
+    }
     const max = getMaxQuantity(item);
     const quantity = Math.max(1, Math.min(max, Number(requestedQuantity) || 1));
     const line = cart.find(function (candidate) { return candidate.id === id; });
@@ -1004,7 +1014,7 @@
             '@type': 'Offer',
             priceCurrency: 'USD',
             price: ((directCheckoutEnabled && item.directCheckoutEnabled !== false ? getDirectPriceCents(item) : parsePriceCents(item.price)) / 100).toFixed(2),
-            availability: 'https://schema.org/InStock',
+            availability: item.preorder ? 'https://schema.org/PreOrder' : 'https://schema.org/InStock',
             seller: { '@type': 'Organization', name: 'Discontinued Club' }
           }
         }
@@ -1330,7 +1340,7 @@
     let visible = 0;
     section.querySelectorAll('[data-recommended-product]').forEach(function (host) {
       const item = catalog.find(function (candidate) { return candidate.id === host.dataset.recommendedProduct; });
-      const available = item && hasLiveStock(item) && getMaxQuantity(item) > 0 && item.directCheckoutEnabled !== false;
+      const available = item && !item.preorder && hasLiveStock(item) && getMaxQuantity(item) > 0 && item.directCheckoutEnabled !== false;
       host.hidden = !available;
       if (available) visible++;
     });

@@ -165,7 +165,7 @@ for (const record of supported) {
   records.push({ ...record, product, previousEbayStock, siteStock, sharedStock, managedImage, sourceImageChanged });
 }
 
-const currentCatalog = [];
+const currentCatalog = catalog.filter((item) => item.websiteOnly);
 const existingRecords = records.filter((record) => record.existing);
 const newRecords = records.filter((record) => !record.existing).sort((a, b) => newestFirst(a.listing, b.listing));
 const approvedNewRecords = newRecords.filter((record) => approvedNewIds.has(record.listing.id));
@@ -188,7 +188,7 @@ for (const record of [...approvedNewRecords, ...orderedExisting]) {
   }));
 }
 
-const removed = catalog.filter((item) => !activeById.has(item.id));
+const removed = catalog.filter((item) => !item.websiteOnly && !activeById.has(item.id));
 const changedStock = managedRecords.filter((record) => record.sharedStock !== record.listing.quantityAvailable || record.sharedStock !== record.siteStock);
 const priceChanges = existingRecords.filter((record) => record.existing.price !== `$${(record.listing.priceCents / 100).toFixed(2)}`);
 const guardViolations = syncGuardViolations({

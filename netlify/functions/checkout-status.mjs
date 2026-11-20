@@ -24,7 +24,8 @@ export default async (request) => {
       orderReference: session.id.slice(-10).toUpperCase(),
       email: session.customer_details?.email || '',
       amountTotal: session.amount_total || 0,
-      currency: session.currency || 'usd'
+      currency: session.currency || 'usd',
+      preorderShipLabel: session.metadata?.dc_preorder_ship_label || ''
     });
   } catch (error) {
     console.error('Checkout status error', error);

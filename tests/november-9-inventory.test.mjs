@@ -9,9 +9,10 @@ import createCheckout from '../netlify/functions/create-checkout.mjs';
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
 test('current catalog matches the latest verified eBay listing and unit totals', () => {
-  assert.equal(catalog.length, november18Update.activeListingCount);
-  assert.equal(catalog.reduce((sum, item) => sum + maxQuantity(item), 0), november18Update.sellableUnits);
-  assert.deepEqual(catalog.map((item) => item.id).sort(), currentSnapshot.map(([id]) => id).sort());
+  const ebayCatalog = catalog.filter((item) => !item.websiteOnly);
+  assert.equal(ebayCatalog.length, november18Update.activeListingCount);
+  assert.equal(ebayCatalog.reduce((sum, item) => sum + maxQuantity(item), 0), november18Update.sellableUnits);
+  assert.deepEqual(ebayCatalog.map((item) => item.id).sort(), currentSnapshot.map(([id]) => id).sort());
   assert.equal(storeConfig.directDiscountPercent, 3.5);
   for (const [id, ebayCents, quantity] of currentSnapshot) {
     const item = findCatalogItem(id);

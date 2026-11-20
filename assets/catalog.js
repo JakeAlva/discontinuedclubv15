@@ -1,4 +1,5 @@
 const DC_CATALOG = [
+  { id: 'bloom-pear-scare', category: 'drinks', name: 'Bloom Pear Scare - 12 oz Single Can', detail: 'PREORDER: one unopened 12 fl oz (355 mL) Pear Scare sparkling energy can. Payment collected now; expected to ship November 30, 2026', condition: 'New', price: '$7.99', directPriceCents: 799, image: 'bloom-pear-scare.webp', maxQuantity: 12, brand: 'Bloom Nutrition', websiteOnly: true, preorder: { batch: '2026-11-30', capacity: 12, shipDate: '2026-11-30', shipDateLabel: 'November 30, 2026', closesAt: '2026-11-30T06:00:00Z' }, purchaseNote: 'Expected shipment depends on the incoming delivery, currently expected by November 28. This is a single-can preorder, not a case. Order separately from in-stock items. The manufacturer photo shows the product design, not the exact incoming can. Printed best-by dates will be checked on arrival. Contact jacob@discontinuedclub.com to cancel before shipment. If delayed, we will contact you with an updated date and cancellation/refund options.' },
   { id: '407365349094', category: 'drinks', name: 'Mountain Dew Game Fuel Citrus Cherry - 20 oz Bottle', detail: 'One full, unopened 20 fl oz Game Fuel Citrus Cherry bottle with Xbox promotional artwork. Older collectible stock, not a fresh production release', condition: 'New', price: '$14.99', image: '407365349094.webp', maxQuantity: 1, brand: 'Mountain Dew', purchaseNote: 'For collection and display, not consumption. The eBay listing describes this as 2024 stock with Halo branding; a printed date has not been verified. The release year and promotion should not be inferred from the listing date. No usable game code or in-game reward is promised. Contact us for current bottle shape, label and seal photos; freshness, carbonation and mint cosmetic condition are not guaranteed.' },
   { id: '407365323849', category: 'drinks', name: 'Coca-Cola Orange Cream - 7.5 oz Mini Can', detail: 'One full, unopened 7.5 fl oz Orange Cream mini can from the seller-described 2025 stock. Regular Coca-Cola Orange Cream, not the Zero Sugar version or a multipack', condition: 'New', price: '$9.99', image: '407365323849.webp', maxQuantity: 1, brand: 'Coca-Cola', purchaseNote: 'Older collectible stock. A printed best-by date and full label have not been verified; contact us for those details and current condition photos before purchasing. An unopened seal does not establish freshness. This listing does not establish that every Orange Cream format has been discontinued.' },
   { id: '407365004609', category: 'collectibles', name: 'Mountain Dew x Trolli Promotional Slushie Cup', detail: 'One Mountain Dew x Trolli promotional slushie cup from the Circle K/Shell listing. Pink cup design; review both listing photos', condition: 'New', price: '$7.99', image: '407365004609.webp', maxQuantity: 1, brand: 'Mountain Dew', purchaseNote: 'This is the promotional cup listing, not a bottled soda or a freshly prepared frozen drink. Cup capacity and any included candy have not been verified; contact us for those details before purchasing.', gallery: [{ src: 'assets/images/listings/gallery/407365004609-2.webp', label: 'alternate listing photo' }] },
@@ -147,6 +148,7 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  'bloom-pear-scare': 32,
   '407365349094': 32,
   '407365323849': 16,
   '407365004609': 16,
@@ -250,8 +252,8 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 79 },
-  drinks: { label: 'Rare drinks', count: 42 },
+  all: { label: 'All items', count: 80 },
+  drinks: { label: 'Rare drinks', count: 43 },
   apparel: { label: 'Sports & apparel', count: 11 },
   'kids-shoes': { label: "Designer kids' shoes", count: 10 },
   collectibles: { label: 'Collectibles & cards', count: 9 },

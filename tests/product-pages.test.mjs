@@ -18,7 +18,7 @@ test('every current listing has a dedicated indexable product page', async () =>
     const html = await readFile(resolve(root, 'products', filename), 'utf8');
     assert.match(html, new RegExp(`<link rel="canonical" href="https://discontinuedclub\\.com/products/${filename}">`));
     assert.ok(html.includes(`/assets/images/listings/merchant/${item.id}.webp`));
-    assert.ok(html.includes(`https://www.ebay.com/itm/${item.id}`));
+    assert.equal(html.includes(`https://www.ebay.com/itm/${item.id}`), !item.websiteOnly);
     assert.ok(html.includes(`"brand":{"@type":"Brand","name":"${productBrand(item)}"}`));
     assert.ok(html.includes(`https://schema.org/${productCondition(item) === 'used' ? 'UsedCondition' : 'NewCondition'}`));
     if (item.directCheckoutEnabled !== false) {

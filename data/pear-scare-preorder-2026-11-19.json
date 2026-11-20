@@ -1,0 +1,16 @@
+{
+  "id": "bloom-pear-scare",
+  "stripeProductId": "prod_VezGB8QBPfBOi2",
+  "stripePriceId": "price_1UdfI03yNPlfvXfN70nWWlG6",
+  "priceCents": 799,
+  "capacity": 12,
+  "size": "12 fl oz (355 mL)",
+  "expectedArrival": "2026-11-28",
+  "expectedShipDate": "2026-11-30",
+  "paymentTiming": "at_order",
+  "source": "Owner-confirmed product, price, allocation and dates on November 19, 2026",
+  "imageSource": "https://cdn.shopify.com/s/files/1/0143/0952/3556/files/PearScare_01.png?v=1794857114",
+  "imageAttribution": "Bloom Nutrition manufacturer product artwork; not a photo of incoming inventory",
+  "shippingWeightOz": 32,
+  "shippingWeightBasis": "Conservative packaged estimate, consistent with existing single 12 oz can listings; actual packed weight not yet measured"
+}

@@ -19,16 +19,16 @@ const active = audit.activeSnapshot.filter(([id]) => !soldIds.has(id) && !novemb
 const slug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
 
 test('October 19 listings reflect subsequent verified sales and relistings', () => {
-  assert.equal(catalog.length, november16Update.activeListingCount);
-  assert.deepEqual(catalog.map((item) => item.id).sort(), [...current.keys()].sort());
+  assert.equal(catalog.filter((item) => !item.websiteOnly).length, november16Update.activeListingCount);
+  assert.deepEqual(catalog.filter((item) => !item.websiteOnly).map((item) => item.id).sort(), [...current.keys()].sort());
   for (const [previousId, price, quantity] of active) {
     const id = currentListingId(previousId);
     const item = catalog.find((row) => row.id === id);
     assert.equal(parsePriceCents(item.price), current.get(id)?.price ?? price, `${id} eBay price`);
     assert.equal(maxQuantity(item), current.get(id)?.quantity ?? quantity, `${id} quantity`);
   }
-  assert.equal(categories.all.count, november16Update.activeListingCount);
-  assert.equal(categories.drinks.count, 42);
+  assert.equal(categories.all.count, november16Update.activeListingCount + catalog.filter((item) => item.websiteOnly).length);
+  assert.equal(categories.drinks.count, 42 + catalog.filter((item) => item.websiteOnly && item.category === 'drinks').length);
   assert.equal(categories.home.count, 3);
   assert.equal(categories['kids-shoes'].count, 10);
   assert.equal(catalog.at(-1).id, '406760868081');

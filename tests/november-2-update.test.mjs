@@ -18,8 +18,8 @@ const slug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').re
 test('November 2 catalog retains 78 listings with verified subsequent relistings', () => {
   assert.equal(audit.activeSnapshot.length, 78);
   assert.equal(new Set(audit.activeSnapshot.map(([id]) => id)).size, 78);
-  assert.deepEqual(catalog.map((item) => [item.id, parsePriceCents(item.price), maxQuantity(item)]).sort(), [...currentSnapshot].sort());
-  assert.equal(catalog.reduce((sum, item) => sum + maxQuantity(item), 0), currentSnapshot.reduce((sum, [, , quantity]) => sum + quantity, 0));
+  assert.deepEqual(catalog.filter((item) => !item.websiteOnly).map((item) => [item.id, parsePriceCents(item.price), maxQuantity(item)]).sort(), [...currentSnapshot].sort());
+  assert.equal(catalog.filter((item) => !item.websiteOnly).reduce((sum, item) => sum + maxQuantity(item), 0), currentSnapshot.reduce((sum, [, , quantity]) => sum + quantity, 0));
   for (const record of audit.quantityChanges) {
     const id = currentListingId(record.id);
     assert.equal(maxQuantity(findCatalogItem(id)), currentSnapshot.find(([key]) => key === id)[2]);

@@ -18,12 +18,12 @@ const active = currentSnapshot.filter(([id]) => !soldIds.has(id)).map(([id, pric
 test('active listings match the November 2 audit plus verified relistings', () => {
   const expected = new Map(active.map(([id, quantity, price]) => [id, { quantity, price }]));
   assert.equal(expected.size, active.length, 'Audit must not contain duplicate listing IDs');
-  assert.deepEqual(catalog.map((item) => item.id).sort(), [...expected.keys()].sort());
-  for (const item of catalog) {
+  assert.deepEqual(catalog.filter((item) => !item.websiteOnly).map((item) => item.id).sort(), [...expected.keys()].sort());
+  for (const item of catalog.filter((item) => !item.websiteOnly)) {
     assert.equal(maxQuantity(item), expected.get(item.id).quantity, `${item.id} ${item.name}: available listing units`);
     assert.equal(item.price, expected.get(item.id).price, `${item.id} ${item.name}: eBay price`);
   }
-  assert.equal(categories.all.count, expected.size);
+  assert.equal(categories.all.count, expected.size + catalog.filter((item) => item.websiteOnly).length);
   for (const [category, { count }] of Object.entries(categories)) {
     if (category !== 'all') assert.equal(count, catalog.filter((item) => item.category === category).length, category);
   }
@@ -47,7 +47,7 @@ test('published catalog, purchase limits and feed use the audited inventory', as
     if (quantity > 1) assert.ok(html.includes(`data-max="${quantity}"`), `${item.id}: product quantity control`);
     else assert.match(html, /class="product-quantity-single"/);
     const record = feed.find((row) => row['g:id'] === `dc-${item.id}`);
-    assert.equal(record['g:availability'], 'in_stock');
+    assert.equal(record['g:availability'], item.preorder ? 'preorder' : 'in_stock');
     assert.equal(record['g:price'], `${(directPriceCents(item) / 100).toFixed(2)} USD`);
   }
   for (const id of [...audit.endedListingIds, ...latest.soldOut.map((item) => item.id), ...soldIds]) {
@@ -55,6 +55,6 @@ test('published catalog, purchase limits and feed use the audited inventory', as
     assert.ok(!(await read('dist/out-now.html')).includes(id), `${id} must not appear in static shop listings`);
   }
   for (const file of ['dist/index.html', 'dist/out-now.html']) {
-    assert.ok((await read(file)).includes(`data-listing-count="all">${active.length}</span>`), file);
+    assert.ok((await read(file)).includes(`data-listing-count="all">${catalog.length}</span>`), file);
   }
 });

@@ -3,6 +3,8 @@ import { catalog, directPriceCents, findCatalogItem, formatMoney, maxQuantity, p
 import { availableStripeQuantity } from '../../lib/stripe-inventory.mjs';
 import { checkoutAttribution } from '../../lib/funnel.mjs';
 import { funnelService } from '../../lib/funnel-runtime.mjs';
+import { preorderForCart, openPreorderCheckout } from '../../lib/preorders.mjs';
+import { preorderInventory } from '../../lib/preorder-runtime.mjs';
 
 export const config = {
   rateLimit: { windowSize: 60, windowLimit: 20, aggregateBy: ['ip'] }
@@ -81,6 +83,7 @@ export default async (request, context) => {
     if (rawBody.length > 25000) return json({ error: 'Cart request is too large.' }, 413);
     const payload = JSON.parse(rawBody);
     const lines = validatedCart(payload);
+    const preorder = preorderForCart(lines);
     const attribution = checkoutAttribution(payload.analytics);
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
     const lookupKeys = lines.map(({ item }) => priceLookupKey(item));
@@ -110,7 +113,7 @@ export default async (request, context) => {
 
     const listingIds = lines.map(({ item }) => item.id).join(',');
     const origin = checkoutOrigin(request);
-    const session = await stripe.checkout.sessions.create({
+    const sessionParams = {
       mode: 'payment',
       line_items: lineItems,
       success_url: `${origin}/checkout-success.html?session_id={CHECKOUT_SESSION_ID}`,
@@ -136,7 +139,10 @@ export default async (request, context) => {
       metadata: { source: 'discontinuedclub.com', listing_ids: listingIds, shipping_tier: shippingTier, ...attribution },
       payment_intent_data: { metadata: { source: 'discontinuedclub.com', listing_ids: listingIds, shipping_tier: shippingTier } },
       custom_text: { shipping_address: { message: `Shipping is weight-based below a ${shippingThresholdLabel} item subtotal. ${shippingThresholdLabel}+ ships free, before tax. Change quantities in the website cart to recalculate shipping. Orders before 12 PM Central are prepared for same-day drop-off whenever possible.` } }
-    });
+    };
+    const session = preorder
+      ? await openPreorderCheckout(stripe, preorderInventory(context), preorder, sessionParams)
+      : await stripe.checkout.sessions.create(sessionParams);
 
     if (attribution.dc_journey && session.livemode === true) {
       try {

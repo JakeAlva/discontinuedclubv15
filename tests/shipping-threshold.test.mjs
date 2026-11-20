@@ -38,7 +38,8 @@ test('public policies and generated product pages no longer promise the old thre
     const slug = item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
     const html = await read(`dist/products/${slug}-${item.id}.html`);
     assert.doesNotMatch(html, /\$100\b|data-free-shipping-threshold="10000"/);
-    if (item.directCheckoutEnabled !== false) assert.match(html, /free at a \$200\.00 item subtotal/);
+    if (item.directCheckoutEnabled !== false && !item.preorder) assert.match(html, /free at a \$200\.00 item subtotal/);
+    if (item.preorder) assert.match(html, /Expected shipment/);
     if (item.directCheckoutEnabled !== false) {
       assert.match(html, /data-product-order-note="[^"]+" role="status" hidden><\/div>/);
       assert.doesNotMatch(html, /away from free standard shipping|This item qualifies for free standard shipping/);

@@ -66,7 +66,8 @@ for (const item of selected) {
     url: `${publicSiteUrl}/products/${productSlug(item)}`,
     metadata: {
       dc_listing_id: item.id,
-      ebay_item_id: item.id,
+      ebay_item_id: item.websiteOnly ? '' : item.id,
+      dc_website_only: item.websiteOnly ? 'true' : '',
       dc_stock: String(currentStock),
       dc_ebay_stock: String(ebayStock),
       dc_weight_oz: String(item.shippingWeightOz),

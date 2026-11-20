@@ -2,6 +2,8 @@ import Stripe from 'stripe';
 import { appendProcessedSession, inventoryAdjustment, processedSessionIds } from '../../lib/stripe-inventory.mjs';
 import { ebayAccessToken, endEbayListing, reviseEbayQuantity } from '../../lib/ebay-api.mjs';
 import { funnelService } from '../../lib/funnel-runtime.mjs';
+import { findCatalogItem } from '../../lib/store-catalog.mjs';
+import { preorderInventory } from '../../lib/preorder-runtime.mjs';
 
 const ebayConfigured = () => ['EBAY_CLIENT_ID', 'EBAY_CLIENT_SECRET', 'EBAY_REFRESH_TOKEN']
   .every((name) => Boolean(process.env[name]));
@@ -9,6 +11,7 @@ const ebayConfigured = () => ['EBAY_CLIENT_ID', 'EBAY_CLIENT_SECRET', 'EBAY_REFR
 async function mirrorWebsiteSaleToEbay(stripe, accessToken, product, targetStock, sessionId) {
   if (!accessToken || processedSessionIds(product, 'dc_ebay_sale_sessions', 'dc_last_ebay_sale_session').includes(sessionId)) return 'not_needed';
   const itemId = product.metadata?.ebay_item_id || product.metadata?.dc_listing_id;
+  if (product.metadata?.dc_website_only === 'true' || findCatalogItem(itemId)?.websiteOnly) return 'website_only';
   if (!itemId) return 'missing_item_id';
   try {
     const listing = {
@@ -104,7 +107,12 @@ export default async (request, context) => {
     const session = event.data.object;
     if (session.metadata?.source === 'discontinuedclub.com' && session.payment_status !== 'unpaid') {
       try {
-        const { lineItems, results } = await updatePurchasedInventory(stripe, session.id);
+        const preorderItem = findCatalogItem(session.metadata.dc_preorder_item);
+        if (session.metadata.dc_preorder_item && !preorderItem?.preorder) throw new Error('Unknown preorder item');
+        if (preorderItem) await preorderInventory(context).settle(preorderItem, session);
+        const { lineItems, results } = preorderItem
+          ? { lineItems: { data: [] }, results: [{ status: 'preorder_claims_paid', item: preorderItem.id }] }
+          : await updatePurchasedInventory(stripe, session.id);
         console.log(JSON.stringify({
           event: 'direct_order_paid',
           sessionId: session.id,
@@ -125,6 +133,15 @@ export default async (request, context) => {
           return new Response('Analytics retry required', { status: 500 });
         }
       }
+    }
+  }
+
+  if (event.type === 'checkout.session.expired') {
+    const session = event.data.object;
+    const item = findCatalogItem(session.metadata?.dc_preorder_item);
+    if (session.metadata?.source === 'discontinuedclub.com' && item?.preorder) {
+      try { await preorderInventory(context).settle(item, session); }
+      catch { return new Response('Preorder inventory retry required', { status: 500 }); }
     }
   }
 

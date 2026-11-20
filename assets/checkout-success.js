@@ -18,6 +18,10 @@
     document.querySelectorAll('[data-cart-count]').forEach(function (host) { host.textContent = '0'; host.classList.remove('show'); });
     title.textContent = 'Your order is in.';
     copy.textContent = 'A Stripe receipt has been sent to ' + (data.email || 'the email used at checkout') + '. We will prepare the shipment next.';
+    if (data.preorderShipLabel) {
+      title.textContent = 'Your preorder is confirmed.';
+      copy.textContent = 'Payment received. Expected shipment: ' + data.preorderShipLabel + ', subject to the incoming delivery. This is the ship date, not the delivery date. We will contact you if it changes. To cancel before shipment, email jacob@discontinuedclub.com.';
+    }
     confirmation.hidden = false;
     confirmation.innerHTML = '<span>Order reference</span><strong>' + data.orderReference + '</strong><span>Total paid</span><strong>' + new Intl.NumberFormat('en-US', { style: 'currency', currency: data.currency || 'USD' }).format(data.amountTotal / 100) + '</strong>';
   } catch (error) {

@@ -37,7 +37,7 @@ function itemMarkup(item) {
     <g:description>${xml(description)}</g:description>
     <g:link>${xml(productUrl(item))}</g:link>
     <g:image_link>${xml(imageUrl(item))}</g:image_link>
-    <g:availability>in_stock</g:availability>
+    <g:availability>${item.preorder ? 'preorder' : 'in_stock'}</g:availability>${item.preorder ? `\n    <g:availability_date>${item.preorder.shipDate}T00:00:00-06:00</g:availability_date>` : ''}
     <g:price>${dollars(priceCents)}</g:price>
     <g:condition>${productCondition(item)}</g:condition>
     <g:brand>${xml(productBrand(item))}</g:brand>

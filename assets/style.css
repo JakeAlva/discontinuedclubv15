@@ -1,3 +1,6 @@
+.preorder-notice { margin: 16px 0; padding: 16px; background: #f1f7de; border-left: 4px solid #547514; color: #17200e; font-size: 15px; line-height: 1.5; }
+.preorder-notice p { margin: 8px 0 0; }
+.preorder-cart-note { margin: 8px 0; font-size: 14px; line-height: 1.5; color: #31470d; }
 :root {
   --ink: #111311;
   --muted: #60655f;
