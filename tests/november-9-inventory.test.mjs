@@ -3,15 +3,15 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { catalog, storeConfig, findCatalogItem, directPriceCents, maxQuantity, priceLookupKey } from '../lib/store-catalog.mjs';
 import { soldItems, slugify } from '../scripts/sold-data.mjs';
-import { currentSnapshot, novemberUpdate, november18Update, currentListingId } from './helpers/current-inventory.mjs';
+import { currentSnapshot, novemberUpdate, november20Update, currentListingId } from './helpers/current-inventory.mjs';
 import createCheckout from '../netlify/functions/create-checkout.mjs';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
 test('current catalog matches the latest verified eBay listing and unit totals', () => {
   const ebayCatalog = catalog.filter((item) => !item.websiteOnly);
-  assert.equal(ebayCatalog.length, november18Update.activeListingCount);
-  assert.equal(ebayCatalog.reduce((sum, item) => sum + maxQuantity(item), 0), november18Update.sellableUnits);
+  assert.equal(ebayCatalog.length, november20Update.activeListingCount);
+  assert.equal(ebayCatalog.reduce((sum, item) => sum + maxQuantity(item), 0), november20Update.sellableUnits);
   assert.deepEqual(ebayCatalog.map((item) => item.id).sort(), currentSnapshot.map(([id]) => id).sort());
   assert.equal(storeConfig.directDiscountPercent, 3.5);
   for (const [id, ebayCents, quantity] of currentSnapshot) {

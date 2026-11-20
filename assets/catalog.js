@@ -1,4 +1,6 @@
 const DC_CATALOG = [
+  { id: '407376262737', category: 'drinks', name: 'Bloom Pop Crisp Apple - 12 oz Single Can', detail: 'One unopened 355 mL (12 fl oz) Crisp Apple prebiotic soda can. Limited-edition, low-sugar soda, not Bloom sparkling energy', condition: 'New', price: '$6.99', image: '407376262737.webp', maxQuantity: 1, brand: 'Bloom Pop', purchaseNote: 'Each quantity buys one can, not a case. No printed best-by date or full ingredient label has been verified; contact us for those details before purchasing. Review the product photo and checkout shipping total.' },
+  { id: '407376259572', category: 'drinks', name: 'Liquid Death Blood Zero - 12 oz Single Can', detail: 'One unopened 12 fl oz (355 mL) Blood Zero sparkling energy drink can in Raspberry Cream flavor. Each quantity is one can, not a multipack', condition: 'New', price: '$6.99', image: '407376259572.webp', maxQuantity: 1, brand: 'Liquid Death', purchaseNote: 'This is the sparkling energy drink, not plain sparkling water. No printed best-by date or full ingredient label has been verified; contact us for those details before purchasing. Review the product photo and checkout shipping total.' },
   { id: 'bloom-pear-scare', category: 'drinks', name: 'Bloom Pear Scare - 12 oz Single Can', detail: 'PREORDER: one unopened 12 fl oz (355 mL) Pear Scare sparkling energy can. Payment collected now; expected to ship November 30, 2026', condition: 'New', price: '$7.99', directPriceCents: 799, image: 'bloom-pear-scare.webp', maxQuantity: 12, brand: 'Bloom Nutrition', websiteOnly: true, preorder: { batch: '2026-11-30', capacity: 12, shipDate: '2026-11-30', shipDateLabel: 'November 30, 2026', closesAt: '2026-11-30T06:00:00Z' }, purchaseNote: 'Expected shipment depends on the incoming delivery, currently expected by November 28. This is a single-can preorder, not a case. Order separately from in-stock items. The manufacturer photo shows the product design, not the exact incoming can. Printed best-by dates will be checked on arrival. Contact jacob@discontinuedclub.com to cancel before shipment. If delayed, we will contact you with an updated date and cancellation/refund options.' },
   { id: '407365349094', category: 'drinks', name: 'Mountain Dew Game Fuel Citrus Cherry - 20 oz Bottle', detail: 'One full, unopened 20 fl oz Game Fuel Citrus Cherry bottle with Xbox promotional artwork. Older collectible stock, not a fresh production release', condition: 'New', price: '$14.99', image: '407365349094.webp', maxQuantity: 1, brand: 'Mountain Dew', purchaseNote: 'For collection and display, not consumption. The eBay listing describes this as 2024 stock with Halo branding; a printed date has not been verified. The release year and promotion should not be inferred from the listing date. No usable game code or in-game reward is promised. Contact us for current bottle shape, label and seal photos; freshness, carbonation and mint cosmetic condition are not guaranteed.' },
   { id: '407365323849', category: 'drinks', name: 'Coca-Cola Orange Cream - 7.5 oz Mini Can', detail: 'One full, unopened 7.5 fl oz Orange Cream mini can from the seller-described 2025 stock. Regular Coca-Cola Orange Cream, not the Zero Sugar version or a multipack', condition: 'New', price: '$9.99', image: '407365323849.webp', maxQuantity: 1, brand: 'Coca-Cola', purchaseNote: 'Older collectible stock. A printed best-by date and full label have not been verified; contact us for those details and current condition photos before purchasing. An unopened seal does not establish freshness. This listing does not establish that every Orange Cream format has been discontinued.' },
@@ -148,6 +150,8 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407376262737': 32,
+  '407376259572': 32,
   'bloom-pear-scare': 32,
   '407365349094': 32,
   '407365323849': 16,
@@ -241,6 +245,7 @@ const DC_TAX_CODES = {
 };
 
 DC_CATALOG.forEach((item) => {
+  if (item.category === 'drinks') item.imageVersion = 'uniform-drinks-20261120';
   item.shippingWeightOz = DC_SHIPPING_WEIGHTS_OZ[item.id];
   if (item.category === 'drinks' && item.id !== '407039382525') item.taxCode = DC_TAX_CODES.softDrink;
   else if (item.category === 'apparel' && item.name.includes('Jersey')) item.taxCode = DC_TAX_CODES.sportsJersey;
@@ -252,8 +257,8 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 80 },
-  drinks: { label: 'Rare drinks', count: 43 },
+  all: { label: 'All items', count: 82 },
+  drinks: { label: 'Rare drinks', count: 45 },
   apparel: { label: 'Sports & apparel', count: 11 },
   'kids-shoes': { label: "Designer kids' shoes", count: 10 },
   collectibles: { label: 'Collectibles & cards', count: 9 },

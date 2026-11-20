@@ -49,7 +49,7 @@ test('new drink pages, clean merchant images and sitemaps match the catalog', as
     const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
     assert.equal(schema.offers.price, (directPriceCents(item) / 100).toFixed(2));
     assert.equal(schema.offers.availability, 'https://schema.org/InStock');
-    assert.equal(entry['g:image_link'], `https://discontinuedclub.com/assets/images/listings/merchant/${record.id}.webp`);
+    assert.equal(entry['g:image_link'], `https://discontinuedclub.com/assets/images/listings/merchant/${record.id}.webp?v=${item.imageVersion}`);
     for (const variant of ['branded', 'merchant']) {
       const file = new URL(`../assets/images/listings/${variant}/${record.id}.webp`, import.meta.url);
       const meta = await sharp(file.pathname).metadata();

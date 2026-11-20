@@ -45,7 +45,7 @@ test('Pepsi Blue matches the verified one-bottle eBay listing and direct discoun
   const entry = feed.find((row) => row['g:id'] === `dc-${item.id}`);
   assert.equal(entry['g:price'], '12.54 USD');
   assert.equal(entry['g:availability'], 'in_stock');
-  assert.equal(entry['g:image_link'], `https://discontinuedclub.com/assets/images/listings/merchant/${item.id}.webp`);
+  assert.equal(entry['g:image_link'], `https://discontinuedclub.com/assets/images/listings/merchant/${item.id}.webp?v=${item.imageVersion}`);
   assert.ok((await read('dist/sitemap-products.xml')).includes(`https://discontinuedclub.com/${productPath}`));
 });
 

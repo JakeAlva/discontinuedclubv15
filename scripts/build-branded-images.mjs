@@ -3,6 +3,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 import sharp from 'sharp';
 import { soldItems } from './sold-data.mjs';
+import { createDrinkImageBuffers } from '../lib/drink-images.mjs';
 
 const require = createRequire(import.meta.url);
 const { catalog } = require('../assets/catalog.js');
@@ -14,7 +15,8 @@ const merchantOutputDir = path.join(listingDir, 'merchant');
 const soldOutputDir = path.join(soldDir, 'branded');
 const white = { r: 255, g: 255, b: 255, alpha: 1 };
 const onlyId = process.argv.find((arg) => arg.startsWith('--only='))?.slice(7);
-const selectedCatalog = catalog.filter((item) => !onlyId || item.id === onlyId);
+const category = process.argv.find((arg) => arg.startsWith('--category='))?.slice(11);
+const selectedCatalog = catalog.filter((item) => (!onlyId || item.id === onlyId) && (!category || item.category === category));
 
 // Storefront assets are branded. Merchant assets stay free of retailer overlays for Google Shopping.
 
@@ -206,17 +208,25 @@ async function buildMerchantImage(source, destination) {
 }
 
 for (let index = 0; index < selectedCatalog.length; index += 6) {
-  await Promise.all(selectedCatalog.slice(index, index + 6).flatMap((item) => {
+  await Promise.all(selectedCatalog.slice(index, index + 6).map(async (item) => {
     const storefrontSource = path.join(listingDir, item.image);
     const merchantSource = path.join(listingDir, jerseyPhotoSources.get(item.id) || item.image);
-    return [
+    if (item.category === 'drinks') {
+      const images = await createDrinkImageBuffers(storefrontSource, { root });
+      await Promise.all([
+        fs.writeFile(path.join(listingOutputDir, `${item.id}.webp`), images.branded),
+        fs.writeFile(path.join(merchantOutputDir, `${item.id}.webp`), images.merchant)
+      ]);
+      return;
+    }
+    return Promise.all([
       buildBrandedImage(storefrontSource, path.join(listingOutputDir, `${item.id}.webp`)),
       buildMerchantImage(merchantSource, path.join(merchantOutputDir, `${item.id}.webp`))
-    ];
+    ]);
   }));
 }
 
-const soldWithImages = soldItems.filter((item) => item.imageUrl && (!onlyId || item.id === onlyId));
+const soldWithImages = category ? [] : soldItems.filter((item) => item.imageUrl && (!onlyId || item.id === onlyId));
 for (let index = 0; index < soldWithImages.length; index += 6) {
   await Promise.all(soldWithImages.slice(index, index + 6).map((item) => buildBrandedImage(
     path.join(soldDir, `${item.id}.webp`),

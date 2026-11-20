@@ -5,7 +5,7 @@ import sharp from 'sharp';
 import { XMLParser } from 'fast-xml-parser';
 import { catalog, categories, directPriceCents, maxQuantity, parsePriceCents, storeConfig } from '../lib/store-catalog.mjs';
 import createCheckout from '../netlify/functions/create-checkout.mjs';
-import { currentSnapshot, currentListingId, novemberUpdate, november16Update } from './helpers/current-inventory.mjs';
+import { currentSnapshot, currentListingId, novemberUpdate, november16Update, november20Update } from './helpers/current-inventory.mjs';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 const audit = JSON.parse(await read('data/ebay-inventory-update-2026-10-19.json'));
@@ -19,7 +19,7 @@ const active = audit.activeSnapshot.filter(([id]) => !soldIds.has(id) && !novemb
 const slug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
 
 test('October 19 listings reflect subsequent verified sales and relistings', () => {
-  assert.equal(catalog.filter((item) => !item.websiteOnly).length, november16Update.activeListingCount);
+  assert.equal(catalog.filter((item) => !item.websiteOnly).length, november20Update.activeListingCount);
   assert.deepEqual(catalog.filter((item) => !item.websiteOnly).map((item) => item.id).sort(), [...current.keys()].sort());
   for (const [previousId, price, quantity] of active) {
     const id = currentListingId(previousId);
@@ -27,8 +27,8 @@ test('October 19 listings reflect subsequent verified sales and relistings', () 
     assert.equal(parsePriceCents(item.price), current.get(id)?.price ?? price, `${id} eBay price`);
     assert.equal(maxQuantity(item), current.get(id)?.quantity ?? quantity, `${id} quantity`);
   }
-  assert.equal(categories.all.count, november16Update.activeListingCount + catalog.filter((item) => item.websiteOnly).length);
-  assert.equal(categories.drinks.count, 42 + catalog.filter((item) => item.websiteOnly && item.category === 'drinks').length);
+  assert.equal(categories.all.count, november20Update.activeListingCount + catalog.filter((item) => item.websiteOnly).length);
+  assert.equal(categories.drinks.count, 44 + catalog.filter((item) => item.websiteOnly && item.category === 'drinks').length);
   assert.equal(categories.home.count, 3);
   assert.equal(categories['kids-shoes'].count, 10);
   assert.equal(catalog.at(-1).id, '406760868081');
@@ -59,7 +59,7 @@ test('new listings have matching prices, weights, schema, feed entries and clear
     assert.equal(schema.offers.price, (currentDirectCents / 100).toFixed(2));
     const entry = feed.find((row) => row['g:id'] === `dc-${record.id}`);
     assert.equal(entry['g:price'], `${(currentDirectCents / 100).toFixed(2)} USD`);
-    assert.equal(entry['g:image_link'], `https://discontinuedclub.com/assets/images/listings/merchant/${record.id}.webp`);
+    assert.equal(entry['g:image_link'], `https://discontinuedclub.com/assets/images/listings/merchant/${record.id}.webp${item.imageVersion ? `?v=${item.imageVersion}` : ''}`);
     for (const variant of ['merchant', 'branded']) {
       const image = new URL(`../assets/images/listings/${variant}/${record.id}.webp`, import.meta.url);
       const meta = await sharp(image.pathname).metadata();
