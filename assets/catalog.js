@@ -245,7 +245,7 @@ const DC_TAX_CODES = {
 };
 
 DC_CATALOG.forEach((item) => {
-  if (item.category === 'drinks') item.imageVersion = 'uniform-drinks-20261120';
+  item.imageVersion = item.category === 'drinks' ? 'uniform-drinks-20261120' : 'uniform-listings-20261120';
   item.shippingWeightOz = DC_SHIPPING_WEIGHTS_OZ[item.id];
   if (item.category === 'drinks' && item.id !== '407039382525') item.taxCode = DC_TAX_CODES.softDrink;
   else if (item.category === 'apparel' && item.name.includes('Jersey')) item.taxCode = DC_TAX_CODES.sportsJersey;

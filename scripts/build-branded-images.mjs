@@ -4,6 +4,7 @@ import { createRequire } from 'node:module';
 import sharp from 'sharp';
 import { soldItems } from './sold-data.mjs';
 import { createDrinkImageBuffers } from '../lib/drink-images.mjs';
+import { createUniformListingImageBuffers } from '../lib/listing-image-template.mjs';
 
 const require = createRequire(import.meta.url);
 const { catalog } = require('../assets/catalog.js');
@@ -16,11 +17,19 @@ const soldOutputDir = path.join(soldDir, 'branded');
 const white = { r: 255, g: 255, b: 255, alpha: 1 };
 const onlyId = process.argv.find((arg) => arg.startsWith('--only='))?.slice(7);
 const category = process.argv.find((arg) => arg.startsWith('--category='))?.slice(11);
+const activeOnly = process.argv.includes('--active-only');
+const storefrontOnly = process.argv.includes('--storefront-only');
 const selectedCatalog = catalog.filter((item) => (!onlyId || item.id === onlyId) && (!category || item.category === category));
 
 // Storefront assets are branded. Merchant assets stay free of retailer overlays for Google Shopping.
 
 const bottomBrandedSources = new Set([
+  '407365004609.webp',
+  '407363501696.webp',
+  '407365194694.webp',
+  '407321244836.webp',
+  '407276996786.webp',
+  '407274649287.webp',
   '407301997130.webp',
   '407300260883.webp',
   '407343435479.webp',
@@ -76,6 +85,18 @@ const bottomBrandedSources = new Set([
   '407134856526.webp'
 ]);
 const topBrandedSources = new Set(['8167a13655984166.webp']);
+const reviewedBottom = {
+  '407365004609.webp': 0.81,
+  '407202995940.webp': 0.91,
+  '3dd9f435b93f0c64.webp': 0.90,
+  '45cd4bede45565c5.webp': 0.90
+};
+// The old Etnies mark sits between the shoes; masking only its three lines preserves both collars.
+const etniesLogoMasks = [
+  { left: 423, top: 0, width: 62, height: 55 },
+  { left: 392, top: 57, width: 127, height: 17 },
+  { left: 408, top: 77, width: 95, height: 10 }
+];
 const packLabelSources = new Set(['407293550787.webp', '407293533835.webp', '407293531323.webp']);
 const jerseyPhotoSources = new Map([
   ['407064120905', 'fa4d28756c19b882.webp'],
@@ -96,22 +117,6 @@ await Promise.all([
   fs.mkdir(soldOutputDir, { recursive: true })
 ]);
 
-const logoMark = await sharp(path.join(root, 'assets/images/logo-mark-clean.png'))
-  .resize(58, 58, { fit: 'contain' })
-  .png()
-  .toBuffer();
-
-const logoType = Buffer.from(`
-  <svg width="240" height="62" xmlns="http://www.w3.org/2000/svg">
-    <style>
-      .name { font: 900 17px Arial, sans-serif; letter-spacing: 1.2px; }
-      .club { font: 800 11px Arial, sans-serif; letter-spacing: 7px; }
-    </style>
-    <text class="name" x="0" y="24" fill="#111311">DISCONTINUED</text>
-    <text class="club" x="0" y="50" fill="#111311">CLUB</text>
-  </svg>
-`);
-
 async function buildBrandedImage(source, destination) {
   const fileName = path.basename(source);
   const metadata = await sharp(source).metadata();
@@ -121,11 +126,7 @@ async function buildBrandedImage(source, destination) {
   let height = metadata.height;
 
   if (!width || !height) throw new Error(`Could not read image dimensions: ${source}`);
-  if (bottomBrandedSources.has(fileName)) height = Math.max(1, Math.round(height * (fileName === '407253023756.webp' ? 0.90 : 0.865)));
-  if (topBrandedSources.has(fileName)) {
-    top = Math.round(height * 0.12);
-    height -= top;
-  }
+  if (bottomBrandedSources.has(fileName)) height = Math.max(1, Math.round(height * (reviewedBottom[fileName] || (fileName === '407253023756.webp' ? 0.90 : 0.865))));
   if (packLabelSources.has(fileName)) {
     top = Math.round(metadata.height * 0.20);
     height -= top;
@@ -136,26 +137,10 @@ async function buildBrandedImage(source, destination) {
     productInput = await sharp(source).extract({ left, top, width, height }).toBuffer();
   }
 
-  const product = await sharp(productInput)
-    .flatten({ background: white })
-    .trim({ background: white, threshold: 14 })
-    .resize(1080, 1000, {
-      fit: 'contain',
-      background: white,
-      withoutEnlargement: false
-    })
-    .webp({ quality: 94, effort: 5 })
-    .toBuffer();
-
-  await sharp({ create: { width: 1200, height: 1200, channels: 4, background: white } })
-    .composite([
-      { input: product, left: 60, top: 24 },
-      { input: logoMark, left: 450, top: 1084 },
-      { input: logoType, left: 526, top: 1082 }
-    ])
-    .flatten({ background: white })
-    .webp({ quality: 94, effort: 5, smartSubsample: true })
-    .toFile(destination);
+  const images = await createUniformListingImageBuffers(productInput, {
+    root, masks: fileName === '8167a13655984166.webp' ? etniesLogoMasks : []
+  });
+  await fs.writeFile(destination, images.branded);
 }
 
 async function buildMerchantImage(source, destination) {
@@ -215,18 +200,18 @@ for (let index = 0; index < selectedCatalog.length; index += 6) {
       const images = await createDrinkImageBuffers(storefrontSource, { root });
       await Promise.all([
         fs.writeFile(path.join(listingOutputDir, `${item.id}.webp`), images.branded),
-        fs.writeFile(path.join(merchantOutputDir, `${item.id}.webp`), images.merchant)
+        ...(!storefrontOnly ? [fs.writeFile(path.join(merchantOutputDir, `${item.id}.webp`), images.merchant)] : [])
       ]);
       return;
     }
     return Promise.all([
       buildBrandedImage(storefrontSource, path.join(listingOutputDir, `${item.id}.webp`)),
-      buildMerchantImage(merchantSource, path.join(merchantOutputDir, `${item.id}.webp`))
+      ...(!storefrontOnly ? [buildMerchantImage(merchantSource, path.join(merchantOutputDir, `${item.id}.webp`))] : [])
     ]);
   }));
 }
 
-const soldWithImages = category ? [] : soldItems.filter((item) => item.imageUrl && (!onlyId || item.id === onlyId));
+const soldWithImages = category || activeOnly ? [] : soldItems.filter((item) => item.imageUrl && (!onlyId || item.id === onlyId));
 for (let index = 0; index < soldWithImages.length; index += 6) {
   await Promise.all(soldWithImages.slice(index, index + 6).map((item) => buildBrandedImage(
     path.join(soldDir, `${item.id}.webp`),
@@ -234,4 +219,4 @@ for (let index = 0; index < soldWithImages.length; index += 6) {
   )));
 }
 
-console.log(`Built ${selectedCatalog.length} branded storefront images, ${selectedCatalog.length} clean merchant images, and ${soldWithImages.length} sold branded images.`);
+console.log(`Built ${selectedCatalog.length} branded storefront images, ${storefrontOnly ? 0 : selectedCatalog.length} clean merchant images, and ${soldWithImages.length} sold branded images.`);

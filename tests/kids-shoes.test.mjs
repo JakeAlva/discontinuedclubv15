@@ -12,7 +12,7 @@ const productPath = 'products/balenciaga-triple-s-kids-sneakers-eu-26-us-9-5-407
 
 for (const expected of [
   { id: '407277346224', price: '$74.99', directCents: 7237, brand: 'adidas', size: '28', photos: 6, mpn: 'EF2905' },
-  { id: '407277320481', price: '$69.99', directCents: 6754, brand: 'adidas', size: '27', photos: 6, mpn: 'FX9033', imageVersion: '20261008-2' },
+  { id: '407277320481', price: '$69.99', directCents: 6754, brand: 'adidas', size: '27', photos: 6, mpn: 'FX9033', imageVersion: 'uniform-listings-20261120' },
   { id: '407277242488', price: '$74.99', directCents: 7237, brand: 'adidas', size: '28', photos: 6, mpn: 'EG7492' },
   { id: '407277210158', price: '$64.99', directCents: 6272, brand: 'Burberry', size: '25', photos: 5 }
 ]) {
@@ -122,7 +122,7 @@ test('product page includes six condition photos, disclosure and searchable sche
   assert.equal(schema.offers.price, '168.87');
   assert.equal(schema.size.name, '26');
   assert.equal(schema.image.length, 6);
-  assert.equal(item.imageVersion, '20261008-2');
+  assert.equal(item.imageVersion, 'uniform-listings-20261120');
   for (const image of schema.image) assert.equal(new URL(image).searchParams.get('v'), item.imageVersion);
   for (const [, src] of html.matchAll(/data-product-gallery-src="([^"]+)"/g)) {
     assert.equal(new URL(src, 'https://discontinuedclub.com').searchParams.get('v'), item.imageVersion);

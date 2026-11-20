@@ -4,13 +4,12 @@ import sharp from 'sharp';
 import { catalog } from '../lib/store-catalog.mjs';
 import { drinkPhotoCrops } from '../lib/drink-images.mjs';
 
-const drinks = catalog.filter((item) => item.category === 'drinks');
 const listingPath = (file) => new URL(`../assets/images/listings/${file}`, import.meta.url).pathname;
 
-test('every current drink has the same branded footer and cache version', async () => {
+test('every current listing has the same branded footer and a refreshed cache version', async () => {
   let reference;
-  for (const item of drinks) {
-    assert.equal(item.imageVersion, 'uniform-drinks-20261120');
+  for (const item of catalog) {
+    assert.equal(item.imageVersion, item.category === 'drinks' ? 'uniform-drinks-20261120' : 'uniform-listings-20261120');
     const image = sharp(listingPath(`branded/${item.id}.webp`));
     const meta = await image.metadata();
     assert.equal(meta.width, 1200, item.id);
@@ -20,9 +19,11 @@ test('every current drink has the same branded footer and cache version', async 
     const meanDifference = footer.reduce((sum, value, i) => sum + Math.abs(value - reference[i]), 0) / footer.length;
     assert.ok(meanDifference < 1, `${item.id}: the logo footer changed`);
     assert.ok(footer.some((value) => value < 100), `${item.id}: footer is empty`);
-    const merchant = await sharp(listingPath(`merchant/${item.id}.webp`)).metadata();
-    assert.equal(merchant.width, 1200);
-    assert.equal(merchant.height, 1200);
+    if (item.category === 'drinks') {
+      const merchant = await sharp(listingPath(`merchant/${item.id}.webp`)).metadata();
+      assert.equal(merchant.width, 1200);
+      assert.equal(merchant.height, 1200);
+    }
   }
 });
 
