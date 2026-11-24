@@ -51,12 +51,12 @@ function productPage(item) {
     ? `https://discontinuedclub.com/assets/images/sold/${item.image}`
     : 'https://discontinuedclub.com/assets/images/logo-mark-clean.png';
   const displayImageUrl = item.image
-    ? `https://discontinuedclub.com/assets/images/sold/branded/${item.id}.webp`
+    ? `https://discontinuedclub.com/assets/images/sold/branded/${item.id}.webp?v=uniform-sold-20261124`
     : imageUrl;
   const description = `${item.name} at Discontinued Club. ${item.availableAgain ? 'See the current listing for availability.' : 'Currently out of stock. Request a personal email if we find more.'}`;
   const status = item.availableAgain ? 'View current listing' : 'Out of stock';
   const media = item.image
-    ? `<img src="assets/images/sold/branded/${item.id}.webp" alt="${escapeHtml(item.name)} previously sold by Discontinued Club" width="1200" height="1200">`
+    ? `<img src="assets/images/sold/branded/${item.id}.webp?v=uniform-sold-20261124" alt="${escapeHtml(item.name)} previously sold by Discontinued Club" width="1200" height="1200">`
     : '<div class="sold-placeholder"><img src="assets/images/logo-mark-clean.png" alt=""><span>Original image unavailable</span></div>';
   const activeItem = catalog.find((active) => active.id === (replacementListings[item.id] || item.id));
   const primaryHref = activeItem ? `products/${activeItem.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${activeItem.id}.html` : `contact.html?restock=${item.id}`;

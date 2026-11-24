@@ -18,7 +18,7 @@ function productCard(item) {
 
 async function soldCard(item, root) {
   const href = `sold/${slugify(item.name)}-${item.id}.html`;
-  const src = `assets/images/sold/branded/${item.id}.webp`;
+  const src = `assets/images/sold/branded/${item.id}.webp?v=uniform-sold-20261124`;
   const hasImage = await access(resolve(root, src)).then(() => true, () => false);
   const image = hasImage ? `<img src="${src}" alt="${escape(item.name)}" width="1200" height="1200" loading="lazy">` : '<div class="sold-placeholder">Photo unavailable</div>';
   return `<article class="product-card sold-card" data-category="${item.category}" data-availability="out"><a class="product-image" href="${href}">${image}<span class="condition-badge sold-badge">Out of stock</span></a><div class="product-content"><div class="product-category">${escape(label(item.category))}</div><div class="product-name"><a href="${href}">${escape(item.name)}</a></div><div class="product-detail">Currently unavailable. Ask to hear from us if we find more.</div><div class="product-actions"><a class="btn btn-light product-add" href="contact.html?restock=${item.id}">Notify me</a><a class="text-link" href="${href}">View item &rarr;</a></div></div></article>`;

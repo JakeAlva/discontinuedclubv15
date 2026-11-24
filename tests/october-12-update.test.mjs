@@ -27,20 +27,19 @@ test('collectibles show bundles together, then single packs and the loose lot, w
   assert.ok(positions.every((position, index) => position >= 0 && (!index || position > positions[index - 1])));
 });
 
-test('sold bundle archive images retain the DC footer', async () => {
-  const footer = { left: 440, top: 1070, width: 340, height: 90 };
-  const reference = await sharp(resolve(root, 'assets/images/listings/branded/407260159541.webp'))
+test('sold bundle images use the current uniform DC footer', async () => {
+  const footer = { left: 0, top: 1024, width: 1200, height: 176 };
+  const reference = await sharp(resolve(root, 'assets/images/listings/branded/407376262737.webp'))
     .extract(footer).greyscale().raw().toBuffer();
   for (const [id] of additions) {
-    const brandedPath = `assets/images/listings/branded/${id}.webp`;
+    const brandedPath = `assets/images/sold/branded/${id}.webp`;
     const branded = await readFile(resolve(root, brandedPath));
     const merchant = await readFile(resolve(root, `assets/images/listings/merchant/${id}.webp`));
-    assert.notDeepEqual(branded, merchant, 'Storefront branding must not be replaced with the merchant image');
+    assert.equal(branded.equals(merchant), false, 'Storefront branding must not be replaced with the merchant image');
     const actual = await sharp(branded).extract(footer).greyscale().raw().toBuffer();
     const difference = actual.reduce((sum, value, index) => sum + Math.abs(value - reference[index]), 0) / actual.length;
     assert.ok(difference < 3, `DC footer must match the established placement: ${difference}`);
     assert.equal(findCatalogItem(id), undefined);
-    assert.deepEqual(await readFile(resolve(root, `assets/images/sold/branded/${id}.webp`)), branded);
   }
 });
 

@@ -226,7 +226,7 @@
         const unavailable = item.browsable === true;
         const price = unavailable ? 'Out of stock' : directCheckoutEnabled && item.directCheckoutEnabled !== false ? formatMoney(getDirectPriceCents(item)) : item.price;
         const href = unavailable ? 'sold/' + item.slug + '.html' : productSlug(item);
-        const image = unavailable ? (item.image ? 'assets/images/sold/branded/' + item.id + '.webp' : 'assets/images/logo-mark-clean.png') : listingImagePath(item, 'branded', false);
+        const image = unavailable ? (item.image ? 'assets/images/sold/branded/' + item.id + '.webp?v=uniform-sold-20261124' : 'assets/images/logo-mark-clean.png') : listingImagePath(item, 'branded', false);
         return '<li><a class="header-search-result" href="' + href + '"><img src="' + image + '" alt="" width="64" height="64"><span class="header-search-copy"><small>' + escapeHtml(categoryLabels[item.category] || 'Current inventory') + '</small><strong>' + escapeHtml(item.name) + '</strong></span><b>' + escapeHtml(price) + '</b></a></li>';
       }).join('');
     }
@@ -303,7 +303,7 @@
 
   function soldCard(item) {
     const image = item.image
-      ? '<img src="assets/images/sold/branded/' + item.id + '.webp" alt="' + escapeHtml(item.name) + '" loading="lazy" width="1200" height="1200">'
+      ? '<img src="assets/images/sold/branded/' + item.id + '.webp?v=uniform-sold-20261124" alt="' + escapeHtml(item.name) + '" loading="lazy" width="1200" height="1200">'
       : '<div class="sold-placeholder"><img src="assets/images/logo-mark-clean.png" alt=""><span>Photo unavailable</span></div>';
     const href = 'sold/' + item.slug + '.html';
     return [
