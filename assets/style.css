@@ -328,6 +328,18 @@ body[data-page="home"] .archive-promo { grid-template-columns: .9fr 1.3fr auto; 
 .shop-toolbar { position: sticky; top: 106px; z-index: 60; border-bottom: 1px solid var(--line); background: rgba(255,255,255,.96); backdrop-filter: blur(14px); }
 #current-inventory, #sold-inventory, #rare-drinks, #journal { scroll-margin-top: 176px; }
 .shop-toolbar-inner { min-height: 78px; display: flex; align-items: center; gap: 22px; }
+.catalog-availability { display: flex; flex-direction: column; gap: 4px; font-size: 12px; font-weight: 700; flex-shrink: 0; margin: 10px 0; }
+.catalog-availability select { font: inherit; font-size: 14px; color: #181818; background: #fff; border: 1px solid #bbb; border-radius: 4px; padding: 10px 28px 10px 10px; min-height: 42px; }
+.restock-link { display: block; font-size: 14px; margin: 8px 0; }
+.restock-request .contact-details { display: none; }
+.restock-request .contact-layout { grid-template-columns: minmax(0, 1fr); max-width: 760px; }
+.header-shop { white-space: nowrap; }
+.restock-link[hidden], [data-restock-consent][hidden] { display: none; }
+.restock-consent { display: flex; align-items: flex-start; gap: 9px; font-weight: 600; }
+.restock-consent input { margin-top: 4px; flex-shrink: 0; }
+.restock-note { color: #595959; font-size: 14px; line-height: 1.6; margin-top: 10px; }
+.sold-card .product-content { display: flex; flex-direction: column; height: auto; }
+.sold-card .product-actions { margin-top: auto; padding-top: 16px; }
 .catalog-search { position: relative; flex: 1 1 320px; max-width: 420px; }
 .catalog-search input { width: 100%; height: 44px; padding: 0 42px 0 14px; border: 1px solid var(--line-dark); border-radius: 5px; outline: 0; background: #fff; }
 .catalog-search input:focus { border-color: var(--ink); }

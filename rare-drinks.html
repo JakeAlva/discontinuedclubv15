@@ -45,9 +45,11 @@
       <div class="container">
         <div class="section-head">
           <div><div class="section-kicker">Current collection</div><div class="section-title">Shop all rare drinks</div></div>
-          <div class="section-copy">Browse every current drink here and check out securely on this site for the lowest price. Matching eBay listings remain available too.</div>
+          <div class="section-copy">Shop available drinks or ask to hear if an out-of-stock favorite returns.</div>
         </div>
-        <div class="product-grid" data-catalog data-shop-catalog data-category="drinks"></div>
+        <label class="catalog-availability">Availability<select id="catalog-availability"><option value="all">All drinks</option><option value="in">Available online</option><option value="out">Out of stock</option></select></label>
+        <div class="product-grid" data-catalog data-shop-catalog data-category="drinks" data-include-sold></div>
+        <div class="catalog-empty" id="catalog-empty"><h2>No drinks match that availability.</h2></div>
       </div>
     </section>
 
@@ -62,6 +64,7 @@
 
   <div id="site-footer"></div>
   <script src="assets/catalog.js?v=38"></script>
+  <script src="assets/sold-catalog.js?v=38"></script>
   <script src="assets/app.js?v=38"></script>
 </body>
 </html>

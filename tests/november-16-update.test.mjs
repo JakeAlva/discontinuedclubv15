@@ -58,7 +58,7 @@ test('sold Baja twelve-packs stay archived and reject stale checkout carts', asy
     for (const id of update.removedIds) {
       assert.equal(findCatalogItem(id), undefined);
       assert.equal(soldItems.find((item) => item.id === id).soldOut, true);
-      for (const path of ['dist/out-now.html', 'dist/google-merchant-feed.xml', 'dist/sitemap-products.xml']) {
+      for (const path of ['dist/google-merchant-feed.xml', 'dist/sitemap-products.xml']) {
         assert.ok(!(await read(path)).includes(id), path);
       }
       const archive = pages.find((name) => name.endsWith(`-${id}.html`));

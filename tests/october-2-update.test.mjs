@@ -26,7 +26,7 @@ test('Journey Together restock is now archived after its October 27 sellout', as
   assert.equal(soldItems.find((item) => item.id === '407195902675').soldOut, true);
   const html = await read(href.replace('products/', 'sold/'));
   const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
-  assert.equal(schema.offers.price, '39.99');
+  assert.equal(schema.offers.price, undefined);
   assert.equal(schema.offers.availability, 'https://schema.org/OutOfStock');
   assert.ok(!html.includes(`data-add-to-cart="${id}"`));
   assert.ok(!(await read('sitemap-products.xml')).includes(href));

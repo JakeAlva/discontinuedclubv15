@@ -46,7 +46,6 @@
   const navItems = [
     { href: 'out-now.html', label: 'Shop', key: 'shop' },
     { href: 'rare-drinks.html', label: 'Rare Drinks', key: 'drinks' },
-    { href: 'sold-archive.html', label: 'Sold Archive', key: 'archive' },
     { href: 'blog.html', label: 'Journal', key: 'blog' },
     { href: 'about.html', label: 'About', key: 'about' }
   ];
@@ -141,7 +140,7 @@
       '    <div class="footer-main">',
       '      <div class="footer-brand"><a class="footer-logo" href="index.html"><img src="assets/images/logo-mark-clean.png" alt=""><span class="logo-type"><strong>Discontinued</strong><small>Club</small></span></a><p>A focused resale store for rare drinks, discontinued goods, sports gear, collectibles, and everyday products that are getting harder to find.</p></div>',
       '      <div class="footer-column"><strong>Shop</strong><a href="out-now.html">All listings</a><a href="out-now.html?category=drinks">Rare drinks</a><a href="out-now.html?category=apparel">Sports & apparel</a><a href="out-now.html?category=kids-shoes">Designer kids&#39; shoes</a></div>',
-      '      <div class="footer-column"><strong>Discover</strong><a href="sold-archive.html">Previously sold</a><a href="blog.html">Discontinued journal</a><a href="discontinued-energy-drink-flavors-2026.html">2026 flavor index</a></div>',
+      '      <div class="footer-column"><strong>Discover</strong><a href="blog.html">Discontinued journal</a><a href="discontinued-energy-drink-flavors-2026.html">2026 flavor index</a></div>',
       '      <div class="footer-column"><strong>Discontinued Club</strong><a href="about.html">About</a><a href="reviews.html">Customer reviews</a><a href="contact.html">Contact</a><a href="' + EBAY_STORE + '" target="_blank" rel="noopener">eBay profile</a></div>',
       '      <div class="footer-column"><strong>Policies</strong><a href="shipping-returns.html">Shipping & returns</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div>',
       '    </div>',
@@ -216,7 +215,7 @@
 
     function update() {
       const query = input.value.trim();
-      const matches = catalog.filter(function (item) {
+      const matches = catalog.concat(soldCatalog.filter(function (item) { return item.browsable; })).filter(function (item) {
         return matchesProductSearch(item.name + ' ' + item.detail + ' ' + categoryLabels[item.category], query);
       });
       status.textContent = query ? matches.length + (matches.length === 1 ? ' matching product' : ' matching products') : 'Current listings';
@@ -224,8 +223,11 @@
       all.disabled = matches.length === 0;
       all.textContent = query ? (matches.length === 1 ? 'View 1 result' : 'View all ' + matches.length + ' results') : 'Browse all listings';
       results.innerHTML = matches.slice(0, 6).map(function (item) {
-        const price = directCheckoutEnabled && item.directCheckoutEnabled !== false ? formatMoney(getDirectPriceCents(item)) : item.price;
-        return '<li><a class="header-search-result" href="' + productSlug(item) + '"><img src="' + listingImagePath(item, 'branded', false) + '" alt="" width="64" height="64"><span class="header-search-copy"><small>' + escapeHtml(categoryLabels[item.category] || 'Current inventory') + '</small><strong>' + escapeHtml(item.name) + '</strong></span><b>' + escapeHtml(price) + '</b></a></li>';
+        const unavailable = item.browsable === true;
+        const price = unavailable ? 'Out of stock' : directCheckoutEnabled && item.directCheckoutEnabled !== false ? formatMoney(getDirectPriceCents(item)) : item.price;
+        const href = unavailable ? 'sold/' + item.slug + '.html' : productSlug(item);
+        const image = unavailable ? (item.image ? 'assets/images/sold/branded/' + item.id + '.webp' : 'assets/images/logo-mark-clean.png') : listingImagePath(item, 'branded', false);
+        return '<li><a class="header-search-result" href="' + href + '"><img src="' + image + '" alt="" width="64" height="64"><span class="header-search-copy"><small>' + escapeHtml(categoryLabels[item.category] || 'Current inventory') + '</small><strong>' + escapeHtml(item.name) + '</strong></span><b>' + escapeHtml(price) + '</b></a></li>';
       }).join('');
     }
 
@@ -301,20 +303,18 @@
 
   function soldCard(item) {
     const image = item.image
-      ? '<img src="assets/images/sold/branded/' + item.id + '.webp" alt="' + escapeHtml(item.name + ' previously sold by Discontinued Club') + '" loading="lazy" width="1200" height="1200">'
-      : '<div class="sold-placeholder"><img src="assets/images/logo-mark-clean.png" alt=""><strong>Sold archive</strong><span>Original image unavailable</span></div>';
-    const status = item.availableAgain ? 'Available again' : item.soldOut ? 'Sold out' : 'Previously sold';
+      ? '<img src="assets/images/sold/branded/' + item.id + '.webp" alt="' + escapeHtml(item.name) + '" loading="lazy" width="1200" height="1200">'
+      : '<div class="sold-placeholder"><img src="assets/images/logo-mark-clean.png" alt=""><span>Photo unavailable</span></div>';
+    const href = 'sold/' + item.slug + '.html';
     return [
-      '<article class="product-card sold-card" data-category="' + item.category + '" data-search="' + escapeHtml(item.name.toLowerCase()) + '">',
-      '  <a href="sold/' + item.slug + '.html" aria-label="View the archive record for ' + escapeHtml(item.name) + '">',
-      '    <div class="product-image">' + image + '<span class="condition-badge sold-badge' + (item.availableAgain ? ' available' : '') + '">' + status + '</span></div>',
+      '<article class="product-card sold-card" data-availability="out" data-category="' + item.category + '" data-search="' + escapeHtml(item.name.toLowerCase()) + '">',
+      '  <a class="product-image" href="' + href + '">' + image + '<span class="condition-badge sold-badge">Out of stock</span></a>',
       '    <div class="product-content">',
       '      <div class="product-category">' + categoryLabels[item.category] + '</div>',
-      '      <div class="product-name">' + escapeHtml(item.name) + '</div>',
-      '      <div class="product-detail">Real Discontinued Club sales record</div>',
-      '      <div class="product-bottom"><span class="sold-price"><small>' + escapeHtml(item.priceLabel || 'Recorded sale') + '</small><strong>' + item.price + '</strong></span><span class="product-buy">View archive &rarr;</span></div>',
+      '      <div class="product-name"><a href="' + href + '">' + escapeHtml(item.name) + '</a></div>',
+      '      <div class="product-detail">Currently unavailable. Ask to hear from us if we find more.</div>',
+      '      <div class="product-actions"><a class="btn btn-light product-add" href="contact.html?restock=' + encodeURIComponent(item.id) + '">Notify me</a><a class="text-link" href="' + href + '">View item &rarr;</a></div>',
       '    </div>',
-      '  </a>',
       '</article>'
     ].join('');
   }
@@ -359,7 +359,7 @@
     const stock = getMaxQuantity(item);
     if (item.preorder) return stock === 0 ? 'Preorder unavailable' : stock + ' available for preorder';
     if (item.category === 'kids-shoes' && stock > 0) return stock + (stock === 1 ? ' pair available online' : ' pairs available online');
-    return stock === 0 ? 'Sold out' : stock + ' available online';
+    return stock === 0 ? 'Out of stock' : stock + ' available online';
   }
 
   function syncInventoryDisplay() {
@@ -372,6 +372,7 @@
       picker.dispatchEvent(new Event('inventorychange'));
     });
     renderCart();
+    document.dispatchEvent(new Event('dc:inventory-updated'));
   }
 
   function reconcileCartInventory() {
@@ -476,7 +477,7 @@
 
       if (atLimit) buttonLabel = singlePair || maxQuantity === 1 ? 'In your cart' : 'Online limit reached';
       else if (quantity > 0) buttonLabel = 'Add another';
-      if (soldOut) buttonLabel = item.preorder ? 'Preorder unavailable' : 'Sold out';
+      if (soldOut) buttonLabel = item.preorder ? 'Preorder unavailable' : 'Out of stock';
       if (unavailable) buttonLabel = inventoryState === 'loading' ? 'Checking stock' : 'Stock unavailable';
 
       const limitMessage = singlePair ? 'This pair is already in your cart' : 'The online quantity limit is already in your cart';
@@ -495,6 +496,18 @@
         button.setAttribute('aria-label', item.name + ': ' + buttonLabel.toLowerCase());
         if (arrow) arrow.textContent = '';
       }
+      let restock = button.parentElement.querySelector('[data-restock-link="' + id + '"]');
+      if (soldOut && !restock) {
+        restock = document.createElement('a');
+        restock.className = 'text-link restock-link';
+        restock.dataset.restockLink = id;
+        restock.href = 'contact.html?restock=' + encodeURIComponent(id);
+        restock.textContent = 'Notify me when back in stock';
+        button.insertAdjacentElement('afterend', restock);
+      }
+      if (restock) restock.hidden = !soldOut;
+      const card = button.closest('.product-card');
+      if (card) card.dataset.availability = soldOut ? 'out' : unavailable ? 'unknown' : 'in';
     });
 
     document.querySelectorAll('[data-product-action-feedback]').forEach(function (host) {
@@ -858,6 +871,11 @@
       if (featuredOnly) items = items.filter(function (item) { return item.featured; });
       if (limit > 0) items = items.slice(0, limit);
       host.innerHTML = items.map(productCard).join('');
+      if (host.hasAttribute('data-include-sold')) {
+        host.insertAdjacentHTML('beforeend', soldCatalog.filter(function (item) {
+          return item.browsable && (category === 'all' || item.category === category);
+        }).map(soldCard).join(''));
+      }
     });
   }
 
@@ -875,18 +893,21 @@
     const tabs = Array.from(document.querySelectorAll('[data-filter-category]'));
     const count = document.getElementById('catalog-count');
     const empty = document.getElementById('catalog-empty');
+    const availability = document.getElementById('catalog-availability');
     const params = new URLSearchParams(window.location.search);
     let currentCategory = categories[params.get('category')] ? params.get('category') : 'all';
     let query = (params.get('q') || '').trim().toLowerCase();
 
     if (search) search.value = params.get('q') || '';
+    if (availability && ['in', 'out'].includes(params.get('availability'))) availability.value = params.get('availability');
 
     function update() {
       let visible = 0;
       cards.forEach(function (card) {
         const categoryMatch = currentCategory === 'all' || card.dataset.category === currentCategory;
         const searchMatch = matchesProductSearch(card.dataset.search || '', query);
-        card.hidden = !(categoryMatch && searchMatch);
+        const availabilityMatch = !availability || availability.value === 'all' || card.dataset.availability === availability.value;
+        card.hidden = !(categoryMatch && searchMatch && availabilityMatch);
         if (!card.hidden) visible += 1;
       });
       tabs.forEach(function (tab) {
@@ -919,6 +940,8 @@
         update();
       });
     }
+    if (availability) availability.addEventListener('change', update);
+    document.addEventListener('dc:inventory-updated', update);
     update();
   }
 
@@ -1267,6 +1290,29 @@
     const category = host.dataset.listingCount;
     host.textContent = category === 'all' ? catalog.length : catalog.filter(function (item) { return item.category === category; }).length;
   });
+  const restockId = new URLSearchParams(window.location.search).get('restock');
+  const contactForm = document.querySelector('form[data-contact-form]');
+  if (contactForm && restockId) {
+    const item = catalog.concat(soldCatalog).find(function (candidate) { return candidate.id === restockId; });
+    if (item) {
+      document.body.classList.add('restock-request');
+      document.querySelector('main h1').textContent = 'Notify me when back in stock';
+      document.querySelector('main .lead').textContent = item.name;
+      contactForm.elements.topic.value = 'Restock request';
+      contactForm.elements.message.value = 'Please email me if ' + item.name + ' (item ' + item.id + ') becomes available again.';
+    }
+  }
+  if (contactForm) {
+    function syncRestockConsent() {
+      const requested = contactForm.elements.topic.value === 'Restock request';
+      contactForm.querySelector('[data-restock-consent]').hidden = !requested;
+      contactForm.elements.restockConsent.required = requested;
+      if (!requested) contactForm.elements.restockConsent.checked = false;
+      contactForm.querySelector('button[type="submit"]').textContent = requested ? 'Send restock request' : 'Send message';
+    }
+    contactForm.elements.topic.addEventListener('change', syncRestockConsent);
+    syncRestockConsent();
+  }
   renderCatalogs();
   renderSoldCatalog();
   setupProductQuantity();

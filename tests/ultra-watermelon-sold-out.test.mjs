@@ -41,8 +41,8 @@ test('Ultra Watermelon archive and journal remain indexable without advertising 
   const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
   assert.equal(schema.offers.availability, 'https://schema.org/OutOfStock');
   assert.equal(schema.brand.name, 'Monster Energy');
-  assert.match(html, /class="sold-status">Sold out/);
-  assert.match(html, /Last listed price/);
+  assert.match(html, /class="sold-status">Out of stock/);
+  assert.match(html, /Notify me when back in stock/);
   assert.match(html, /<meta name="robots" content="index, follow/);
   assert.doesNotMatch(html, /data-add-to-cart|Buy on eBay|View current eBay listing/);
   assert.ok((await read('sitemap-sold.xml')).includes('/sold/' + slug));

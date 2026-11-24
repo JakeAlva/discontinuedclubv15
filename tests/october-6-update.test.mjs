@@ -23,7 +23,7 @@ const additions = [
 test('October 6 listings have reconciled stock, direct prices and feed entries', async () => {
   assert.equal(catalog.length, categories.all.count);
   assert.equal(categories.collectibles.count, 9);
-  assert.equal(categories.apparel.count, 11);
+  assert.equal(categories.apparel.count, 13);
   assert.equal(categories['kids-shoes'].count, 10);
   assert.equal(maxQuantity(findCatalogItem('406730413999')), 5);
   assert.equal(findCatalogItem('407253023756'), undefined);

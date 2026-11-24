@@ -15,7 +15,7 @@ test('sold Ditka jersey is removed from active inventory, feed and recommendatio
   assert.equal(findCatalogItem(id), undefined);
   assert.equal(categories.all.count, catalog.length);
   assert.equal(categories.apparel.count, catalog.filter((item) => item.category === 'apparel').length);
-  for (const file of ['google-merchant-feed.xml', 'sitemap-products.xml', 'index.html', 'out-now.html']) {
+  for (const file of ['google-merchant-feed.xml', 'sitemap-products.xml', 'index.html']) {
     assert.ok(!(await read(file)).includes(id), file);
   }
   const products = await readdir(resolve(root, 'products'));
@@ -33,8 +33,8 @@ test('Ditka jersey has an indexable sold archive and redirects without purchase 
   const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
   assert.equal(schema.offers.availability, 'https://schema.org/OutOfStock');
   assert.equal(schema.brand.name, 'Nike');
-  assert.match(html, /class="sold-status">Sold out/);
-  assert.match(html, /Last listed price/);
+  assert.match(html, /class="sold-status">Out of stock/);
+  assert.match(html, /Notify me when back in stock/);
   assert.match(html, /<meta name="robots" content="index, follow/);
   assert.doesNotMatch(html, /data-add-to-cart|Buy on eBay|View current eBay listing/);
   assert.ok((await read('sitemap-sold.xml')).includes('/sold/' + slug));

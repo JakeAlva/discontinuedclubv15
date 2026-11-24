@@ -1,4 +1,6 @@
 const DC_CATALOG = [
+  { id: '407384251656', category: 'apparel', name: 'Nike Vapor Jet 8.0 Duke Blue Devils Football Gloves - 2XL', detail: "One pair of men's receiver gloves in blue and white with Duke graphics. New with tags, size XXL (2XL)", condition: 'New with tags', price: '$149.99', image: '407384251656.webp', maxQuantity: 1, brand: 'Nike', size: '2XL', sizeSystem: 'US', color: 'Blue/White', gender: 'male', ageGroup: 'adult', shippingWeightOz: 16, imageVersion: 'uniform-20261124', purchaseNote: 'Each quantity buys one pair. Review the size tag and actual listing photos before purchasing. No team-issued or game-worn provenance is claimed.', gallery: [{ src: 'assets/images/listings/gallery/407384251656-2.webp', label: 'reverse and wrist details' }] },
+  { id: '407381590762', category: 'apparel', name: 'Nike Vapor Jet 8.0 Penn State Football Gloves - 2XL', detail: "One pair of men's receiver gloves in white with Penn State Nittany Lions graphics. New with tags, size XXL (2XL)", condition: 'New with tags', price: '$149.99', image: '407381590762.webp', maxQuantity: 1, brand: 'Nike', size: '2XL', sizeSystem: 'US', color: 'White', gender: 'male', ageGroup: 'adult', shippingWeightOz: 16, imageVersion: 'uniform-20261124', purchaseNote: 'Each quantity buys one pair. Review the size tag and actual listing photos before purchasing. No team-issued or game-worn provenance is claimed.', gallery: [{ src: 'assets/images/listings/gallery/407381590762-2.webp', label: 'palm and team graphics' }] },
   { id: '407376262737', category: 'drinks', name: 'Bloom Pop Crisp Apple - 12 oz Single Can', detail: 'One unopened 355 mL (12 fl oz) Crisp Apple prebiotic soda can. Limited-edition, low-sugar soda, not Bloom sparkling energy', condition: 'New', price: '$6.99', image: '407376262737.webp', maxQuantity: 1, brand: 'Bloom Pop', purchaseNote: 'Each quantity buys one can, not a case. No printed best-by date or full ingredient label has been verified; contact us for those details before purchasing. Review the product photo and checkout shipping total.' },
   { id: '407376259572', category: 'drinks', name: 'Liquid Death Blood Zero - 12 oz Single Can', detail: 'One unopened 12 fl oz (355 mL) Blood Zero sparkling energy drink can in Raspberry Cream flavor. Each quantity is one can, not a multipack', condition: 'New', price: '$6.99', image: '407376259572.webp', maxQuantity: 1, brand: 'Liquid Death', purchaseNote: 'This is the sparkling energy drink, not plain sparkling water. No printed best-by date or full ingredient label has been verified; contact us for those details before purchasing. Review the product photo and checkout shipping total.' },
   { id: 'bloom-pear-scare', category: 'drinks', name: 'Bloom Pear Scare - 12 oz Single Can', detail: 'PREORDER: one unopened 12 fl oz (355 mL) Pear Scare sparkling energy can. Payment collected now; expected to ship November 30, 2026', condition: 'New', price: '$7.99', directPriceCents: 799, image: 'bloom-pear-scare.webp', maxQuantity: 12, brand: 'Bloom Nutrition', websiteOnly: true, preorder: { batch: '2026-11-30', capacity: 12, shipDate: '2026-11-30', shipDateLabel: 'November 30, 2026', closesAt: '2026-11-30T06:00:00Z' }, purchaseNote: 'Expected shipment depends on the incoming delivery, currently expected by November 28. This is a single-can preorder, not a case. Order separately from in-stock items. The manufacturer photo shows the product design, not the exact incoming can. Printed best-by dates will be checked on arrival. Contact jacob@discontinuedclub.com to cancel before shipment. If delayed, we will contact you with an updated date and cancellation/refund options.' },
@@ -150,6 +152,8 @@ const DC_CATALOG = [
 
 // Conservative packaged weights keep direct shipping from being undercharged.
 const DC_SHIPPING_WEIGHTS_OZ = {
+  '407384251656': 16,
+  '407381590762': 16,
   '407376262737': 32,
   '407376259572': 32,
   'bloom-pear-scare': 32,
@@ -257,9 +261,9 @@ DC_CATALOG.forEach((item) => {
 });
 
 const DC_CATEGORIES = {
-  all: { label: 'All items', count: 82 },
+  all: { label: 'All items', count: 84 },
   drinks: { label: 'Rare drinks', count: 45 },
-  apparel: { label: 'Sports & apparel', count: 11 },
+  apparel: { label: 'Sports & apparel', count: 13 },
   'kids-shoes': { label: "Designer kids' shoes", count: 10 },
   collectibles: { label: 'Collectibles & cards', count: 9 },
   care: { label: 'Personal care', count: 4 },

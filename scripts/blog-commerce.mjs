@@ -2,6 +2,8 @@ import { directPriceCents, formatMoney } from '../lib/store-catalog.mjs';
 
 // Curated from the leading Search Console / Netlify article pages on November 18.
 export const articleProducts = {
+  '/journal/pepsi-soda-shop-cream-soda-2021-history.html': { heading: 'The Cream Soda bottle', ids: ['406705689212'] },
+  '/journal/nike-vapor-jet-8-duke-penn-state-gloves-guide.html': { heading: 'Compare the two pairs', note: 'Each listing is one pair in size 2XL, sold separately.', ids: ['407384251656', '407381590762'] },
   '/discontinued-monster-energy-flavors.html': { heading: 'Monster flavors from our shelves', ids: ['407205333909', '407205596661', '407205565491'] },
   '/journal/ghost-aw-root-beer-energy-drink-permanent-2027.html': { heading: 'More creamy flavor finds', note: 'These are different products, not Ghost A&W Root Beer.', ids: ['406705689212', '407329572793', '407205596661'] },
   '/discontinued-energy-drink-flavors-2026.html': { heading: 'Hard-to-find energy drinks', ids: ['407205333909', '407329572793', '407373107823'] },

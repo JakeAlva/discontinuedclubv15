@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { findCatalogItem, directPriceCents, priceLookupKey } from '../lib/store-catalog.mjs';
 import { readInventory } from '../netlify/functions/inventory.mjs';
 import { pepsiPeepsHistoryReport } from '../scripts/pepsi-peeps-history-report.mjs';
@@ -50,7 +50,9 @@ test('two substantial November 18 histories publish with sources, images and dis
     assert.ok(html.includes(report.title));
     assert.ok(html.includes('2026-11-18'));
     for (const source of report.sources) assert.ok(html.includes(source.url));
-    for (const file of ['dist/blog.html', 'dist/sitemap-journal.xml', 'dist/assets/journal-index.json']) {
+    const pages = (await readdir(new URL('../dist/', import.meta.url))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+    assert.ok((await Promise.all(pages.map((file) => read('dist/' + file)))).join('\n').includes(report.slug));
+    for (const file of ['dist/sitemap-journal.xml', 'dist/assets/journal-index.json']) {
       assert.ok((await read(file)).includes(report.slug), file);
     }
   }

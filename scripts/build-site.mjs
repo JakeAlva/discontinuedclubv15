@@ -112,6 +112,9 @@ async function injectFavicon(directory) {
     let html = await readFile(file, 'utf8');
     html = await renderStaticCatalogs(html, root);
     html = injectArticleProducts(html, '/' + relative(output, file), catalog);
+    if (html.includes('assets/app.js') && !html.includes('assets/sold-catalog.js')) {
+      html = html.replace(/<script src="assets\/app\.js/, `<script src="assets/sold-catalog.js?v=${assetVersion}"></script>\n  <script src="assets/app.js`);
+    }
     html = html
       .replace(/assets\/style\.css\?v=[^"']+/g, `assets/style.css?v=${assetVersion}`)
       .replace(/assets\/catalog\.js\?v=[^"']+/g, `assets/catalog.js?v=${assetVersion}`)

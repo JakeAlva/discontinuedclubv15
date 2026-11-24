@@ -80,6 +80,8 @@ async function storefront(initialCart = []) {
     dispatchEvent: (event) => quantityListeners.get(event.type)?.()
   };
   const button = {
+    parentElement: { querySelector: () => null }, closest: () => null,
+    insertAdjacentElement() {},
     dataset: { addToCart: item.id }, classList: { toggle() {} },
     querySelector: (selector) => selector === '[data-add-label]' ? label : arrow,
     setAttribute() {}
@@ -88,6 +90,8 @@ async function storefront(initialCart = []) {
   let failed = false;
   let stored = JSON.stringify(initialCart);
   const document = {
+    createElement: () => ({ dataset: {} }),
+    dispatchEvent: (event) => listeners.get(event.type)?.(event),
     hidden: false, referrer: '', body: { dataset: {} },
     getElementById: () => null,
     querySelector: (selector) => selector === `[data-product-order-note="${item.id}"]` ? shippingNote : null,
@@ -138,8 +142,8 @@ test('zero stock removes stale cart quantities and disables purchase buttons', a
   site.setStock(0);
   await site.refreshInventory();
   assert.equal(site.getCart().length, 0);
-  assert.equal(site.label.textContent, 'Sold out');
-  assert.equal(site.badge.textContent, 'Sold out');
+  assert.equal(site.label.textContent, 'Out of stock');
+  assert.equal(site.badge.textContent, 'Out of stock');
   assert.equal(site.button.disabled, true);
   assert.equal(site.addToCart(item.id, 1), null);
 });

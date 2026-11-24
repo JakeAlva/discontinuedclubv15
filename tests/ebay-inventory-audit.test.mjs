@@ -52,7 +52,7 @@ test('published catalog, purchase limits and feed use the audited inventory', as
   }
   for (const id of [...audit.endedListingIds, ...latest.soldOut.map((item) => item.id), ...soldIds]) {
     assert.ok(!publicCatalog.includes(id), `${id} must not be purchasable`);
-    assert.ok(!(await read('dist/out-now.html')).includes(id), `${id} must not appear in static shop listings`);
+    assert.ok(!(await read('dist/out-now.html')).includes(`data-add-to-cart="${id}"`), `${id} must not be purchasable from shop listings`);
   }
   for (const file of ['dist/index.html', 'dist/out-now.html']) {
     assert.ok((await read(file)).includes(`data-listing-count="all">${catalog.length}</span>`), file);

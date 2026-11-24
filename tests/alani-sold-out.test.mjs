@@ -33,10 +33,11 @@ test('Alani archive stays indexable and has no purchase action', async () => {
   assert.ok(!item.availableAgain);
   const html = await read(`sold/${slug}`);
   const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
-  assert.equal(schema.offers.availability, 'https://schema.org/OutOfStock');
+  assert.equal(schema.offers, undefined);
+  assert.match(html, /View current listing/);
   assert.equal(schema.brand.name, 'Alani Nu');
-  assert.match(html, /class="sold-status">Sold out/);
-  assert.match(html, /Last listed price/);
+  assert.match(html, /class="sold-status available">View current listing/);
+  assert.match(html, /407347352383/);
   assert.match(html, /<script src="assets\/catalog\.js\?v=/);
   assert.doesNotMatch(html, /data-add-to-cart|Buy on eBay|View current eBay listing/);
   assert.ok((await read('sitemap-sold.xml')).includes(`/sold/${slug}`));

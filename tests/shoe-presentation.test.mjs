@@ -50,6 +50,8 @@ test('single-pair buttons use neutral cart feedback, enforce the limit and re-en
   const attributes = {};
   const button = {
     dataset: { addToCart: item.id },
+    parentElement: { querySelector: () => null },
+    closest: () => null,
     querySelector: (selector) => selector === '[data-add-label]' ? label : arrow,
     classList: { toggle() {} },
     setAttribute: (key, value) => { attributes[key] = value; }

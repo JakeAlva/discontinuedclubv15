@@ -1,4 +1,6 @@
 import { pepsiPeepsHistoryReport } from './pepsi-peeps-history-report.mjs';
+import { pepsiSodaShopHistoryReport } from './pepsi-soda-shop-history-report.mjs';
+import { nikeCollegeGlovesReport } from './nike-college-gloves-report.mjs';
 import { bloomPearScarePreorderReport } from './bloom-pear-scare-preorder-report.mjs';
 import { alaniWinterWonderland2026Report } from './alani-winter-wonderland-2026-report.mjs';
 import { spriteLymonadeLegacyHistoryReport } from './sprite-lymonade-legacy-history-report.mjs';
@@ -97,6 +99,8 @@ const monsterRumor = 'https://www.reddit.com/r/monsterenergy/comments/1wac5x6/ba
 const monsterSeptemberUpdate = 'https://sporked.com/article/heres-all-12-monster-energy-drinks-being-discontinued-by-2027/';
 
 export const reports = [
+  pepsiSodaShopHistoryReport,
+  nikeCollegeGlovesReport,
   {
     slug: 'is-red-bull-blue-edition-blueberry-discontinued',
     modifiedDate: '2026-09-21',

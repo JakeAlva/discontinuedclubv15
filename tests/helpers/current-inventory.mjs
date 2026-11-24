@@ -18,4 +18,5 @@ export const november9Snapshot = baseline.activeSnapshot
     : [novemberUpdate.relistings[id] || id, price, novemberUpdate.quantityChanges[novemberUpdate.relistings[id] || id] ?? quantity]
   )).concat(novemberUpdate.additions);
 export const november20Update = JSON.parse(await read('ebay-inventory-update-2026-11-20.json'));
-export const currentSnapshot = november20Update.activeSnapshot;
+export const november24Update = JSON.parse(await read('ebay-inventory-update-2026-11-24.json'));
+export const currentSnapshot = november24Update.activeSnapshot;

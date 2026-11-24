@@ -19,7 +19,7 @@ test('both Destined Rivals bundles are removed from purchase surfaces, not the f
   assert.equal(maxQuantity(lot), 2);
   assert.equal(directPriceCents(lot), 3184);
   for (const prefix of ['', 'dist/']) {
-    for (const file of ['assets/catalog.js', 'google-merchant-feed.xml', 'sitemap-products.xml', 'index.html', 'out-now.html']) {
+    for (const file of ['assets/catalog.js', 'google-merchant-feed.xml', 'sitemap-products.xml', 'index.html']) {
       assert.ok(!(await read(prefix + file)).includes(id), prefix + file);
     }
     const products = await readdir(resolve(root, prefix, 'products'));
@@ -38,8 +38,8 @@ test('sold bundles keep an indexable archive, real images and old product redire
   const schema = JSON.parse(html.match(/<script type="application\/ld\+json">(.*?)<\/script>/s)[1]);
   assert.equal(schema.offers.availability, 'https://schema.org/OutOfStock');
   assert.equal(schema.brand.name, 'The Pokemon Company International');
-  assert.match(html, /class="sold-status">Sold out/);
-  assert.match(html, /Last listed price/);
+  assert.match(html, /class="sold-status">Out of stock/);
+  assert.match(html, /Notify me when back in stock/);
   assert.match(html, /<meta name="robots" content="index, follow/);
   assert.doesNotMatch(html, /data-add-to-cart|Buy on eBay|View current eBay listing/);
   assert.ok((await read('dist/sitemap-sold.xml')).includes(`/sold/${slug}`));

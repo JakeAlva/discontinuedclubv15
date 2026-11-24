@@ -19,7 +19,7 @@ const active = audit.activeSnapshot.filter(([id]) => !soldIds.has(id) && !novemb
 const slug = (item) => `${item.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}-${item.id}.html`;
 
 test('October 19 listings reflect subsequent verified sales and relistings', () => {
-  assert.equal(catalog.filter((item) => !item.websiteOnly).length, november20Update.activeListingCount);
+  assert.equal(catalog.filter((item) => !item.websiteOnly).length, currentSnapshot.length);
   assert.deepEqual(catalog.filter((item) => !item.websiteOnly).map((item) => item.id).sort(), [...current.keys()].sort());
   for (const [previousId, price, quantity] of active) {
     const id = currentListingId(previousId);
@@ -27,7 +27,7 @@ test('October 19 listings reflect subsequent verified sales and relistings', () 
     assert.equal(parsePriceCents(item.price), current.get(id)?.price ?? price, `${id} eBay price`);
     assert.equal(maxQuantity(item), current.get(id)?.quantity ?? quantity, `${id} quantity`);
   }
-  assert.equal(categories.all.count, november20Update.activeListingCount + catalog.filter((item) => item.websiteOnly).length);
+  assert.equal(categories.all.count, currentSnapshot.length + catalog.filter((item) => item.websiteOnly).length);
   assert.equal(categories.drinks.count, 44 + catalog.filter((item) => item.websiteOnly && item.category === 'drinks').length);
   assert.equal(categories.home.count, 3);
   assert.equal(categories['kids-shoes'].count, 10);
@@ -77,7 +77,7 @@ test('sold Frost Bite is archived and removed from all purchase surfaces', async
   const id = '406794914124';
   const page = `mountain-dew-zero-sugar-frost-bite-${id}.html`;
   assert.equal(catalog.find((item) => item.id === id), undefined);
-  for (const file of ['dist/out-now.html', 'dist/google-merchant-feed.xml', 'dist/sitemap-products.xml']) assert.ok(!(await read(file)).includes(id), file);
+  for (const file of ['dist/google-merchant-feed.xml', 'dist/sitemap-products.xml']) assert.ok(!(await read(file)).includes(id), file);
   const html = await read(`dist/sold/${page}`);
   assert.match(html, /https:\/\/schema.org\/OutOfStock/);
   assert.doesNotMatch(html, /data-add-to-cart|Buy on eBay/);

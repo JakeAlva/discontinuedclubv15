@@ -30,7 +30,7 @@ test('Journey Together is archived with honest verification provenance and no ac
   assert.equal(record.ebayVerification.status, 'blocked');
   assert.equal(record.soldOut[0].soldQuantity, undefined, 'Do not infer the latest transaction size');
   for (const prefix of ['', 'dist/']) {
-    for (const file of ['assets/catalog.js', 'google-merchant-feed.xml', 'sitemap-products.xml', 'index.html', 'out-now.html']) {
+    for (const file of ['assets/catalog.js', 'google-merchant-feed.xml', 'sitemap-products.xml', 'index.html']) {
       assert.ok(!(await read(prefix + file)).includes(id), prefix + file);
     }
     assert.ok(!(await readdir(resolve(root, prefix, 'products'))).includes(slug));

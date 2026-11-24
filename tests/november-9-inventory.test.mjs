@@ -10,8 +10,8 @@ const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
 test('current catalog matches the latest verified eBay listing and unit totals', () => {
   const ebayCatalog = catalog.filter((item) => !item.websiteOnly);
-  assert.equal(ebayCatalog.length, november20Update.activeListingCount);
-  assert.equal(ebayCatalog.reduce((sum, item) => sum + maxQuantity(item), 0), november20Update.sellableUnits);
+  assert.equal(ebayCatalog.length, currentSnapshot.length);
+  assert.equal(ebayCatalog.reduce((sum, item) => sum + maxQuantity(item), 0), currentSnapshot.reduce((sum, [, , quantity]) => sum + quantity, 0));
   assert.deepEqual(ebayCatalog.map((item) => item.id).sort(), currentSnapshot.map(([id]) => id).sort());
   assert.equal(storeConfig.directDiscountPercent, 3.5);
   for (const [id, ebayCents, quantity] of currentSnapshot) {
@@ -48,7 +48,7 @@ test('sold items leave all purchase surfaces and retain indexable archive pages'
     assert.equal(item.soldOut, true);
     assert.equal(item.priceLabel, 'Last listed price');
     const page = `${slugify(item.name)}-${id}`;
-    for (const file of ['dist/out-now.html', 'dist/google-merchant-feed.xml', 'dist/sitemap-products.xml']) {
+    for (const file of ['dist/google-merchant-feed.xml', 'dist/sitemap-products.xml']) {
       assert.ok(!(await read(file)).includes(id), `${id}: ${file}`);
     }
     const html = await read(`dist/sold/${page}.html`);

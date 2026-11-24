@@ -17,7 +17,7 @@ const sold = [
 ];
 
 test('confirmed sold-out listings leave active inventory, feeds and product recommendations', async () => {
-  const activeFiles = ['assets/catalog.js', 'dist/assets/catalog.js', 'google-merchant-feed.xml', 'sitemap-products.xml', 'dist/out-now.html', 'dist/index.html'];
+  const activeFiles = ['assets/catalog.js', 'dist/assets/catalog.js', 'google-merchant-feed.xml', 'sitemap-products.xml', 'dist/index.html'];
   for (const file of await readdir(resolve(root, 'dist/products'))) activeFiles.push(`dist/products/${file}`);
   for (const [id] of sold) {
     assert.equal(findCatalogItem(id), undefined);
@@ -33,7 +33,7 @@ test('sold-out pages preserve images, OutOfStock schema and both old URL redirec
     const slug = `${name}-${id}`;
     assert.equal(soldItems.find((item) => item.id === id).soldOut, true);
     const html = await read(`dist/sold/${slug}.html`);
-    assert.match(html, /class="sold-status">Sold out/);
+    assert.match(html, /class="sold-status">Out of stock/);
     assert.match(html, /https:\/\/schema.org\/OutOfStock/);
     assert.doesNotMatch(html, /data-add-to-cart|Buy on eBay|View current eBay listing/);
     assert.ok((await read('sitemap-sold.xml')).includes(`/sold/${slug}.html`));

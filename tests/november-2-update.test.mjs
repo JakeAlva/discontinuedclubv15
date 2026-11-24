@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { access, readFile } from 'node:fs/promises';
+import { access, readFile, readdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import sharp from 'sharp';
 import { catalog, directPriceCents, findCatalogItem, maxQuantity, parsePriceCents } from '../lib/store-catalog.mjs';
@@ -81,7 +81,8 @@ for (const report of [alani, dutch]) {
     assert.match(html, /content="index, follow, max-image-preview:large"/);
     assert.ok((await read('dist/sitemap-journal.xml')).includes(href));
     assert.ok(JSON.parse(await read('dist/assets/journal-index.json')).some((entry) => entry.slug === report.slug));
-    assert.ok((await read('dist/blog-page-2.html')).includes(href));
+    const pages = (await readdir(resolve(root, 'dist'))).filter((file) => /^blog(?:-page-\d+)?\.html$/.test(file));
+    assert.ok((await Promise.all(pages.map((file) => read('dist/' + file)))).join('\n').includes(href));
     const image = await sharp(resolve(root, report.image)).metadata();
     assert.equal(image.width, report.imageWidth);
     assert.equal(image.height, report.imageHeight);

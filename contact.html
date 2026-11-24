@@ -33,7 +33,7 @@
 
     <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="hidden-netlify">
       <input type="hidden" name="form-name" value="contact">
-      <input name="name"><input name="email"><input name="topic"><textarea name="message"></textarea>
+      <input name="name"><input name="email"><input name="topic"><input name="restockConsent"><textarea name="message"></textarea>
     </form>
 
     <section class="section">
@@ -45,15 +45,16 @@
           <div class="contact-detail"><strong>Response time</strong><span>Messages are reviewed directly. Please allow one business day for a reply.</span></div>
         </div>
 
-        <form class="form-grid" name="contact" method="POST" data-netlify="true" action="contact-success.html" netlify-honeypot="bot-field">
+        <form class="form-grid" data-contact-form name="contact" method="POST" data-netlify="true" action="contact-success.html" netlify-honeypot="bot-field">
           <input type="hidden" name="form-name" value="contact">
           <p class="hidden-netlify"><label>Do not fill this out: <input name="bot-field"></label></p>
           <div class="form-row">
             <div class="field"><label for="contact-name">Name</label><input class="input-light" id="contact-name" type="text" name="name" autocomplete="name" required></div>
             <div class="field"><label for="contact-email">Email</label><input class="input-light" id="contact-email" type="email" name="email" autocomplete="email" required></div>
           </div>
-          <div class="field"><label for="contact-topic">What is this about?</label><select class="input-light" id="contact-topic" name="topic" required><option value="">Choose a topic</option><option>Current listing or order</option><option>Product sourcing request</option><option>Discontinuation tip</option><option>Bulk purchase</option><option>Something else</option></select></div>
+          <div class="field"><label for="contact-topic">What is this about?</label><select class="input-light" id="contact-topic" name="topic" required><option value="">Choose a topic</option><option>Restock request</option><option>Current listing or order</option><option>Product sourcing request</option><option>Discontinuation tip</option><option>Bulk purchase</option><option>Something else</option></select></div>
           <div class="field"><label for="contact-message">Message</label><textarea class="textarea-light" id="contact-message" name="message" placeholder="Add the product name, listing number, or details that will help us answer." required></textarea></div>
+          <div data-restock-consent hidden><label class="restock-consent"><input type="checkbox" name="restockConsent" value="yes"> Email me about this product if it returns.</label><p class="restock-note">Jacob reviews requests personally. No restock date, reservation, price or availability is guaranteed. This is not a newsletter signup. <a href="privacy.html">Privacy policy</a></p></div>
           <div><button type="submit" class="btn btn-dark">Send message</button></div>
         </form>
       </div>
@@ -62,6 +63,7 @@
 
   <div id="site-footer"></div>
   <script src="assets/catalog.js?v=38"></script>
+  <script src="assets/sold-catalog.js?v=38"></script>
   <script src="assets/app.js?v=38"></script>
 </body>
 </html>

@@ -9,6 +9,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "406713894369.webp",
     "slug": "mountain-dew-baja-point-break-punch-406713894369",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -21,6 +22,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "406711385310.webp",
     "slug": "mountain-dew-baja-laguna-lemonade-406711385310",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -33,6 +35,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407063633707.webp",
     "slug": "nashville-predators-p-k-subban-jersey-407063633707",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -45,6 +48,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407063463950.webp",
     "slug": "columbus-blue-jackets-sergei-bobrovsky-jersey-407063463950",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -57,6 +61,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407283282883.webp",
     "slug": "pokemon-mega-evolution-ascended-heroes-booster-bundle-407283282883",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -69,6 +74,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407260159541.webp",
     "slug": "pokemon-journey-together-booster-bundle-407260159541",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -81,6 +87,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407281698826.webp",
     "slug": "pokemon-destined-rivals-booster-bundle-407281698826",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -93,7 +100,8 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407293533835.webp",
     "slug": "alani-nu-lime-slush-12-oz-4-pack-407293533835",
-    "availableAgain": false
+    "browsable": false,
+    "availableAgain": true
   },
   {
     "id": "407212006333",
@@ -105,6 +113,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407212006333.webp",
     "slug": "pokemon-tcg-mega-evolution-booster-pack-407212006333",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -117,6 +126,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407203141723.webp",
     "slug": "red-bull-amber-edition-sugar-free-4-pack-407203141723",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -129,6 +139,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "406794914124.webp",
     "slug": "mountain-dew-zero-sugar-frost-bite-406794914124",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -141,6 +152,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "406794860747.webp",
     "slug": "mountain-dew-gingerbread-snap-d-406794860747",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -153,6 +165,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407063650804.webp",
     "slug": "nashville-predators-p-k-subban-jersey-white-size-m-407063650804",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -165,6 +178,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407117478926.webp",
     "slug": "chicago-bears-mike-ditka-jersey-407117478926",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -177,6 +191,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407253023756.webp",
     "slug": "rubie-s-elvis-presley-toddler-costume-2-4t-407253023756",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -189,6 +204,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407195902675.webp",
     "slug": "pokemon-journey-together-booster-bundle-407195902675",
+    "browsable": false,
     "availableAgain": false
   },
   {
@@ -201,6 +217,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407117217273.webp",
     "slug": "los-angeles-kings-blank-jersey-407117217273",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -213,6 +230,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "406760474283.webp",
     "slug": "art-of-sport-activated-charcoal-body-wash-406760474283",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -225,6 +243,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407207453659.webp",
     "slug": "monster-energy-ultra-watermelon-407207453659",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -237,6 +256,7 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407203102419.webp",
     "slug": "red-bull-blue-edition-blueberry-4-pack-407203102419",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -249,7 +269,8 @@ window.DC_SOLD_CATALOG = [
     "soldOut": true,
     "image": "407205693415.webp",
     "slug": "alani-nu-lime-slush-4-pack-407205693415",
-    "availableAgain": false
+    "browsable": false,
+    "availableAgain": true
   },
   {
     "id": "406949731414",
@@ -258,6 +279,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$7.00",
     "image": "406949731414.webp",
     "slug": "mountain-dew-assorted-full-can-lot-11-cans-406949731414",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -267,6 +289,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$28.99",
     "image": null,
     "slug": "funko-pop-sports-lot-barry-sanders-blake-griffin-and-michael-jordan-406938030415",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -276,6 +299,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$12.00",
     "image": "406794979611.webp",
     "slug": "mountain-dew-overdrive-casey-s-exclusive-20-oz-bottle-406794979611",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -285,6 +309,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$11.99",
     "image": "406700194972.webp",
     "slug": "mountain-dew-rise-energy-berry-blitz-16-oz-can-406700194972",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -294,6 +319,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$0.99",
     "image": "406875790679.webp",
     "slug": "jordan-nike-under-armour-lsu-and-eagles-men-s-sweatshirt-lot-406875790679",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -303,6 +329,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$9.00",
     "image": "406760980706.webp",
     "slug": "funko-pop-walter-payton-78-chicago-bears-figure-406760980706",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -312,24 +339,27 @@ window.DC_SOLD_CATALOG = [
     "price": "$6.99",
     "image": "406701639460.webp",
     "slug": "mountain-dew-thrashed-apple-full-12-oz-can-406701639460",
+    "browsable": true,
     "availableAgain": false
   },
   {
     "id": "406875793212",
-    "category": "other",
+    "category": "home",
     "name": "Apple Watch Series 3 Silver Aluminum 42 mm",
     "price": "$19.00",
     "image": "406875793212.webp",
     "slug": "apple-watch-series-3-silver-aluminum-42-mm-406875793212",
+    "browsable": true,
     "availableAgain": false
   },
   {
     "id": "406735597387",
-    "category": "other",
+    "category": "home",
     "name": "Blu-ray Movie Lot: Glass, Bad Boys for Life, 1917 & More",
     "price": "$10.75",
     "image": "406735597387.webp",
     "slug": "blu-ray-movie-lot-glass-bad-boys-for-life-1917-and-more-406735597387",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -339,6 +369,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$9.99",
     "image": "406876057639.webp",
     "slug": "boston-bruins-gilmore-18-nhl-jersey-406876057639",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -348,6 +379,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$24.99",
     "image": "406760894784.webp",
     "slug": "funko-pop-chicago-bears-santa-184-fanatics-exclusive-406760894784",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -357,6 +389,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$29.98",
     "image": "406761073855.webp",
     "slug": "axe-anarchy-antiperspirant-stick-2-7-oz-lot-of-2-406761073855",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -366,6 +399,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$5.99",
     "image": "406840921667.webp",
     "slug": "air-jordan-1-retro-boys-satin-snake-chicago-shoes-7c-406840921667",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -375,6 +409,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$5.50",
     "image": "406834698762.webp",
     "slug": "supra-bandit-penny-white-leather-men-s-shoes-size-10-406834698762",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -384,6 +419,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$6.00",
     "image": "406842535061.webp",
     "slug": "toddler-one-piece-pajama-lot-sizes-2t-3t-406842535061",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -393,6 +429,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$0.99",
     "image": "406835245007.webp",
     "slug": "nike-metcon-2-women-s-shoes-size-8-406835245007",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -402,6 +439,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$0.99",
     "image": "406835260467.webp",
     "slug": "converse-chuck-taylor-lift-ox-women-s-shoes-size-6-406835260467",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -411,6 +449,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$0.99",
     "image": "406824052530.webp",
     "slug": "adidas-pharrell-williams-tennis-hu-men-s-shoes-size-9-5-406824052530",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -420,6 +459,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$9.99",
     "image": "406823232796.webp",
     "slug": "nike-adidas-and-puma-girls-clothing-lot-6m-3t-406823232796",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -429,6 +469,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$0.99",
     "image": "406798063114.webp",
     "slug": "nike-air-zoom-victory-tour-3-golf-shoes-406798063114",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -438,6 +479,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$19.99",
     "image": "406840351918.webp",
     "slug": "funko-pop-patrick-kane-03-chicago-blackhawks-figure-406840351918",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -447,6 +489,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$9.99",
     "image": "406706020810.webp",
     "slug": "pepsi-soda-shop-black-cherry-cola-20-oz-bottle-406706020810",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -456,6 +499,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$7.99",
     "image": "406794619457.webp",
     "slug": "mountain-dew-gingerbread-snap-d-full-12-oz-can-406794619457",
+    "browsable": false,
     "availableAgain": false
   },
   {
@@ -465,6 +509,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$14.99",
     "image": "406795016704.webp",
     "slug": "mountain-dew-livewire-old-design-12-oz-can-406795016704",
+    "browsable": false,
     "availableAgain": true
   },
   {
@@ -474,6 +519,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$0.99",
     "image": "406773048012.webp",
     "slug": "international-empty-soda-can-collector-lot-406773048012",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -483,6 +529,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$8.99",
     "image": "406760958413.webp",
     "slug": "funko-pop-khalil-mack-126-chicago-bears-figure-406760958413",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -492,6 +539,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$24.99",
     "image": "406761045844.webp",
     "slug": "art-of-sport-victory-antiperspirant-cool-eucalyptus-406761045844",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -501,15 +549,17 @@ window.DC_SOLD_CATALOG = [
     "price": "$19.98",
     "image": "406711330666.webp",
     "slug": "coca-cola-starlight-zero-sugar-20-oz-bottle-406711330666",
+    "browsable": true,
     "availableAgain": false
   },
   {
     "id": "406738354751",
-    "category": "other",
+    "category": "home",
     "name": "DVD & Blu-ray Movie Lot: Fury, The Outsiders & More",
     "price": "$13.61",
     "image": "406738354751.webp",
     "slug": "dvd-and-blu-ray-movie-lot-fury-the-outsiders-and-more-406738354751",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -519,6 +569,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$42.99",
     "image": "406760937949.webp",
     "slug": "funko-pop-mike-ditka-90-chicago-bears-figure-406760937949",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -528,6 +579,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$8.99",
     "image": "406713927667.webp",
     "slug": "dr-pepper-dark-berry-jurassic-world-12-oz-can-406713927667",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -537,6 +589,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$12.50",
     "image": "406760267927.webp",
     "slug": "nike-women-s-running-shoe-lot-3-pairs-406760267927",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -546,6 +599,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$9.99",
     "image": "406700256965.webp",
     "slug": "coca-cola-starlight-space-flavored-20-oz-bottle-406700256965",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -555,6 +609,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$44.99",
     "image": "406711357702.webp",
     "slug": "mountain-dew-baja-point-break-punch-12-pack-406711357702",
+    "browsable": false,
     "availableAgain": false
   },
   {
@@ -564,6 +619,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$75.00",
     "image": "407119973045.webp",
     "slug": "green-bay-packers-aaron-rodgers-12-nike-jersey-407119973045",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -573,6 +629,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$49.99",
     "image": "407086580692.webp",
     "slug": "new-york-rangers-adidas-practice-jersey-size-52-407086580692",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -582,6 +639,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$129.99",
     "image": "406760398071.webp",
     "slug": "versace-ve-2101-gold-black-shield-sunglasses-406760398071",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -591,6 +649,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$59.99",
     "image": "407064140962.webp",
     "slug": "edmonton-oilers-connor-mcdavid-97-fanatics-jersey-407064140962",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -600,6 +659,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$199.99",
     "image": "407119859391.webp",
     "slug": "chicago-bears-brian-urlacher-nike-100th-season-jersey-407119859391",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -609,6 +669,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$79.99",
     "image": "407134856526.webp",
     "slug": "pokemon-prismatic-evolutions-booster-bundle-407134856526",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -618,6 +679,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$73.99",
     "image": "407086740543.webp",
     "slug": "pokemon-scarlet-and-violet-white-flare-booster-bundle-407086740543",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -627,6 +689,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$14.99",
     "image": "406738402301.webp",
     "slug": "bodyarmor-perfect-pop-cherry-berry-ice-bottle-406738402301",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -636,7 +699,8 @@ window.DC_SOLD_CATALOG = [
     "price": "$8.99",
     "image": "406717975092.webp",
     "slug": "sprite-lymonade-legacy-50-years-of-hip-hop-can-406717975092",
-    "availableAgain": false
+    "browsable": false,
+    "availableAgain": true
   },
   {
     "id": "406700223872",
@@ -645,6 +709,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$11.99",
     "image": "406700223872.webp",
     "slug": "mountain-dew-energy-peach-mango-dawn-16-oz-can-406700223872",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -654,6 +719,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$6.75",
     "image": "406794937944.webp",
     "slug": "mountain-dew-zero-sugar-major-melon-12-oz-can-406794937944",
+    "browsable": true,
     "availableAgain": false
   },
   {
@@ -663,6 +729,7 @@ window.DC_SOLD_CATALOG = [
     "price": "$0.99",
     "image": "406964871412.webp",
     "slug": "mountain-dew-assorted-flavor-12-can-variety-pack-406964871412",
+    "browsable": true,
     "availableAgain": false
   }
 ];

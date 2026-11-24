@@ -20,7 +20,7 @@ test('Gingerbread Snapd and both Subban jerseys remain archived after their sale
   assert.equal(soldItems.find((item) => item.id === '407063633707').soldOut, true);
   const slug = `mountain-dew-gingerbread-snap-d-${gingerbreadId}.html`;
   const html = await read(`sold/${slug}`);
-  assert.match(html, /class="sold-status">Sold out/);
+  assert.match(html, /class="sold-status">Out of stock/);
   assert.match(html, /https:\/\/schema.org\/OutOfStock/);
   assert.doesNotMatch(html, /data-add-to-cart|Buy on eBay|View current eBay listing/);
   assert.ok((await read('sitemap-sold.xml')).includes(`/sold/${slug}`));
@@ -37,7 +37,7 @@ test('Gingerbread Snapd and both Subban jerseys remain archived after their sale
 
 test('white Subban jersey is removed from active listings, recommendations and feed', async () => {
   assert.equal(findCatalogItem(whiteJerseyId), undefined);
-  for (const file of ['google-merchant-feed.xml', 'sitemap-products.xml', 'index.html', 'out-now.html']) {
+  for (const file of ['google-merchant-feed.xml', 'sitemap-products.xml', 'index.html']) {
     assert.ok(!(await read(file)).includes(whiteJerseyId), file);
   }
   for (const file of await readdir(resolve(root, 'products'))) {
