@@ -38,6 +38,7 @@ test('restock form uses the existing contact inbox and explicit product-only ema
   const html = await read('dist/contact.html');
   assert.match(html, /data-contact-form name="contact" method="POST"/);
   assert.match(html, /data-netlify="true"/);
+  assert.equal([...html.matchAll(/action="\/contact-success\.html"/g)].length, 2);
   assert.match(html, /name="restockConsent" value="yes"/);
   assert.match(html, /not a newsletter signup/);
   assert.match(html, /No restock date, reservation, price or availability is guaranteed/);
